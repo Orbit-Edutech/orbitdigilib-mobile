@@ -3,14 +3,13 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 
-import '../../api/model/perpus_model.dart';
+import '../../api/auth/model/model_auth_perpustakaan.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
-import '../../shared/widget/app_button.dart';
-import '../../shared/widget/app_textfield.dart';
 import '../../theme/app_text_stlye.dart';
-import '../../theme/app_theme.dart';
 import 'controller/auth_user_controller.dart';
+import 'widgets/auth_forget_form.dart';
+import 'widgets/auth_login_form.dart';
 
 class AuthUserPage extends StatelessWidget {
   const AuthUserPage({super.key});
@@ -19,9 +18,9 @@ class AuthUserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
-    final Perpus? perpus = Get.arguments;
     final controller = Get.find<AuthUserController>();
-    controller.perpus.value = perpus;
+    final AuthPerpustakaan? perpustakaan = Get.arguments;
+    controller.perpustakaan = perpustakaan;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -50,7 +49,7 @@ class AuthUserPage extends StatelessWidget {
                     ),
                     VGap.m,
                     Text(
-                      controller.perpus.value?.name ?? "-",
+                      controller.perpustakaan?.nama ?? "-",
                       style: AppTextStyle.ts16Bold.copyWith(color: Colors.white),
                     ),
                     VGap.m,
@@ -59,57 +58,13 @@ class AuthUserPage extends StatelessWidget {
               ),
             ),
             VGap.l,
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    "Masukkan kode perpustakaan Anda",
-                    style: AppTextStyle.ts10Light,
-                    textAlign: TextAlign.center,
-                  ),
-                  VGap.r,
-                  Obx(() {
-                    final isError = controller.isError.value;
-                    return AppTextField(
-                      type: TextFieldType.normal,
-                      controller: controller.usernameController,
-                      focusNode: controller.usernameFocusNode,
-                      onTapOutside: (_) => controller.usernameFocusNode.unfocus(),
-                      onChanged: (_) => controller.resetError(),
-                      isError: isError,
-                      errorText: "Perpustakaan tidak ditemukan",
-                      label: Text(
-                        "Kode Perpustakaan",
-                        style: AppTextStyle.ts14Reg,
-                      ),
-                    );
-                  }),
-                  VGap.s,
-                  Container(
-                    decoration: const BoxDecoration(),
-                  ),
-                  VGap.h,
-                  AppButton(
-                    type: ButtonType.elevated,
-                    state: ButtonState.enable,
-                    onPressed: controller.onSubmit,
-                    child: const Text("Masuk"),
-                  ),
-                  AppButton(
-                    type: ButtonType.outlined,
-                    state: ButtonState.enable,
-                    onPressed: () {
-                      Get.changeTheme(AppTheme.theme);
-                      Get.back();
-                    },
-                    child: const Text("Kembali"),
-                  ),
-                  VGap.h,
-                ],
-              ),
-            )
+            Obx(() {
+              final isForget = controller.isForget.value;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
+                child: isForget ? AuthForgetForm(controller: controller) : AuthLoginForm(controller: controller),
+              );
+            })
           ],
         ),
       ),

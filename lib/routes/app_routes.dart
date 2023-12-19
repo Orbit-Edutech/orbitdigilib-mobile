@@ -22,19 +22,22 @@ class AppRoutes {
       name: splash,
       page: () => const SplashPage(),
       binding: SplashBinding(),
-      transition: Transition.rightToLeft,
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 150),
     ),
     GetPage(
       name: authLibrary,
       page: () => const AuthLibraryPage(),
       binding: AuthBinding(),
-      transition: Transition.rightToLeft,
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 150),
     ),
     GetPage(
       name: authUser,
       page: () => const AuthUserPage(),
       binding: AuthBinding(),
-      transition: Transition.rightToLeft,
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 150),
     ),
   ];
 }

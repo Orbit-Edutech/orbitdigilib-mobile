@@ -66,6 +66,7 @@ class AuthLibraryPage extends StatelessWidget {
                   VGap.r,
                   Obx(() {
                     final isError = controller.isError.value;
+                    final errorText = controller.errorMessage.value;
                     return AppTextField(
                       type: TextFieldType.normal,
                       controller: controller.kodeController,
@@ -73,7 +74,7 @@ class AuthLibraryPage extends StatelessWidget {
                       onTapOutside: (_) => controller.kodeFocusNode.unfocus(),
                       onChanged: controller.onKodeChanged,
                       isError: isError,
-                      errorText: "Perpustakaan tidak ditemukan",
+                      errorText: errorText,
                       label: Text(
                         "Kode Perpustakaan",
                         style: AppTextStyle.ts14Reg,

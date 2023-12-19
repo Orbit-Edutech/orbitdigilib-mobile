@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/sizes.dart';
+import '../../theme/app_color.dart';
 
 enum TextFieldType {
   normal,
@@ -15,19 +16,25 @@ class AppTextField extends StatelessWidget {
     required this.focusNode,
     required this.isError,
     required this.label,
+    this.isObscure = false,
     this.onTapOutside,
     this.onChanged,
     this.errorText,
+    this.suffix,
+    this.enabled,
   });
 
   final TextFieldType type;
   final TextEditingController controller;
   final FocusNode focusNode;
   final bool isError;
+  final bool isObscure;
   final String? errorText;
   final Function(PointerDownEvent e)? onTapOutside;
   final Function(String text)? onChanged;
   final Widget label;
+  final Widget? suffix;
+  final bool? enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +45,24 @@ class AppTextField extends StatelessWidget {
           focusNode: focusNode,
           onTapOutside: onTapOutside,
           onChanged: onChanged,
+          obscureText: isObscure,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+              borderSide: BorderSide(color: AppColor.lightGrey),
+            ),
+            enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+              borderSide: BorderSide(color: AppColor.lightGrey),
             ),
             label: label,
             errorText: isError ? errorText : null,
+            errorStyle: errorText?.isEmpty ?? false ? const TextStyle(height: 0) : null,
+            suffixIcon: suffix,
+            suffixIconConstraints: const BoxConstraints(minWidth: 50),
           ),
+          enabled: enabled,
         );
       case TextFieldType.rounded:
         return TextField(
@@ -53,14 +70,24 @@ class AppTextField extends StatelessWidget {
           focusNode: focusNode,
           onTapOutside: onTapOutside,
           onChanged: onChanged,
+          obscureText: isObscure,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(99)),
+              borderSide: BorderSide(color: AppColor.lightGrey),
+            ),
+            enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(99)),
+              borderSide: BorderSide(color: AppColor.lightGrey),
             ),
             label: label,
             errorText: isError ? errorText : null,
+            errorStyle: errorText?.isEmpty ?? false ? const TextStyle(height: 0) : null,
+            suffixIcon: suffix,
+            suffixIconConstraints: const BoxConstraints(minWidth: 50),
           ),
+          enabled: enabled,
         );
     }
   }

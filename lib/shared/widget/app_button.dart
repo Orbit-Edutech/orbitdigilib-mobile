@@ -18,19 +18,19 @@ enum ButtonState {
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
+    this.state = ButtonState.enable,
     required this.type,
-    required this.child,
     required this.onPressed,
+    required this.child,
     this.backgroundColor,
     this.foregroundColor,
     this.borderColor,
     this.borderWidth,
     this.padding,
-    this.state,
   });
 
   final ButtonType type;
-  final ButtonState? state;
+  final ButtonState state;
   final Widget child;
   final void Function() onPressed;
   final Color? backgroundColor;
@@ -64,7 +64,7 @@ class AppButton extends StatelessWidget {
         foregroundColor: foregroundColor ?? Colors.white,
         disabledBackgroundColor: (backgroundColor ?? Get.theme.primaryColor).withOpacity(.5),
         disabledForegroundColor: Colors.white.withOpacity(.5),
-        padding: const EdgeInsets.symmetric(vertical: Sizes.s),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
         minimumSize: Size.zero,
       ),
       child: state == ButtonState.loading
@@ -91,6 +91,7 @@ class AppButton extends StatelessWidget {
           color: (borderColor ?? Get.theme.primaryColor).withOpacity(state == ButtonState.enable ? 1 : .5),
           width: borderWidth ?? 1.0,
         ),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
       ),
       child: state == ButtonState.loading
           ? SizedBox(
@@ -112,6 +113,7 @@ class AppButton extends StatelessWidget {
         foregroundColor: foregroundColor ?? Get.theme.primaryColor,
         backgroundColor: backgroundColor ?? Colors.transparent,
         disabledForegroundColor: foregroundColor ?? Get.theme.primaryColor.withOpacity(.5),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
       ),
       child: state == ButtonState.loading
           ? SizedBox(

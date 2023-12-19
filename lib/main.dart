@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: ThemeMode.light,
       initialBinding: AppBindings(),
       getPages: AppRoutes.pages,
-      initialRoute: AppRoutes.splash,
+      initialRoute: AppRoutes.authUser,
     );
   }
 }

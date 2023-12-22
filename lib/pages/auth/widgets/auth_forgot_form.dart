@@ -8,27 +8,28 @@ import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
 import '../controller/auth_user_controller.dart';
 
-class AuthForgetForm extends StatelessWidget {
-  const AuthForgetForm({super.key, required this.controller});
+class AuthForgotForm extends StatelessWidget {
+  const AuthForgotForm({super.key, required this.controller});
 
   final AuthUserController controller;
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final isSuccess = controller.isForgetSuccess.value;
+      final isSuccess = controller.isForgotSuccess.value;
       return isSuccess
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // TODO: Copywriting untuk berhasil mengirimkan email reset password
                 Text(
-                  "Permintaan Ganti Password Berhasil!",
+                  "Permintaan Reset Password Berhasil!",
                   style: AppTextStyle.ts16Bold,
                   textAlign: TextAlign.center,
                 ),
                 VGap.s,
                 Text(
-                  "Kami telah mengirimkan informasi mengenai pergantian password untuk akun Anda, silahkan periksa kotak pesan email Anda.",
+                  "Kami telah mengirimkan informasi mengenai reset password untuk akun Anda, silahkan periksa kotak pesan email Anda.",
                   style: AppTextStyle.ts12Reg,
                   textAlign: TextAlign.center,
                 ),
@@ -36,8 +37,8 @@ class AuthForgetForm extends StatelessWidget {
                 AppButton(
                   type: ButtonType.outlined,
                   onPressed: () {
-                    controller.isForgetSuccess.value = false;
-                    controller.isForget.value = false;
+                    controller.isForgotSuccess.value = false;
+                    controller.isForgot.value = false;
                   },
                   child: const Text("Kembali"),
                 ),
@@ -45,6 +46,7 @@ class AuthForgetForm extends StatelessWidget {
             )
           : Column(
               children: [
+                // TODO: Copywriting lupa password
                 Text(
                   "Lupa Password",
                   style: AppTextStyle.ts14Bold,
@@ -63,38 +65,39 @@ class AuthForgetForm extends StatelessWidget {
                 ),
                 VGap.r,
                 Obx(() {
-                  final isError = controller.isForgetError.value;
-                  final isLoading = controller.forgetButtonState.value == ButtonState.loading;
+                  final isError = controller.isForgotError.value;
+                  final isLoading = controller.forgotButtonState.value == ButtonState.loading;
+                  final errorMessage = controller.forgotErrorMsg.value;
                   return AppTextField(
                     type: TextFieldType.normal,
                     label: Text(
                       "Email",
                       style: AppTextStyle.ts14Reg,
                     ),
-                    onChanged: controller.onForgetFormChange,
+                    onChanged: controller.onForgotFormChange,
                     controller: controller.emailController,
                     focusNode: controller.emailFocusNode,
                     enabled: !isLoading,
                     isError: isError,
-                    errorText: "Email tidak ditemukan",
+                    errorText: errorMessage,
                   );
                 }),
                 VGap.xh,
                 Obx(() {
-                  final state = controller.forgetButtonState.value;
+                  final state = controller.forgotButtonState.value;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       AppButton(
                         type: ButtonType.elevated,
                         state: state,
-                        onPressed: controller.onSubmitForget,
+                        onPressed: controller.onSubmitForgot,
                         child: const Text("Kirim"),
                       ),
                       AppButton(
                         type: ButtonType.outlined,
                         state: state == ButtonState.disable ? ButtonState.enable : state,
-                        onPressed: () => controller.isForget.value = false,
+                        onPressed: () => controller.isForgot.value = false,
                         child: const Text("Kembali"),
                       ),
                     ],

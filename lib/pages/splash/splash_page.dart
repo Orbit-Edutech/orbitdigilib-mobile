@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/gaps.dart';
+
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
 
@@ -12,7 +14,7 @@ class SplashPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset("assets/icons/icon.png", width: size.width / 4),
-            const SizedBox(height: 8),
+            VGap.s,
             Image.asset("assets/icons/text-icon.png", width: size.width / 4),
           ],
         ),

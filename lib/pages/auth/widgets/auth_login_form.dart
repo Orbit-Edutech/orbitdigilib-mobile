@@ -4,6 +4,7 @@ import 'package:get/route_manager.dart';
 
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
+import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../shared/widget/app_textfield.dart';
 import '../../../theme/app_color.dart';
@@ -41,6 +42,7 @@ class AuthLoginForm extends StatelessWidget {
             children: [
               Obx(() {
                 final isLoading = controller.loginButtonState.value == ButtonState.loading;
+                final errorMsg = controller.loginErrorMsg.value;
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -69,7 +71,7 @@ class AuthLoginForm extends StatelessWidget {
                         onChanged: controller.onLoginFormChange,
                         enabled: !isLoading,
                         isError: isError,
-                        errorText: "Username atau Password salah",
+                        errorText: errorMsg,
                         isObscure: isObscure,
                         suffix: GestureDetector(
                           onTap: controller.toggleObscure,
@@ -92,7 +94,7 @@ class AuthLoginForm extends StatelessWidget {
                 );
               }),
               GestureDetector(
-                onTap: () => controller.isForget.value = true,
+                onTap: () => controller.isForgot.value = true,
                 child: Container(
                   alignment: Alignment.centerRight,
                   padding: const EdgeInsets.all(Sizes.s),
@@ -121,8 +123,8 @@ class AuthLoginForm extends StatelessWidget {
                 type: ButtonType.outlined,
                 state: state == ButtonState.disable ? ButtonState.enable : state,
                 onPressed: () {
-                  Get.changeTheme(AppTheme.theme);
-                  Get.back();
+                  AppTheme.changePerpusTheme();
+                  Get.offAllNamed(AppRoutes.authLibrary);
                 },
                 child: const Text("Kembali"),
               ),

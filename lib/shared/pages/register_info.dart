@@ -28,6 +28,7 @@ class RegisterInfo extends StatelessWidget {
         padding: const EdgeInsets.all(Sizes.m),
         child: Column(
           children: [
+            VGap.m,
             Image.asset(
               "assets/illustrations/chart.png",
               filterQuality: FilterQuality.high,
@@ -38,13 +39,14 @@ class RegisterInfo extends StatelessWidget {
             VGap.xs,
             SizedBox(
               width: 250,
+              // TODO: Copywriting untuk informasi pendaftaran
               child: Text(
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
                 style: AppTextStyle.ts12Reg,
                 textAlign: TextAlign.center,
               ),
             ),
-            VGap.m,
+            VGap.xh,
             AppButton(
               state: ButtonState.enable,
               type: ButtonType.elevated,
@@ -61,7 +63,7 @@ class RegisterInfo extends StatelessWidget {
                   ),
                   HGap.s,
                   Text(
-                    "Masuk ke Whatsapp",
+                    "Hubungi kami",
                     style: AppTextStyle.ts14Bold,
                   ),
                 ],

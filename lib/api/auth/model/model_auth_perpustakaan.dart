@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+// TODO: Ini model perpustakaan yang udah komplit
 class AuthPerpustakaan {
   final String? id;
   final DateTime? createdAt;
@@ -10,6 +11,8 @@ class AuthPerpustakaan {
   final String? deskripsi;
   final int? tahunBerdiri;
   final String? warnaDasar;
+  final String? assetLogo;
+  final List<String>? banner;
   final bool? isAktif;
 
   AuthPerpustakaan({
@@ -22,6 +25,8 @@ class AuthPerpustakaan {
     this.deskripsi,
     this.tahunBerdiri,
     this.warnaDasar,
+    this.assetLogo,
+    this.banner,
     this.isAktif,
   });
 
@@ -35,6 +40,8 @@ class AuthPerpustakaan {
     String? deskripsi,
     int? tahunBerdiri,
     String? warnaDasar,
+    String? assetLogo,
+    List<String>? banner,
     bool? isAktif,
   }) =>
       AuthPerpustakaan(
@@ -47,6 +54,8 @@ class AuthPerpustakaan {
         deskripsi: deskripsi ?? this.deskripsi,
         tahunBerdiri: tahunBerdiri ?? this.tahunBerdiri,
         warnaDasar: warnaDasar ?? this.warnaDasar,
+        assetLogo: assetLogo ?? this.assetLogo,
+        banner: banner ?? this.banner,
         isAktif: isAktif ?? this.isAktif,
       );
 
@@ -64,6 +73,8 @@ class AuthPerpustakaan {
         deskripsi: json["deskripsi"],
         tahunBerdiri: json["tahunBerdiri"],
         warnaDasar: json["warnaDasar"],
+        assetLogo: json["assetLogo"],
+        banner: json["banner"] == null ? [] : List<String>.from(json["banner"]!.map((x) => x)),
         isAktif: json["isAktif"],
       );
 
@@ -77,6 +88,8 @@ class AuthPerpustakaan {
         "deskripsi": deskripsi,
         "tahunBerdiri": tahunBerdiri,
         "warnaDasar": warnaDasar,
+        "assetLogo": assetLogo,
+        "banner": banner == null ? [] : List<String>.from(banner!.map((x) => x)),
         "isAktif": isAktif,
       };
 }

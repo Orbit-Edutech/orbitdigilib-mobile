@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
@@ -85,7 +84,6 @@ class APIClient {
         options: param.options,
         onReceiveProgress: param.onReceiveProgress,
       );
-      log("data: ${response.data}");
       final APIResponse<T> result = await _responseHandler<T>(response, param);
       return result;
     } on DioException catch (e) {

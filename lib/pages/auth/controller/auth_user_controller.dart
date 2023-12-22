@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_utils/src/extensions/string_extensions.dart';
+import 'package:get/route_manager.dart';
 
+import '../../../api/api_client.dart';
+import '../../../api/auth/data/auth_forgot_password.dart';
+import '../../../api/auth/data/auth_login.dart';
 import '../../../api/auth/model/model_auth_perpustakaan.dart';
+import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
+import '../../../utils/hash_string.dart';
+import '../../../utils/shared_preferences_manager.dart';
 
 class AuthUserController extends GetxController {
-  final Rx<bool> isForget = false.obs;
-  final Rx<bool> isForgetSuccess = false.obs;
+  final Rx<bool> isForgot = false.obs;
+  final Rx<bool> isForgotSuccess = false.obs;
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -30,37 +37,72 @@ class AuthUserController extends GetxController {
     if (focus != null) isPasswordFocus.value = focus;
   }
 
+  @override
+  void onInit() async {
+    final username = await SharedPreferencesManager.readPref<String>("username");
+    if (username != null) usernameController.text = username;
+    super.onInit();
+  }
+
   AuthPerpustakaan? perpustakaan;
 
   Rx<ButtonState> loginButtonState = ButtonState.disable.obs;
-  Rx<ButtonState> forgetButtonState = ButtonState.disable.obs;
+  Rx<ButtonState> forgotButtonState = ButtonState.disable.obs;
   Rx<bool> isLoginError = false.obs;
-  Rx<bool> isForgetError = false.obs;
-  // TODO: implement error msg from API respons
+  Rx<bool> isForgotError = false.obs;
+  Rx<String> loginErrorMsg = "".obs;
+  Rx<String> forgotErrorMsg = "".obs;
 
   Future<void> onSubmitLogin() async {
     loginButtonState.value = ButtonState.loading;
-    await Future.delayed(const Duration(seconds: 3));
-    isLoginError.value = true;
-    loginButtonState.value = isLoginError.value ? ButtonState.disable : ButtonState.enable;
+    final password = hashString(passwordController.text);
+    final response = await login(
+      username: usernameController.text,
+      password: password,
+      idPerpustakaan: perpustakaan?.id ?? "",
+    );
+    if (response.data != null) {
+      final token = response.data!.token!;
+      final prefs = {
+        "isLogin": true,
+        "access": token.accessToken,
+        "refresh": token.refreshToken,
+        "username": usernameController.text,
+        "kodePerpustakaan": perpustakaan!.kode,
+        "idPerpustakaan": perpustakaan!.id,
+        "color": perpustakaan!.warnaDasar,
+      };
+      // TODO: Filter user role, jika bukan anggota tidak bisa masuk
+      SharedPreferencesManager.writePrefs(prefs);
+      Get.offAllNamed(AppRoutes.index);
+    } else {
+      if (response.error == ResponseStatus.connectionError) {
+        // TODO: Show Error SnackBar
+      } else {
+        loginErrorMsg.value = response.error["message"].toString();
+        isLoginError.value = true;
+        loginButtonState.value = ButtonState.disable;
+      }
+    }
   }
 
-  Future<void> onSubmitForget() async {
-    forgetButtonState.value = ButtonState.loading;
-    await Future.delayed(const Duration(seconds: 3));
-    final isSuccess = emailController.text == "bima@gmail.com";
-    if (isSuccess) {
-      isForgetSuccess.value = true;
-      forgetButtonState.value = ButtonState.enable;
+  Future<void> onSubmitForgot() async {
+    forgotButtonState.value = ButtonState.loading;
+    final response = await forgotPassword(emailController.text);
+    if (response.data != null) {
+      isForgotSuccess.value = true;
+      forgotButtonState.value = ButtonState.enable;
     } else {
-      isForgetError.value = true;
-      forgetButtonState.value = isForgetError.value ? ButtonState.disable : ButtonState.enable;
+      forgotErrorMsg.value = response.error["message"];
+      isForgotError.value = true;
+      forgotButtonState.value = isForgotError.value ? ButtonState.disable : ButtonState.enable;
     }
   }
 
   void onLoginFormChange(String text) {
     if (isLoginError.value) {
       isLoginError.value = false;
+      loginErrorMsg.value = "";
       loginButtonState.value = ButtonState.enable;
     }
     final username = usernameController.text;
@@ -69,14 +111,15 @@ class AuthUserController extends GetxController {
     loginButtonState.value = isValid ? ButtonState.enable : ButtonState.disable;
   }
 
-  void onForgetFormChange(String text) {
-    if (isForgetError.value) {
-      isForgetError.value = false;
-      forgetButtonState.value = ButtonState.enable;
+  void onForgotFormChange(String text) {
+    if (isForgotError.value) {
+      isForgotError.value = false;
+      forgotErrorMsg.value = "";
+      forgotButtonState.value = ButtonState.enable;
     }
 
     final email = emailController.text;
     final isValid = email.isEmail;
-    forgetButtonState.value = isValid ? ButtonState.enable : ButtonState.disable;
+    forgotButtonState.value = isValid ? ButtonState.enable : ButtonState.disable;
   }
 }

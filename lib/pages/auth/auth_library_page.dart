@@ -16,6 +16,7 @@ class AuthLibraryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final controller = Get.find<AuthLibraryController>();
+    // TODO: Responsive untuk layar yang lebih lebar (>600px)
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -67,6 +68,7 @@ class AuthLibraryPage extends StatelessWidget {
                   Obx(() {
                     final isError = controller.isError.value;
                     final errorText = controller.errorMessage.value;
+                    // TODO: TEXTFIELD COLOR SAAT LOGOUT TIDAK DEFAULT
                     return AppTextField(
                       type: TextFieldType.normal,
                       controller: controller.kodeController,

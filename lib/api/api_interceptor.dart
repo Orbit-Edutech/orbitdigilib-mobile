@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:get/route_manager.dart';
 
 import '../routes/app_routes.dart';
-import '../shared/widget/error_snackbar.dart';
 import '../utils/get_tokens.dart';
 import '../utils/shared_preferences_manager.dart';
 import 'api_path.dart';
@@ -19,7 +17,6 @@ class APIInterceptor extends InterceptorsWrapper {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final tokens = await getTokens();
     options.headers['Authorization'] = 'Bearer ${tokens.access}';
-    log("options: ${options.data}");
     return super.onRequest(options, handler);
   }
 
@@ -39,13 +36,13 @@ class APIInterceptor extends InterceptorsWrapper {
   // }
 
   Future<void> onAccessExpired(DioException err, ErrorInterceptorHandler handler) async {
+    final tokens = await getTokens();
     final message = "${err.response?.data["message"]}";
-    final isAccesExpired = message.contains("Akses token");
+    final isAccesExpired = message == "Akses token expired";
     final isRefreshExpired = message.contains("Waktu login sudah habis");
     if (isAccesExpired) {
       try {
         await refreshAccessToken();
-        final tokens = await getTokens();
         err.requestOptions.headers["Authorization"] = "Bearer ${tokens.access}";
         final opts = Options(method: err.requestOptions.method, headers: err.requestOptions.headers);
         final prevRequest = await _dio.request(
@@ -56,22 +53,12 @@ class APIInterceptor extends InterceptorsWrapper {
         );
         return handler.resolve(prevRequest);
       } on DioException catch (e) {
-        // TODO: Remove Snackbar during production!
-        showErrorSnackbar(
-          title: "Error ${e.response?.statusCode ?? ''}",
-          message: e.response != null ? e.response!.data['message'].toString() : e.message!,
-        );
-        return super.onError(err, handler);
+        return super.onError(e, handler);
       }
     } else if (isRefreshExpired) {
       Get.offAllNamed(AppRoutes.authLibrary);
       return super.onError(err, handler);
     } else {
-      // TODO: Remove Snackbar during production!
-      showErrorSnackbar(
-        title: "Error ${err.response?.statusCode ?? ''}",
-        message: err.response != null ? err.response!.data['message'].toString() : err.message!,
-      );
       return super.onError(err, handler);
     }
   }
@@ -80,12 +67,15 @@ class APIInterceptor extends InterceptorsWrapper {
     final oldTokens = await getTokens();
     final response = await _dio.post(
       APIPath.refresh,
-      data: jsonEncode({"token": oldTokens.refresh}),
+      data: jsonEncode({"refreshToken": oldTokens.refresh}),
     );
     final sc = response.statusCode ?? 0;
     if (sc >= 200 && sc < 300) {
-      final access = response.data['result']['token']['accessToken'];
-      await SharedPreferencesManager.writePref("access", access);
+      final token = response.data['result']['token'];
+      final access = token['accessToken'];
+      final refresh = token['refreshToken'];
+      final prefs = {"access": access, "refresh": refresh};
+      await SharedPreferencesManager.writePrefs(prefs);
     }
   }
 }

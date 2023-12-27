@@ -4,14 +4,14 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../api/api_client.dart';
-import '../../../api/auth/data/get_one_perpustakaan.dart';
-import '../../../api/auth/model/model_auth_perpustakaan.dart';
+import '../../../api/perpustakaan/data/perpustakaan_get_one.dart';
+import '../../../api/perpustakaan/model/model_perpustakaan.dart';
 import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
-import '../../../shared/pages/register_info.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/shared_preferences_manager.dart';
+import '../widgets/auth_register_info.dart';
 
 class AuthLibraryController extends GetxController {
   final TextEditingController kodeController = TextEditingController();
@@ -20,7 +20,7 @@ class AuthLibraryController extends GetxController {
   final Rx<ButtonState> buttonState = ButtonState.disable.obs;
   final Rx<bool> isError = false.obs;
   final Rx<String?> errorMessage = Rx<String?>(null);
-  AuthPerpustakaan? perpustakaan;
+  Perpustakaan? perpustakaan;
 
   @override
   void onInit() async {
@@ -72,7 +72,6 @@ class AuthLibraryController extends GetxController {
         borderRadius: BorderRadius.vertical(top: Radius.circular(Sizes.r)),
       ),
       isScrollControlled: true,
-      isDismissible: false,
       enableDrag: false,
     );
   }

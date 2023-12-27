@@ -8,6 +8,8 @@ import '../pages/index/binding/index_binding.dart';
 import '../pages/index/index_page.dart';
 import '../pages/splash/binding/splash_binding.dart';
 import '../pages/splash/splash_page.dart';
+import '../pages/token/binding/token_binding.dart';
+import '../pages/token/token_page.dart';
 
 class AppRoutes {
   /// /splash
@@ -21,6 +23,9 @@ class AppRoutes {
 
   /// /index
   static const String index = "/index";
+
+  /// /token
+  static const String token = "/token";
 
   static final pages = <GetPage>[
     GetPage(
@@ -48,6 +53,13 @@ class AppRoutes {
       name: index,
       page: () => const IndexPage(),
       binding: IndexBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: token,
+      page: () => const TokenPage(),
+      binding: TokenBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

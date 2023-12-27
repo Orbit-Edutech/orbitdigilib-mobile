@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-// TODO: Ini model perpustakaan yang udah komplit
-class AuthPerpustakaan {
+class Perpustakaan {
   final String? id;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -15,7 +14,7 @@ class AuthPerpustakaan {
   final List<String>? banner;
   final bool? isAktif;
 
-  AuthPerpustakaan({
+  Perpustakaan({
     this.id,
     this.createdAt,
     this.updatedAt,
@@ -30,7 +29,7 @@ class AuthPerpustakaan {
     this.isAktif,
   });
 
-  AuthPerpustakaan copyWith({
+  Perpustakaan copyWith({
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -44,7 +43,7 @@ class AuthPerpustakaan {
     List<String>? banner,
     bool? isAktif,
   }) =>
-      AuthPerpustakaan(
+      Perpustakaan(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
@@ -59,11 +58,11 @@ class AuthPerpustakaan {
         isAktif: isAktif ?? this.isAktif,
       );
 
-  factory AuthPerpustakaan.fromRawJson(String str) => AuthPerpustakaan.fromJson(json.decode(str));
+  factory Perpustakaan.fromRawJson(String str) => Perpustakaan.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory AuthPerpustakaan.fromJson(Map<String, dynamic> json) => AuthPerpustakaan(
+  factory Perpustakaan.fromJson(Map<String, dynamic> json) => Perpustakaan(
         id: json["id"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 
-import '../../constants/gaps.dart';
-import '../../constants/sizes.dart';
-import '../../theme/app_color.dart';
-import '../../theme/app_text_stlye.dart';
-import '../widget/app_button.dart';
+import '../../../constants/gaps.dart';
+import '../../../constants/sizes.dart';
+import '../../../shared/widget/app_button.dart';
+import '../../../theme/app_color.dart';
+import '../../../theme/app_text_stlye.dart';
 
 class RegisterInfo extends StatelessWidget {
   const RegisterInfo({super.key});
@@ -29,9 +30,8 @@ class RegisterInfo extends StatelessWidget {
         child: Column(
           children: [
             VGap.m,
-            Image.asset(
-              "assets/illustrations/chart.png",
-              filterQuality: FilterQuality.high,
+            SvgPicture.asset(
+              "assets/illustrations/chart.svg",
               width: 200,
             ),
             VGap.m,
@@ -55,11 +55,10 @@ class RegisterInfo extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    "assets/icons/whatsapp-icon.png",
+                  SvgPicture.asset(
+                    "assets/icons/whatsapp.svg",
                     width: 24,
                     height: 24,
-                    filterQuality: FilterQuality.high,
                   ),
                   HGap.s,
                   Text(

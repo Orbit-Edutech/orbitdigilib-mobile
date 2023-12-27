@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../constants/gaps.dart';
@@ -44,10 +45,9 @@ class AuthLibraryPage extends StatelessWidget {
                       style: AppTextStyle.ts16Bold.copyWith(color: Colors.white),
                     ),
                     VGap.m,
-                    Image.asset(
-                      "assets/illustrations/office.png",
+                    SvgPicture.asset(
+                      "assets/illustrations/office.svg",
                       width: 200,
-                      filterQuality: FilterQuality.high,
                     ),
                   ],
                 ),

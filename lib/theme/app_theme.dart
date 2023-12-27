@@ -7,7 +7,7 @@ import '../theme/app_color.dart';
 class AppTheme {
   static const textTheme = TextTheme();
   static final theme = ThemeData(
-    scaffoldBackgroundColor: AppColor.white,
+    scaffoldBackgroundColor: AppColor.bgScaffold,
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.lightBlue,
       primary: Colors.lightBlue.shade500,
@@ -20,7 +20,7 @@ class AppTheme {
     final perpusColor = getPerpusColor(color ?? "Light Blue");
     const textTheme = TextTheme();
     final theme = ThemeData(
-      scaffoldBackgroundColor: AppColor.white,
+      scaffoldBackgroundColor: AppColor.bgScaffold,
       colorScheme: ColorScheme.fromSeed(
         seedColor: perpusColor.seed,
         primary: perpusColor.primary,

@@ -7,7 +7,7 @@ import 'package:get/route_manager.dart';
 import '../../../api/api_client.dart';
 import '../../../api/auth/data/auth_forgot_password.dart';
 import '../../../api/auth/data/auth_login.dart';
-import '../../../api/auth/model/model_auth_perpustakaan.dart';
+import '../../../api/perpustakaan/model/model_perpustakaan.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../utils/hash_string.dart';
@@ -44,7 +44,7 @@ class AuthUserController extends GetxController {
     super.onInit();
   }
 
-  AuthPerpustakaan? perpustakaan;
+  Perpustakaan? perpustakaan;
 
   Rx<ButtonState> loginButtonState = ButtonState.disable.obs;
   Rx<ButtonState> forgotButtonState = ButtonState.disable.obs;

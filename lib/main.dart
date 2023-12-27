@@ -5,10 +5,14 @@ import 'constants/app_info.dart';
 import 'routes/app_bindings.dart';
 import 'routes/app_routes.dart';
 import 'theme/app_theme.dart';
+import 'utils/image_utils.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
+  ImageUtils.prechacheImages();
 }
+// IMPORTANT //
+// TODO: Pasang API ke Index Page
 
 // TODO: Hapus kategori icons saat produksi
 class MyApp extends StatelessWidget {
@@ -23,7 +27,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       initialBinding: AppBindings(),
       getPages: AppRoutes.pages,
-      initialRoute: AppRoutes.splash,
+      initialRoute: AppRoutes.index,
     );
   }
 }

@@ -30,9 +30,10 @@ class TokenInfo extends StatelessWidget {
       height: size.height,
       alignment: Alignment.topCenter,
       color: Colors.white,
-      padding: const EdgeInsets.all(Sizes.m),
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.r),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
             "Anda bisa mendapatkan Voucher Token DIGILIB melalui beberapa platform dibawah",
@@ -79,17 +80,13 @@ class TokenInfo extends StatelessWidget {
               ),
             ),
           ),
+          VGap.s,
           AppButton(
             type: ButtonType.outlined,
             onPressed: Get.back,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Batal",
-                  style: AppTextStyle.ts14Bold,
-                )
-              ],
+            child: Text(
+              "Batal",
+              style: AppTextStyle.ts14Bold,
             ),
           )
         ],

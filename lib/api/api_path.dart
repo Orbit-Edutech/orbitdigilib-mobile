@@ -1,5 +1,5 @@
 class APIPath {
-  static const base = "http://192.168.0.42:4001";
+  static const base = "http://192.168.0.43:4001";
 
   /// /auth
   static const auth = "/auth";
@@ -24,4 +24,7 @@ class APIPath {
 
   /// /perpustakaan/{kode}
   static String perpustakaanGetOne(String kode) => "$perpustakaan/$kode";
+
+  /// /buku-perpustakaan
+  static const allBuku = "/buku-perpustakaan";
 }

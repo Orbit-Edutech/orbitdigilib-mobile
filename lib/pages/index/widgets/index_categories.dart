@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart";
 import "package:flutter_svg/svg.dart";
+import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
 
 import "../../../constants/gaps.dart";
@@ -8,19 +9,42 @@ import "../../../constants/sizes.dart";
 import "../../../shared/widget/app_button.dart";
 import "../../../theme/app_color.dart";
 import "../../../theme/app_text_stlye.dart";
+import "../controller/index_controller.dart";
 
 class IndexCategories extends StatelessWidget {
-  const IndexCategories({
-    super.key,
-    required this.categories,
-  });
-
-  final List<String> categories;
+  const IndexCategories({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    final _ = Get.find<IndexController>();
+    List<String> categories = [
+      "agama",
+      "anak",
+      "budaya",
+      "fiksi",
+      "hankam",
+      "hobby",
+      "hukum",
+      "humaniora",
+      "kamus",
+      "keluarga",
+      "kesehatan",
+      "ketrampilan-khusus",
+      "komik",
+      "lifestyle",
+      "medis",
+      "pendidikan",
+      "politik",
+      "psikologi",
+      "sains",
+      "sastra",
+      "sejarah",
+      "seni-design",
+      "sosial",
+      "teknik"
+    ];
     final isMoreThan7 = categories.length > 7;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.s),

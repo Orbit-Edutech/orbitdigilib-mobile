@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 
 import '../../../constants/gaps.dart';
+import '../../../routes/app_routes.dart';
 import '../../../theme/app_text_stlye.dart';
-import '../../../utils/compute_luminance.dart';
 
 class IndexAppBar extends StatefulWidget implements PreferredSizeWidget {
   const IndexAppBar({
@@ -14,16 +15,14 @@ class IndexAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<IndexAppBar> createState() => _IndexAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(54);
+  Size get preferredSize => const Size.fromHeight(50);
 }
 
 class _IndexAppBarState extends State<IndexAppBar> {
   bool isRead = false;
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return AppBar(
-      backgroundColor: theme.primaryColor,
       automaticallyImplyLeading: false,
       title: Row(
         children: [
@@ -32,25 +31,19 @@ class _IndexAppBarState extends State<IndexAppBar> {
             child: Text(
               "Perpustakaan Orbit",
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyle.ts18Bold.copyWith(
-                color: calculateLuminance(theme.primaryColor),
-              ),
+              style: AppTextStyle.ts18Bold,
             ),
           ),
         ],
       ),
       actions: [
         GestureDetector(
-          onTap: () {},
-          child: Icon(
-            Icons.search_rounded,
-            color: calculateLuminance(theme.primaryColor),
-            size: 24,
-          ),
+          onTap: () => Get.toNamed(AppRoutes.search),
+          child: const Icon(Icons.search_rounded, size: 24),
         ),
         HGap.r,
         GestureDetector(
-          onTap: () => setState(() => isRead = !isRead),
+          onTap: () => Get.toNamed(AppRoutes.notifications),
           child: isRead
               ? SvgPicture.asset(
                   "assets/icons/notifications.svg",

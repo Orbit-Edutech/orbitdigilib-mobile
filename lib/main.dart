@@ -11,8 +11,6 @@ void main() async {
   runApp(const MyApp());
   ImageUtils.prechacheImages();
 }
-// IMPORTANT //
-// TODO: Pasang API ke Index Page
 
 // TODO: Hapus kategori icons saat produksi
 class MyApp extends StatelessWidget {
@@ -27,7 +25,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       initialBinding: AppBindings(),
       getPages: AppRoutes.pages,
-      initialRoute: AppRoutes.index,
+      initialRoute: AppRoutes.splash,
     );
   }
 }

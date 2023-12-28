@@ -9,7 +9,6 @@ import '../../shared/widget/app_button.dart';
 import '../../shared/widget/app_textfield.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
-import '../../utils/compute_luminance.dart';
 import 'controller/token_controller.dart';
 
 class TokenPage extends StatelessWidget {
@@ -21,26 +20,7 @@ class TokenPage extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.primaryColor,
-        leading: Row(
-          children: [
-            HGap.s,
-            IconButton(
-              onPressed: Get.back,
-              icon: Icon(
-                Icons.arrow_back,
-                color: calculateLuminance(theme.primaryColor),
-              ),
-            )
-          ],
-        ),
-        title: Text(
-          "Isi Token",
-          overflow: TextOverflow.ellipsis,
-          style: AppTextStyle.ts18Bold.copyWith(
-            color: calculateLuminance(theme.primaryColor),
-          ),
-        ),
+        title: const Text("Isi Token", overflow: TextOverflow.ellipsis),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.m),

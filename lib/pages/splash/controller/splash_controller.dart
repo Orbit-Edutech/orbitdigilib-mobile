@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
@@ -25,8 +23,6 @@ class SplashController extends GetxController {
       Get.offAllNamed(AppRoutes.index);
     } else {
       if (response.error == ResponseStatus.connectionError) {
-        // TODO: Atasi error no internet
-        log(response.error.toString());
         isNoInternet.value = true;
         buttonState.value = ButtonState.enable;
       } else {

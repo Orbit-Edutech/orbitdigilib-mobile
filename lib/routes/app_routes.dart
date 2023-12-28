@@ -4,6 +4,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import '../pages/auth/auth_library_page.dart';
 import '../pages/auth/auth_user_page.dart';
 import '../pages/auth/binding/auth_binding.dart';
+import '../pages/books/books_page.dart';
 import '../pages/highlight/highlight_page.dart';
 import '../pages/index/binding/index_binding.dart';
 import '../pages/index/index_page.dart';
@@ -33,17 +34,20 @@ class AppRoutes {
   /// /search
   static const String search = "/search";
 
+  /// /notifications
+  static const String notifications = "/notifications";
+
+  /// /notification
+  static const String notification = "/notification";
+
   /// /token
   static const String token = "/token";
 
   /// /highlight
   static const String highlight = "/highlight";
 
-  /// /notifications
-  static const String notifications = "/notifications";
-
-  /// /notification
-  static const String notification = "/notification";
+  /// /books
+  static const String books = "/books";
 
   static final pages = <GetPage>[
     GetPage(
@@ -105,6 +109,12 @@ class AppRoutes {
       name: notification,
       page: () => const NotificationPage(),
       binding: NotificationsBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: books,
+      page: () => const BooksPage(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

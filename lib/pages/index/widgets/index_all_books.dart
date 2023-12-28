@@ -46,7 +46,7 @@ class IndexAllBooks extends StatelessWidget {
           VGap.r,
           AppButton(
             type: ButtonType.elevated,
-            onPressed: () {},
+            onPressed: () => Get.toNamed(AppRoutes.books),
             child: const Text("Lihat Semua"),
           ),
           AppButton(

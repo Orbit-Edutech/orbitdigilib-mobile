@@ -4,6 +4,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import '../pages/auth/auth_library_page.dart';
 import '../pages/auth/auth_user_page.dart';
 import '../pages/auth/binding/auth_binding.dart';
+import '../pages/highlight/highlight_page.dart';
 import '../pages/index/binding/index_binding.dart';
 import '../pages/index/index_page.dart';
 import '../pages/splash/binding/splash_binding.dart';
@@ -26,6 +27,9 @@ class AppRoutes {
 
   /// /token
   static const String token = "/token";
+
+  /// /highlight
+  static const String highlight = "/highlight";
 
   static final pages = <GetPage>[
     GetPage(
@@ -60,6 +64,12 @@ class AppRoutes {
       name: token,
       page: () => const TokenPage(),
       binding: TokenBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: highlight,
+      page: () => const HighlightPage(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

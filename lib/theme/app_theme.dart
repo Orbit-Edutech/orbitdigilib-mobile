@@ -3,11 +3,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/route_manager.dart';
 
 import '../theme/app_color.dart';
+import '../utils/compute_luminance.dart';
+import 'app_text_stlye.dart';
 
 class AppTheme {
   static const textTheme = TextTheme();
   static final theme = ThemeData(
     scaffoldBackgroundColor: AppColor.bgScaffold,
+    appBarTheme: AppBarTheme(
+      toolbarHeight: 50,
+      titleTextStyle: AppTextStyle.ts18Bold,
+      backgroundColor: Colors.lightBlue.shade500,
+      foregroundColor: calculateLuminance(Colors.lightBlue.shade500),
+    ),
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.lightBlue,
       primary: Colors.lightBlue.shade500,
@@ -21,6 +29,12 @@ class AppTheme {
     const textTheme = TextTheme();
     final theme = ThemeData(
       scaffoldBackgroundColor: AppColor.bgScaffold,
+      appBarTheme: AppBarTheme(
+        toolbarHeight: 50,
+        titleTextStyle: AppTextStyle.ts18Bold,
+        backgroundColor: perpusColor.primary,
+        foregroundColor: calculateLuminance(perpusColor.primary),
+      ),
       colorScheme: ColorScheme.fromSeed(
         seedColor: perpusColor.seed,
         primary: perpusColor.primary,

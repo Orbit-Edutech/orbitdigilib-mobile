@@ -22,6 +22,7 @@ class AppTextField extends StatelessWidget {
     this.errorText,
     this.suffix,
     this.enabled,
+    this.contentPadding,
   });
 
   final TextFieldType type;
@@ -35,6 +36,7 @@ class AppTextField extends StatelessWidget {
   final Widget label;
   final Widget? suffix;
   final bool? enabled;
+  final EdgeInsetsGeometry? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class AppTextField extends StatelessWidget {
           onChanged: onChanged,
           obscureText: isObscure,
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
+            contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
               borderSide: BorderSide(color: AppColor.lightGrey),
@@ -72,7 +74,7 @@ class AppTextField extends StatelessWidget {
           onChanged: onChanged,
           obscureText: isObscure,
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
+            contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(99)),
               borderSide: BorderSide(color: AppColor.lightGrey),

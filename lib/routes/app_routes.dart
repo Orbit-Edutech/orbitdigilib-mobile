@@ -7,6 +7,11 @@ import '../pages/auth/binding/auth_binding.dart';
 import '../pages/highlight/highlight_page.dart';
 import '../pages/index/binding/index_binding.dart';
 import '../pages/index/index_page.dart';
+import '../pages/notifications/binding/notifications_binding.dart';
+import '../pages/notifications/notification_page.dart';
+import '../pages/notifications/notifications_page.dart';
+import '../pages/search/binding/seach_binding.dart';
+import '../pages/search/search_page.dart';
 import '../pages/splash/binding/splash_binding.dart';
 import '../pages/splash/splash_page.dart';
 import '../pages/token/binding/token_binding.dart';
@@ -25,11 +30,20 @@ class AppRoutes {
   /// /index
   static const String index = "/index";
 
+  /// /search
+  static const String search = "/search";
+
   /// /token
   static const String token = "/token";
 
   /// /highlight
   static const String highlight = "/highlight";
+
+  /// /notifications
+  static const String notifications = "/notifications";
+
+  /// /notification
+  static const String notification = "/notification";
 
   static final pages = <GetPage>[
     GetPage(
@@ -70,6 +84,27 @@ class AppRoutes {
     GetPage(
       name: highlight,
       page: () => const HighlightPage(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: search,
+      page: () => const SearchPage(),
+      binding: SearchBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: notifications,
+      page: () => const NotificationsPage(),
+      binding: NotificationsBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: notification,
+      page: () => const NotificationPage(),
+      binding: NotificationsBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

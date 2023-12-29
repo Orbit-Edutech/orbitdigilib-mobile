@@ -20,7 +20,7 @@ class SplashController extends GetxController {
     if (response.data != null) {
       final color = await SharedPreferencesManager.readPref<String>("color");
       await AppTheme.changePerpusTheme(color);
-      Get.offAllNamed(AppRoutes.index);
+      Get.offAllNamed(AppRoutes.navigator);
     } else {
       if (response.error == ResponseStatus.connectionError) {
         isNoInternet.value = true;

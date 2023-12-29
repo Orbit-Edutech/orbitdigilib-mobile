@@ -74,7 +74,7 @@ class AuthUserController extends GetxController {
       };
       // TODO: Filter user role, jika bukan anggota tidak bisa masuk
       SharedPreferencesManager.writePrefs(prefs);
-      Get.offAllNamed(AppRoutes.index);
+      Get.offAllNamed(AppRoutes.navigator);
     } else {
       if (response.error == ResponseStatus.connectionError) {
         // TODO: Show Error SnackBar

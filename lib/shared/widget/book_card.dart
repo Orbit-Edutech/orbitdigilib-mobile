@@ -99,6 +99,11 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Text(
+                      "Copy: 10 Buku",
+                      style: AppTextStyle.ts10Reg.copyWith(color: AppColor.grey),
+                    ),
+                    HGap.s,
                     SvgPicture.asset(
                       "assets/icons/coin.svg",
                       width: Sizes.sr,
@@ -107,11 +112,6 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
                     Text(
                       "20",
                       style: AppTextStyle.ts10Bold.copyWith(color: theme.primaryColor),
-                    ),
-                    HGap.s,
-                    Text(
-                      "Copy: 10 Buku",
-                      style: AppTextStyle.ts10Reg.copyWith(color: AppColor.grey),
                     ),
                   ],
                 ),

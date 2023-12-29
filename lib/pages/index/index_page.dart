@@ -5,7 +5,6 @@ import 'package:get/route_manager.dart';
 
 import '../../constants/sizes.dart';
 import '../../constants/gaps.dart';
-import '../../theme/app_color.dart';
 import 'controller/index_controller.dart';
 import 'widgets/index_all_books.dart';
 import 'widgets/index_app_bar.dart';
@@ -34,27 +33,20 @@ class _IndexPageState extends State<IndexPage> {
   Widget build(BuildContext context) {
     return Obx(() {
       final perpustakaan = controller.perpustakaan.value;
-      return Container(
-        color: AppColor.bgScaffold,
-        child: AnimatedOpacity(
-          opacity: perpustakaan == null ? 0 : 1,
-          duration: const Duration(seconds: 1),
-          child: const Scaffold(
-            appBar: IndexAppBar(),
-            body: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: Sizes.m),
-              child: Column(
-                children: [
-                  IndexBanner(),
-                  VGap.s,
-                  IndexBalance(),
-                  IndexCategories(),
-                  IndexRecommendation(),
-                  IndexAllBooks(),
-                  VGap.r,
-                ],
-              ),
-            ),
+      return const Scaffold(
+        appBar: IndexAppBar(),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(vertical: Sizes.m),
+          child: Column(
+            children: [
+              IndexBanner(),
+              VGap.s,
+              IndexBalance(),
+              IndexCategories(),
+              IndexRecommendation(),
+              IndexAllBooks(),
+              VGap.r,
+            ],
           ),
         ),
       );

@@ -8,6 +8,8 @@ import '../pages/books/books_page.dart';
 import '../pages/highlight/highlight_page.dart';
 import '../pages/index/binding/index_binding.dart';
 import '../pages/index/index_page.dart';
+import '../pages/navigator/binding/navigator_binding.dart';
+import '../pages/navigator/navigator_page.dart';
 import '../pages/notifications/binding/notifications_binding.dart';
 import '../pages/notifications/notification_page.dart';
 import '../pages/notifications/notifications_page.dart';
@@ -17,6 +19,8 @@ import '../pages/splash/binding/splash_binding.dart';
 import '../pages/splash/splash_page.dart';
 import '../pages/token/binding/token_binding.dart';
 import '../pages/token/token_page.dart';
+import '../pages/wishlist/binding/wishlist_binding.dart';
+import '../pages/wishlist/wishlist_page.dart';
 
 class AppRoutes {
   /// /splash
@@ -27,6 +31,9 @@ class AppRoutes {
 
   /// /auth-user
   static const String authUser = "/auth-user";
+
+  /// /
+  static const String navigator = "/";
 
   /// /index
   static const String index = "/index";
@@ -49,6 +56,9 @@ class AppRoutes {
   /// /books
   static const String books = "/books";
 
+  /// /wishlist
+  static const String wishlist = "/wishlist";
+
   static final pages = <GetPage>[
     GetPage(
       name: splash,
@@ -68,6 +78,13 @@ class AppRoutes {
       name: authUser,
       page: () => const AuthUserPage(),
       binding: AuthBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: navigator,
+      page: () => const NavigatorPage(),
+      binding: NavigatorBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),
@@ -115,6 +132,13 @@ class AppRoutes {
     GetPage(
       name: books,
       page: () => const BooksPage(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: wishlist,
+      page: () => const WishlistPage(),
+      binding: WishlistBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

@@ -62,27 +62,33 @@ class AuthUserController extends GetxController {
       idPerpustakaan: perpustakaan?.id ?? "",
     );
     if (response.data != null) {
-      final token = response.data!.token!;
-      final prefs = {
-        "isLogin": true,
-        "access": token.accessToken,
-        "refresh": token.refreshToken,
-        "username": usernameController.text,
-        "kodePerpustakaan": perpustakaan!.kode,
-        "idPerpustakaan": perpustakaan!.id,
-        "color": perpustakaan!.warnaDasar,
-      };
-      // TODO: Filter user role, jika bukan anggota tidak bisa masuk
-      SharedPreferencesManager.writePrefs(prefs);
-      Get.offAllNamed(AppRoutes.navigator);
-    } else {
-      if (response.error == ResponseStatus.connectionError) {
-        // TODO: Show Error SnackBar
+      final isMember = response.data?.user?.role?.nama == "Anggota";
+      if (isMember) {
+        final token = response.data!.token!;
+        final prefs = {
+          "isLogin": true,
+          "access": token.accessToken,
+          "refresh": token.refreshToken,
+          "username": usernameController.text,
+          "kodePerpustakaan": perpustakaan!.kode,
+          "idPerpustakaan": perpustakaan!.id,
+          "color": perpustakaan!.warnaDasar,
+        };
+        SharedPreferencesManager.writePrefs(prefs);
+        Get.offAllNamed(AppRoutes.navigator);
       } else {
-        loginErrorMsg.value = response.error["message"].toString();
         isLoginError.value = true;
+        loginErrorMsg.value = "Aplikasi khusus Anggota Perpustakaan";
         loginButtonState.value = ButtonState.disable;
       }
+    } else {
+      if (response.error == ResponseStatus.connectionError) {
+        loginErrorMsg.value = "Kesalahan koneksi";
+      } else {
+        loginErrorMsg.value = response.error["message"].toString();
+      }
+      isLoginError.value = true;
+      loginButtonState.value = ButtonState.disable;
     }
   }
 

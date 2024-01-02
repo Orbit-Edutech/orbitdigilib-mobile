@@ -68,18 +68,21 @@ class AuthLibraryPage extends StatelessWidget {
                   Obx(() {
                     final isError = controller.isError.value;
                     final errorText = controller.errorMessage.value;
+                    final buttonState = controller.buttonState.value;
                     return AppTextField(
                       type: TextFieldType.normal,
                       controller: controller.kodeController,
                       focusNode: controller.kodeFocusNode,
                       onTapOutside: (_) => controller.kodeFocusNode.unfocus(),
                       onChanged: controller.onKodeChanged,
+                      onSubmitted: (_) => controller.onSubmit(),
                       isError: isError,
                       errorText: errorText,
                       label: Text(
                         "Kode Perpustakaan",
                         style: AppTextStyle.ts14Reg,
                       ),
+                      enabled: buttonState != ButtonState.loading,
                     );
                   }),
                   VGap.m,

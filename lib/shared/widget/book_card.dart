@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../api/api_path.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 
 class BookCard extends StatefulWidget {
-  const BookCard({super.key});
+  const BookCard({
+    super.key,
+    required this.idSampul,
+    required this.judul,
+    required this.penulis,
+    required this.harga,
+    required this.copy,
+  });
+  final String idSampul;
+  final String judul;
+  final String penulis;
+  final String harga;
+  final String copy;
 
   @override
   State<BookCard> createState() => _BookCardState();
@@ -50,8 +63,8 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
         children: [
           SizedBox(
             height: 160,
-            child: Image.asset(
-              "assets/icons/kategori/cover.jpg",
+            child: Image.network(
+              APIPath.publicAsset(widget.idSampul),
               fit: BoxFit.cover,
               width: 200,
             ),
@@ -59,9 +72,10 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
           Container(
             padding: const EdgeInsets.all(Sizes.s),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Lorem Ipsum Dolor Sit amet Lorem Ipsum Dolor sit Amet",
+                  widget.judul,
                   style: AppTextStyle.ts12Reg,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -70,7 +84,7 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
                 Row(
                   children: [
                     Text(
-                      "Tere Liye",
+                      widget.penulis,
                       style: AppTextStyle.ts12Bold.copyWith(color: AppColor.grey),
                     ),
                     const Spacer(),
@@ -100,7 +114,7 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "Copy: 10 Buku",
+                      "Copy: ${widget.copy} Buku",
                       style: AppTextStyle.ts10Reg.copyWith(color: AppColor.grey),
                     ),
                     HGap.s,
@@ -110,7 +124,7 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
                       colorFilter: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
                     ),
                     Text(
-                      "20",
+                      widget.harga,
                       style: AppTextStyle.ts10Bold.copyWith(color: theme.primaryColor),
                     ),
                   ],

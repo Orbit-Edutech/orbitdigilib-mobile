@@ -43,12 +43,12 @@ class AuthLibraryController extends GetxController {
       Get.toNamed(AppRoutes.authUser, arguments: perpustakaan);
     } else {
       if (response.error == ResponseStatus.connectionError) {
-        // TODO: Show Error SnackBar
+        errorMessage.value = "Kesalahan koneksi";
       } else {
         errorMessage.value = response.error["message"].toString();
-        isError.value = true;
-        buttonState.value = ButtonState.disable;
       }
+      isError.value = true;
+      buttonState.value = ButtonState.disable;
     }
   }
 

@@ -68,7 +68,6 @@ class AuthLibraryPage extends StatelessWidget {
                   Obx(() {
                     final isError = controller.isError.value;
                     final errorText = controller.errorMessage.value;
-                    // TODO: TEXTFIELD COLOR SAAT LOGOUT TIDAK DEFAULT
                     return AppTextField(
                       type: TextFieldType.normal,
                       controller: controller.kodeController,

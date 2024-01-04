@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_instance/get_instance.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../constants/gaps.dart';
 import '../../../routes/app_routes.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../controller/index_controller.dart';
 
 class IndexAppBar extends StatefulWidget implements PreferredSizeWidget {
   const IndexAppBar({
@@ -22,17 +25,21 @@ class _IndexAppBarState extends State<IndexAppBar> {
   bool isRead = false;
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<IndexController>();
     return AppBar(
       automaticallyImplyLeading: false,
       title: Row(
         children: [
           HGap.s,
           Expanded(
-            child: Text(
-              "Perpustakaan Orbit",
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyle.ts18Bold,
-            ),
+            child: Obx(() {
+              final nama = controller.perpustakaan.value?.nama;
+              return Text(
+                nama ?? "-",
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyle.ts18Bold,
+              );
+            }),
           ),
         ],
       ),

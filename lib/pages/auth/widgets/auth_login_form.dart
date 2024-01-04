@@ -122,6 +122,7 @@ class AuthLoginForm extends StatelessWidget {
                 onPressed: controller.onSubmitLogin,
                 child: const Text("Masuk"),
               ),
+              VGap.s,
               AppButton(
                 type: ButtonType.outlined,
                 state: state == ButtonState.disable ? ButtonState.enable : state,

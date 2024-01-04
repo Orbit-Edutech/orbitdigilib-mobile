@@ -15,7 +15,7 @@ class CollectionFilterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       borderRadius: const BorderRadius.all(Radius.circular(100)),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.r, vertical: Sizes.s),
@@ -29,12 +29,14 @@ class CollectionFilterCard extends StatelessWidget {
               text,
               style: AppTextStyle.ts14Bold.copyWith(color: isActive ? theme.primaryColor : AppColor.lightGrey),
             ),
-            if (isActive)
+            if (isActive) ...[
               Container(
+                margin: const EdgeInsets.only(top: 1),
                 width: 15,
                 height: 1,
                 color: theme.primaryColor,
               )
+            ]
           ],
         ),
       ),

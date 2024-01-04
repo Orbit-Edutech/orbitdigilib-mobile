@@ -97,6 +97,7 @@ class AuthLibraryPage extends StatelessWidget {
                       child: const Text("Lanjut"),
                     );
                   }),
+                  VGap.s,
                   AppButton(
                     type: ButtonType.outlined,
                     state: ButtonState.enable,

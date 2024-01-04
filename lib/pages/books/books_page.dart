@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../api/api_path.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../shared/widget/book_card.dart';
@@ -11,7 +12,7 @@ class BooksPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const categories = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+    const categories = [1, 2, 3, 4, 5, 6, 8, 9, 7];
     return Scaffold(
       appBar: AppBar(
         title: const Text("Semua Buku"),
@@ -24,10 +25,10 @@ class BooksPage extends StatelessWidget {
         ],
       ),
       body: ListView.builder(
+        padding: const EdgeInsets.only(top: Sizes.s, bottom: Sizes.m),
         itemCount: categories.length,
         itemBuilder: (ctx, idx) {
-          debugPrint((idx).toString());
-          if (idx == 0) return VGap.s;
+          var category = categories[idx];
           return Column(
             children: [
               Padding(
@@ -42,9 +43,10 @@ class BooksPage extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Image.asset("assets/icons/kategori/sains.png"),
+                        Image.network(APIPath.publicAsset("7f8d2679-9c9c-4bab-8b5f-cab95d64dab7")),
+                        HGap.s,
                         Text(
-                          "Sains",
+                          "Sains $category",
                           style: AppTextStyle.ts14Bold,
                         ),
                       ],
@@ -65,7 +67,16 @@ class BooksPage extends StatelessWidget {
                   children: [
                     HGap.m,
                     for (var _ in [1, 1, 1, 1, 1]) ...[
-                      const BookCard(),
+                      BookCard(
+                        judul: 'Lorem Ipsum Dolor Sit Amet',
+                        penulis: 'The Bagindas',
+                        idSampul: '0696f2d7-942f-4e48-94ed-ef10d266263a',
+                        harga: '15',
+                        copy: '20',
+                        isWishlist: true,
+                        onTap: () {},
+                        onChangeWishlist: () {},
+                      ),
                       HGap.r,
                     ],
                   ],

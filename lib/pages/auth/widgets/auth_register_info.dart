@@ -68,6 +68,7 @@ class RegisterInfo extends StatelessWidget {
                 ],
               ),
             ),
+            VGap.s,
             AppButton(
               type: ButtonType.outlined,
               borderColor: AppColor.red,

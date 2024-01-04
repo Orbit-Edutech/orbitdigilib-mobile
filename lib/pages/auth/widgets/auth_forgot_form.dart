@@ -94,6 +94,7 @@ class AuthForgotForm extends StatelessWidget {
                         onPressed: controller.onSubmitForgot,
                         child: const Text("Kirim"),
                       ),
+                      VGap.s,
                       AppButton(
                         type: ButtonType.outlined,
                         state: state == ButtonState.disable ? ButtonState.enable : state,

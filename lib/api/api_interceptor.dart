@@ -40,6 +40,7 @@ class APIInterceptor extends InterceptorsWrapper {
     final message = "${err.response?.data["message"]}";
     final isAccesExpired = message == "Akses token expired";
     final isRefreshExpired = message.contains("Waktu login sudah habis");
+    final isPasswordChanged = message.contains("mengubah password");
     if (isAccesExpired) {
       try {
         await refreshAccessToken();
@@ -55,7 +56,7 @@ class APIInterceptor extends InterceptorsWrapper {
       } on DioException catch (e) {
         return super.onError(e, handler);
       }
-    } else if (isRefreshExpired) {
+    } else if (isRefreshExpired || isPasswordChanged) {
       Get.offAllNamed(AppRoutes.authLibrary);
       return super.onError(err, handler);
     } else {

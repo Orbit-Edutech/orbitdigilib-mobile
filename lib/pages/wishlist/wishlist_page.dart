@@ -7,6 +7,7 @@ import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../shared/widget/app_textfield.dart';
 import '../../shared/widget/book_card.dart';
+import '../../shared/widget/book_card_skeleton.dart';
 import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
@@ -67,56 +68,75 @@ class WishlistPage extends StatelessWidget {
                 child: const Icon(Icons.close_rounded),
               ),
               label: Text(
-                "Cari judul buku",
-                style: AppTextStyle.ts14Reg.copyWith(color: AppColor.grey),
+                "Pencarian...",
+                style: AppTextStyle.ts18Reg.copyWith(color: AppColor.grey),
               ),
             ),
             VGap.r,
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.only(bottom: Sizes.m),
-                child: Obx(() {
-                  final books = controller.filteredBooks.value;
-                  final _ = controller.asc.value; // Untuk trigger re-render
-                  if (controller.books.isEmpty) {
-                    return const Column(
-                      children: [
-                        VGap.m,
-                        EmptyList(
-                          description: "Aamu belum mempunyai wishlist buku",
-                        ),
-                      ],
-                    );
-                  }
-                  if (books?.isEmpty ?? true) {
-                    return const Column(
-                      children: [
-                        VGap.m,
-                        EmptyList(
-                          description: "Buku yang Anda cari tidak ada",
-                        ),
-                      ],
-                    );
-                  }
-                  return AlignedGridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: 2,
-                    itemCount: books?.length,
-                    mainAxisSpacing: Sizes.r,
-                    crossAxisSpacing: Sizes.r,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final book = books?[index];
-                      return BookCard(
-                        judul: book ?? "-",
-                        penulis: 'TERE LIYE',
-                        idSampul: '0696f2d7-942f-4e48-94ed-ef10d266263a',
-                        harga: '20',
-                        copy: '10',
+              child: RefreshIndicator(
+                onRefresh: () async => await controller.onInit(),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(bottom: Sizes.m),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Obx(() {
+                    final filteredWishlist = controller.filteredWishlist.value;
+                    final _ = controller.asc.value; // Untuk trigger re-render
+                    if (filteredWishlist == null) {
+                      return AlignedGridView.count(
+                        shrinkWrap: true,
+                        crossAxisCount: 2,
+                        itemCount: 10,
+                        mainAxisSpacing: Sizes.r,
+                        crossAxisSpacing: Sizes.r,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return const BookCardSkeleton();
+                        },
                       );
-                    },
-                  );
-                }),
+                    }
+                    if (controller.wishlist.value?.isEmpty ?? true) {
+                      return const Column(
+                        children: [
+                          VGap.m,
+                          EmptyList(
+                            description: "Anda belum mempunyai wishlist buku",
+                          ),
+                        ],
+                      );
+                    }
+                    if (filteredWishlist.isEmpty) {
+                      return const Column(
+                        children: [
+                          VGap.m,
+                          EmptyList(
+                            description: "Buku yang Anda cari tidak ada",
+                          ),
+                        ],
+                      );
+                    }
+                    return AlignedGridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      itemCount: filteredWishlist.length,
+                      mainAxisSpacing: Sizes.r,
+                      crossAxisSpacing: Sizes.r,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final buku = filteredWishlist[index].buku;
+                        return BookCard(
+                          judul: buku?.judul ?? "-",
+                          penulis: buku?.penulis ?? "-",
+                          idSampul: buku?.assetSampulId ?? "-",
+                          harga: "${int.parse(buku?.hargaSewa ?? "0") / 100}",
+                          isWishlist: true,
+                          onTap: () {},
+                          onChangeWishlist: () {},
+                        );
+                      },
+                    );
+                  }),
+                ),
               ),
             ),
           ],

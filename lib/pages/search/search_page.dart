@@ -8,7 +8,7 @@ import '../../shared/widget/app_textfield.dart';
 import '../../shared/widget/book_card_horz.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
-import 'controller/search_controller.dart';
+import 'controller/search_page_controller.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -18,16 +18,17 @@ class SearchPage extends StatelessWidget {
     final controller = Get.find<SearchPageController>();
     const listBuku = [1, 1, 1, 1, 1, 1, 1, 1, 1];
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Pencarian"),
         actions: [
-          // list filter: judul, asc-dsc, harga sewa, jumlah stok, nama penulis
           IconButton(
             onPressed: controller.showFilterModal,
             icon: SvgPicture.asset(
               "assets/icons/filter.svg",
             ),
-          )
+          ),
+          HGap.s,
         ],
       ),
       body: Column(
@@ -38,13 +39,13 @@ class SearchPage extends StatelessWidget {
             child: AppTextField(
               type: TextFieldType.rounded,
               controller: controller.textController,
-              focusNode: controller.focusNode,
-              onTapOutside: (_) => controller.focusNode.unfocus(),
+              focusNode: controller.searchFocusNode,
+              onTapOutside: (_) => controller.searchFocusNode.unfocus(),
               isError: false,
               contentPadding: const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
               label: Text(
-                "Cari judul buku",
-                style: AppTextStyle.ts14Reg.copyWith(color: AppColor.grey),
+                "Pencarian...",
+                style: AppTextStyle.ts18Reg.copyWith(color: AppColor.lightGrey),
               ),
             ),
           ),

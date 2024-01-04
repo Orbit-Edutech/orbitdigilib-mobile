@@ -5,8 +5,22 @@ import 'package:get/route_manager.dart';
 import '../widgets/search_filter_modal.dart';
 
 class SearchPageController extends GetxController {
+  String filterLetter = "";
+
   final textController = TextEditingController();
-  final focusNode = FocusNode();
+  final lowerPriceTextController = TextEditingController();
+  final higherPriceTextController = TextEditingController();
+
+  final searchFocusNode = FocusNode();
+  final lowerPriceFocusNode = FocusNode();
+  final higherPriceFocusNode = FocusNode();
+
+  void clearPrice() {
+    lowerPriceFocusNode.unfocus();
+    higherPriceFocusNode.unfocus();
+    lowerPriceTextController.clear();
+    higherPriceTextController.clear();
+  }
 
   void showFilterModal() {
     Get.bottomSheet(

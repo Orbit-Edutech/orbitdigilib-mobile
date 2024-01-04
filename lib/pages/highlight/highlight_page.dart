@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
+import '../../api/api_path.dart';
+import '../../api/perpustakaan/model/model_perpustakaan.dart' as p;
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
-import '../../theme/app_color.dart';
 import '../index/controller/index_controller.dart';
 
 class HighlightPage extends StatelessWidget {
@@ -11,7 +12,7 @@ class HighlightPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _ = Get.find<IndexController>();
+    final controller = Get.find<IndexController>();
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -22,16 +23,19 @@ class HighlightPage extends StatelessWidget {
         child: ListView(
           children: [
             VGap.m,
-            for (var _ in [1, 1, 1, 1]) ...[
+            for (p.Banner banner in controller.perpustakaan.value?.banner ?? []) ...[
               Builder(builder: (context) {
                 debugPrint("REBUILD");
                 return Container(
                   height: 150,
                   width: size.width,
                   alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: AppColor.lightGrey,
-                    borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(APIPath.publicAsset(banner.id ?? "")),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
                   ),
                 );
               }),

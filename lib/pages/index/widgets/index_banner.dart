@@ -4,11 +4,12 @@ import "package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart";
 import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
 
+import "../../../api/api_path.dart";
+import "../../../api/perpustakaan/model/model_perpustakaan.dart" as p;
 import "../../../constants/sizes.dart";
 import "../../../routes/app_routes.dart";
 import "../../../theme/app_color.dart";
 import "../../../theme/app_text_stlye.dart";
-import "../../../utils/get_tokens.dart";
 import "../controller/index_controller.dart";
 
 class IndexBanner extends StatefulWidget {
@@ -22,14 +23,7 @@ class _IndexBannerState extends State<IndexBanner> {
   final controller = Get.find<IndexController>();
   final carouselController = CarouselController();
   int currentBanner = 0;
-  List<String> emptyBanners = ["1", "2", "3", "4"];
-  Tokens? token;
-
-  @override
-  void initState() {
-    getTokens().then((token) => this.token = token);
-    super.initState();
-  }
+  List<p.Banner> emptyBanners = [p.Banner(), p.Banner(), p.Banner(), p.Banner()];
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +33,14 @@ class _IndexBannerState extends State<IndexBanner> {
       children: [
         Obx(() {
           final banners = controller.perpustakaan.value?.banner;
-          // TODO: Saat banner kosong belum di tentukan akan menampilkan apa
-          final isEmpty = banners?.isEmpty ?? true;
+          final isEmpty = banners == null;
           return CarouselSlider(
             carouselController: carouselController,
-            items: (isEmpty ? emptyBanners : banners)!.map((banner) {
+            items: (isEmpty ? emptyBanners : banners).map((banner) {
               return Container(
                 height: 150,
                 width: size.width,
-                alignment: Alignment.center,
+                clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(
                   color: AppColor.lightGrey,
                   borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
@@ -55,8 +48,7 @@ class _IndexBannerState extends State<IndexBanner> {
                 child: isEmpty
                     ? const SizedBox()
                     : Image.network(
-                        banner,
-                        headers: {"Authorization": "Bearer ${token?.access}"},
+                        APIPath.publicAsset(banner.id!),
                         fit: BoxFit.cover,
                       ),
               );

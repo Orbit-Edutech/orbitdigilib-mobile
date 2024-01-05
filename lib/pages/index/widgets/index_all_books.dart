@@ -1,18 +1,13 @@
-import "dart:developer";
-
 import "package:flutter/material.dart";
 import "package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart";
 import "package:get/route_manager.dart";
 
-import "../../../api/auth/data/auth_logout.dart";
 import "../../../constants/gaps.dart";
 import "../../../constants/sizes.dart";
 import "../../../routes/app_routes.dart";
 import "../../../shared/widget/app_button.dart";
 import "../../../shared/widget/book_card.dart";
 import "../../../theme/app_text_stlye.dart";
-import "../../../theme/app_theme.dart";
-import "../../../utils/shared_preferences_manager.dart";
 
 class IndexAllBooks extends StatelessWidget {
   const IndexAllBooks({
@@ -21,6 +16,7 @@ class IndexAllBooks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
       child: Column(
@@ -40,35 +36,24 @@ class IndexAllBooks extends StatelessWidget {
             crossAxisSpacing: Sizes.r,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return const BookCard();
+              return BookCard(
+                judul: 'Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor',
+                penulis: "Tere Liye",
+                idSampul: '0696f2d7-942f-4e48-94ed-ef10d266263a',
+                copy: '1',
+                harga: "20",
+                isWishlist: true,
+                onTap: () {},
+                onChangeWishlist: () {},
+              );
             },
           ),
           VGap.r,
           AppButton(
             type: ButtonType.elevated,
+            backgroundColor: theme.primaryColor,
             onPressed: () => Get.toNamed(AppRoutes.books),
             child: const Text("Lihat Semua"),
-          ),
-          AppButton(
-            type: ButtonType.elevated,
-            onPressed: () async {
-              await logout().then((res) {
-                if (res.data != null) {
-                  log(res.data.toString());
-                } else {
-                  log(res.error.toString());
-                }
-              });
-              final prefs = {
-                "isLogin": false,
-                "access": "",
-                "refresh": "",
-              };
-              await AppTheme.changePerpusTheme();
-              await SharedPreferencesManager.writePrefs(prefs);
-              Get.offAllNamed(AppRoutes.authLibrary);
-            },
-            child: const Text("Logout"),
           ),
         ],
       ),

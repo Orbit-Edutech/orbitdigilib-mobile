@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../shared/widget/app_textfield.dart';
 import '../../shared/widget/book_card.dart';
+import '../../shared/widget/book_card_skeleton.dart';
+import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
+import '../../utils/compute_luminance.dart';
 import 'controller/wishlist_controller.dart';
 
 class WishlistPage extends StatelessWidget {
@@ -16,8 +19,8 @@ class WishlistPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _ = Get.find<WishlistController>();
-    const books = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5];
+    final controller = Get.find<WishlistController>();
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -35,46 +38,108 @@ class WishlistPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset("assets/icons/filter.svg"),
+            onPressed: controller.sort,
+            icon: Icon(
+              Icons.swap_vert_rounded,
+              color: calculateLuminance(theme.primaryColor),
+            ),
           ),
           HGap.s,
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-        child: SingleChildScrollView(
-          controller: ScrollController(),
-          child: Column(
-            children: [
-              VGap.m,
-              AppTextField(
-                type: TextFieldType.rounded,
-                controller: TextEditingController(),
-                focusNode: FocusNode(),
-                // onTapOutside: (_) => controller.focusNode.unfocus(),
-                isError: false,
-                contentPadding: const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
-                label: Text(
-                  "Cari judul buku",
-                  style: AppTextStyle.ts14Reg.copyWith(color: AppColor.grey),
+        child: Column(
+          children: [
+            VGap.m,
+            AppTextField(
+              type: TextFieldType.rounded,
+              controller: controller.textController,
+              focusNode: controller.focusNode,
+              onTapOutside: (_) => controller.focusNode.unfocus(),
+              onChanged: controller.onSearch,
+              isError: false,
+              contentPadding: const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
+              suffix: GestureDetector(
+                onTap: () {
+                  controller.onSearch("");
+                  controller.textController.clear();
+                },
+                child: const Icon(Icons.close_rounded),
+              ),
+              label: Text(
+                "Pencarian...",
+                style: AppTextStyle.ts18Reg.copyWith(color: AppColor.grey),
+              ),
+            ),
+            VGap.r,
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async => await controller.onInit(),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(bottom: Sizes.m),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Obx(() {
+                    final filteredWishlist = controller.filteredWishlist.value;
+                    final _ = controller.asc.value; // Untuk trigger re-render
+                    if (filteredWishlist == null) {
+                      return AlignedGridView.count(
+                        shrinkWrap: true,
+                        crossAxisCount: 2,
+                        itemCount: 10,
+                        mainAxisSpacing: Sizes.r,
+                        crossAxisSpacing: Sizes.r,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return const BookCardSkeleton();
+                        },
+                      );
+                    }
+                    if (controller.wishlist.value?.isEmpty ?? true) {
+                      return const Column(
+                        children: [
+                          VGap.m,
+                          EmptyList(
+                            description: "Anda belum mempunyai wishlist buku",
+                          ),
+                        ],
+                      );
+                    }
+                    if (filteredWishlist.isEmpty) {
+                      return const Column(
+                        children: [
+                          VGap.m,
+                          EmptyList(
+                            description: "Buku yang Anda cari tidak ada",
+                          ),
+                        ],
+                      );
+                    }
+                    return AlignedGridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      itemCount: filteredWishlist.length,
+                      mainAxisSpacing: Sizes.r,
+                      crossAxisSpacing: Sizes.r,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final buku = filteredWishlist[index].buku;
+                        return BookCard(
+                          judul: buku?.judul ?? "-",
+                          penulis: buku?.penulis ?? "-",
+                          idSampul: buku?.assetSampulId ?? "-",
+                          harga: "${int.parse(buku?.hargaSewa ?? "0") / 100}",
+                          isWishlist: true,
+                          onTap: () {},
+                          onChangeWishlist: () {},
+                        );
+                      },
+                    );
+                  }),
                 ),
               ),
-              VGap.r,
-              AlignedGridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                itemCount: books.length,
-                mainAxisSpacing: Sizes.r,
-                crossAxisSpacing: Sizes.r,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return const BookCard();
-                },
-              ),
-              VGap.m,
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

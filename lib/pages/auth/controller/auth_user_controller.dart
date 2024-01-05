@@ -74,7 +74,7 @@ class AuthUserController extends GetxController {
           "idPerpustakaan": perpustakaan!.id,
           "color": perpustakaan!.warnaDasar,
         };
-        SharedPreferencesManager.writePrefs(prefs);
+        await SharedPreferencesManager.writePrefs(prefs);
         Get.offAllNamed(AppRoutes.navigator);
       } else {
         isLoginError.value = true;

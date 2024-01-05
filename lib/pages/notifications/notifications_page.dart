@@ -17,8 +17,10 @@ class NotificationsPage extends StatelessWidget {
     final controller = Get.find<NotificationsController>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Notifikasi"),
+        title: const Text("Notifikasi (50)"),
       ),
+      // TODO: PAGINASI LIST NOTIFIKASI
+      // TODO: HAPUS DETIL NOTIFIKASI, GANTI JADI SEMACAM READMORE
       body: ListView.builder(
           itemCount: 20,
           itemBuilder: (ctx, idx) {

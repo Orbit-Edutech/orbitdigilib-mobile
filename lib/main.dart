@@ -12,7 +12,6 @@ void main() async {
   ImageUtils.prechacheImages();
 }
 
-// TODO: Hapus kategori icons saat produksi
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

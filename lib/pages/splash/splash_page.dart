@@ -34,14 +34,14 @@ class SplashPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
                         child: Text(
-                          "Terjadi permasalahan koneksi, pastikan Anda terkoneksi dengan internet",
+                          "Terjadi permasalahan koneksi",
                           style: AppTextStyle.ts16Reg,
                           textAlign: TextAlign.center,
                         ),
                       ),
                     AppButton(
                       state: buttonState,
-                      type: ButtonType.elevated,
+                      type: ButtonType.text,
                       onPressed: controller.onInit,
                       child: const Text("Muat Ulang"),
                     ),

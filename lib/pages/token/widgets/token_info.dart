@@ -17,10 +17,10 @@ class TokenInfo extends StatelessWidget {
     final options = [
       {"name": "Perpustakaan", "logo": "assets/icons/icon.png"},
       {"name": "Orbit360", "logo": "assets/icons/icon.png"},
-      {"name": "Tokopedia", "logo": "assets/icons/kategori/tokped.png"},
-      {"name": "Shopee", "logo": "assets/icons/kategori/shopee.png"},
-      {"name": "BukaLapak", "logo": "assets/icons/kategori/bukalapak.png"},
-      {"name": "Instagram Orbit", "logo": "assets/icons/kategori/ig.png"},
+      {"name": "Tokopedia", "logo": "assets/icons/icon.png"},
+      {"name": "Shopee", "logo": "assets/icons/icon.png"},
+      {"name": "BukaLapak", "logo": "assets/icons/icon.png"},
+      {"name": "Instagram Orbit", "logo": "assets/icons/icon.png"},
       {"name": "Mitra Satu", "logo": "assets/icons/icon.png"},
       {"name": "Mitra Dua", "logo": "assets/icons/icon.png"},
       {"name": "Mitra Tiga", "logo": "assets/icons/icon.png"}

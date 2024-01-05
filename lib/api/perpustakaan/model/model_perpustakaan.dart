@@ -10,8 +10,8 @@ class Perpustakaan {
   final String? deskripsi;
   final int? tahunBerdiri;
   final String? warnaDasar;
-  final String? assetLogo;
-  final List<String>? banner;
+  final AssetLogo? assetLogo;
+  final List<Banner>? banner;
   final bool? isAktif;
 
   Perpustakaan({
@@ -39,8 +39,8 @@ class Perpustakaan {
     String? deskripsi,
     int? tahunBerdiri,
     String? warnaDasar,
-    String? assetLogo,
-    List<String>? banner,
+    AssetLogo? assetLogo,
+    List<Banner>? banner,
     bool? isAktif,
   }) =>
       Perpustakaan(
@@ -72,8 +72,8 @@ class Perpustakaan {
         deskripsi: json["deskripsi"],
         tahunBerdiri: json["tahunBerdiri"],
         warnaDasar: json["warnaDasar"],
-        assetLogo: json["assetLogo"],
-        banner: json["banner"] == null ? [] : List<String>.from(json["banner"]!.map((x) => x)),
+        assetLogo: json["assetLogo"] == null ? null : AssetLogo.fromJson(json["assetLogo"]),
+        banner: json["banner"] == null ? [] : List<Banner>.from(json["banner"]!.map((x) => Banner.fromJson(x))),
         isAktif: json["isAktif"],
       );
 
@@ -87,8 +87,92 @@ class Perpustakaan {
         "deskripsi": deskripsi,
         "tahunBerdiri": tahunBerdiri,
         "warnaDasar": warnaDasar,
-        "assetLogo": assetLogo,
-        "banner": banner == null ? [] : List<String>.from(banner!.map((x) => x)),
+        "assetLogo": assetLogo?.toJson(),
+        "banner": banner == null ? [] : List<dynamic>.from(banner!.map((x) => x.toJson())),
         "isAktif": isAktif,
+      };
+}
+
+class AssetLogo {
+  final String? id;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final String? originalName;
+  final int? size;
+
+  AssetLogo({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.originalName,
+    this.size,
+  });
+
+  AssetLogo copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? originalName,
+    int? size,
+  }) =>
+      AssetLogo(
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        originalName: originalName ?? this.originalName,
+        size: size ?? this.size,
+      );
+
+  factory AssetLogo.fromRawJson(String str) => AssetLogo.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory AssetLogo.fromJson(Map<String, dynamic> json) => AssetLogo(
+        id: json["id"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        originalName: json["originalName"],
+        size: json["size"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "originalName": originalName,
+        "size": size,
+      };
+}
+
+class Banner {
+  final String? id;
+  final String? originalName;
+
+  Banner({
+    this.id,
+    this.originalName,
+  });
+
+  Banner copyWith({
+    String? id,
+    String? originalName,
+  }) =>
+      Banner(
+        id: id ?? this.id,
+        originalName: originalName ?? this.originalName,
+      );
+
+  factory Banner.fromRawJson(String str) => Banner.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Banner.fromJson(Map<String, dynamic> json) => Banner(
+        id: json["id"],
+        originalName: json["originalName"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "originalName": originalName,
       };
 }

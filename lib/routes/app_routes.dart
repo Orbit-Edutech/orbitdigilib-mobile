@@ -4,7 +4,10 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import '../pages/auth/auth_library_page.dart';
 import '../pages/auth/auth_user_page.dart';
 import '../pages/auth/binding/auth_binding.dart';
+import '../pages/books/binding/books_binding.dart';
 import '../pages/books/books_page.dart';
+import '../pages/category/binding/category_binding.dart';
+import '../pages/category/category_page.dart';
 import '../pages/highlight/highlight_page.dart';
 import '../pages/index/binding/index_binding.dart';
 import '../pages/index/index_page.dart';
@@ -13,6 +16,9 @@ import '../pages/navigator/navigator_page.dart';
 import '../pages/notifications/binding/notifications_binding.dart';
 import '../pages/notifications/notification_page.dart';
 import '../pages/notifications/notifications_page.dart';
+import '../pages/profile/profile_page.dart';
+import '../pages/change-password/binding/change_password_binding.dart';
+import '../pages/change-password/change_password_page.dart';
 import '../pages/search/binding/seach_binding.dart';
 import '../pages/search/search_page.dart';
 import '../pages/splash/binding/splash_binding.dart';
@@ -56,8 +62,17 @@ class AppRoutes {
   /// /books
   static const String books = "/books";
 
+  /// /category
+  static const String category = "/category";
+
   /// /wishlist
   static const String wishlist = "/wishlist";
+
+  /// /profile
+  static const String profile = "/profile";
+
+  /// /reset-password
+  static const String resetPassword = "/reset-password";
 
   static final pages = <GetPage>[
     GetPage(
@@ -132,6 +147,14 @@ class AppRoutes {
     GetPage(
       name: books,
       page: () => const BooksPage(),
+      binding: BooksBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: category,
+      page: () => const CategoryPage(),
+      binding: CategoryBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),
@@ -139,6 +162,19 @@ class AppRoutes {
       name: wishlist,
       page: () => const WishlistPage(),
       binding: WishlistBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: profile,
+      page: () => const ProfilePage(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: resetPassword,
+      page: () => const ChangePasswordPage(),
+      binding: ChangePasswordBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

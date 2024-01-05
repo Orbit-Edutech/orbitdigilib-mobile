@@ -59,9 +59,11 @@ class AuthLoginForm extends StatelessWidget {
                         "Username",
                         style: AppTextStyle.ts14Reg,
                       ),
+                      onSubmitted: (_) => controller.passwordFocusNode.requestFocus(),
                     ),
                     VGap.r,
                     Focus(
+                      canRequestFocus: false,
                       onFocusChange: controller.setPasswordFocus,
                       child: AppTextField(
                         type: TextFieldType.normal,
@@ -69,6 +71,7 @@ class AuthLoginForm extends StatelessWidget {
                         focusNode: controller.passwordFocusNode,
                         onTapOutside: (_) => controller.passwordFocusNode.unfocus(),
                         onChanged: controller.onLoginFormChange,
+                        onSubmitted: (_) => controller.onSubmitLogin(),
                         enabled: !isLoading,
                         isError: isError,
                         errorText: errorMsg,
@@ -119,6 +122,7 @@ class AuthLoginForm extends StatelessWidget {
                 onPressed: controller.onSubmitLogin,
                 child: const Text("Masuk"),
               ),
+              VGap.s,
               AppButton(
                 type: ButtonType.outlined,
                 state: state == ButtonState.disable ? ButtonState.enable : state,

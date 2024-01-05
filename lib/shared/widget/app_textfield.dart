@@ -23,6 +23,9 @@ class AppTextField extends StatelessWidget {
     this.suffix,
     this.enabled,
     this.contentPadding,
+    this.keyboardType,
+    this.onEditingComplete,
+    this.onSubmitted,
   });
 
   final TextFieldType type;
@@ -33,16 +36,21 @@ class AppTextField extends StatelessWidget {
   final String? errorText;
   final Function(PointerDownEvent e)? onTapOutside;
   final Function(String text)? onChanged;
+  final Function(String text)? onSubmitted;
+  final Function()? onEditingComplete;
   final Widget label;
   final Widget? suffix;
   final bool? enabled;
   final EdgeInsetsGeometry? contentPadding;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
     switch (type) {
       case TextFieldType.normal:
         return TextField(
+          onSubmitted: onSubmitted,
+          onEditingComplete: onEditingComplete,
           controller: controller,
           focusNode: focusNode,
           onTapOutside: onTapOutside,
@@ -65,9 +73,12 @@ class AppTextField extends StatelessWidget {
             suffixIconConstraints: const BoxConstraints(minWidth: 50),
           ),
           enabled: enabled,
+          keyboardType: keyboardType,
         );
       case TextFieldType.rounded:
         return TextField(
+          onSubmitted: onSubmitted,
+          onEditingComplete: onEditingComplete,
           controller: controller,
           focusNode: focusNode,
           onTapOutside: onTapOutside,
@@ -90,6 +101,7 @@ class AppTextField extends StatelessWidget {
             suffixIconConstraints: const BoxConstraints(minWidth: 50),
           ),
           enabled: enabled,
+          keyboardType: keyboardType,
         );
     }
   }

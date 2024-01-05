@@ -64,7 +64,8 @@ class AppButton extends StatelessWidget {
         foregroundColor: foregroundColor ?? Colors.white,
         disabledBackgroundColor: (backgroundColor ?? Get.theme.primaryColor).withOpacity(.5),
         disabledForegroundColor: Colors.white.withOpacity(.5),
-        padding: padding ?? const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: Sizes.sr, horizontal: Sizes.r),
+        fixedSize: const Size(double.infinity, 48),
         minimumSize: Size.zero,
       ),
       child: state == ButtonState.loading
@@ -91,7 +92,8 @@ class AppButton extends StatelessWidget {
           color: (borderColor ?? Get.theme.primaryColor).withOpacity(state == ButtonState.enable ? 1 : .5),
           width: borderWidth ?? 1.0,
         ),
-        padding: padding ?? const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: Sizes.sr, horizontal: Sizes.r),
+        fixedSize: const Size(double.infinity, 48),
       ),
       child: state == ButtonState.loading
           ? SizedBox(
@@ -113,7 +115,8 @@ class AppButton extends StatelessWidget {
         foregroundColor: foregroundColor ?? Get.theme.primaryColor,
         backgroundColor: backgroundColor ?? Colors.transparent,
         disabledForegroundColor: foregroundColor ?? Get.theme.primaryColor.withOpacity(.5),
-        padding: padding ?? const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: Sizes.sr, horizontal: Sizes.r),
+        fixedSize: const Size(double.infinity, 48),
       ),
       child: state == ButtonState.loading
           ? SizedBox(

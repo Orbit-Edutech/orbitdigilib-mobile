@@ -3,6 +3,8 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 
+import '../../api/api_path.dart';
+import '../../api/perpustakaan/model/model_perpustakaan.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../theme/app_text_stlye.dart';
@@ -18,7 +20,7 @@ class AuthUserPage extends StatelessWidget {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
     final controller = Get.find<AuthUserController>();
-    final perpustakaan = Get.arguments;
+    final perpustakaan = Get.arguments as Perpustakaan;
     controller.perpustakaan = perpustakaan;
     return PopScope(
       canPop: false,
@@ -46,8 +48,11 @@ class AuthUserPage extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: const BorderRadius.all(Radius.circular(100)),
-                          image: perpustakaan?.assetLogo != null
-                              ? DecorationImage(image: NetworkImage(perpustakaan.assetLogo!))
+                          image: perpustakaan.assetLogo != null
+                              ? DecorationImage(
+                                  image: NetworkImage(APIPath.publicAsset(perpustakaan.assetLogo?.id ?? "")),
+                                  fit: BoxFit.cover,
+                                )
                               : null,
                         ),
                       ),

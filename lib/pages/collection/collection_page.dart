@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
-import '../../shared/widget/book_card_horz.dart';
+import 'widgets/collection_book_card.dart';
 import 'widgets/collection_filter.dart';
 
 class CollectionPage extends StatelessWidget {
@@ -26,10 +26,16 @@ class CollectionPage extends StatelessWidget {
               itemCount: 10,
               itemBuilder: (ctx, idx) {
                 if (idx == 0) return VGap.r;
-                return const Column(
+                return Column(
                   children: [
-                    BookCardHorz(),
-                    VGap.s,
+                    CollectionBookCard(
+                      status: idx % 2 == 0
+                          ? "Selesai Dibaca"
+                          : idx % 3 == 1
+                              ? "Belum Dibaca"
+                              : "Belum Selesai",
+                    ),
+                    VGap.r,
                   ],
                 );
               },

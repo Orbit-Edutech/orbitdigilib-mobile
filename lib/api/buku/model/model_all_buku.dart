@@ -83,6 +83,7 @@ class Payload {
   final int? jumlahSoftCopy;
   final int? jumlahSiapPinjam;
   final bool? isPin;
+  final dynamic kategoriBukuPerpustakaanId;
   final dynamic kategoriBukuPerpustakaan;
 
   Payload({
@@ -93,6 +94,7 @@ class Payload {
     this.jumlahSoftCopy,
     this.jumlahSiapPinjam,
     this.isPin,
+    this.kategoriBukuPerpustakaanId,
     this.kategoriBukuPerpustakaan,
   });
 
@@ -104,6 +106,7 @@ class Payload {
     int? jumlahSoftCopy,
     int? jumlahSiapPinjam,
     bool? isPin,
+    dynamic kategoriBukuPerpustakaanId,
     dynamic kategoriBukuPerpustakaan,
   }) =>
       Payload(
@@ -114,6 +117,7 @@ class Payload {
         jumlahSoftCopy: jumlahSoftCopy ?? this.jumlahSoftCopy,
         jumlahSiapPinjam: jumlahSiapPinjam ?? this.jumlahSiapPinjam,
         isPin: isPin ?? this.isPin,
+        kategoriBukuPerpustakaanId: kategoriBukuPerpustakaanId ?? this.kategoriBukuPerpustakaanId,
         kategoriBukuPerpustakaan: kategoriBukuPerpustakaan ?? this.kategoriBukuPerpustakaan,
       );
 
@@ -129,6 +133,7 @@ class Payload {
         jumlahSoftCopy: json["jumlahSoftCopy"],
         jumlahSiapPinjam: json["jumlahSiapPinjam"],
         isPin: json["isPin"],
+        kategoriBukuPerpustakaanId: json["kategoriBukuPerpustakaanId"],
         kategoriBukuPerpustakaan: json["kategoriBukuPerpustakaan"],
       );
 
@@ -140,6 +145,7 @@ class Payload {
         "jumlahSoftCopy": jumlahSoftCopy,
         "jumlahSiapPinjam": jumlahSiapPinjam,
         "isPin": isPin,
+        "kategoriBukuPerpustakaanId": kategoriBukuPerpustakaanId,
         "kategoriBukuPerpustakaan": kategoriBukuPerpustakaan,
       };
 }
@@ -150,6 +156,9 @@ class Buku {
   final int? jumlahHalaman;
   final String? tahunTerbit;
   final String? bahasa;
+  final String? penulis;
+  final String? hargaBeli;
+  final String? hargaSewa;
   final String? assetSampulId;
 
   Buku({
@@ -158,6 +167,9 @@ class Buku {
     this.jumlahHalaman,
     this.tahunTerbit,
     this.bahasa,
+    this.penulis,
+    this.hargaBeli,
+    this.hargaSewa,
     this.assetSampulId,
   });
 
@@ -167,6 +179,9 @@ class Buku {
     int? jumlahHalaman,
     String? tahunTerbit,
     String? bahasa,
+    String? penulis,
+    String? hargaBeli,
+    String? hargaSewa,
     String? assetSampulId,
   }) =>
       Buku(
@@ -175,6 +190,9 @@ class Buku {
         jumlahHalaman: jumlahHalaman ?? this.jumlahHalaman,
         tahunTerbit: tahunTerbit ?? this.tahunTerbit,
         bahasa: bahasa ?? this.bahasa,
+        penulis: penulis ?? this.penulis,
+        hargaBeli: hargaBeli ?? this.hargaBeli,
+        hargaSewa: hargaSewa ?? this.hargaSewa,
         assetSampulId: assetSampulId ?? this.assetSampulId,
       );
 
@@ -188,6 +206,9 @@ class Buku {
         jumlahHalaman: json["jumlahHalaman"],
         tahunTerbit: json["tahunTerbit"],
         bahasa: json["bahasa"],
+        penulis: json["penulis"],
+        hargaBeli: json["hargaBeli"],
+        hargaSewa: json["hargaSewa"],
         assetSampulId: json["assetSampulId"],
       );
 
@@ -197,6 +218,9 @@ class Buku {
         "jumlahHalaman": jumlahHalaman,
         "tahunTerbit": tahunTerbit,
         "bahasa": bahasa,
+        "penulis": penulis,
+        "hargaBeli": hargaBeli,
+        "hargaSewa": hargaSewa,
         "assetSampulId": assetSampulId,
       };
 }

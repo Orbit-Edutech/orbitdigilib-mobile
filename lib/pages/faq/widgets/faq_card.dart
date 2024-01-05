@@ -37,6 +37,7 @@ class FAQCard extends StatelessWidget {
                   Text(
                     faq.pertanyaan ?? "-",
                     style: AppTextStyle.ts10Bold.copyWith(color: theme.primaryColor),
+                    textAlign: TextAlign.justify,
                   ),
                   Icon(
                     isAnswerVisible ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
@@ -49,6 +50,7 @@ class FAQCard extends StatelessWidget {
                 child: Text(
                   faq.jawaban ?? "-",
                   style: AppTextStyle.ts10Light,
+                  textAlign: TextAlign.justify,
                 ),
               )
             ],

@@ -99,7 +99,13 @@ class IndexController extends GetxController {
         if (res.data != null) {
           categories.value = res.data?.listKategoriBukuPerpustakaan;
           log(res.data!.toRawJson().toString());
-        } else {}
+        } else {
+          if (res.error == ResponseStatus.connectionError) {
+            showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
+          } else {
+            showSnackbar(backgroundColor: AppColor.red, title: "Error ${res.statusCode}", message: res.error["message"]);
+          }
+        }
       }),
     ]);
     super.onInit();

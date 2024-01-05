@@ -7,6 +7,7 @@ import '../../../api/api_path.dart';
 import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
+import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
@@ -57,35 +58,41 @@ class IndexCategoriesModal extends StatelessWidget {
                 itemCount: categories.length,
                 itemBuilder: ((ctx, idx) {
                   final kategori = categories[idx];
-                  return Column(
-                    children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/category-bg.svg",
-                            width: 56,
-                            height: 56,
-                            colorFilter: ColorFilter.mode(
-                              theme.colorScheme.primaryContainer.withOpacity(.25),
-                              BlendMode.srcIn,
+                  return InkWell(
+                    onTap: () {
+                      Get.back();
+                      Get.toNamed(AppRoutes.category, arguments: kategori);
+                    },
+                    child: Column(
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/category-bg.svg",
+                              width: 56,
+                              height: 56,
+                              colorFilter: ColorFilter.mode(
+                                theme.colorScheme.primaryContainer.withOpacity(.25),
+                                BlendMode.srcIn,
+                              ),
                             ),
-                          ),
-                          Image.network(
-                            APIPath.publicAsset(kategori.icon?.id ?? "-"),
-                            width: 24,
-                            height: 24,
-                            color: theme.primaryColor,
-                          ),
-                        ],
-                      ),
-                      VGap.xs,
-                      Text(
-                        kategori.nama ?? "-",
-                        style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey),
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ],
+                            Image.network(
+                              APIPath.publicAsset(kategori.icon?.id ?? "-"),
+                              width: 24,
+                              height: 24,
+                              color: theme.primaryColor,
+                            ),
+                          ],
+                        ),
+                        VGap.xs,
+                        Text(
+                          kategori.nama ?? "-",
+                          style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey),
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      ],
+                    ),
                   );
                 }),
               ),

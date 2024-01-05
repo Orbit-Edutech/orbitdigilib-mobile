@@ -50,7 +50,7 @@ class ProfileSettings extends StatelessWidget {
             SettingCard(
               icon: const Icon(Icons.library_books_outlined),
               title: "Tentang Perpustakaan",
-              onTap: () {},
+              onTap: () => Get.toNamed(AppRoutes.aboutApp),
             ),
             SettingCard(
               icon: const Icon(Icons.info_outline_rounded),

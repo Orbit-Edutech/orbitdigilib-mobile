@@ -1,6 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
+import '../pages/about-app/aboud_app_page.dart';
 import '../pages/auth/auth_library_page.dart';
 import '../pages/auth/auth_user_page.dart';
 import '../pages/auth/binding/auth_binding.dart';
@@ -78,6 +79,9 @@ class AppRoutes {
 
   /// /faq
   static const String faq = "/faq";
+
+  /// /about-app
+  static const String aboutApp = "/about-app";
 
   static final pages = <GetPage>[
     GetPage(
@@ -187,6 +191,12 @@ class AppRoutes {
       name: faq,
       page: () => const FAQPage(),
       binding: FAQBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: aboutApp,
+      page: () => const AboutAppPage(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

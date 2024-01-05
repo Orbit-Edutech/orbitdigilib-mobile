@@ -45,7 +45,7 @@ class ProfileSettings extends StatelessWidget {
                 child: const Icon(Icons.question_mark_rounded, size: 20),
               ),
               title: "Pusat Bantuan",
-              onTap: () {},
+              onTap: () => Get.toNamed(AppRoutes.faq),
             ),
             SettingCard(
               icon: const Icon(Icons.library_books_outlined),

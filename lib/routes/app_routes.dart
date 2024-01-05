@@ -8,6 +8,8 @@ import '../pages/books/binding/books_binding.dart';
 import '../pages/books/books_page.dart';
 import '../pages/category/binding/category_binding.dart';
 import '../pages/category/category_page.dart';
+import '../pages/faq/binding/faq_binding.dart';
+import '../pages/faq/faq_page.dart';
 import '../pages/highlight/highlight_page.dart';
 import '../pages/index/binding/index_binding.dart';
 import '../pages/index/index_page.dart';
@@ -73,6 +75,9 @@ class AppRoutes {
 
   /// /reset-password
   static const String resetPassword = "/reset-password";
+
+  /// /faq
+  static const String faq = "/faq";
 
   static final pages = <GetPage>[
     GetPage(
@@ -175,6 +180,13 @@ class AppRoutes {
       name: resetPassword,
       page: () => const ChangePasswordPage(),
       binding: ChangePasswordBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: faq,
+      page: () => const FAQPage(),
+      binding: FAQBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

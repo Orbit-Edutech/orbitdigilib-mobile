@@ -2,6 +2,8 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
 import '../pages/about-app/aboud_app_page.dart';
+import '../pages/about-library/about_library_page.dart';
+import '../pages/about-library/binding/about_library_binding.dart';
 import '../pages/auth/auth_library_page.dart';
 import '../pages/auth/auth_user_page.dart';
 import '../pages/auth/binding/auth_binding.dart';
@@ -82,6 +84,9 @@ class AppRoutes {
 
   /// /about-app
   static const String aboutApp = "/about-app";
+
+  /// /about-library
+  static const String aboutLibrary = "/about-library";
 
   static final pages = <GetPage>[
     GetPage(
@@ -197,6 +202,13 @@ class AppRoutes {
     GetPage(
       name: aboutApp,
       page: () => const AboutAppPage(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: aboutLibrary,
+      page: () => const AboutLibraryPage(),
+      binding: AboutLibraryBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

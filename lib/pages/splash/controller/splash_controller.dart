@@ -8,6 +8,7 @@ import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/shared_preferences_manager.dart';
+import '../widget/splash_error_dialog.dart';
 
 class SplashController extends GetxController {
   Rx<bool> isNoInternet = false.obs;
@@ -23,8 +24,10 @@ class SplashController extends GetxController {
       Get.offAllNamed(AppRoutes.navigator);
     } else {
       if (response.error == ResponseStatus.connectionError) {
-        isNoInternet.value = true;
-        buttonState.value = ButtonState.enable;
+        Get.dialog(
+          const SplashErrorDialog(),
+          barrierDismissible: false,
+        );
       } else {
         Get.offAllNamed(AppRoutes.authLibrary);
       }

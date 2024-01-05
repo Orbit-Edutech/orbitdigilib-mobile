@@ -21,7 +21,7 @@ class AboutAppDetail extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Dirilis tanggal", style: AppTextStyle.ts10Light),
+                  Text("Dirilis tanggal", style: AppTextStyle.ts10Bold),
                   Text("1 Januari 2024", style: AppTextStyle.ts10Reg),
                 ],
               ),
@@ -30,7 +30,7 @@ class AboutAppDetail extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Diupdate tanggal", style: AppTextStyle.ts10Light),
+                  Text("Diupdate tanggal", style: AppTextStyle.ts10Bold),
                   Text("10 Januari 2024", style: AppTextStyle.ts10Reg),
                 ],
               ),

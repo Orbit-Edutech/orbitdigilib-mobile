@@ -4,7 +4,10 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import '../pages/auth/auth_library_page.dart';
 import '../pages/auth/auth_user_page.dart';
 import '../pages/auth/binding/auth_binding.dart';
+import '../pages/books/binding/books_binding.dart';
 import '../pages/books/books_page.dart';
+import '../pages/category/binding/category_binding.dart';
+import '../pages/category/category_page.dart';
 import '../pages/highlight/highlight_page.dart';
 import '../pages/index/binding/index_binding.dart';
 import '../pages/index/index_page.dart';
@@ -58,6 +61,9 @@ class AppRoutes {
 
   /// /books
   static const String books = "/books";
+
+  /// /category
+  static const String category = "/category";
 
   /// /wishlist
   static const String wishlist = "/wishlist";
@@ -141,6 +147,14 @@ class AppRoutes {
     GetPage(
       name: books,
       page: () => const BooksPage(),
+      binding: BooksBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: category,
+      page: () => const CategoryPage(),
+      binding: CategoryBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

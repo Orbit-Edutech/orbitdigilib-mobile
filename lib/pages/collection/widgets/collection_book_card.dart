@@ -120,7 +120,12 @@ class CollectionBookCard extends StatelessWidget {
                                       : Colors.green,
                             ),
                           ),
-                        )
+                        ),
+                        HGap.xs,
+                        Text(
+                          "Hal - 213",
+                          style: AppTextStyle.ts10Light.copyWith(color: AppColor.grey),
+                        ),
                       ],
                     ),
                   ],

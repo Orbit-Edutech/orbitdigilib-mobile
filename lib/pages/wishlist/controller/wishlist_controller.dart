@@ -23,6 +23,7 @@ class WishlistController extends GetxController {
   Future onInit() async {
     wishlist.value == null;
     filteredWishlist.value == null;
+    textController.clear();
     final response = await getAllWishlist();
     if (response.data != null) {
       wishlist.value = response.data?.listWishlist;

@@ -51,4 +51,7 @@ class APIPath {
 
   /// /wishlist/{id}
   static String wishlistGetOne(String id) => "/wishlist/$id";
+
+  /// /faq
+  static const faq = "/faq";
 }

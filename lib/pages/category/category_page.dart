@@ -7,6 +7,7 @@ import 'package:get/route_manager.dart';
 import '../../api/kategori-perpus/model/model_kategori_perpus_all.dart' as k;
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
+import '../../routes/app_routes.dart';
 import '../../shared/widget/app_textfield.dart';
 import '../../shared/widget/book_card.dart';
 import '../../shared/widget/book_card_skeleton.dart';
@@ -126,7 +127,7 @@ class CategoryPage extends StatelessWidget {
                           harga: '1',
                           copy: '2',
                           isWishlist: false,
-                          onTap: () {},
+                          onTap: () => Get.toNamed(AppRoutes.book, arguments: "payload"),
                           onChangeWishlist: () {},
                         );
                       },

@@ -6,9 +6,9 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 
-import '../../../api/buku/model/model_all_buku.dart';
+import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
-import '../../../api/buku/data/buku_get_all.dart';
+import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
 
@@ -27,7 +27,7 @@ class CategoryController extends GetxController {
     final KategoriBukuPerpustakaan category = Get.arguments;
     log(category.toRawJson());
     final qp = {"kategoriBukuPerpustakaanId": category.id};
-    final response = await getAllBuku(qp);
+    final response = await getAllBukuPerpustakaan(qp);
     if (response.data != null) {
       log(response.data!.toRawJson());
       books.value = response.data!.payload;

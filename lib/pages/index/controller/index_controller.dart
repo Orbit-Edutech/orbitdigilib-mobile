@@ -6,8 +6,8 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../api/api_client.dart';
-import '../../../api/buku/data/buku_get_all.dart';
-import '../../../api/buku/model/model_all_buku.dart';
+import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
+import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 import '../../../api/kategori-perpus/data/get_all_kategori_perpus.dart';
 import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
 import '../../../api/perpustakaan/data/perpustakaan_get_one.dart';
@@ -72,7 +72,7 @@ class IndexController extends GetxController {
           }
         }
       }),
-      getAllBuku({"isPin": true}).then((res) {
+      getAllBukuPerpustakaan({"isPin": true}).then((res) {
         if (res.data != null) {
           pinnedBooks.value = res.data?.payload;
         } else {
@@ -83,7 +83,7 @@ class IndexController extends GetxController {
           }
         }
       }),
-      getAllBuku().then((res) {
+      getAllBukuPerpustakaan().then((res) {
         if (res.data != null) {
           allBooks.value = res.data!.payload;
           log(res.data!.toRawJson());

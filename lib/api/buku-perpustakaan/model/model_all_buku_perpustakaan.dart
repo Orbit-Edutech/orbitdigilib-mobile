@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class ModelAllBuku {
+class ModelAllBukuPerpustakaan {
   final int? totalAllData;
   final int? totalData;
   final int? limit;
@@ -11,7 +11,7 @@ class ModelAllBuku {
   final dynamic previousPage;
   final List<Payload>? payload;
 
-  ModelAllBuku({
+  ModelAllBukuPerpustakaan({
     this.totalAllData,
     this.totalData,
     this.limit,
@@ -23,7 +23,7 @@ class ModelAllBuku {
     this.payload,
   });
 
-  ModelAllBuku copyWith({
+  ModelAllBukuPerpustakaan copyWith({
     int? totalAllData,
     int? totalData,
     int? limit,
@@ -34,7 +34,7 @@ class ModelAllBuku {
     dynamic previousPage,
     List<Payload>? payload,
   }) =>
-      ModelAllBuku(
+      ModelAllBukuPerpustakaan(
         totalAllData: totalAllData ?? this.totalAllData,
         totalData: totalData ?? this.totalData,
         limit: limit ?? this.limit,
@@ -46,11 +46,11 @@ class ModelAllBuku {
         payload: payload ?? this.payload,
       );
 
-  factory ModelAllBuku.fromRawJson(String str) => ModelAllBuku.fromJson(json.decode(str));
+  factory ModelAllBukuPerpustakaan.fromRawJson(String str) => ModelAllBukuPerpustakaan.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ModelAllBuku.fromJson(Map<String, dynamic> json) => ModelAllBuku(
+  factory ModelAllBukuPerpustakaan.fromJson(Map<String, dynamic> json) => ModelAllBukuPerpustakaan(
         totalAllData: json["totalAllData"],
         totalData: json["totalData"],
         limit: json["limit"],

@@ -21,8 +21,8 @@ class IndexRecommendation extends StatelessWidget {
     final theme = Theme.of(context);
     return Obx(() {
       final controller = Get.find<IndexController>();
-      final _ = controller.pinnedBooks.value?.toList();
-      // if (b?.isEmpty ?? true) return const SizedBox();
+      final payloads = controller.pinnedBooks.value?.toList();
+      if (payloads?.isEmpty ?? true) return const SizedBox();
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,15 +51,15 @@ class IndexRecommendation extends StatelessWidget {
             padding: const EdgeInsets.all(Sizes.m),
             child: Row(
               children: [
-                for (var _ in [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]) ...[
+                for (var payload in payloads!) ...[
                   BookCard(
-                    judul: "Lorem Ipsum Dolor Sit Amet",
-                    penulis: "Aku Ready",
-                    idSampul: '0696f2d7-942f-4e48-94ed-ef10d266263a',
-                    harga: '1',
-                    copy: '2',
+                    judul: payload.buku?.judul ?? '-',
+                    penulis: payload.buku?.penulis ?? '-',
+                    idSampul: payload.buku?.assetSampulId ?? '-',
+                    harga: payload.buku?.hargaSewa ?? '-',
+                    copy: "${payload.jumlahSiapPinjam ?? '-'}",
                     isWishlist: false,
-                    onTap: () {},
+                    onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                     onChangeWishlist: () {},
                   ),
                   HGap.r

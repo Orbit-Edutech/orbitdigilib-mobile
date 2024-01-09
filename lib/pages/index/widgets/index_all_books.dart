@@ -43,7 +43,7 @@ class IndexAllBooks extends StatelessWidget {
                 copy: '1',
                 harga: "20",
                 isWishlist: true,
-                onTap: () {},
+                onTap: () => Get.toNamed(AppRoutes.book, arguments: "payload"),
                 onChangeWishlist: () {},
               );
             },

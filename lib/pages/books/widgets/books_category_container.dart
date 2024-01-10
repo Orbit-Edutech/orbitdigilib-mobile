@@ -6,6 +6,7 @@ import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
 import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 import '../../../api/buku-perpustakaan/model/model_categories_books.dart';
 import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
+import '../../../api/wishlist/model/model_wishlist_all.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
@@ -113,12 +114,13 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
               if (books != null && books!.isNotEmpty) ...[
                 for (var payload in books!) ...[
                   BookCard(
+                    bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
+                    id: payload.buku?.id ?? "-",
                     judul: payload.buku?.judul ?? "-",
                     penulis: payload.buku?.penulis ?? "-",
                     idSampul: payload.buku?.assetSampulId ?? "",
-                    harga: payload.buku?.hargaSewa ?? "-",
-                    copy: "${payload.jumlahSoftCopy ?? '-'}",
-                    isWishlist: true,
+                    copy: "${payload.jumlahSiapPinjam ?? '-'}",
+                    harga: (int.parse(payload.buku?.hargaSewa ?? "0") / 100).toString(),
                     onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                     onChangeWishlist: () {},
                   ),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -26,7 +24,6 @@ class BooksController extends GetxController {
     getAllKategoriPerpus().then((res) {
       if (res.data != null) {
         categories.value = res.data?.listKategoriBukuPerpustakaan;
-        log(res.data!.toRawJson().toString());
       } else {
         if (res.error == ResponseStatus.connectionError) {
           showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");

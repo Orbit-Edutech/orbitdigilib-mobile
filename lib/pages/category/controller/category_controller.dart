@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -25,15 +24,12 @@ class CategoryController extends GetxController {
   @override
   Future<void> onInit() async {
     final KategoriBukuPerpustakaan category = Get.arguments;
-    log(category.toRawJson());
     final qp = {"kategoriBukuPerpustakaanId": category.id};
     final response = await getAllBukuPerpustakaan(qp);
     if (response.data != null) {
-      log(response.data!.toRawJson());
       books.value = response.data!.payload;
       filteredBooks.value = books.value;
     } else {
-      log(response.error.toString());
       showSnackbar(
         title: "Error: ${response.statusCode}",
         message: response.error['message'],

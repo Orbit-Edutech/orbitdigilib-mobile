@@ -4,6 +4,7 @@ import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
 
 // import "../../../api/buku/model/model_all_buku.dart";
+import "../../../api/wishlist/model/model_wishlist_all.dart";
 import "../../../constants/gaps.dart";
 import "../../../constants/sizes.dart";
 import "../../../routes/app_routes.dart";
@@ -53,12 +54,13 @@ class IndexRecommendation extends StatelessWidget {
               children: [
                 for (var payload in payloads!) ...[
                   BookCard(
+                    bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
+                    id: payload.buku?.id ?? "-",
                     judul: payload.buku?.judul ?? '-',
                     penulis: payload.buku?.penulis ?? '-',
                     idSampul: payload.buku?.assetSampulId ?? '-',
-                    harga: payload.buku?.hargaSewa ?? '-',
                     copy: "${payload.jumlahSiapPinjam ?? '-'}",
-                    isWishlist: false,
+                    harga: (int.parse(payload.buku?.hargaSewa ?? "0") / 100).toString(),
                     onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                     onChangeWishlist: () {},
                   ),

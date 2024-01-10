@@ -54,14 +54,23 @@ class APIClient {
 
   Future<APIResponse<T>> _responseHandler<T>(Response response, APIParam<T> param) async {
     final int sc = response.statusCode ?? 0;
-    final jsonBody = response.data is String ? json.decode(response.data) : response.data;
-    final T data = param.fromJson(jsonBody['result'] ?? {});
-    final APIResponse<T> result = APIResponse(
-      data: data,
-      error: null,
-      statusCode: sc,
-    );
-    return result;
+    if (response.data.isNotEmpty) {
+      final jsonBody = response.data is String ? json.decode(response.data) : response.data;
+      final T data = param.fromJson(jsonBody['result'] ?? {});
+      final APIResponse<T> result = APIResponse(
+        data: data,
+        error: null,
+        statusCode: sc,
+      );
+      return result;
+    } else {
+      final APIResponse<T> result = APIResponse(
+        data: param.fromJson({}),
+        error: null,
+        statusCode: sc,
+      );
+      return result;
+    }
   }
 
   Future<APIResponse<T>> _errorHandler<T>(DioException e) async {

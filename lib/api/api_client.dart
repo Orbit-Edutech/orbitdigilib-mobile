@@ -84,13 +84,14 @@ class APIClient {
     }
   }
 
-  Future<APIResponse<T>> get<T>(APIParam<T> param) async {
+  Future<APIResponse<T>> get<T>(APIParam<T> param, [CancelToken? cancelToken]) async {
     try {
       final response = await _dio.get(
         param.path,
         data: param.data,
         queryParameters: param.queryParameters,
         options: param.options,
+        cancelToken: cancelToken,
         onReceiveProgress: param.onReceiveProgress,
       );
       final APIResponse<T> result = await _responseHandler<T>(response, param);
@@ -101,13 +102,14 @@ class APIClient {
     }
   }
 
-  Future<APIResponse<T>> post<T>(APIParam<T> param) async {
+  Future<APIResponse<T>> post<T>(APIParam<T> param, [CancelToken? cancelToken]) async {
     try {
       final response = await _dio.post(
         param.path,
         data: param.data,
         queryParameters: param.queryParameters,
         options: param.options,
+        cancelToken: cancelToken,
         onSendProgress: param.onSendProgress,
         onReceiveProgress: param.onReceiveProgress,
       );
@@ -119,13 +121,14 @@ class APIClient {
     }
   }
 
-  Future<APIResponse<T>> patch<T>(APIParam<T> param) async {
+  Future<APIResponse<T>> patch<T>(APIParam<T> param, [CancelToken? cancelToken]) async {
     try {
       final response = await _dio.patch(
         param.path,
         data: param.data,
         queryParameters: param.queryParameters,
         options: param.options,
+        cancelToken: cancelToken,
         onSendProgress: param.onSendProgress,
         onReceiveProgress: param.onReceiveProgress,
       );
@@ -137,13 +140,14 @@ class APIClient {
     }
   }
 
-  Future<APIResponse<T>> put<T>(APIParam<T> param) async {
+  Future<APIResponse<T>> put<T>(APIParam<T> param, [CancelToken? cancelToken]) async {
     try {
       final response = await _dio.put(
         param.path,
         data: param.data,
         queryParameters: param.queryParameters,
         options: param.options,
+        cancelToken: cancelToken,
         onSendProgress: param.onSendProgress,
         onReceiveProgress: param.onReceiveProgress,
       );
@@ -155,13 +159,14 @@ class APIClient {
     }
   }
 
-  Future<APIResponse<T>> delete<T>(APIParam<T> param) async {
+  Future<APIResponse<T>> delete<T>(APIParam<T> param, [CancelToken? cancelToken]) async {
     try {
       final response = await _dio.delete(
         param.path,
         data: param.data,
         queryParameters: param.queryParameters,
         options: param.options,
+        cancelToken: cancelToken,
       );
       final APIResponse<T> result = await _responseHandler<T>(response, param);
       return result;

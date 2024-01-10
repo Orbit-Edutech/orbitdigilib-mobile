@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,9 +20,10 @@ class WishlistButton extends StatefulWidget {
 }
 
 class _WishlistButtonState extends State<WishlistButton> with SingleTickerProviderStateMixin {
+  CancelToken postCancelToken = CancelToken();
+  CancelToken delCancelToken = CancelToken();
   Timer? timer;
   bool? isWishlist;
-  int tapCount = 0;
   final wishlistController = Get.find<WishlistController>();
 
   late AnimationController wishlistAnimationController = AnimationController(
@@ -64,34 +66,32 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
 
   void hitWishlistEndPoint(WishlistController controller) async {
     if (timer?.isActive ?? true) timer?.cancel();
-    tapCount++;
-    timer = Timer(const Duration(milliseconds: 100), () async {
-      if (tapCount % 2 != 0) {
-        tapCount = 0;
-        if (controller.wishlist.value?.firstWhereOrNull((wishlist) {
-              final result = wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id;
-              return result;
-            }) !=
-            null) {
-          final filteredWishlist = controller.filteredWishlist.value;
-          filteredWishlist?.removeWhere(
-            (wishlist) => wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id,
-          );
-          await deleteOneWishlist(widget.bukuPerpustakaan.id!);
-          controller.filteredWishlist.value = filteredWishlist;
-          controller.update();
-        } else {
-          final response = await createOneWishlist(widget.bukuPerpustakaan.id!);
-          if (response.data != null) {
-            final filteredWishlist = controller.filteredWishlist.value;
-            final wishlist = Wishlist.fromJson({"bukuPerpustakaan": widget.bukuPerpustakaan.toJson()});
-            filteredWishlist?.add(wishlist);
-            controller.filteredWishlist.value = filteredWishlist;
-            controller.update();
-          }
-        }
+    if (controller.wishlist.value?.firstWhereOrNull((wishlist) {
+          final result = wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id;
+          return result;
+        }) !=
+        null) {
+      delCancelToken.cancel();
+      delCancelToken = CancelToken();
+      await deleteOneWishlist(widget.bukuPerpustakaan.id!, delCancelToken);
+      final filteredWishlist = controller.filteredWishlist.value;
+      filteredWishlist?.removeWhere(
+        (wishlist) => wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id,
+      );
+      controller.filteredWishlist.value = filteredWishlist;
+      controller.update();
+    } else {
+      postCancelToken.cancel();
+      postCancelToken = CancelToken();
+      final response = await createOneWishlist(widget.bukuPerpustakaan.id!, postCancelToken);
+      if (response.data != null) {
+        final filteredWishlist = controller.filteredWishlist.value;
+        final wishlist = Wishlist.fromJson({"bukuPerpustakaan": widget.bukuPerpustakaan.toJson()});
+        filteredWishlist?.add(wishlist);
+        controller.filteredWishlist.value = filteredWishlist;
+        controller.update();
       }
-    });
+    }
   }
 
   @override

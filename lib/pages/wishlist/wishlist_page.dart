@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
+import '../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../routes/app_routes.dart';
@@ -136,7 +137,7 @@ class WishlistPage extends StatelessWidget {
                             idSampul: buku?.assetSampulId ?? "-",
                             copy: "${payload.jumlahSiapPinjam ?? '-'}",
                             harga: (int.parse(buku?.hargaSewa ?? "0") / 100).toString(),
-                            onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
+                            onTap: () => Get.toNamed(AppRoutes.book, arguments: Payload.fromJson(payload.toJson())),
                             onChangeWishlist: () {},
                           );
                         },

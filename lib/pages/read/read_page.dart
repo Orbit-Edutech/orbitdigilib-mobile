@@ -24,7 +24,7 @@ class ReadPage extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Baca Buku"),
+        title: const Text("Baca Buku"),
         actions: [
           PopupMenuButton(
             itemBuilder: (context) {
@@ -136,7 +136,6 @@ class ReadPage extends StatelessWidget {
                         flex: 1,
                         child: GestureDetector(
                           onTap: () {
-                            print("Left");
                             controller.pdfController.previousPage();
                           },
                         ),
@@ -145,7 +144,6 @@ class ReadPage extends StatelessWidget {
                         flex: 2,
                         child: GestureDetector(
                           onTap: () {
-                            print(controller.pdfController.getAnnotations().toString());
                             controller.pdfController.removeAllAnnotations();
                             Get.bottomSheet(
                               const ProfileLogoutDialog(),
@@ -164,7 +162,6 @@ class ReadPage extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             controller.pdfController.nextPage();
-                            print("Right");
                           },
                         ),
                       ),

@@ -20,9 +20,8 @@ import '../pages/index/binding/index_binding.dart';
 import '../pages/index/index_page.dart';
 import '../pages/navigator/binding/navigator_binding.dart';
 import '../pages/navigator/navigator_page.dart';
-import '../pages/notifications/binding/notifications_binding.dart';
-import '../pages/notifications/notification_page.dart';
-import '../pages/notifications/notifications_page.dart';
+import '../pages/notification/binding/notifications_binding.dart';
+import '../pages/notification/notifications_page.dart';
 import '../pages/profile/profile_page.dart';
 import '../pages/change-password/binding/change_password_binding.dart';
 import '../pages/change-password/change_password_page.dart';
@@ -58,9 +57,6 @@ class AppRoutes {
 
   /// /notifications
   static const String notifications = "/notifications";
-
-  /// /notification
-  static const String notification = "/notification";
 
   /// /token
   static const String token = "/token";
@@ -157,13 +153,6 @@ class AppRoutes {
     GetPage(
       name: notifications,
       page: () => const NotificationsPage(),
-      binding: NotificationsBinding(),
-      transition: Transition.noTransition,
-      transitionDuration: const Duration(milliseconds: 0),
-    ),
-    GetPage(
-      name: notification,
-      page: () => const NotificationPage(),
       binding: NotificationsBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),

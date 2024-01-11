@@ -26,6 +26,8 @@ import '../pages/notifications/notifications_page.dart';
 import '../pages/profile/profile_page.dart';
 import '../pages/change-password/binding/change_password_binding.dart';
 import '../pages/change-password/change_password_page.dart';
+import '../pages/read/binding/read_binding.dart';
+import '../pages/read/read_page.dart';
 import '../pages/search/binding/seach_binding.dart';
 import '../pages/search/search_page.dart';
 import '../pages/splash/binding/splash_binding.dart';
@@ -71,6 +73,9 @@ class AppRoutes {
 
   /// /book
   static const String book = "/book";
+
+  /// /read
+  static const String read = "/read";
 
   /// /category
   static const String category = "/category";
@@ -174,6 +179,13 @@ class AppRoutes {
       name: book,
       page: () => const BookPage(),
       binding: BookBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: read,
+      page: () => const ReadPage(),
+      binding: ReadBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

@@ -1,118 +1,53 @@
 import 'dart:convert';
 
-class WishlistAll {
-  final List<Wishlist>? listWishlist;
-
-  WishlistAll({
-    this.listWishlist,
-  });
-
-  WishlistAll copyWith({
-    List<Wishlist>? listWishlist,
-  }) =>
-      WishlistAll(
-        listWishlist: listWishlist ?? this.listWishlist,
-      );
-
-  factory WishlistAll.fromRawJson(String str) => WishlistAll.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory WishlistAll.fromJson(Map<String, dynamic> json) => WishlistAll(
-        listWishlist:
-            json["listWishlist"] == null ? [] : List<Wishlist>.from(json["listWishlist"]!.map((x) => Wishlist.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "listWishlist": listWishlist == null ? [] : List<dynamic>.from(listWishlist!.map((x) => x.toJson())),
-      };
-}
-
-class Wishlist {
-  final String? id;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final BukuPerpustakaan? bukuPerpustakaan;
-
-  Wishlist({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.bukuPerpustakaan,
-  });
-
-  Wishlist copyWith({
-    String? id,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    BukuPerpustakaan? bukuPerpustakaan,
-  }) =>
-      Wishlist(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        bukuPerpustakaan: bukuPerpustakaan ?? this.bukuPerpustakaan,
-      );
-
-  factory Wishlist.fromRawJson(String str) => Wishlist.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Wishlist.fromJson(Map<String, dynamic> json) => Wishlist(
-        id: json["id"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        bukuPerpustakaan: json["bukuPerpustakaan"] == null ? null : BukuPerpustakaan.fromJson(json["bukuPerpustakaan"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "bukuPerpustakaan": bukuPerpustakaan?.toJson(),
-      };
-}
-
 class BukuPerpustakaan {
   final String? id;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final Perpustakaan? perpustakaan;
   final Buku? buku;
   final int? jumlahSoftCopy;
   final int? jumlahSiapPinjam;
   final bool? isPin;
   final dynamic kategoriBukuPerpustakaanId;
+  final dynamic kategoriBukuPerpustakaan;
 
   BukuPerpustakaan({
     this.id,
     this.createdAt,
     this.updatedAt,
+    this.perpustakaan,
     this.buku,
     this.jumlahSoftCopy,
     this.jumlahSiapPinjam,
     this.isPin,
     this.kategoriBukuPerpustakaanId,
+    this.kategoriBukuPerpustakaan,
   });
 
   BukuPerpustakaan copyWith({
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
+    Perpustakaan? perpustakaan,
     Buku? buku,
     int? jumlahSoftCopy,
     int? jumlahSiapPinjam,
     bool? isPin,
     dynamic kategoriBukuPerpustakaanId,
+    dynamic kategoriBukuPerpustakaan,
   }) =>
       BukuPerpustakaan(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        perpustakaan: perpustakaan ?? this.perpustakaan,
         buku: buku ?? this.buku,
         jumlahSoftCopy: jumlahSoftCopy ?? this.jumlahSoftCopy,
         jumlahSiapPinjam: jumlahSiapPinjam ?? this.jumlahSiapPinjam,
         isPin: isPin ?? this.isPin,
         kategoriBukuPerpustakaanId: kategoriBukuPerpustakaanId ?? this.kategoriBukuPerpustakaanId,
+        kategoriBukuPerpustakaan: kategoriBukuPerpustakaan ?? this.kategoriBukuPerpustakaan,
       );
 
   factory BukuPerpustakaan.fromRawJson(String str) => BukuPerpustakaan.fromJson(json.decode(str));
@@ -123,22 +58,26 @@ class BukuPerpustakaan {
         id: json["id"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        perpustakaan: json["perpustakaan"] == null ? null : Perpustakaan.fromJson(json["perpustakaan"]),
         buku: json["buku"] == null ? null : Buku.fromJson(json["buku"]),
         jumlahSoftCopy: json["jumlahSoftCopy"],
         jumlahSiapPinjam: json["jumlahSiapPinjam"],
         isPin: json["isPin"],
         kategoriBukuPerpustakaanId: json["kategoriBukuPerpustakaanId"],
+        kategoriBukuPerpustakaan: json["kategoriBukuPerpustakaan"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
+        "perpustakaan": perpustakaan?.toJson(),
         "buku": buku?.toJson(),
         "jumlahSoftCopy": jumlahSoftCopy,
         "jumlahSiapPinjam": jumlahSiapPinjam,
         "isPin": isPin,
         "kategoriBukuPerpustakaanId": kategoriBukuPerpustakaanId,
+        "kategoriBukuPerpustakaan": kategoriBukuPerpustakaan,
       };
 }
 
@@ -331,5 +270,56 @@ class Penerbit {
         "noTelepon": noTelepon,
         "deskripsi": deskripsi,
         "tahunBerdiri": tahunBerdiri,
+      };
+}
+
+class Perpustakaan {
+  final String? id;
+  final String? nama;
+  final String? noTelepon;
+  final int? tahunBerdiri;
+  final String? warnaDasar;
+
+  Perpustakaan({
+    this.id,
+    this.nama,
+    this.noTelepon,
+    this.tahunBerdiri,
+    this.warnaDasar,
+  });
+
+  Perpustakaan copyWith({
+    String? id,
+    String? nama,
+    String? noTelepon,
+    int? tahunBerdiri,
+    String? warnaDasar,
+  }) =>
+      Perpustakaan(
+        id: id ?? this.id,
+        nama: nama ?? this.nama,
+        noTelepon: noTelepon ?? this.noTelepon,
+        tahunBerdiri: tahunBerdiri ?? this.tahunBerdiri,
+        warnaDasar: warnaDasar ?? this.warnaDasar,
+      );
+
+  factory Perpustakaan.fromRawJson(String str) => Perpustakaan.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Perpustakaan.fromJson(Map<String, dynamic> json) => Perpustakaan(
+        id: json["id"],
+        nama: json["nama"],
+        noTelepon: json["noTelepon"],
+        tahunBerdiri: json["tahunBerdiri"],
+        warnaDasar: json["warnaDasar"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "nama": nama,
+        "noTelepon": noTelepon,
+        "tahunBerdiri": tahunBerdiri,
+        "warnaDasar": warnaDasar,
       };
 }

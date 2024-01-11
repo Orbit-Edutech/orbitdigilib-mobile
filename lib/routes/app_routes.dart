@@ -7,6 +7,8 @@ import '../pages/about-library/binding/about_library_binding.dart';
 import '../pages/auth/auth_library_page.dart';
 import '../pages/auth/auth_user_page.dart';
 import '../pages/auth/binding/auth_binding.dart';
+import '../pages/book/binding/book_binding.dart';
+import '../pages/book/book_page.dart';
 import '../pages/books/binding/books_binding.dart';
 import '../pages/books/books_page.dart';
 import '../pages/category/binding/category_binding.dart';
@@ -24,6 +26,8 @@ import '../pages/notifications/notifications_page.dart';
 import '../pages/profile/profile_page.dart';
 import '../pages/change-password/binding/change_password_binding.dart';
 import '../pages/change-password/change_password_page.dart';
+import '../pages/read/binding/read_binding.dart';
+import '../pages/read/read_page.dart';
 import '../pages/search/binding/seach_binding.dart';
 import '../pages/search/search_page.dart';
 import '../pages/splash/binding/splash_binding.dart';
@@ -66,6 +70,12 @@ class AppRoutes {
 
   /// /books
   static const String books = "/books";
+
+  /// /book
+  static const String book = "/book";
+
+  /// /read
+  static const String read = "/read";
 
   /// /category
   static const String category = "/category";
@@ -162,6 +172,20 @@ class AppRoutes {
       name: books,
       page: () => const BooksPage(),
       binding: BooksBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: book,
+      page: () => const BookPage(),
+      binding: BookBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: read,
+      page: () => const ReadPage(),
+      binding: ReadBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

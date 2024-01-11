@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
@@ -18,7 +16,6 @@ class FAQController extends GetxController {
     final response = await getFaq();
     if (response.data != null) {
       listFAQ.value = response.data!.listFaq;
-      log(listFAQ.value.toString());
     } else {
       if (response.error == ResponseStatus.connectionError) {
         showSnackbar(

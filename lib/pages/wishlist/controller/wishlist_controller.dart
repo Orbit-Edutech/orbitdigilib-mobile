@@ -23,6 +23,7 @@ class WishlistController extends GetxController {
   Future onInit() async {
     wishlist.value == null;
     filteredWishlist.value == null;
+    update();
     textController.clear();
     final response = await getAllWishlist();
     if (response.data != null) {
@@ -31,13 +32,14 @@ class WishlistController extends GetxController {
     } else {
       showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan");
     }
+    update();
     super.onInit();
   }
 
   void sort() {
     filteredWishlist.value?.sort((a, b) {
-      final second = b.buku?.judul ?? "";
-      final first = a.buku?.judul ?? "";
+      final second = b.bukuPerpustakaan?.buku?.judul ?? "";
+      final first = a.bukuPerpustakaan?.buku?.judul ?? "";
       return asc.value ? second.compareTo(first) : first.compareTo(second);
     });
     asc.value = !asc.value;
@@ -48,7 +50,7 @@ class WishlistController extends GetxController {
     _timer = Timer(const Duration(milliseconds: 250), () {
       bool isOnSearch = text != "";
       filteredWishlist.value = wishlist.value?.where((wishlist) {
-        final String judul = (wishlist.buku?.judul ?? "").toLowerCase();
+        final String judul = (wishlist.bukuPerpustakaan?.buku?.judul ?? "").toLowerCase();
         final String keyword = text.toLowerCase();
         bool searchedItem = judul.contains(keyword);
         return isOnSearch ? searchedItem : true;

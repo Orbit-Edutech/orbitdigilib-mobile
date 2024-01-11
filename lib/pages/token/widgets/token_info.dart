@@ -35,6 +35,7 @@ class TokenInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // TODO: Cek revisi dari Pak Zaky di figma 8 Des 2024
           Text(
             "Anda bisa mendapatkan Voucher Token DIGILIB melalui beberapa platform dibawah",
             style: AppTextStyle.ts14Reg,

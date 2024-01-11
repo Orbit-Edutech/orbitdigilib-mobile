@@ -32,18 +32,20 @@ class IndexPage extends StatelessWidget {
               await controller.onInit();
               await profileController.onInit();
             },
-            child: const SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: Sizes.m),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: Sizes.m),
               child: Column(
-                children: [
-                  IndexBanner(),
-                  VGap.s,
-                  IndexBalance(),
-                  IndexCategories(),
-                  IndexRecommendation(),
-                  IndexAllBooks(),
-                  VGap.r,
-                ],
+                children: perpustakaan != null
+                    ? [
+                        const IndexBanner(),
+                        VGap.s,
+                        const IndexBalance(),
+                        const IndexCategories(),
+                        const IndexRecommendation(),
+                        const IndexAllBooks(),
+                        VGap.r,
+                      ]
+                    : [],
               ),
             ),
           ),

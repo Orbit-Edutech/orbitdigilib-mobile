@@ -4,6 +4,7 @@ import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
 
 // import "../../../api/buku/model/model_all_buku.dart";
+import "../../../api/wishlist/model/model_wishlist_all.dart";
 import "../../../constants/gaps.dart";
 import "../../../constants/sizes.dart";
 import "../../../routes/app_routes.dart";
@@ -21,8 +22,8 @@ class IndexRecommendation extends StatelessWidget {
     final theme = Theme.of(context);
     return Obx(() {
       final controller = Get.find<IndexController>();
-      final _ = controller.pinnedBooks.value?.toList();
-      // if (b?.isEmpty ?? true) return const SizedBox();
+      final payloads = controller.pinnedBooks.value?.toList();
+      if (payloads?.isEmpty ?? true) return const SizedBox();
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,15 +52,16 @@ class IndexRecommendation extends StatelessWidget {
             padding: const EdgeInsets.all(Sizes.m),
             child: Row(
               children: [
-                for (var _ in [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]) ...[
+                for (var payload in payloads!) ...[
                   BookCard(
-                    judul: "Lorem Ipsum Dolor Sit Amet",
-                    penulis: "Aku Ready",
-                    idSampul: '0696f2d7-942f-4e48-94ed-ef10d266263a',
-                    harga: '1',
-                    copy: '2',
-                    isWishlist: false,
-                    onTap: () {},
+                    bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
+                    id: payload.buku?.id ?? "-",
+                    judul: payload.buku?.judul ?? '-',
+                    penulis: payload.buku?.penulis ?? '-',
+                    idSampul: payload.buku?.assetSampulId ?? '-',
+                    copy: "${payload.jumlahSiapPinjam ?? '-'}",
+                    harga: (int.parse(payload.buku?.hargaSewa ?? "0") ~/ 100).toString(),
+                    onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                     onChangeWishlist: () {},
                   ),
                   HGap.r

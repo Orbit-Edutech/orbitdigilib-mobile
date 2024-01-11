@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 
+import '../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
+import '../../routes/app_routes.dart';
 import '../../shared/widget/app_textfield.dart';
 import '../../shared/widget/book_card.dart';
 import '../../shared/widget/book_card_skeleton.dart';
@@ -79,63 +82,68 @@ class WishlistPage extends StatelessWidget {
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.only(bottom: Sizes.m),
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: Obx(() {
-                    final filteredWishlist = controller.filteredWishlist.value;
-                    final _ = controller.asc.value; // Untuk trigger re-render
-                    if (filteredWishlist == null) {
+                  child: GetBuilder<WishlistController>(
+                    builder: (WishlistController c) {
+                      final filteredWishlist = c.filteredWishlist.value;
+                      final _ = c.asc.value; // Untuk trigger re-render
+                      if (filteredWishlist == null) {
+                        return AlignedGridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: 2,
+                          itemCount: 10,
+                          mainAxisSpacing: Sizes.r,
+                          crossAxisSpacing: Sizes.r,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return const BookCardSkeleton();
+                          },
+                        );
+                      }
+                      if (c.wishlist.value?.isEmpty ?? true) {
+                        return const Column(
+                          children: [
+                            VGap.m,
+                            EmptyList(
+                              description: "Anda belum mempunyai wishlist buku",
+                            ),
+                          ],
+                        );
+                      }
+                      if (filteredWishlist.isEmpty) {
+                        return const Column(
+                          children: [
+                            VGap.m,
+                            EmptyList(
+                              description: "Buku yang Anda cari tidak ada",
+                            ),
+                          ],
+                        );
+                      }
                       return AlignedGridView.count(
                         shrinkWrap: true,
                         crossAxisCount: 2,
-                        itemCount: 10,
+                        itemCount: filteredWishlist.length,
                         mainAxisSpacing: Sizes.r,
                         crossAxisSpacing: Sizes.r,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return const BookCardSkeleton();
+                          final payload = filteredWishlist[index].bukuPerpustakaan;
+                          final buku = payload?.buku;
+                          return BookCard(
+                            bukuPerpustakaan: payload!,
+                            id: buku?.id ?? "-",
+                            judul: buku?.judul ?? "-",
+                            penulis: buku?.penulis ?? "-",
+                            idSampul: buku?.assetSampulId ?? "-",
+                            copy: "${payload.jumlahSiapPinjam ?? '-'}",
+                            harga: (int.parse(buku?.hargaSewa ?? "0") ~/ 100).toString(),
+                            onTap: () => Get.toNamed(AppRoutes.book, arguments: Payload.fromJson(payload.toJson())),
+                            onChangeWishlist: () {},
+                          );
                         },
                       );
-                    }
-                    if (controller.wishlist.value?.isEmpty ?? true) {
-                      return const Column(
-                        children: [
-                          VGap.m,
-                          EmptyList(
-                            description: "Anda belum mempunyai wishlist buku",
-                          ),
-                        ],
-                      );
-                    }
-                    if (filteredWishlist.isEmpty) {
-                      return const Column(
-                        children: [
-                          VGap.m,
-                          EmptyList(
-                            description: "Buku yang Anda cari tidak ada",
-                          ),
-                        ],
-                      );
-                    }
-                    return AlignedGridView.count(
-                      shrinkWrap: true,
-                      crossAxisCount: 2,
-                      itemCount: filteredWishlist.length,
-                      mainAxisSpacing: Sizes.r,
-                      crossAxisSpacing: Sizes.r,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final buku = filteredWishlist[index].buku;
-                        return BookCard(
-                          judul: buku?.judul ?? "-",
-                          penulis: buku?.penulis ?? "-",
-                          idSampul: buku?.assetSampulId ?? "-",
-                          harga: "${int.parse(buku?.hargaSewa ?? "0") / 100}",
-                          isWishlist: true,
-                          onTap: () {},
-                          onChangeWishlist: () {},
-                        );
-                      },
-                    );
-                  }),
+                    },
+                  ),
                 ),
               ),
             ),

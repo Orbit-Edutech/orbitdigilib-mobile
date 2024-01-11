@@ -1,13 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../api/api_client.dart';
-import '../../../api/buku/data/buku_get_all.dart';
-import '../../../api/buku/model/model_all_buku.dart';
+import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
+import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 import '../../../api/kategori-perpus/data/get_all_kategori_perpus.dart';
 import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
 import '../../../api/perpustakaan/data/perpustakaan_get_one.dart';
@@ -21,35 +19,7 @@ import '../widgets/index_categories_modal.dart';
 
 class IndexController extends GetxController {
   final Rx<Perpustakaan?> perpustakaan = Rx<Perpustakaan?>(null);
-  // kategori-buku-perpustakaan
   Rx<List<KategoriBukuPerpustakaan>?> categories = Rx<List<KategoriBukuPerpustakaan>?>(null);
-  // List<String> categories = [
-  //   "agama",
-  //   "anak",
-  //   "budaya",
-  //   "fiksi",
-  //   "hankam",
-  //   "hobby",
-  //   "hukum",
-  //   "humaniora",
-  //   "kamus",
-  //   "keluarga",
-  //   "kesehatan",
-  //   "ketrampilan-khusus",
-  //   "komik",
-  //   "lifestyle",
-  //   "medis",
-  //   "pendidikan",
-  //   "politik",
-  //   "psikologi",
-  //   "sains",
-  //   "sastra",
-  //   "sejarah",
-  //   "seni-design",
-  //   "sosial",
-  //   "teknik"
-  // ];
-
   Rx<List<Payload>?> pinnedBooks = Rx<List<Payload>?>(null);
   Rx<List<Payload>?> allBooks = Rx<List<Payload>?>(null);
 
@@ -57,6 +27,7 @@ class IndexController extends GetxController {
 
   @override
   Future onInit() async {
+    perpustakaan.value = null;
     final kode = await SharedPreferencesManager.readPref("kodePerpustakaan");
     final id = await SharedPreferencesManager.readPref("idPerpustakaan");
     debugPrint(id.toString());
@@ -72,7 +43,7 @@ class IndexController extends GetxController {
           }
         }
       }),
-      getAllBuku({"isPin": true}).then((res) {
+      getAllBukuPerpustakaan({"isPin": true}).then((res) {
         if (res.data != null) {
           pinnedBooks.value = res.data?.payload;
         } else {
@@ -83,10 +54,9 @@ class IndexController extends GetxController {
           }
         }
       }),
-      getAllBuku().then((res) {
+      getAllBukuPerpustakaan().then((res) {
         if (res.data != null) {
           allBooks.value = res.data!.payload;
-          log(res.data!.toRawJson());
         } else {
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
@@ -98,7 +68,6 @@ class IndexController extends GetxController {
       getAllKategoriPerpus().then((res) {
         if (res.data != null) {
           categories.value = res.data?.listKategoriBukuPerpustakaan;
-          log(res.data!.toRawJson().toString());
         } else {
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");

@@ -28,7 +28,7 @@ class SearchPage extends StatelessWidget {
         title: const Text("Pencarian"),
         actions: [
           IconButton(
-            onPressed: controller.sort,
+            onPressed: controller.sortBooks,
             icon: Icon(
               Icons.swap_vert_rounded,
               color: calculateLuminance(theme.primaryColor),
@@ -59,6 +59,7 @@ class SearchPage extends StatelessWidget {
           VGap.s,
           Expanded(
             child: Obx(() {
+              final _ = controller.isReversed.value;
               final books = controller.books.value;
               if (books == null) {
                 return ListView.builder(

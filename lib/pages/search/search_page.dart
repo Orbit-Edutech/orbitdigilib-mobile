@@ -135,7 +135,7 @@ class SearchPage extends StatelessWidget {
                         penulis: book?.penulis ?? "-",
                         idSampul: book?.assetSampulId ?? "-",
                         copy: "${books[idx].jumlahSiapPinjam ?? '-'}",
-                        harga: (int.parse(book?.hargaSewa ?? "0") / 100).toString(),
+                        harga: (int.parse(book?.hargaSewa ?? "0") ~/ 100).toString(),
                         onTap: () => Get.toNamed(AppRoutes.book, arguments: books[idx]),
                       ),
                       VGap.s,

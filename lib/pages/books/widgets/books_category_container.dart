@@ -120,7 +120,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                     penulis: payload.buku?.penulis ?? "-",
                     idSampul: payload.buku?.assetSampulId ?? "",
                     copy: "${payload.jumlahSiapPinjam ?? '-'}",
-                    harga: (int.parse(payload.buku?.hargaSewa ?? "0") / 100).toString(),
+                    harga: (int.parse(payload.buku?.hargaSewa ?? "0") ~/ 100).toString(),
                     onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                     onChangeWishlist: () {},
                   ),

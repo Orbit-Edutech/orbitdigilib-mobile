@@ -1,6 +1,9 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
+import '../pages/about-app/aboud_app_page.dart';
+import '../pages/about-library/about_library_page.dart';
+import '../pages/about-library/binding/about_library_binding.dart';
 import '../pages/auth/auth_library_page.dart';
 import '../pages/auth/auth_user_page.dart';
 import '../pages/auth/binding/auth_binding.dart';
@@ -8,6 +11,8 @@ import '../pages/books/binding/books_binding.dart';
 import '../pages/books/books_page.dart';
 import '../pages/category/binding/category_binding.dart';
 import '../pages/category/category_page.dart';
+import '../pages/faq/binding/faq_binding.dart';
+import '../pages/faq/faq_page.dart';
 import '../pages/highlight/highlight_page.dart';
 import '../pages/index/binding/index_binding.dart';
 import '../pages/index/index_page.dart';
@@ -73,6 +78,15 @@ class AppRoutes {
 
   /// /reset-password
   static const String resetPassword = "/reset-password";
+
+  /// /faq
+  static const String faq = "/faq";
+
+  /// /about-app
+  static const String aboutApp = "/about-app";
+
+  /// /about-library
+  static const String aboutLibrary = "/about-library";
 
   static final pages = <GetPage>[
     GetPage(
@@ -175,6 +189,26 @@ class AppRoutes {
       name: resetPassword,
       page: () => const ChangePasswordPage(),
       binding: ChangePasswordBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: faq,
+      page: () => const FAQPage(),
+      binding: FAQBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: aboutApp,
+      page: () => const AboutAppPage(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: aboutLibrary,
+      page: () => const AboutLibraryPage(),
+      binding: AboutLibraryBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

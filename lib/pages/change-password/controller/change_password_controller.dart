@@ -36,10 +36,12 @@ class ChangePasswordController extends GetxController {
       errorMsg.value = "";
       buttonState.value = ButtonState.enable;
     }
+    // TOOD: pass baru gaboleh sama dengan pass lama
     final oldPass = oldPassController.text;
     final newPass = newPassController.text;
     final conPass = conPassController.text;
-    final isValid = (oldPass.isNotEmpty && newPass.isNotEmpty && conPass.isNotEmpty) && (newPass == conPass);
+    final isValid =
+        oldPass.isNotEmpty && newPass.isNotEmpty && conPass.isNotEmpty && newPass == conPass && oldPass != newPass;
     buttonState.value = isValid ? ButtonState.enable : ButtonState.disable;
   }
 

@@ -17,8 +17,6 @@ class NotificationsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Notifikasi (50)"),
       ),
-      // TODO: PAGINASI LIST NOTIFIKASI
-      // TODO: HAPUS DETIL NOTIFIKASI, GANTI JADI SEMACAM READMORE
       body: Column(
         children: [
           InkWell(

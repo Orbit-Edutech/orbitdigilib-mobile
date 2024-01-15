@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 
 import '../../constants/gaps.dart';
@@ -29,15 +30,18 @@ class TokenPage extends StatelessWidget {
           children: [
             VGap.l,
             VGap.l,
-            Text.rich(
-              TextSpan(text: "Token DIGILIB Anda ", children: [
-                TextSpan(
-                  text: "2800",
-                  style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.bold),
-                )
-              ]),
-              style: AppTextStyle.ts16Reg,
-            ),
+            Obx(() {
+              final token = controller.profileController.profile.value?.token;
+              return Text.rich(
+                TextSpan(text: "Token DIGILIB Anda ", children: [
+                  TextSpan(
+                    text: token?.split(".")[0],
+                    style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.bold),
+                  )
+                ]),
+                style: AppTextStyle.ts16Reg,
+              );
+            }),
             VGap.r,
             SvgPicture.asset(
               "assets/illustrations/token.svg",
@@ -72,7 +76,7 @@ class TokenPage extends StatelessWidget {
               children: [
                 AppButton(
                   type: ButtonType.elevated,
-                  onPressed: () {},
+                  onPressed: controller.redeem,
                   child: const Text("Isi Voucher"),
                 ),
                 VGap.s,

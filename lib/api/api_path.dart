@@ -60,4 +60,7 @@ class APIPath {
 
   /// /faq
   static const faq = "/faq";
+
+  /// /voucher/redeem/{kode}
+  static String redeemVoucher(String voucher) => "/voucher/redeem/$voucher";
 }

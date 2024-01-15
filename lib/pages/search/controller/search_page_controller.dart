@@ -42,7 +42,7 @@ class SearchPageController extends GetxController {
       books.value = null;
       Map<String, dynamic> qp = {};
       if (keyword.trim().isNotEmpty) {
-        qp["buku[judul]"] = keyword;
+        qp["buku[judul][like]"] = keyword;
       }
       cancelToken.cancel();
       cancelToken = CancelToken();

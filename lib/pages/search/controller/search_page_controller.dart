@@ -1,32 +1,55 @@
-import 'package:flutter/widgets.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:get/route_manager.dart';
+import 'dart:async';
 
-import '../widgets/search_filter_modal.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
+import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
+import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 
 class SearchPageController extends GetxController {
-  String filterLetter = "";
+  // TODO: Selesaikan Controller ini
+  Rx<List<Payload>?> books = Rx<List<Payload>?>(null);
+  CancelToken cancelToken = CancelToken();
 
   final textController = TextEditingController();
-  final lowerPriceTextController = TextEditingController();
-  final higherPriceTextController = TextEditingController();
-
   final searchFocusNode = FocusNode();
-  final lowerPriceFocusNode = FocusNode();
-  final higherPriceFocusNode = FocusNode();
 
-  void clearPrice() {
-    lowerPriceFocusNode.unfocus();
-    higherPriceFocusNode.unfocus();
-    lowerPriceTextController.clear();
-    higherPriceTextController.clear();
+  Rx<bool> isReversed = false.obs;
+  Timer? _timer;
+
+  @override
+  Future<void> onInit() async {
+    await search("");
+    super.onInit();
   }
 
-  void showFilterModal() {
-    Get.bottomSheet(
-      const SearchFilterModal(),
-      isScrollControlled: true,
-      enableDrag: false,
-    );
+  void sortBooks() {
+    books.value?.sort((a, b) {
+      final hargaSewaTerendah = int.parse(a.buku?.hargaSewa ?? "0");
+      final hargaSewaTertinggi = int.parse(b.buku?.hargaSewa ?? "0");
+      return isReversed.value
+          ? hargaSewaTerendah.compareTo(hargaSewaTertinggi)
+          : hargaSewaTertinggi.compareTo(hargaSewaTerendah);
+    });
+    isReversed.value = !isReversed.value;
+  }
+
+  Future<void> search(String keyword) async {
+    if (_timer?.isActive ?? false) _timer?.cancel();
+    _timer = Timer(const Duration(milliseconds: 500), () async {
+      books.value = null;
+      Map<String, dynamic> qp = {};
+      if (keyword.trim().isNotEmpty) {
+        qp["buku[judul][like]"] = keyword;
+      }
+      cancelToken.cancel();
+      cancelToken = CancelToken();
+      final response = await getAllBukuPerpustakaan(qp, cancelToken);
+      if (response.data != null) {
+        books.value = response.data?.payload;
+      }
+    });
   }
 }

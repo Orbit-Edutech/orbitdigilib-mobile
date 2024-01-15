@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../api/api_path.dart';
-import '../../../api/buku/data/buku_get_all.dart';
-import '../../../api/buku/model/model_all_buku.dart';
-import '../../../api/buku/model/model_categories_books.dart';
+import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
+import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
+import '../../../api/buku-perpustakaan/model/model_categories_books.dart';
 import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
+import '../../../api/wishlist/model/model_wishlist_all.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
@@ -39,7 +40,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
       books = categoryBooks.books;
     } else {
       final qp = {"kategoriBukuPerpustakaanId": widget.category.id};
-      getAllBuku(qp).then((res) {
+      getAllBukuPerpustakaan(qp).then((res) {
         if (res.data != null) {
           if (mounted) {
             setState(() {
@@ -111,15 +112,16 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                 )
               ],
               if (books != null && books!.isNotEmpty) ...[
-                for (var book in books!) ...[
+                for (var payload in books!) ...[
                   BookCard(
-                    judul: book.buku?.judul ?? "-",
-                    penulis: book.buku?.penulis ?? "-",
-                    idSampul: book.buku?.assetSampulId ?? "",
-                    harga: book.buku?.hargaSewa ?? "-",
-                    copy: "${book.jumlahSoftCopy ?? '-'}",
-                    isWishlist: true,
-                    onTap: () {},
+                    bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
+                    id: payload.buku?.id ?? "-",
+                    judul: payload.buku?.judul ?? "-",
+                    penulis: payload.buku?.penulis ?? "-",
+                    idSampul: payload.buku?.assetSampulId ?? "",
+                    copy: "${payload.jumlahSiapPinjam ?? '-'}",
+                    harga: (int.parse(payload.buku?.hargaSewa ?? "0") ~/ 100).toString(),
+                    onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                     onChangeWishlist: () {},
                   ),
                 ]

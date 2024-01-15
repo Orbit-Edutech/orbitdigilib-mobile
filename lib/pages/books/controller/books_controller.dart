@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../api/api_client.dart';
-import '../../../api/buku/model/model_categories_books.dart';
+import '../../../api/buku-perpustakaan/model/model_categories_books.dart';
 import '../../../api/kategori-perpus/data/get_all_kategori_perpus.dart';
 import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
 import '../../../constants/sizes.dart';
@@ -26,7 +24,6 @@ class BooksController extends GetxController {
     getAllKategoriPerpus().then((res) {
       if (res.data != null) {
         categories.value = res.data?.listKategoriBukuPerpustakaan;
-        log(res.data!.toRawJson().toString());
       } else {
         if (res.error == ResponseStatus.connectionError) {
           showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");

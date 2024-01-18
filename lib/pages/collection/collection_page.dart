@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 
+import '../../api/koleksi/model/model_koleksi.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../shared/widget/book_card_skeleton.dart';
@@ -30,7 +31,9 @@ class CollectionPage extends StatelessWidget {
             child: RefreshIndicator(
               onRefresh: controller.onInit,
               child: Obx(() {
-                final books = controller.collectionBooks.value;
+                final filter = controller.filter.value;
+                final books = getBooks(controller, filter);
+                final _ = controller.page.value;
                 if (books == null) {
                   return ListView.builder(
                     padding: const EdgeInsets.all(Sizes.m),
@@ -100,16 +103,20 @@ class CollectionPage extends StatelessWidget {
                   );
                 }
                 return ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  controller: controller.scrollController,
                   padding: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.r),
                   shrinkWrap: true,
                   itemCount: books.length,
                   itemBuilder: (ctx, idx) {
+                    final payload = books[idx];
                     return CollectionBookCard(
                       status: idx % 2 == 0
                           ? "Selesai Dibaca"
                           : idx % 3 == 1
                               ? "Belum Dibaca"
                               : "Belum Selesai",
+                      payload: payload,
                     );
                   },
                 );
@@ -119,5 +126,18 @@ class CollectionPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<Payload>? getBooks(CollectionController controller, String filter) {
+    switch (filter) {
+      case "Pinjam":
+        return controller.allCollections.value?.where((payload) => payload.tipe == "Pinjam").toList();
+      case "Sewa":
+        return controller.allCollections.value?.where((payload) => payload.tipe == "Sewa").toList();
+      case "Beli":
+        return controller.allCollections.value?.where((payload) => payload.tipe == "Beli").toList();
+      default:
+        return controller.allCollections.value;
+    }
   }
 }

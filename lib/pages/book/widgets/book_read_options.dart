@@ -102,7 +102,7 @@ class BookReadOptions extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "Sisa Token ${profileController.profile.value?.token ?? 0} Token",
+                      "Sisa Token Anda ${profileController.profile.value?.token ?? 0}",
                       style: AppTextStyle.ts10Bold,
                     ),
                   ),
@@ -128,14 +128,11 @@ class BookReadOptions extends StatelessWidget {
             VGap.m,
             Obx(() {
               final controller = Get.find<BookController>();
-              final state = controller.optionSelected.value == null ? ButtonState.disable : ButtonState.enable;
+              final state = controller.buttonState.value;
               return AppButton(
                 state: state,
                 type: ButtonType.elevated,
-                onPressed: () {
-                  Get.back();
-                  Get.toNamed(AppRoutes.read);
-                },
+                onPressed: controller.submitOption,
                 child: const Text("Kirim"),
               );
             }),

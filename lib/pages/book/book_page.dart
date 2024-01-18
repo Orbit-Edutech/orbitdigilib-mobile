@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 
+import '../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
+import '../../api/wishlist/model/model_wishlist_all.dart';
+import '../../constants/gaps.dart';
+import '../../shared/widget/wishlist_button.dart';
+import '../../utils/compute_luminance.dart';
 import 'controller/book_controller.dart';
 import 'widgets/book_background_blur.dart';
 import 'widgets/book_cover.dart';
@@ -14,18 +20,18 @@ class BookPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<BookController>();
     final size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
+    final Payload args = Get.arguments;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detail Buku"),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.bookmark_outline_rounded,
-              size: 24,
-            ),
-          )
+          WishlistButton(
+            bukuPerpustakaan: BukuPerpustakaan.fromJson(args.toJson()),
+            color: calculateLuminance(theme.primaryColor),
+          ),
+          HGap.s,
         ],
       ),
       body: Obx(() {

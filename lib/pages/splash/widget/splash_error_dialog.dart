@@ -19,7 +19,8 @@ class SplashErrorDialog extends StatelessWidget {
       child: AlertDialog(
         backgroundColor: AppColor.white,
         title: const Text("Terjadi kesalahan"),
-        content: const Text("Sistem sedang dalam pemeliharaan, atau periksa koneksi Anda"),
+        content: const Text(
+            'Sistem sedang dalam pemeliharaan, atau periksa koneksi Anda. Tunggu beberapa saat lalu "Muat Ulang"'),
         actions: [
           AppButton(
             type: ButtonType.text,

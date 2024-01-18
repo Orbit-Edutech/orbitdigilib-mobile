@@ -5,6 +5,7 @@ import 'package:get/instance_manager.dart';
 
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
+import '../../../shared/widget/app_button.dart';
 import '../../../theme/app_text_stlye.dart';
 import '../controller/book_controller.dart';
 
@@ -26,8 +27,14 @@ class OptionsCard extends StatelessWidget {
     final controller = Get.find<BookController>();
     return Obx(() {
       final isSelected = controller.optionSelected.value == title;
+      final state = controller.buttonState.value;
       return InkWell(
-        onTap: () => controller.optionSelected.value = title,
+        onTap: state == ButtonState.loading
+            ? null
+            : () {
+                controller.optionSelected.value = title;
+                controller.buttonState.value = ButtonState.enable;
+              },
         borderRadius: const BorderRadius.all(Radius.circular(100)),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),

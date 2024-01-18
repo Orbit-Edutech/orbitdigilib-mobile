@@ -46,6 +46,12 @@ class APIPath {
   /// /buku-perpustakaan/{id}
   static oneBuku(String id) => "/buku/$id";
 
+  /// /pinjam
+  static const pinjam = "/pinjam";
+
+  /// /sewa
+  static const sewa = "/sewa";
+
   /// /kategori-buku-perpustakaan
   static const kategoriBukuPerpustakaan = "/kategori-buku-perpustakaan";
 
@@ -60,6 +66,9 @@ class APIPath {
 
   /// /koleksi
   static const koleksi = "/koleksi";
+
+  /// /koleksi/check/{id}
+  static koleksiCheck(String id) => "/koleksi/check/$id";
 
   /// /faq
   static const faq = "/faq";

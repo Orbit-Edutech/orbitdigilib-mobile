@@ -45,7 +45,7 @@ class ReadController extends GetxController {
       AlertDialog(
         backgroundColor: AppColor.white,
         surfaceTintColor: AppColor.white,
-        title: const Text("Cari halaman buku"),
+        title: const Text("Masukan halaman buku"),
         content: AppTextField(
           type: TextFieldType.normal,
           controller: searchPageController,
@@ -53,8 +53,10 @@ class ReadController extends GetxController {
           keyboardType: TextInputType.number,
           isError: false,
           onChanged: (text) {
-            if (int.parse(text) > pdfController.pageCount) {
-              searchPageController.text = pdfController.pageCount.toString();
+            if (text.isNotEmpty) {
+              if (int.parse(text) > pdfController.pageCount) {
+                searchPageController.text = pdfController.pageCount.toString();
+              }
             }
           },
           label: Text(

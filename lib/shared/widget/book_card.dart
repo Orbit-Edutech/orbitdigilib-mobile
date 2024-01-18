@@ -43,7 +43,7 @@ class BookCard extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
           color: Colors.white,
         ),
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Column(
           children: [
             SizedBox(

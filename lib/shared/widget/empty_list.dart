@@ -5,9 +5,10 @@ import '../../constants/gaps.dart';
 import '../../theme/app_text_stlye.dart';
 
 class EmptyList extends StatelessWidget {
-  const EmptyList({super.key, required this.description});
+  const EmptyList({super.key, required this.description, this.textAlign});
 
   final String description;
+  final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,11 @@ class EmptyList extends StatelessWidget {
           fit: BoxFit.cover,
         ),
         VGap.r,
-        Text(description, style: AppTextStyle.ts10Reg),
+        Text(
+          description,
+          style: AppTextStyle.ts10Reg,
+          textAlign: textAlign,
+        ),
       ],
     );
   }

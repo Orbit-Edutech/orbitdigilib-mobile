@@ -41,7 +41,7 @@ class ReadAppBar extends StatelessWidget implements PreferredSizeWidget {
                           children: [
                             Icon(Icons.manage_search_sharp, color: AppColor.black),
                             HGap.s,
-                            Text("Cari halaman"),
+                            Text("Menuju halaman"),
                           ],
                         ),
                       ),

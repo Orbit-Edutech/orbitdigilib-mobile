@@ -24,7 +24,7 @@ class _ReadPageState extends State<ReadPage> {
 
   @override
   void initState() {
-    _methodChannel.invokeMethod("secure", {"isSecure": true});
+    // _methodChannel.invokeMethod("secure", {"isSecure": true});
     super.initState();
   }
 
@@ -97,7 +97,6 @@ class _ReadPageState extends State<ReadPage> {
                 }
               }),
             ),
-            // Expanded(child: PDF)
             Expanded(
               child: Stack(
                 children: [
@@ -110,7 +109,7 @@ class _ReadPageState extends State<ReadPage> {
                       currentSearchTextHighlightColor: theme.primaryColor.withOpacity(.5),
                       otherSearchTextHighlightColor: theme.primaryColor.withOpacity(.25),
                       scrollDirection: PdfScrollDirection.horizontal,
-                      pageLayoutMode: PdfPageLayoutMode.single,
+                      pageLayoutMode: PdfPageLayoutMode.continuous,
                       onPageChanged: (details) => controller.currentPage.value = details.newPageNumber,
                       enableDoubleTapZooming: false,
                       pageSpacing: 0,
@@ -130,7 +129,11 @@ class _ReadPageState extends State<ReadPage> {
                           flex: 1,
                           child: GestureDetector(
                             onTap: () {
-                              controller.pdfController.previousPage();
+                              if (controller.isFullScreen.value) {
+                                controller.pdfController.previousPage();
+                              } else {
+                                controller.isFullScreen.value = true;
+                              }
                             },
                           ),
                         ),
@@ -148,7 +151,11 @@ class _ReadPageState extends State<ReadPage> {
                           flex: 1,
                           child: GestureDetector(
                             onTap: () {
-                              controller.pdfController.nextPage();
+                              if (controller.isFullScreen.value) {
+                                controller.pdfController.nextPage();
+                              } else {
+                                controller.isFullScreen.value = true;
+                              }
                             },
                           ),
                         ),
@@ -158,25 +165,38 @@ class _ReadPageState extends State<ReadPage> {
                 ],
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: Sizes.r,
-                horizontal: Sizes.m,
-              ),
-              decoration: const BoxDecoration(
-                color: AppColor.white,
-                border: Border(
-                  top: BorderSide(color: AppColor.lightGrey),
+            Obx(() {
+              final currentPage = controller.currentPage.value;
+              final isFullScreen = controller.isFullScreen.value;
+              return AnimatedContainer(
+                height: isFullScreen ? 0 : kToolbarHeight,
+                duration: const Duration(milliseconds: 150),
+                padding: const EdgeInsets.symmetric(
+                  vertical: Sizes.r,
+                  horizontal: Sizes.m,
                 ),
-              ),
-              child: Obx(() {
-                final currentPage = controller.currentPage.value;
-                return Text(
-                  currentPage.toString(),
-                  textAlign: TextAlign.center,
-                );
-              }),
-            ),
+                decoration: const BoxDecoration(
+                  color: AppColor.white,
+                  border: Border(
+                    top: BorderSide(color: AppColor.lightGrey),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      Icons.star,
+                      color: currentPage % 2 == 0 ? Colors.black : Colors.transparent,
+                    ),
+                    Text(
+                      currentPage.toString(),
+                      textAlign: TextAlign.center,
+                    ),
+                    const Icon(Icons.star, color: Colors.transparent),
+                  ],
+                ),
+              );
+            }),
           ],
         ),
       ),

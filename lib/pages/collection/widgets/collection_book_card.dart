@@ -23,7 +23,8 @@ class CollectionBookCard extends StatelessWidget {
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
         ),
-        clipBehavior: Clip.antiAlias,
+        margin: const EdgeInsets.only(bottom: Sizes.r),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Row(
           children: [
             Container(
@@ -32,16 +33,15 @@ class CollectionBookCard extends StatelessWidget {
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
               ),
-              clipBehavior: Clip.antiAlias,
-              child: Column(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
                 children: [
-                  Expanded(
-                    child: Image(
-                      image: NetworkImage(APIPath.publicAsset("0696f2d7-942f-4e48-94ed-ef10d266263a")),
-                      fit: BoxFit.cover,
-                      width: 75,
-                      height: 100,
-                    ),
+                  Image(
+                    image: NetworkImage(APIPath.publicAsset("0696f2d7-942f-4e48-94ed-ef10d266263a")),
+                    fit: BoxFit.cover,
+                    width: 75,
+                    height: 100,
                   ),
                   Container(
                     width: 75,
@@ -123,7 +123,7 @@ class CollectionBookCard extends StatelessWidget {
                         ),
                         HGap.xs,
                         Text(
-                          "Hal - 213",
+                          "Hal - 213 / 250",
                           style: AppTextStyle.ts10Light.copyWith(color: AppColor.grey),
                         ),
                       ],

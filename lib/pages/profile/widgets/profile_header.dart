@@ -67,7 +67,7 @@ class ProfileHeader extends StatelessWidget {
                     ),
                     width: 50,
                     height: 50,
-                    clipBehavior: Clip.antiAlias,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: Image.network(
                       APIPath.publicAsset(controller.profile.value?.urlFotoProfil ?? "550c1a88-bfe5-467f-9b3e-05abb74de218"),
                       fit: BoxFit.cover,

@@ -23,6 +23,7 @@ class ReadController extends GetxController {
   Rx<int> currentPage = 1.obs;
   Rx<bool> isFullScreen = false.obs;
   Rx<bool> isOnSearch = false.obs;
+  Rx<bool> noResultFound = false.obs;
 
   void onPageChanged(int page) {
     currentPage.value = page;

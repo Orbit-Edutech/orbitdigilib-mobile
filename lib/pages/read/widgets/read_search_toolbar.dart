@@ -102,6 +102,7 @@ class SearchToolbarState extends State<SearchToolbar> {
             onChanged: (text) {
               if (_editingController.text.isNotEmpty) {
                 setState(() {});
+                widget.onTap?.call('onChanged');
               }
             },
             onFieldSubmitted: (String value) {

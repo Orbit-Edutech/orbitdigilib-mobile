@@ -43,7 +43,7 @@ class APIPath {
   /// /buku-perpustakaan/{id}
   static oneBukuPerpus(String id) => "/buku-perpustakaan/$id";
 
-  /// /buku-perpustakaan/{id}
+  /// /buku/{id}
   static oneBuku(String id) => "/buku/$id";
 
   /// /pinjam

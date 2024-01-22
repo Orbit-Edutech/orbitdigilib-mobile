@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 
 import '../../../api/api_path.dart';
 import '../../../api/koleksi/model/model_koleksi.dart';
@@ -8,6 +9,7 @@ import '../../../constants/sizes.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
 import '../../../utils/is_today.dart';
+import 'collection_read_dialog.dart';
 
 class CollectionBookCard extends StatelessWidget {
   const CollectionBookCard({super.key, required this.status, required this.payload});
@@ -26,7 +28,16 @@ class CollectionBookCard extends StatelessWidget {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
         borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
-        onTap: () {},
+        onTap: () {
+          Get.bottomSheet(
+            CollectionReadDialog(
+              buku: payload.buku,
+              type: payload.tipe ?? "-",
+            ),
+            enableDrag: false,
+            isScrollControlled: true,
+          );
+        },
         child: Row(
           children: [
             Container(

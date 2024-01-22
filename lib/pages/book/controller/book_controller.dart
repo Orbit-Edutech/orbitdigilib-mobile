@@ -10,6 +10,7 @@ import '../../../api/buku-perpustakaan/model/model_one_buku_perpustakaan.dart';
 import '../../../api/koleksi/data/check_collection.dart';
 import '../../../api/transaksi/data/pinjam_create_one.dart';
 import '../../../api/transaksi/data/sewa_create_one.dart';
+import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
@@ -68,6 +69,7 @@ class BookController extends GetxController {
     final response = await sewaCreateOne(args?.buku?.id ?? "");
     if (response.data != null) {
       showSnackbar(message: "Buku berhasil ditambahkan ke Koleksi!", backgroundColor: AppColor.green);
+      Get.offNamed(AppRoutes.read, arguments: book.value?.buku?.id);
     } else {
       showSnackbar(message: response.error["message"], backgroundColor: AppColor.red);
     }

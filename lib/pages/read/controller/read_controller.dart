@@ -4,11 +4,17 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+import '../../../api/buku/data/buku_get_one.dart';
+import '../../../api/buku/model/model_buku.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../shared/widget/app_textfield.dart';
+import '../../../shared/widget/show_snackbar.dart';
+import '../../../sql/sql_constants.dart';
+import '../../../sql/sql_helper.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../../utils/get_tokens.dart';
 import '../widgets/read_menu.dart';
 
 class ReadController extends GetxController {
@@ -24,6 +30,24 @@ class ReadController extends GetxController {
   Rx<bool> isFullScreen = false.obs;
   Rx<bool> isOnSearch = false.obs;
   Rx<bool> noResultFound = false.obs;
+
+  Rx<Tokens?> tokens = Rx<Tokens?>(null);
+  Rx<ModelBuku?> buku = Rx<ModelBuku?>(null);
+
+  @override
+  Future<void> onInit() async {
+    final String? args = Get.arguments;
+    tokens.value = await getTokens();
+    final response = await getOneBuku(args ?? "");
+    final a = await SQLHelper().read(SQLParam(table: SQLConstants().table.buku));
+    print(a.toString());
+    if (response.data != null) {
+      buku.value = response.data;
+    } else {
+      showSnackbar(message: "Terjadi kesalahan", backgroundColor: AppColor.red);
+    }
+    super.onInit();
+  }
 
   void onPageChanged(int page) {
     currentPage.value = page;

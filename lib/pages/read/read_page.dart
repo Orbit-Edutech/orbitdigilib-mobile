@@ -5,6 +5,7 @@ import 'package:get/instance_manager.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
+import '../../api/api_path.dart';
 import '../../constants/sizes.dart';
 import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
@@ -57,6 +58,7 @@ class _ReadPageState extends State<ReadPage> {
                 ),
               ),
               child: Obx(() {
+                final buku = controller.buku.value;
                 final isOnSearch = controller.isOnSearch.value;
                 if (isOnSearch) {
                   return SearchToolbar(
@@ -89,16 +91,16 @@ class _ReadPageState extends State<ReadPage> {
                     child: Column(
                       children: [
                         Text(
-                          "Judul Dari Buku Lorem Ipsum",
+                          buku?.judul ?? "-",
                           style: AppTextStyle.ts16Bold,
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          "GoodNovel",
+                          buku?.penulis ?? "-",
                           style: AppTextStyle.ts14Reg,
                         ),
                         Text(
-                          "214 halaman",
+                          "${buku?.jumlahHalaman ?? "-"} halaman",
                           style: AppTextStyle.ts10Light.copyWith(color: AppColor.grey),
                         ),
                       ],
@@ -110,12 +112,16 @@ class _ReadPageState extends State<ReadPage> {
             Expanded(
               child: Obx(() {
                 final noResultFound = controller.noResultFound.value;
+                final book = controller.buku.value;
+                final tokens = controller.tokens.value;
+                if (tokens == null || book == null) return const SizedBox();
                 return Stack(
                   children: [
                     SfPdfViewerTheme(
                       data: SfPdfViewerThemeData(backgroundColor: AppColor.white),
-                      child: SfPdfViewer.asset(
-                        "assets/icons/s.pdf",
+                      child: SfPdfViewer.network(
+                        APIPath.asset(book.assetBukuId ?? ""),
+                        headers: {"Authorization": 'Bearer ${tokens.access}'},
                         key: pdfKey,
                         controller: controller.pdfController,
                         currentSearchTextHighlightColor: theme.primaryColor.withOpacity(.5),

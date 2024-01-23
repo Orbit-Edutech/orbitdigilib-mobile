@@ -38,7 +38,7 @@ class IndexRecommendation extends StatelessWidget {
                   style: AppTextStyle.ts14Bold,
                 ),
                 GestureDetector(
-                  onTap: () => Get.toNamed(AppRoutes.highlight),
+                  onTap: () => Get.toNamed(AppRoutes.recommendation, arguments: payloads),
                   child: Text(
                     "Lihat Semua",
                     style: AppTextStyle.ts12Reg.copyWith(color: theme.primaryColor),

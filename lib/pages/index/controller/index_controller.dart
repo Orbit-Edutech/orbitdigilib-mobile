@@ -23,8 +23,12 @@ class IndexController extends GetxController {
   Rx<List<KategoriBukuPerpustakaan>?> categories = Rx<List<KategoriBukuPerpustakaan>?>(null);
   Rx<List<Payload>?> pinnedBooks = Rx<List<Payload>?>(null);
   Rx<List<Payload>?> allBooks = Rx<List<Payload>?>(null);
+  Rx<List<Payload>?> promoBooks = Rx<List<Payload>?>(null);
 
   Rx<bool> isBalanceVisible = false.obs;
+  Rx<bool> isLoadedMore = false.obs;
+  Rx<int> promoPage = 1.obs;
+  final scrollController = ScrollController();
 
   @override
   Future onInit() async {
@@ -47,6 +51,17 @@ class IndexController extends GetxController {
       getAllBukuPerpustakaan({"isPin": true}).then((res) {
         if (res.data != null) {
           pinnedBooks.value = res.data?.payload;
+        } else {
+          if (res.error == ResponseStatus.connectionError) {
+            showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
+          } else {
+            showSnackbar(backgroundColor: AppColor.red, title: "Error ${res.statusCode}", message: res.error["message"]);
+          }
+        }
+      }),
+      getAllBukuPerpustakaan({"buku[promo][ne]": "null"}).then((res) {
+        if (res.data != null) {
+          promoBooks.value = res.data?.payload;
         } else {
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
@@ -78,6 +93,7 @@ class IndexController extends GetxController {
         }
       }),
     ]);
+    scrollController.addListener(loadMorePromo);
     super.onInit();
   }
 
@@ -96,6 +112,23 @@ class IndexController extends GetxController {
   void showLargeBanner(String bannerId) {
     Get.dialog(
       LargeBanner(bannerId: bannerId),
+      transitionDuration: const Duration(milliseconds: 100),
     );
+  }
+
+  void loadMorePromo() async {
+    if (scrollController.position.pixels == scrollController.position.maxScrollExtent && !isLoadedMore.value) {
+      isLoadedMore.value = true;
+      final response = await getAllBukuPerpustakaan({"buku[promo][ne]": "null", "page": promoPage.value});
+      if (response.data != null) {
+        if (response.data!.payload?.isNotEmpty ?? false) {
+          promoBooks.value?.addAll(response.data?.payload ?? []);
+          final result = promoBooks.value;
+          promoBooks.value = result;
+          promoPage.value++;
+        }
+      }
+      isLoadedMore.value = false;
+    }
   }
 }

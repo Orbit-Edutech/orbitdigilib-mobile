@@ -5,7 +5,9 @@ import 'package:get/instance_manager.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
+import '../../api/api_path.dart';
 import '../../constants/sizes.dart';
+import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 import 'controller/read_controller.dart';
@@ -24,7 +26,7 @@ class _ReadPageState extends State<ReadPage> {
 
   @override
   void initState() {
-    _methodChannel.invokeMethod("secure", {"isSecure": true});
+    // _methodChannel.invokeMethod("secure", {"isSecure": true});
     super.initState();
   }
 
@@ -56,16 +58,26 @@ class _ReadPageState extends State<ReadPage> {
                 ),
               ),
               child: Obx(() {
+                final buku = controller.buku.value;
                 final isOnSearch = controller.isOnSearch.value;
                 if (isOnSearch) {
                   return SearchToolbar(
                     controller: controller.pdfController,
                     onTap: (toolbarItem) async {
+                      if (toolbarItem.toString() == "onChanged") {
+                        controller.noResultFound.value = false;
+                      }
                       if (toolbarItem.toString() == 'Cancel Search') {
                         controller.isOnSearch.value = false;
                         controller.isFullScreen.value = false;
+                        controller.noResultFound.value = false;
                       }
-                      if (toolbarItem.toString() == 'noResultFound') {}
+                      if (toolbarItem.toString() == 'noResultFound') {
+                        controller.noResultFound.value = true;
+                      }
+                      if (toolbarItem.toString() == 'Clear Text') {
+                        controller.noResultFound.value = false;
+                      }
                     },
                   );
                 } else {
@@ -79,16 +91,16 @@ class _ReadPageState extends State<ReadPage> {
                     child: Column(
                       children: [
                         Text(
-                          "Judul Dari Buku Lorem Ipsum",
+                          buku?.judul ?? "-",
                           style: AppTextStyle.ts16Bold,
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          "GoodNovel",
+                          buku?.penulis ?? "-",
                           style: AppTextStyle.ts14Reg,
                         ),
                         Text(
-                          "214 halaman",
+                          "${buku?.jumlahHalaman ?? "-"} halaman",
                           style: AppTextStyle.ts10Light.copyWith(color: AppColor.grey),
                         ),
                       ],
@@ -97,86 +109,119 @@ class _ReadPageState extends State<ReadPage> {
                 }
               }),
             ),
-            // Expanded(child: PDF)
             Expanded(
-              child: Stack(
-                children: [
-                  SfPdfViewerTheme(
-                    data: SfPdfViewerThemeData(backgroundColor: AppColor.white),
-                    child: SfPdfViewer.asset(
-                      "assets/icons/s.pdf",
-                      key: pdfKey,
-                      controller: controller.pdfController,
-                      currentSearchTextHighlightColor: theme.primaryColor.withOpacity(.5),
-                      otherSearchTextHighlightColor: theme.primaryColor.withOpacity(.25),
-                      scrollDirection: PdfScrollDirection.horizontal,
-                      pageLayoutMode: PdfPageLayoutMode.single,
-                      onPageChanged: (details) => controller.currentPage.value = details.newPageNumber,
-                      enableDoubleTapZooming: false,
-                      pageSpacing: 0,
-                      enableTextSelection: false,
-                      canShowPageLoadingIndicator: false,
-                      canShowScrollHead: false,
-                      onAnnotationSelected: (annotation) {},
-                      onTextSelectionChanged: (details) {},
-                      onDocumentLoaded: (details) {},
-                      onTap: (details) {},
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: GestureDetector(
-                            onTap: () {
-                              controller.pdfController.previousPage();
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: GestureDetector(
-                            onTap: () {
-                              if (!controller.isOnSearch.value) {
-                                controller.isFullScreen.value = !controller.isFullScreen.value;
-                              }
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: GestureDetector(
-                            onTap: () {
-                              controller.pdfController.nextPage();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: Sizes.r,
-                horizontal: Sizes.m,
-              ),
-              decoration: const BoxDecoration(
-                color: AppColor.white,
-                border: Border(
-                  top: BorderSide(color: AppColor.lightGrey),
-                ),
-              ),
               child: Obx(() {
-                final currentPage = controller.currentPage.value;
-                return Text(
-                  currentPage.toString(),
-                  textAlign: TextAlign.center,
+                final noResultFound = controller.noResultFound.value;
+                final book = controller.buku.value;
+                final tokens = controller.tokens.value;
+                if (tokens == null || book == null) return const SizedBox();
+                return Stack(
+                  children: [
+                    SfPdfViewerTheme(
+                      data: SfPdfViewerThemeData(backgroundColor: AppColor.white),
+                      child: SfPdfViewer.network(
+                        APIPath.asset(book.assetBukuId ?? ""),
+                        headers: {"Authorization": 'Bearer ${tokens.access}'},
+                        key: pdfKey,
+                        controller: controller.pdfController,
+                        currentSearchTextHighlightColor: theme.primaryColor.withOpacity(.5),
+                        otherSearchTextHighlightColor: theme.primaryColor.withOpacity(.25),
+                        scrollDirection: PdfScrollDirection.horizontal,
+                        pageLayoutMode: PdfPageLayoutMode.single,
+                        onPageChanged: (details) => controller.currentPage.value = details.newPageNumber,
+                        enableDoubleTapZooming: false,
+                        pageSpacing: 0,
+                        enableTextSelection: false,
+                        canShowPageLoadingIndicator: false,
+                        canShowScrollHead: false,
+                        onAnnotationSelected: (annotation) {},
+                        onTextSelectionChanged: (details) {},
+                        onDocumentLoaded: (details) {},
+                        onTap: (details) {},
+                      ),
+                    ),
+                    Positioned.fill(
+                      child: noResultFound
+                          ? Container(
+                              color: AppColor.bgScaffold,
+                              padding: const EdgeInsets.all(Sizes.m),
+                              child: const EmptyList(description: "Kata tidak ditemukan"),
+                            )
+                          : Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (controller.isFullScreen.value) {
+                                        controller.pdfController.previousPage();
+                                      } else {
+                                        controller.isFullScreen.value = true;
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (!controller.isOnSearch.value) {
+                                        controller.isFullScreen.value = !controller.isFullScreen.value;
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (controller.isFullScreen.value) {
+                                        controller.pdfController.nextPage();
+                                      } else {
+                                        controller.isFullScreen.value = true;
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                    ),
+                  ],
                 );
               }),
             ),
+            Obx(() {
+              final currentPage = controller.currentPage.value;
+              final isFullScreen = controller.isFullScreen.value;
+              return AnimatedContainer(
+                height: isFullScreen ? 0 : kToolbarHeight,
+                duration: const Duration(milliseconds: 150),
+                padding: const EdgeInsets.symmetric(
+                  vertical: Sizes.r,
+                  horizontal: Sizes.m,
+                ),
+                decoration: const BoxDecoration(
+                  color: AppColor.white,
+                  border: Border(
+                    top: BorderSide(color: AppColor.lightGrey),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      Icons.star,
+                      color: currentPage % 2 == 0 ? Colors.black : Colors.transparent,
+                    ),
+                    Text(
+                      currentPage.toString(),
+                      textAlign: TextAlign.center,
+                    ),
+                    const Icon(Icons.star, color: Colors.transparent),
+                  ],
+                ),
+              );
+            }),
           ],
         ),
       ),

@@ -40,7 +40,7 @@ class _IndexBannerState extends State<IndexBanner> {
               return Container(
                 height: 150,
                 width: size.width,
-                clipBehavior: Clip.antiAlias,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
                 decoration: const BoxDecoration(
                   color: AppColor.lightGrey,
                   borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),

@@ -38,14 +38,14 @@ class BookCardHorz extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
           color: Colors.white,
         ),
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Row(
           children: [
             Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
               ),
-              clipBehavior: Clip.antiAlias,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Image.network(
                 APIPath.publicAsset(idSampul),
                 fit: BoxFit.cover,

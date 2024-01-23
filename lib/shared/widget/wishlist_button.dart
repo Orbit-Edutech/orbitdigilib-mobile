@@ -10,10 +10,11 @@ import '../../api/wishlist/model/model_wishlist_all.dart';
 import '../../pages/wishlist/controller/wishlist_controller.dart';
 
 class WishlistButton extends StatefulWidget {
-  const WishlistButton({super.key, this.onChange, required this.bukuPerpustakaan});
+  const WishlistButton({super.key, this.onChange, required this.bukuPerpustakaan, this.color});
 
   final Function()? onChange;
   final BukuPerpustakaan bukuPerpustakaan;
+  final Color? color;
 
   @override
   State<WishlistButton> createState() => _WishlistButtonState();
@@ -125,7 +126,7 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
                     null
                 ? Icons.bookmark_rounded
                 : Icons.bookmark_outline_rounded,
-            color: theme.primaryColor,
+            color: widget.color ?? theme.primaryColor,
             size: 24,
           ),
         ),

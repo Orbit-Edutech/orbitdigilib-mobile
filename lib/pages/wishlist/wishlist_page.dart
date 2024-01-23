@@ -83,6 +83,7 @@ class WishlistPage extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: Sizes.m),
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: GetBuilder<WishlistController>(
+                    init: controller,
                     builder: (WishlistController c) {
                       final filteredWishlist = c.filteredWishlist.value;
                       final _ = c.asc.value; // Untuk trigger re-render

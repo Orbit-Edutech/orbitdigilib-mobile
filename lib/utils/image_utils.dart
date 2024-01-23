@@ -13,17 +13,18 @@ class ImageUtils {
   static const String notificationsUnread = "assets/icons/notifications-unread.svg";
 
   static void prechacheImages() {
-    const images = [
+    const images = {
       authOffice,
       authChart,
       whatsapp,
       allCategory,
       categoryBg,
       coin,
+      token,
       notifications,
       notificationsUnread,
       empty
-    ];
+    };
     for (String image in images) {
       final loader = SvgAssetLoader(image);
       svg.cache.putIfAbsent(loader.cacheKey(null), () => loader.loadBytes(null));

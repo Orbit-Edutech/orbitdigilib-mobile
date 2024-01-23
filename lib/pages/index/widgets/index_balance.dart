@@ -64,7 +64,7 @@ class IndexBalance extends StatelessWidget {
                 ),
                 Obx(() {
                   final isVisible = controller.isBalanceVisible.value;
-                  final balance = profileController.profile.value?.token?.split(".")[0];
+                  final balance = profileController.profile.value?.token?.split(".")[0] ?? "0";
                   return Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -77,7 +77,7 @@ class IndexBalance extends StatelessWidget {
                       HGap.xs,
                       Flexible(
                         child: Text(
-                          isVisible ? balance ?? "-" : "• • • •",
+                          isVisible ? balance : "• • • •",
                           style: AppTextStyle.ts20Bold,
                           overflow: TextOverflow.ellipsis,
                         ),

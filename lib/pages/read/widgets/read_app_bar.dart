@@ -22,7 +22,6 @@ class ReadAppBar extends StatelessWidget implements PreferredSizeWidget {
             height: isFullScreen ? 0 : kToolbarHeight,
             duration: const Duration(milliseconds: 150),
             child: AppBar(
-              title: const Text("Baca Buku"),
               actions: [
                 if (!controller.isOnSearch.value)
                   IconButton(
@@ -41,7 +40,7 @@ class ReadAppBar extends StatelessWidget implements PreferredSizeWidget {
                           children: [
                             Icon(Icons.manage_search_sharp, color: AppColor.black),
                             HGap.s,
-                            Text("Cari halaman"),
+                            Text("Menuju halaman"),
                           ],
                         ),
                       ),

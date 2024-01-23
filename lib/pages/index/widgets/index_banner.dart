@@ -37,20 +37,24 @@ class _IndexBannerState extends State<IndexBanner> {
           return CarouselSlider(
             carouselController: carouselController,
             items: (isEmpty ? emptyBanners : banners).map((banner) {
-              return Container(
-                height: 150,
-                width: size.width,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                decoration: const BoxDecoration(
-                  color: AppColor.lightGrey,
-                  borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+              return InkWell(
+                onTap: () => controller.showLargeBanner(banner.id!),
+                borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
+                child: Container(
+                  height: 150,
+                  width: size.width,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  decoration: const BoxDecoration(
+                    color: AppColor.lightGrey,
+                    borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+                  ),
+                  child: isEmpty
+                      ? const SizedBox()
+                      : Image.network(
+                          APIPath.publicAsset(banner.id!),
+                          fit: BoxFit.cover,
+                        ),
                 ),
-                child: isEmpty
-                    ? const SizedBox()
-                    : Image.network(
-                        APIPath.publicAsset(banner.id!),
-                        fit: BoxFit.cover,
-                      ),
               );
             }).toList(),
             options: CarouselOptions(

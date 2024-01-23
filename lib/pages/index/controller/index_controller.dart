@@ -16,6 +16,7 @@ import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
 import '../../../utils/shared_preferences_manager.dart';
 import '../widgets/index_categories_modal.dart';
+import '../widgets/index_large_banner.dart';
 
 class IndexController extends GetxController {
   final Rx<Perpustakaan?> perpustakaan = Rx<Perpustakaan?>(null);
@@ -89,6 +90,12 @@ class IndexController extends GetxController {
       ),
       isScrollControlled: true,
       enableDrag: false,
+    );
+  }
+
+  void showLargeBanner(String bannerId) {
+    Get.dialog(
+      LargeBanner(bannerId: bannerId),
     );
   }
 }

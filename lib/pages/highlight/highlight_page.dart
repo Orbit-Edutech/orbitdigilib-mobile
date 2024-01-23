@@ -24,9 +24,10 @@ class HighlightPage extends StatelessWidget {
           children: [
             VGap.m,
             for (p.Banner banner in controller.perpustakaan.value?.banner ?? []) ...[
-              Builder(builder: (context) {
-                debugPrint("REBUILD");
-                return Container(
+              InkWell(
+                onTap: () => controller.showLargeBanner(banner.id!),
+                borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
+                child: Container(
                   height: 150,
                   width: size.width,
                   alignment: Alignment.center,
@@ -37,8 +38,8 @@ class HighlightPage extends StatelessWidget {
                     ),
                     borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
                   ),
-                );
-              }),
+                ),
+              ),
               VGap.r,
             ],
           ],

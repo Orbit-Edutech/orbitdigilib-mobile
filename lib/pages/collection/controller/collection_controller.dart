@@ -20,7 +20,7 @@ import '../../profile/controller/profile_controller.dart';
 class CollectionController extends GetxController {
   final profileController = Get.find<ProfileController>();
 
-  Rx<int> page = 0.obs;
+  Rx<int> page = 1.obs;
   Rx<String> filter = "Semua Koleksi".obs;
   final scrollController = ScrollController();
   ModelKoleksi? collections;
@@ -34,7 +34,7 @@ class CollectionController extends GetxController {
     if (response.data != null) {
       allCollections.value = response.data?.payload;
       synchronizeData(allCollections.value!);
-      page.value = 1;
+      page.value = 2;
     } else {
       if (response.error == ResponseStatus.connectionError) {
         showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");

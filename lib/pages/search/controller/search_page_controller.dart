@@ -9,19 +9,22 @@ import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
 import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 
 class SearchPageController extends GetxController {
-  // TODO: Selesaikan Controller ini
   Rx<List<Payload>?> books = Rx<List<Payload>?>(null);
   CancelToken cancelToken = CancelToken();
 
+  final scrollController = ScrollController();
   final textController = TextEditingController();
   final searchFocusNode = FocusNode();
 
+  Rx<int> page = 2.obs;
+  Rx<bool> isLoadedMore = false.obs;
   Rx<bool> isReversed = false.obs;
   Timer? _timer;
 
   @override
   Future<void> onInit() async {
     await search("");
+    scrollController.addListener(loadMore);
     super.onInit();
   }
 
@@ -51,5 +54,27 @@ class SearchPageController extends GetxController {
         books.value = response.data?.payload;
       }
     });
+  }
+
+  Future<void> loadMore() async {
+    if (scrollController.position.pixels == scrollController.position.maxScrollExtent && !isLoadedMore.value) {
+      isLoadedMore.value = true;
+      Map<String, dynamic> qp = {};
+      final keyword = textController.value.text;
+      if (keyword.trim().isNotEmpty) {
+        qp["buku[judul][like]"] = keyword;
+      }
+      qp["page"] = page.value;
+      final response = await getAllBukuPerpustakaan(qp);
+      if (response.data != null) {
+        if (response.data!.payload?.isNotEmpty ?? false) {
+          books.value?.addAll(response.data?.payload ?? []);
+          final result = books.value;
+          books.value = result;
+          page.value++;
+        }
+      }
+      isLoadedMore.value = false;
+    }
   }
 }

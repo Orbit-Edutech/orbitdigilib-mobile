@@ -8,12 +8,12 @@ import '../../constants/sizes.dart';
 import '../../routes/app_routes.dart';
 import '../../shared/widget/app_textfield.dart';
 import '../../shared/widget/book_card_horz.dart';
-import '../../shared/widget/book_card_skeleton.dart';
 import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 import '../../utils/compute_luminance.dart';
 import 'controller/search_page_controller.dart';
+import 'widgets/search_loading_widget.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -62,55 +62,7 @@ class SearchPage extends StatelessWidget {
               final _ = controller.isReversed.value;
               final books = controller.books.value;
               if (books == null) {
-                return ListView.builder(
-                  padding: const EdgeInsets.all(Sizes.m),
-                  shrinkWrap: true,
-                  itemCount: 10,
-                  itemBuilder: (ctx, idx) {
-                    return Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const BookCardSkeleton(),
-                            HGap.m,
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    height: 25,
-                                    decoration: const BoxDecoration(
-                                      color: AppColor.lightGrey,
-                                      borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
-                                    ),
-                                  ),
-                                  VGap.s,
-                                  Container(
-                                    height: 25,
-                                    decoration: const BoxDecoration(
-                                      color: AppColor.lightGrey,
-                                      borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
-                                    ),
-                                  ),
-                                  VGap.s,
-                                  Container(
-                                    height: 25,
-                                    decoration: const BoxDecoration(
-                                      color: AppColor.lightGrey,
-                                      borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        VGap.s,
-                      ],
-                    );
-                  },
-                );
+                return const SearchLoadingWidget();
               }
               if (books.isEmpty) {
                 return const Column(
@@ -123,6 +75,7 @@ class SearchPage extends StatelessWidget {
                 );
               }
               return ListView.builder(
+                controller: controller.scrollController,
                 padding: const EdgeInsets.all(Sizes.m),
                 shrinkWrap: true,
                 itemCount: books.length,

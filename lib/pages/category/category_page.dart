@@ -115,21 +115,22 @@ class CategoryPage extends StatelessWidget {
                     return AlignedGridView.count(
                       shrinkWrap: true,
                       crossAxisCount: 2,
-                      itemCount: 10,
+                      itemCount: filteredBooks.length,
                       mainAxisSpacing: Sizes.r,
                       crossAxisSpacing: Sizes.r,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        // final buku = filteredBooks[index].buku;
+                        final payload = filteredBooks[index];
+                        final buku = payload.buku;
                         return BookCard(
-                          bukuPerpustakaan: BukuPerpustakaan(),
-                          id: "",
-                          judul: "Lorem Ipsum Dolor Sit Amet",
-                          penulis: "Aku Ready",
-                          idSampul: '0696f2d7-942f-4e48-94ed-ef10d266263a',
-                          harga: '1',
-                          copy: '2',
-                          onTap: () => Get.toNamed(AppRoutes.book, arguments: "payload"),
+                          bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
+                          id: buku?.id ?? "-",
+                          judul: buku?.judul ?? '-',
+                          penulis: buku?.penulis ?? '-',
+                          idSampul: buku?.assetSampulId ?? '-',
+                          copy: "${payload.jumlahSiapPinjam ?? '-'}",
+                          harga: (int.parse(buku?.hargaSewa ?? "0") ~/ 100).toString(),
+                          onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                           onChangeWishlist: () {},
                         );
                       },

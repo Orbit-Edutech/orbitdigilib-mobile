@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -12,18 +13,22 @@ import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
 
 class CategoryController extends GetxController {
+  Rx<int> page = 2.obs;
   Timer? _timer;
   Rx<bool> asc = false.obs;
+  Rx<bool> isLoadedMore = false.obs;
 
+  final scrollController = ScrollController();
   final textController = TextEditingController();
   final focusNode = FocusNode();
+  CancelToken cancelToken = CancelToken();
 
   Rx<List<Payload>?> books = Rx<List<Payload>?>(null);
   Rx<List<Payload>?> filteredBooks = Rx<List<Payload>?>(null);
+  final KategoriBukuPerpustakaan category = Get.arguments;
 
   @override
   Future<void> onInit() async {
-    final KategoriBukuPerpustakaan category = Get.arguments;
     final qp = {"kategoriBukuPerpustakaanId": category.id};
     final response = await getAllBukuPerpustakaan(qp);
     if (response.data != null) {
@@ -36,6 +41,7 @@ class CategoryController extends GetxController {
         backgroundColor: AppColor.red,
       );
     }
+    scrollController.addListener(loadMore);
     super.onInit();
   }
 
@@ -48,16 +54,42 @@ class CategoryController extends GetxController {
     asc.value = !asc.value;
   }
 
-  void onSearch(String text) {
+  void onSearch(String keyword) {
     if (_timer?.isActive ?? false) _timer?.cancel();
-    _timer = Timer(const Duration(milliseconds: 250), () {
-      bool isOnSearch = text != "";
-      filteredBooks.value = books.value?.where((wishlist) {
-        final String judul = (wishlist.buku?.judul ?? "").toLowerCase();
-        final String keyword = text.toLowerCase();
-        bool searchedItem = judul.contains(keyword);
-        return isOnSearch ? searchedItem : true;
-      }).toList();
+    _timer = Timer(const Duration(milliseconds: 500), () async {
+      books.value = null;
+      Map<String, dynamic> qp = {};
+      qp["kategoriBukuPerpustakaanId"] = category.id;
+      if (keyword.trim().isNotEmpty) qp["buku[judul][like]"] = keyword;
+      cancelToken.cancel();
+      cancelToken = CancelToken();
+      final response = await getAllBukuPerpustakaan(qp, cancelToken);
+      if (response.data != null) {
+        books.value = response.data?.payload;
+        filteredBooks.value = books.value;
+      }
     });
+  }
+
+  Future<void> loadMore() async {
+    if (scrollController.position.pixels == scrollController.position.maxScrollExtent && !isLoadedMore.value) {
+      isLoadedMore.value = true;
+      Map<String, dynamic> qp = {};
+      final keyword = textController.value.text;
+      qp["kategoriBukuPerpustakaanId"] = category.id;
+      if (keyword.trim().isNotEmpty) qp["buku[judul][like]"] = keyword;
+      qp["page"] = page.value;
+      final response = await getAllBukuPerpustakaan(qp);
+      if (response.data != null) {
+        if (response.data!.payload?.isNotEmpty ?? false) {
+          books.value?.addAll(response.data?.payload ?? []);
+          final result = books.value;
+          books.value = result;
+          filteredBooks.value = books.value;
+          page.value++;
+        }
+      }
+      isLoadedMore.value = false;
+    }
   }
 }

@@ -75,4 +75,7 @@ class APIPath {
 
   /// /voucher/redeem/{kode}
   static String redeemVoucher(String voucher) => "/voucher/redeem/$voucher";
+
+  /// /list-get-voucher
+  static String listGetVoucherAll = "/list-get-voucher";
 }

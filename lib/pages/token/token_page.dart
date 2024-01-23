@@ -66,7 +66,12 @@ class TokenPage extends StatelessWidget {
               type: TextFieldType.normal,
               controller: controller.voucherController,
               focusNode: controller.voucherFocusNode,
+              onSubmitted: (text) {
+                if (text.isEmpty) return;
+                controller.redeem();
+              },
               onTapOutside: (_) => controller.voucherFocusNode.unfocus(),
+              onChanged: controller.onChanged,
               isError: false,
               label: const Text("Kode Voucher"),
             ),
@@ -74,11 +79,15 @@ class TokenPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                AppButton(
-                  type: ButtonType.elevated,
-                  onPressed: controller.redeem,
-                  child: const Text("Isi Voucher"),
-                ),
+                Obx(() {
+                  final state = controller.buttonState.value;
+                  return AppButton(
+                    state: state,
+                    type: ButtonType.elevated,
+                    onPressed: controller.redeem,
+                    child: const Text("Isi Voucher"),
+                  );
+                }),
                 VGap.s,
                 GestureDetector(
                   onTap: controller.showVoucherInfo,

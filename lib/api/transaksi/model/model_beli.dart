@@ -1,58 +1,48 @@
 import 'dart:convert';
 
-class ModelSewa {
+class ModelBeli {
   final String? id;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final int? hargaSewa;
-  final DateTime? tanggalSewa;
-  final DateTime? tanggalHabisSewa;
+  final int? hargaBeli;
   final User? user;
   final Buku? buku;
 
-  ModelSewa({
+  ModelBeli({
     this.id,
     this.createdAt,
     this.updatedAt,
-    this.hargaSewa,
-    this.tanggalSewa,
-    this.tanggalHabisSewa,
+    this.hargaBeli,
     this.user,
     this.buku,
   });
 
-  ModelSewa copyWith({
+  ModelBeli copyWith({
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
-    int? hargaSewa,
-    DateTime? tanggalSewa,
-    DateTime? tanggalHabisSewa,
+    int? hargaBeli,
     User? user,
     Buku? buku,
   }) =>
-      ModelSewa(
+      ModelBeli(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
-        hargaSewa: hargaSewa ?? this.hargaSewa,
-        tanggalSewa: tanggalSewa ?? this.tanggalSewa,
-        tanggalHabisSewa: tanggalHabisSewa ?? this.tanggalHabisSewa,
+        hargaBeli: hargaBeli ?? this.hargaBeli,
         user: user ?? this.user,
         buku: buku ?? this.buku,
       );
 
-  factory ModelSewa.fromRawJson(String str) => ModelSewa.fromJson(json.decode(str));
+  factory ModelBeli.fromRawJson(String str) => ModelBeli.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ModelSewa.fromJson(Map<String, dynamic> json) => ModelSewa(
+  factory ModelBeli.fromJson(Map<String, dynamic> json) => ModelBeli(
         id: json["id"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        hargaSewa: json["hargaSewa"],
-        tanggalSewa: json["tanggalSewa"] == null ? null : DateTime.parse(json["tanggalSewa"]),
-        tanggalHabisSewa: json["tanggalHabisSewa"] == null ? null : DateTime.parse(json["tanggalHabisSewa"]),
+        hargaBeli: json["hargaBeli"],
         user: json["user"] == null ? null : User.fromJson(json["user"]),
         buku: json["buku"] == null ? null : Buku.fromJson(json["buku"]),
       );
@@ -61,9 +51,7 @@ class ModelSewa {
         "id": id,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
-        "hargaSewa": hargaSewa,
-        "tanggalSewa": tanggalSewa?.toIso8601String(),
-        "tanggalHabisSewa": tanggalHabisSewa?.toIso8601String(),
+        "hargaBeli": hargaBeli,
         "user": user?.toJson(),
         "buku": buku?.toJson(),
       };

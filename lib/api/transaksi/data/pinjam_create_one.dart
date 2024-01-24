@@ -1,12 +1,13 @@
 import '../../api_client.dart';
 import '../../api_path.dart';
+import '../model/model_pinjam.dart';
 
-Future<APIResponse<dynamic>> pinjamCreateOne(String id) async {
-  final param = APIParam<dynamic>(
+Future<APIResponse<ModelPinjam>> pinjamCreateOne(String id) async {
+  final param = APIParam<ModelPinjam>(
     path: APIPath.pinjam,
-    fromJson: (data) => data,
+    fromJson: ModelPinjam.fromJson,
     data: {"bukuPerpustakaanId": id},
   );
-  final response = await apiClient.post<dynamic>(param);
+  final response = await apiClient.post<ModelPinjam>(param);
   return response;
 }

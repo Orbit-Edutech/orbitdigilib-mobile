@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -10,21 +8,22 @@ import '../../../api/api_client.dart';
 import '../../../api/koleksi/data/get_koleksi.dart';
 import '../../../api/koleksi/model/model_koleksi.dart';
 import '../../../shared/widget/show_snackbar.dart';
-import '../../../sql/books/data/get_buku_local.dart';
-import '../../../sql/books/data/insert_buku.dart';
+import '../../../sql/books/data/delete_buku_sqlite.dart';
+import '../../../sql/books/data/get_buku_sqlite.dart';
+import '../../../sql/books/data/insert_buku_sqlite.dart';
 import '../../../sql/books/model/model_buku_sql.dart';
-import '../../../sql/sql_helper.dart';
 import '../../../theme/app_color.dart';
 import '../../profile/controller/profile_controller.dart';
 
 class CollectionController extends GetxController {
+  Rx<List<Payload>?> allCollections = Rx<List<Payload>?>(null);
+  Rx<List<ModelBukuSql>?> localBooks = Rx<List<ModelBukuSql>?>(null);
+
   final profileController = Get.find<ProfileController>();
 
   Rx<int> page = 1.obs;
   Rx<String> filter = "Semua Koleksi".obs;
   final scrollController = ScrollController();
-  ModelKoleksi? collections;
-  Rx<List<Payload>?> allCollections = Rx<List<Payload>?>(null);
   Rx<bool> isLoadedMore = false.obs;
 
   @override
@@ -69,21 +68,27 @@ class CollectionController extends GetxController {
   void onFilterChange(String filter) => this.filter.value = filter;
 
   void synchronizeData(List<Payload> response) async {
-    final localBooks = await getBukuLocal(SQLParam(table: sqlHelper.constants.table.buku));
-    log(localBooks.toString());
-    for (var book in response) {
-      final isExist = localBooks.firstWhereOrNull((lb) => lb['id_buku'] == (book.buku?.id ?? '-')) != null;
+    localBooks.value = await getBukuSQLite();
+    final idUser = profileController.profile.value?.id ?? "";
+    for (Payload book in response) {
+      final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (book.buku?.id ?? '-')) != null;
       if (!isExist) {
-        await insertBukuLocal(
+        await insertBukuSQLite(
           ModelBukuSql(
             idBuku: book.buku?.id ?? "",
-            idUser: profileController.profile.value?.id ?? "",
+            idUser: idUser,
             lastPageSeen: 0,
             totalPages: book.buku?.jumlahHalaman ?? 0,
-            status: "unread",
+            status: "Belum Dibaca",
+            expired: book.waktuHabis ?? DateTime.now(),
           ),
         );
-      } else {}
+      }
+    }
+    for (ModelBukuSql lb in localBooks.value ?? []) {
+      if (lb.expired.isBefore(DateTime.now())) {
+        deleteBukuSQLite(idBuku: lb.idBuku, idUser: idUser);
+      }
     }
   }
 }

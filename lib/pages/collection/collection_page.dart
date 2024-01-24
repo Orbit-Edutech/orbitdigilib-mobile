@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 
@@ -110,12 +111,9 @@ class CollectionPage extends StatelessWidget {
                   itemCount: books.length,
                   itemBuilder: (ctx, idx) {
                     final payload = books[idx];
+                    final lb = controller.localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == payload.buku?.id);
                     return CollectionBookCard(
-                      status: idx % 2 == 0
-                          ? "Selesai Dibaca"
-                          : idx % 3 == 1
-                              ? "Belum Dibaca"
-                              : "Belum Selesai",
+                      status: lb?.status ?? "-",
                       payload: payload,
                     );
                   },

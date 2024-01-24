@@ -6,7 +6,7 @@ import 'sql_constants.dart';
 
 class SQLParam<T> {
   final String table;
-  final Map<String, Object>? values;
+  final Map<String, Object?>? values;
   final List<String>? columns;
   final String? where;
   final List<Object?>? whereArgs;
@@ -29,7 +29,8 @@ class SQLHelper {
       id_user TEXT NOT NULL,
       last_page_seen INTEGER,
       total_pages INTEGER NOT NULL,
-      status TEXT DEFAULT "unread"
+      expired DATE,
+      status TEXT DEFAULT "Belum Dibaca"
     )""";
     final createBukuHalamanBintangQuery = """CREATE TABLE ${constants.table.bukuHalamanBintang}(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -62,7 +63,7 @@ class SQLHelper {
     );
   }
 
-  Future<List<Map<String, dynamic>>> read(SQLParam param) async {
+  Future<List<Map<String, Object?>>> read(SQLParam param) async {
     final database = await db();
     final result = database.query(
       param.table,

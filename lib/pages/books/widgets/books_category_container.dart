@@ -39,12 +39,19 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
     if (categoryBooks != null) {
       books = categoryBooks.books;
     } else {
-      final qp = {"kategoriBukuPerpustakaanId": widget.category.id};
+      Map<String, dynamic> qp = <String, dynamic>{};
+      qp = {"kategoriBukuPerpustakaanId[eql]": widget.category.nama != "Lainnya" ? widget.category.id : "null"};
       getAllBukuPerpustakaan(qp).then((res) {
         if (res.data != null) {
           if (mounted) {
             setState(() {
-              controller.datas.value.add(CategoriesBooks(category: widget.category, books: res.data!.payload!));
+              CategoriesBooks catBooks = CategoriesBooks(
+                category: widget.category.nama == "Lainnya"
+                    ? widget.category
+                    : KategoriBukuPerpustakaan(nama: "Lainnya", id: "Lainnya"),
+                books: res.data!.payload!,
+              );
+              controller.datas.value.add(catBooks);
               books = res.data!.payload;
             });
           }
@@ -72,11 +79,11 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
               Expanded(
                 child: Row(
                   children: [
-                    Image.network(APIPath.publicAsset(widget.category.icon?.id ?? "-")),
+                    Image.network(APIPath.publicAsset(widget.category.icon?.id ?? "7098ee1f-1653-4538-bfb7-e409ff87208b")),
                     HGap.s,
                     Expanded(
                       child: Text(
-                        widget.category.nama ?? "-",
+                        widget.category.nama ?? "Lainnya",
                         style: AppTextStyle.ts14Bold,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -85,7 +92,12 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                 ),
               ),
               GestureDetector(
-                onTap: () => Get.toNamed(AppRoutes.category, arguments: widget.category),
+                onTap: () => Get.toNamed(
+                  AppRoutes.category,
+                  arguments: widget.category.nama == "Lainnya"
+                      ? KategoriBukuPerpustakaan(nama: "null", id: "null")
+                      : widget.category,
+                ),
                 child: Text(
                   "Lihat Semua",
                   style: AppTextStyle.ts10Light,
@@ -99,6 +111,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
           padding: const EdgeInsets.only(left: Sizes.m, right: Sizes.s),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (books == null) ...[
                 for (var _ in [1, 1, 1, 1, 1]) ...[
@@ -124,7 +137,8 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                     onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                     onChangeWishlist: () {},
                   ),
-                ]
+                  HGap.r,
+                ],
               ]
             ],
           ),

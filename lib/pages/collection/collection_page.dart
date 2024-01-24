@@ -114,6 +114,8 @@ class CollectionPage extends StatelessWidget {
                     final lb = controller.localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == payload.buku?.id);
                     return CollectionBookCard(
                       status: lb?.status ?? "-",
+                      lastPageSeen: lb?.lastPageSeen ?? 0,
+                      totalPage: lb?.totalPages ?? 0,
                       payload: payload,
                     );
                   },

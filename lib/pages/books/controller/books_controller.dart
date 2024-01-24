@@ -37,7 +37,7 @@ class BooksController extends GetxController {
 
   void showFilter() {
     Get.bottomSheet(
-      BooksCategoryFilter(categories: categories.value ?? []),
+      const BooksCategoryFilter(),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(Sizes.r)),

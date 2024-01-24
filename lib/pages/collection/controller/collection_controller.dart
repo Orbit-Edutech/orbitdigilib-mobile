@@ -32,7 +32,7 @@ class CollectionController extends GetxController {
     final response = await getCollections();
     if (response.data != null) {
       allCollections.value = response.data?.payload;
-      synchronizeData(allCollections.value!);
+      await synchronizeData(allCollections.value!);
       page.value = 2;
     } else {
       if (response.error == ResponseStatus.connectionError) {
@@ -67,7 +67,7 @@ class CollectionController extends GetxController {
 
   void onFilterChange(String filter) => this.filter.value = filter;
 
-  void synchronizeData(List<Payload> response) async {
+  Future<void> synchronizeData(List<Payload> response) async {
     localBooks.value = await getBukuSQLite();
     final idUser = profileController.profile.value?.id ?? "";
     for (Payload book in response) {

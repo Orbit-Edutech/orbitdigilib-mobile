@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,17 +22,18 @@ class BooksPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Semua Buku"),
-        actions: [
-          IconButton(
-            onPressed: controller.showFilter,
-            icon: SvgPicture.asset("assets/icons/filter.svg"),
-          ),
-          HGap.r,
-        ],
+        // actions: [
+        //   // IconButton(
+        //   //   onPressed: controller.showFilter,
+        //   //   icon: SvgPicture.asset("assets/icons/filter.svg"),
+        //   // ),
+        //   // HGap.r,
+        // ],
       ),
       body: RefreshIndicator(
         onRefresh: controller.onInit,
         child: Obx(() {
+          final filters = controller.filters;
           final categories = controller.categories.value;
           if (categories == null) {
             return AlignedGridView.count(
@@ -46,13 +49,23 @@ class BooksPage extends StatelessWidget {
               },
             );
           }
+          final filteredCategories = categories.where((category) {
+            return filters.contains(category.nama);
+          }).toList();
+          final datas = filteredCategories.isEmpty ? categories : filteredCategories;
           return ListView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.only(top: Sizes.s, bottom: Sizes.m),
-            itemCount: controller.categories.value?.length,
+            itemCount: datas.length + 1,
             itemBuilder: (ctx, idx) {
-              KategoriBukuPerpustakaan category = controller.categories.value![idx];
-              return BooksCategoryContainer(category: category);
+              log(datas.length.toString());
+              log(idx.toString());
+              if (idx == datas.length) {
+                return BooksCategoryContainer(
+                  category: KategoriBukuPerpustakaan(nama: "Lainnya", id: "Lainnya"),
+                );
+              }
+              return BooksCategoryContainer(category: datas[idx]);
             },
           );
         }),

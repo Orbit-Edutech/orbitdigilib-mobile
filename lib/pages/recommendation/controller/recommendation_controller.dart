@@ -38,7 +38,7 @@ class RecommendationController extends GetxController {
       Map<String, dynamic> qp = {};
       qp["isPin"] = true;
       if (keyword.trim().isNotEmpty) {
-        qp["buku[judul][like]"] = keyword;
+        qp["buku[judul][lke]"] = keyword;
       }
       cancelToken.cancel();
       cancelToken = CancelToken();
@@ -65,7 +65,7 @@ class RecommendationController extends GetxController {
       final keyword = searchController.value.text;
       qp["isPin"] = true;
       if (keyword.trim().isNotEmpty) {
-        qp["buku[judul][like]"] = keyword;
+        qp["buku[judul][lke]"] = keyword;
       }
       qp["page"] = page.value;
       final response = await getAllBukuPerpustakaan(qp);

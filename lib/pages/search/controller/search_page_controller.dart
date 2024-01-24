@@ -42,10 +42,9 @@ class SearchPageController extends GetxController {
   Future<void> search(String keyword) async {
     if (_timer?.isActive ?? false) _timer?.cancel();
     _timer = Timer(const Duration(milliseconds: 500), () async {
-      books.value = null;
       Map<String, dynamic> qp = {};
       if (keyword.trim().isNotEmpty) {
-        qp["buku[judul][like]"] = keyword;
+        qp["buku[judul][lke]"] = keyword;
       }
       cancelToken.cancel();
       cancelToken = CancelToken();
@@ -62,7 +61,7 @@ class SearchPageController extends GetxController {
       Map<String, dynamic> qp = {};
       final keyword = textController.value.text;
       if (keyword.trim().isNotEmpty) {
-        qp["buku[judul][like]"] = keyword;
+        qp["buku[judul][lke]"] = keyword;
       }
       qp["page"] = page.value;
       final response = await getAllBukuPerpustakaan(qp);

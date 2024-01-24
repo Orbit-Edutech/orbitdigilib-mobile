@@ -59,7 +59,7 @@ class IndexController extends GetxController {
           }
         }
       }),
-      getAllBukuPerpustakaan({"buku[promo][ne]": "null"}).then((res) {
+      getAllBukuPerpustakaan({"buku[promo][noteql]": "null"}).then((res) {
         if (res.data != null) {
           promoBooks.value = res.data?.payload;
         } else {
@@ -119,7 +119,7 @@ class IndexController extends GetxController {
   void loadMorePromo() async {
     if (scrollController.position.pixels == scrollController.position.maxScrollExtent && !isLoadedMore.value) {
       isLoadedMore.value = true;
-      final response = await getAllBukuPerpustakaan({"buku[promo][ne]": "null", "page": promoPage.value});
+      final response = await getAllBukuPerpustakaan({"buku[promo][noteql]": "null", "page": promoPage.value});
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
           promoBooks.value?.addAll(response.data?.payload ?? []);

@@ -36,7 +36,17 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      wishlistController.onInit().then((_) {
+      if (!wishlistController.initialized) {
+        wishlistController.onInit().then((_) {
+          setState(() {
+            isWishlist = wishlistController.wishlist.value?.firstWhereOrNull((wishlist) {
+                  final result = wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id;
+                  return result;
+                }) !=
+                null;
+          });
+        });
+      } else {
         setState(() {
           isWishlist = wishlistController.wishlist.value?.firstWhereOrNull((wishlist) {
                 final result = wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id;
@@ -44,7 +54,7 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
               }) !=
               null;
         });
-      });
+      }
     });
     super.initState();
   }

@@ -33,7 +33,7 @@ class BookCardHorz extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: 100,
+        height: 120,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
           color: Colors.white,

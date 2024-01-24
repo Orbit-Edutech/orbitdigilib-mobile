@@ -138,7 +138,6 @@ class _ReadPageState extends State<ReadPage> {
                         onTextSelectionChanged: (details) {},
                         onDocumentLoaded: (details) {},
                         onTap: (details) {},
-                        onDocumentLoadFailed: (details) {},
                       ),
                     ),
                     Positioned.fill(

@@ -37,8 +37,8 @@ class ReadController extends GetxController {
   @override
   Future<void> onInit() async {
     final String? args = Get.arguments;
-    tokens.value = await getTokens();
     final response = await getOneBuku(args ?? "");
+    tokens.value = await getTokens();
     final a = await SQLHelper().read(SQLParam(table: SQLConstants().table.buku));
     print(a.toString());
     if (response.data != null) {

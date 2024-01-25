@@ -35,6 +35,11 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
 
   @override
   void initState() {
+    wishlistAnimationController = AnimationController(
+      vsync: this,
+      value: 1.0,
+      duration: const Duration(milliseconds: 100),
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!wishlistController.initialized) {
         wishlistController.onInit().then((_) {
@@ -57,16 +62,6 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
       }
     });
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    wishlistAnimationController = AnimationController(
-      vsync: this,
-      value: 1.0,
-      duration: const Duration(milliseconds: 100),
-    );
-    super.didChangeDependencies();
   }
 
   @override

@@ -16,6 +16,8 @@ import '../../../theme/app_color.dart';
 import '../../profile/controller/profile_controller.dart';
 
 class CollectionController extends GetxController {
+  final user = Get.find<ProfileController>().profile.value;
+
   Rx<List<Payload>?> allCollections = Rx<List<Payload>?>(null);
   Rx<List<ModelBukuSql>?> localBooks = Rx<List<ModelBukuSql>?>(null);
 
@@ -68,7 +70,7 @@ class CollectionController extends GetxController {
   void onFilterChange(String filter) => this.filter.value = filter;
 
   Future<void> synchronizeData(List<Payload> response) async {
-    localBooks.value = await getBukuSQLite();
+    localBooks.value = await getBukuSQLite(user?.id ?? "");
     final idUser = profileController.profile.value?.id ?? "";
     for (Payload book in response) {
       final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (book.buku?.id ?? '-')) != null;
@@ -80,7 +82,7 @@ class CollectionController extends GetxController {
             lastPageSeen: 0,
             totalPages: book.buku?.jumlahHalaman ?? 0,
             status: "Belum Dibaca",
-            expired: book.waktuHabis ?? DateTime.now(),
+            expired: book.waktuHabis ?? DateTime.now().add(const Duration(days: 7)),
           ),
         );
       }
@@ -90,5 +92,6 @@ class CollectionController extends GetxController {
         deleteBukuSQLite(idBuku: lb.idBuku, idUser: idUser);
       }
     }
+    localBooks.value = await getBukuSQLite(user?.id ?? "");
   }
 }

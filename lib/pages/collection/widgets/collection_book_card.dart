@@ -41,6 +41,8 @@ class CollectionBookCard extends StatelessWidget {
             CollectionReadDialog(
               buku: payload.buku,
               type: payload.tipe ?? "-",
+              lastPageSeen: lastPageSeen,
+              totalPages: totalPage,
             ),
             enableDrag: false,
             isScrollControlled: true,

@@ -29,7 +29,7 @@ class CategoryController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    final qp = {"kategoriBukuPerpustakaanId": category.id};
+    Map<String, dynamic> qp = {"kategoriBukuPerpustakaanId": category.id};
     final response = await getAllBukuPerpustakaan(qp);
     if (response.data != null) {
       books.value = response.data!.payload;

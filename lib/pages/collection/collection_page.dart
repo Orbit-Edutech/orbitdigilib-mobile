@@ -35,7 +35,8 @@ class CollectionPage extends StatelessWidget {
                 final filter = controller.filter.value;
                 final books = getBooks(controller, filter);
                 final _ = controller.page.value;
-                if (books == null) {
+                final localBooks = controller.localBooks.value;
+                if (books == null || localBooks == null) {
                   return ListView.builder(
                     padding: const EdgeInsets.all(Sizes.m),
                     shrinkWrap: true,
@@ -111,7 +112,7 @@ class CollectionPage extends StatelessWidget {
                   itemCount: books.length,
                   itemBuilder: (ctx, idx) {
                     final payload = books[idx];
-                    final lb = controller.localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == payload.buku?.id);
+                    final lb = localBooks.firstWhereOrNull((lb) => lb.idBuku == payload.buku?.id);
                     return CollectionBookCard(
                       status: lb?.status ?? "-",
                       lastPageSeen: lb?.lastPageSeen ?? 0,

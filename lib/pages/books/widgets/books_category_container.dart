@@ -1,3 +1,5 @@
+// import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -5,7 +7,7 @@ import '../../../api/api_path.dart';
 import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
 import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 import '../../../api/buku-perpustakaan/model/model_categories_books.dart';
-import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
+import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart' as k;
 import '../../../api/wishlist/model/model_wishlist_all.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
@@ -22,7 +24,7 @@ class BooksCategoryContainer extends StatefulWidget {
     required this.category,
   });
 
-  final KategoriBukuPerpustakaan category;
+  final k.KategoriBukuPerpustakaan category;
 
   @override
   State<BooksCategoryContainer> createState() => _BooksCategoryContainerState();
@@ -40,15 +42,19 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
       books = categoryBooks.books;
     } else {
       Map<String, dynamic> qp = <String, dynamic>{};
-      qp = {"kategoriBukuPerpustakaanId[eql]": widget.category.nama != "Lainnya" ? widget.category.id : "null"};
+      if (widget.category.nama == "Lainnya") {
+        qp = {"kategoriBukuPerpustakaanId": "null"};
+      } else {
+        qp = {"kategoriBukuPerpustakaanId": widget.category.id};
+      }
       getAllBukuPerpustakaan(qp).then((res) {
         if (res.data != null) {
           if (mounted) {
             setState(() {
               CategoriesBooks catBooks = CategoriesBooks(
-                category: widget.category.nama == "Lainnya"
+                category: widget.category.nama != "Lainnya"
                     ? widget.category
-                    : KategoriBukuPerpustakaan(nama: "Lainnya", id: "Lainnya"),
+                    : k.KategoriBukuPerpustakaan(nama: "Lainnya", id: "Lainnya"),
                 books: res.data!.payload!,
               );
               controller.datas.value.add(catBooks);
@@ -63,6 +69,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -79,7 +86,11 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
               Expanded(
                 child: Row(
                   children: [
-                    Image.network(APIPath.publicAsset(widget.category.icon?.id ?? "7098ee1f-1653-4538-bfb7-e409ff87208b")),
+                    if (widget.category.icon?.id != null) ...[
+                      Image.network(APIPath.publicAsset(widget.category.icon!.id!)),
+                    ] else ...[
+                      Icon(Icons.more_vert, color: theme.primaryColor)
+                    ],
                     HGap.s,
                     Expanded(
                       child: Text(
@@ -95,7 +106,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                 onTap: () => Get.toNamed(
                   AppRoutes.category,
                   arguments: widget.category.nama == "Lainnya"
-                      ? KategoriBukuPerpustakaan(nama: "null", id: "null")
+                      ? k.KategoriBukuPerpustakaan(nama: "Lainnya", id: "null")
                       : widget.category,
                 ),
                 child: Text(

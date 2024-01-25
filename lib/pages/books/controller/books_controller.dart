@@ -24,6 +24,7 @@ class BooksController extends GetxController {
     getAllKategoriPerpus().then((res) {
       if (res.data != null) {
         categories.value = res.data?.listKategoriBukuPerpustakaan;
+        categories.value!.add(KategoriBukuPerpustakaan(nama: "Lainnya", id: "Lainnya"));
       } else {
         if (res.error == ResponseStatus.connectionError) {
           showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
@@ -45,9 +46,5 @@ class BooksController extends GetxController {
       isScrollControlled: true,
       enableDrag: false,
     );
-  }
-
-  void filter(String filter) {
-    filters.contains(filter) ? filters.remove(filter) : filters.add(filter);
   }
 }

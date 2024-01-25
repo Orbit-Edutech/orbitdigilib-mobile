@@ -109,24 +109,6 @@ class SQLHelper {
 
 final SQLHelper sqlHelper = SQLHelper();
 
-final buku = {
-  "id": "",
-  "id_buku": "",
-  "id_user": "",
-  "last_page_seen": 11,
-  "total_pages": 120,
-  "status": "undone",
-};
-
-final bukuHalamanBintang = {
-  "id": "",
-  "id_buku": "123dd",
-  "id_user": "3d2",
-  "halaman": 1,
-};
-
-const queryBukuHalamanBintang = "SELECT * FROM bukuHalamanBintang WHERE id_buku = ? AND id_user = ?";
-
 final notifications = {
   "id": 0,
   "id_user": "",
@@ -136,6 +118,3 @@ final notifications = {
   "readAt": "", // DATE
   "receivedAt": "", // DATE
 };
-
-const queryNotifications = "SELECT * FROM notifications";
-const queryInsertNotifications = "INSERT INTO notifications VALUES (?,?,?,?,?,?)";

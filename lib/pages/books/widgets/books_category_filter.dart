@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get_instance/get_instance.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 
+import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/app_button.dart';
@@ -11,12 +11,32 @@ import '../../../theme/app_text_stlye.dart';
 import '../controller/books_controller.dart';
 import 'books_category_card.dart';
 
-class BooksCategoryFilter extends StatelessWidget {
+class BooksCategoryFilter extends StatefulWidget {
   const BooksCategoryFilter({super.key});
 
   @override
+  State<BooksCategoryFilter> createState() => _BooksCategoryFilterState();
+}
+
+class _BooksCategoryFilterState extends State<BooksCategoryFilter> {
+  final controller = Get.find<BooksController>();
+  List<String> tempFilter = [];
+  List<KategoriBukuPerpustakaan> categories = [];
+  void filter(String filter) {
+    // setState(() {
+    //   tempFilter.contains(filter) ? tempFilter.remove(filter) : tempFilter.add(filter);
+    // });
+  }
+
+  @override
+  void initState() {
+    tempFilter = controller.filters;
+    categories = controller.categories.value!;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final controller = Get.find<BooksController>();
     final size = MediaQuery.of(context).size;
     return SizedBox(
       height: size.height * 0.75,
@@ -43,23 +63,33 @@ class BooksCategoryFilter extends StatelessWidget {
             ),
             VGap.r,
             Expanded(
-              child: Obx(() {
-                final categories = controller.categories.value;
-                return AlignedGridView.count(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 0,
-                  mainAxisSpacing: Sizes.xs,
-                  itemCount: categories!.length,
-                  itemBuilder: ((ctx, idx) {
-                    final kategori = categories[idx];
-                    return BooksCategoryCard(kategori: kategori);
-                  }),
-                );
-              }),
+              child: AlignedGridView.count(
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                crossAxisCount: 4,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: Sizes.xs,
+                itemCount: categories.length,
+                itemBuilder: ((ctx, idx) {
+                  final kategori = categories[idx];
+                  return BooksCategoryCard(
+                    kategori: kategori,
+                    filter: filter,
+                    filters: tempFilter,
+                  );
+                }),
+              ),
             ),
             VGap.r,
+            AppButton(
+              type: ButtonType.elevated,
+              onPressed: () {
+                Get.back();
+                controller.filters.value = tempFilter;
+              },
+              child: Text("Terapkan", style: AppTextStyle.ts14Bold),
+            ),
+            VGap.s,
             AppButton(
               type: ButtonType.outlined,
               onPressed: Get.back,

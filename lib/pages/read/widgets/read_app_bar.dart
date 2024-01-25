@@ -54,16 +54,6 @@ class ReadAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ],
                         ),
                       ),
-                      const PopupMenuItem(
-                        value: 3,
-                        child: Row(
-                          children: [
-                            Icon(Icons.hotel_class_outlined, color: AppColor.black),
-                            HGap.s,
-                            Text("Bintangi Halaman"),
-                          ],
-                        ),
-                      ),
                     ];
                   },
                   onSelected: (value) {
@@ -72,8 +62,7 @@ class ReadAppBar extends StatelessWidget implements PreferredSizeWidget {
                         controller.showPageSearchDiaog();
                         break;
                       case 2:
-                        break;
-                      case 3:
+                        controller.goToLastPageSeen();
                         break;
                     }
                   },

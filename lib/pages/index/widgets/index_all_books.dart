@@ -21,6 +21,8 @@ class IndexAllBooks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width >= 600;
     final theme = Theme.of(context);
     final controller = Get.find<IndexController>();
     return Padding(
@@ -39,7 +41,7 @@ class IndexAllBooks extends StatelessWidget {
             if (books == null) {
               return AlignedGridView.count(
                 shrinkWrap: true,
-                crossAxisCount: 2,
+                crossAxisCount: isWide ? 4 : 2,
                 itemCount: 10,
                 mainAxisSpacing: Sizes.r,
                 crossAxisSpacing: Sizes.r,
@@ -51,7 +53,7 @@ class IndexAllBooks extends StatelessWidget {
             }
             return AlignedGridView.count(
               shrinkWrap: true,
-              crossAxisCount: 2,
+              crossAxisCount: isWide ? 4 : 2,
               itemCount: books.length,
               mainAxisSpacing: Sizes.r,
               crossAxisSpacing: Sizes.r,

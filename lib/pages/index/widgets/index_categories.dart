@@ -17,6 +17,7 @@ class IndexCategories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isWide = size.width >= 600;
     final controller = Get.find<IndexController>();
     return Obx(() {
       if (controller.categories.value == null) return const SizedBox();
@@ -38,7 +39,7 @@ class IndexCategories extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
-              crossAxisCount: 4,
+              crossAxisCount: isWide ? 8 : 4,
               crossAxisSpacing: 0,
               mainAxisSpacing: Sizes.xs,
               itemCount: isMoreThan7 ? 8 : categories.length,

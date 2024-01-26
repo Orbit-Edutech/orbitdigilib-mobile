@@ -26,6 +26,8 @@ class CategoryPage extends StatelessWidget {
     final controller = Get.find<CategoryController>();
     final k.KategoriBukuPerpustakaan category = Get.arguments;
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width >= 600;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -82,7 +84,7 @@ class CategoryPage extends StatelessWidget {
                     if (filteredBooks == null) {
                       return AlignedGridView.count(
                         shrinkWrap: true,
-                        crossAxisCount: 2,
+                        crossAxisCount: isWide ? 4 : 2,
                         itemCount: 10,
                         mainAxisSpacing: Sizes.r,
                         crossAxisSpacing: Sizes.r,
@@ -114,7 +116,7 @@ class CategoryPage extends StatelessWidget {
                     }
                     return AlignedGridView.count(
                       shrinkWrap: true,
-                      crossAxisCount: 2,
+                      crossAxisCount: isWide ? 4 : 2,
                       itemCount: filteredBooks.length,
                       mainAxisSpacing: Sizes.r,
                       crossAxisSpacing: Sizes.r,

@@ -24,6 +24,8 @@ class WishlistPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<WishlistController>();
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width >= 600;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -90,7 +92,7 @@ class WishlistPage extends StatelessWidget {
                       if (filteredWishlist == null) {
                         return AlignedGridView.count(
                           shrinkWrap: true,
-                          crossAxisCount: 2,
+                          crossAxisCount: isWide ? 4 : 2,
                           itemCount: 10,
                           mainAxisSpacing: Sizes.r,
                           crossAxisSpacing: Sizes.r,
@@ -122,7 +124,7 @@ class WishlistPage extends StatelessWidget {
                       }
                       return AlignedGridView.count(
                         shrinkWrap: true,
-                        crossAxisCount: 2,
+                        crossAxisCount: isWide ? 4 : 2,
                         itemCount: filteredWishlist.length,
                         mainAxisSpacing: Sizes.r,
                         crossAxisSpacing: Sizes.r,

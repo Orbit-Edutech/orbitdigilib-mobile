@@ -44,6 +44,7 @@ class ReadController extends GetxController {
   Rx<bool> isOnSearch = false.obs;
   Rx<bool> noResultFound = false.obs;
   bool isSample = false;
+  int sampleLimit = 10;
 
   Rx<ModelBuku?> buku = Rx<ModelBuku?>(null);
   Rx<File?> pdf = Rx<File?>(null);
@@ -104,8 +105,8 @@ class ReadController extends GetxController {
   }
 
   void onPageChanged(int page) {
-    if (isSample && page > 2) {
-      pdfController.jumpToPage(2);
+    if (isSample && page > sampleLimit) {
+      pdfController.jumpToPage(sampleLimit);
       return;
     }
     currentPage.value = page;
@@ -162,6 +163,7 @@ class ReadController extends GetxController {
         searchPageFocusNode: searchPageFocusNode,
         pdfController: pdfController,
         isSample: isSample,
+        sampleLimit: sampleLimit,
       ),
       transitionDuration: const Duration(milliseconds: 100),
     );

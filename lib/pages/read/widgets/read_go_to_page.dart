@@ -15,12 +15,14 @@ class ReadGoToPage extends StatelessWidget {
     required this.searchPageFocusNode,
     required this.pdfController,
     required this.isSample,
+    required this.sampleLimit,
   });
 
   final TextEditingController searchPageController;
   final FocusNode searchPageFocusNode;
   final PdfViewerController pdfController;
   final bool isSample;
+  final int sampleLimit;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +44,8 @@ class ReadGoToPage extends StatelessWidget {
           if (text.isNotEmpty) {
             try {
               if (isSample) {
-                if (int.parse(text) > 2) {
-                  searchPageController.text = "2";
+                if (int.parse(text) > sampleLimit) {
+                  searchPageController.text = "$sampleLimit";
                 }
               } else if (int.parse(text) > pdfController.pageCount) {
                 searchPageController.text = pdfController.pageCount.toString();

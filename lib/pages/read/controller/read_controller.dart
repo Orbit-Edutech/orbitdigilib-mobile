@@ -43,6 +43,7 @@ class ReadController extends GetxController {
   Rx<bool> isFullScreen = false.obs;
   Rx<bool> isOnSearch = false.obs;
   Rx<bool> noResultFound = false.obs;
+  bool isSample = false;
 
   Rx<ModelBuku?> buku = Rx<ModelBuku?>(null);
   Rx<File?> pdf = Rx<File?>(null);
@@ -57,8 +58,9 @@ class ReadController extends GetxController {
   }
 
   Future getBuku() async {
-    final String? args = Get.arguments;
-    final response = await getOneBuku(args ?? "");
+    final Map<String, String?> args = Get.arguments;
+    isSample = args["type"] == "sample";
+    final response = await getOneBuku(args["asset"] ?? "");
     if (response.data != null) {
       buku.value = response.data;
       final Map<String, Object> values = {"total_pages": response.data?.jumlahHalaman ?? 0};
@@ -102,6 +104,10 @@ class ReadController extends GetxController {
   }
 
   void onPageChanged(int page) {
+    if (isSample && page > 2) {
+      pdfController.jumpToPage(2);
+      return;
+    }
     currentPage.value = page;
     if (_timer?.isActive ?? false) _timer?.cancel();
     if (page > lastPageSeen) {
@@ -115,6 +121,7 @@ class ReadController extends GetxController {
             "status": currentPage.value == buku.value?.jumlahHalaman ? "Selesai Dibaca" : "Belum Selesai",
           },
         );
+        await collectionController.onInit();
       });
     }
   }
@@ -154,6 +161,7 @@ class ReadController extends GetxController {
         searchPageController: searchPageController,
         searchPageFocusNode: searchPageFocusNode,
         pdfController: pdfController,
+        isSample: isSample,
       ),
       transitionDuration: const Duration(milliseconds: 100),
     );

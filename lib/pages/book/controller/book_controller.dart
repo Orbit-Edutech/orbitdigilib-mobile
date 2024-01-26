@@ -69,7 +69,7 @@ class BookController extends GetxController {
     if (response.data != null) {
       collectionController.onInit();
       showSnackbar(message: "Buku berhasil ditambahkan ke Koleksi!", backgroundColor: AppColor.green);
-      Get.offNamed(AppRoutes.read, arguments: book.value?.buku?.id);
+      Get.offNamed(AppRoutes.read, arguments: {"asset": book.value?.buku?.id, "type": "read"});
       final check = await checkCollection(args!.buku!.id!);
       if (check.data != null) isInCollections.value = true;
       profileController.onInit();
@@ -83,7 +83,7 @@ class BookController extends GetxController {
     if (response.data != null) {
       collectionController.onInit();
       showSnackbar(message: "Buku berhasil ditambahkan ke Koleksi!", backgroundColor: AppColor.green);
-      Get.offNamed(AppRoutes.read, arguments: book.value?.buku?.id);
+      Get.offNamed(AppRoutes.read, arguments: {"asset": book.value?.buku?.id, "type": "read"});
       final check = await checkCollection(args!.buku!.id!);
       if (check.data != null) isInCollections.value = true;
       profileController.onInit();
@@ -97,7 +97,7 @@ class BookController extends GetxController {
     if (response.data != null) {
       collectionController.onInit();
       showSnackbar(message: "Buku berhasil ditambahkan ke Koleksi!", backgroundColor: AppColor.green);
-      Get.offNamed(AppRoutes.read, arguments: book.value?.buku?.id);
+      Get.offNamed(AppRoutes.read, arguments: {"asset": book.value?.buku?.id, "type": "read"});
       final check = await checkCollection(args!.buku!.id!);
       if (check.data != null) isInCollections.value = true;
       profileController.onInit();

@@ -14,11 +14,13 @@ class ReadGoToPage extends StatelessWidget {
     required this.searchPageController,
     required this.searchPageFocusNode,
     required this.pdfController,
+    required this.isSample,
   });
 
   final TextEditingController searchPageController;
   final FocusNode searchPageFocusNode;
   final PdfViewerController pdfController;
+  final bool isSample;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,11 @@ class ReadGoToPage extends StatelessWidget {
         onChanged: (text) {
           if (text.isNotEmpty) {
             try {
-              if (int.parse(text) > pdfController.pageCount) {
+              if (isSample) {
+                if (int.parse(text) > 2) {
+                  searchPageController.text = "2";
+                }
+              } else if (int.parse(text) > pdfController.pageCount) {
                 searchPageController.text = pdfController.pageCount.toString();
               }
             } catch (e) {

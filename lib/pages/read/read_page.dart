@@ -220,22 +220,24 @@ class _ReadPageState extends State<ReadPage> {
                             color: Colors.black,
                           ),
                         ),
-                        PopupMenuButton(
-                          surfaceTintColor: Colors.white,
-                          color: Colors.white,
-                          itemBuilder: (context) {
-                            return controller.staredPages.value!.map((e) {
-                              return PopupMenuItem(
-                                value: e,
-                                child: Text(e.toString()),
-                              );
-                            }).toList();
-                          },
-                          onSelected: (value) {
-                            controller.pdfController.jumpToPage(value);
-                          },
-                          child: const Icon(Icons.keyboard_arrow_up_rounded),
-                        ),
+                        if (controller.staredPages.value?.isNotEmpty ?? false) ...[
+                          PopupMenuButton(
+                            surfaceTintColor: Colors.white,
+                            color: Colors.white,
+                            itemBuilder: (context) {
+                              return controller.staredPages.value!.map((e) {
+                                return PopupMenuItem(
+                                  value: e,
+                                  child: Text(e.toString()),
+                                );
+                              }).toList();
+                            },
+                            onSelected: (value) {
+                              controller.pdfController.jumpToPage(value);
+                            },
+                            child: const Icon(Icons.keyboard_arrow_up_rounded),
+                          ),
+                        ],
                       ],
                     ),
                     Text(

@@ -27,7 +27,10 @@ class BookButtons extends StatelessWidget {
           AppButton(
             type: ButtonType.elevated,
             onPressed: isInCollections
-                ? () => Get.toNamed(AppRoutes.read, arguments: controller.book.value?.buku?.id)
+                ? () => Get.toNamed(
+                      AppRoutes.read,
+                      arguments: {"asset": controller.book.value?.buku?.id, "type": "read"},
+                    )
                 : controller.showOptions,
             child: const Text("Baca Buku"),
           ),
@@ -35,7 +38,10 @@ class BookButtons extends StatelessWidget {
             VGap.s,
             AppButton(
               type: ButtonType.outlined,
-              onPressed: () {},
+              onPressed: () => Get.toNamed(
+                AppRoutes.read,
+                arguments: {"asset": controller.book.value?.buku?.id, "type": "sample"},
+              ),
               child: const Text("Sampel Buku"),
             ),
           ]

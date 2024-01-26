@@ -25,6 +25,7 @@ class EmptyList extends StatelessWidget {
           style: AppTextStyle.ts10Reg,
           textAlign: textAlign,
         ),
+        const Row(), // in order to expand the width
       ],
     );
   }

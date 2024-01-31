@@ -3,7 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/route_manager.dart';
 
-import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
+import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/app_button.dart';
@@ -21,16 +21,16 @@ class BooksCategoryFilter extends StatefulWidget {
 class _BooksCategoryFilterState extends State<BooksCategoryFilter> {
   final controller = Get.find<BooksController>();
   List<String> tempFilter = [];
-  List<KategoriBukuPerpustakaan> categories = [];
+  List<KatalogBukuPerpustakaan> categories = [];
   void filter(String filter) {
-    // setState(() {
-    //   tempFilter.contains(filter) ? tempFilter.remove(filter) : tempFilter.add(filter);
-    // });
+    setState(() {
+      tempFilter.contains(filter) ? tempFilter.remove(filter) : tempFilter.add(filter);
+    });
   }
 
   @override
   void initState() {
-    tempFilter = controller.filters;
+    // tempFilter = controller.filters;
     categories = controller.categories.value!;
     super.initState();
   }
@@ -85,6 +85,7 @@ class _BooksCategoryFilterState extends State<BooksCategoryFilter> {
               type: ButtonType.elevated,
               onPressed: () {
                 Get.back();
+                controller.filters.value = [];
                 controller.filters.value = tempFilter;
               },
               child: Text("Terapkan", style: AppTextStyle.ts14Bold),

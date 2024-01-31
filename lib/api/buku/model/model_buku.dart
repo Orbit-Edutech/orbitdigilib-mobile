@@ -7,13 +7,13 @@ class ModelBuku {
   final String? tahunTerbit;
   final String? isbn;
   final String? eIsbn;
-  final String? bahasa;
   final String? ilustrator;
   final String? penulis;
-  final String? hargaBeli;
-  final String? hargaSewa;
+  final int? hargaBeli;
+  final int? hargaSewa;
   final String? assetSampulId;
-  final Katalog? katalog;
+  final Bahasa? bahasa;
+  final Kategori? kategori;
   final Penerbit? penerbit;
   final String? id;
   final DateTime? createdAt;
@@ -27,13 +27,13 @@ class ModelBuku {
     this.tahunTerbit,
     this.isbn,
     this.eIsbn,
-    this.bahasa,
     this.ilustrator,
     this.penulis,
     this.hargaBeli,
     this.hargaSewa,
     this.assetSampulId,
-    this.katalog,
+    this.bahasa,
+    this.kategori,
     this.penerbit,
     this.id,
     this.createdAt,
@@ -48,13 +48,13 @@ class ModelBuku {
     String? tahunTerbit,
     String? isbn,
     String? eIsbn,
-    String? bahasa,
     String? ilustrator,
     String? penulis,
-    String? hargaBeli,
-    String? hargaSewa,
+    int? hargaBeli,
+    int? hargaSewa,
     String? assetSampulId,
-    Katalog? katalog,
+    Bahasa? bahasa,
+    Kategori? kategori,
     Penerbit? penerbit,
     String? id,
     DateTime? createdAt,
@@ -68,13 +68,13 @@ class ModelBuku {
         tahunTerbit: tahunTerbit ?? this.tahunTerbit,
         isbn: isbn ?? this.isbn,
         eIsbn: eIsbn ?? this.eIsbn,
-        bahasa: bahasa ?? this.bahasa,
         ilustrator: ilustrator ?? this.ilustrator,
         penulis: penulis ?? this.penulis,
         hargaBeli: hargaBeli ?? this.hargaBeli,
         hargaSewa: hargaSewa ?? this.hargaSewa,
         assetSampulId: assetSampulId ?? this.assetSampulId,
-        katalog: katalog ?? this.katalog,
+        bahasa: bahasa ?? this.bahasa,
+        kategori: kategori ?? this.kategori,
         penerbit: penerbit ?? this.penerbit,
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
@@ -93,13 +93,13 @@ class ModelBuku {
         tahunTerbit: json["tahunTerbit"],
         isbn: json["isbn"],
         eIsbn: json["eIsbn"],
-        bahasa: json["bahasa"],
         ilustrator: json["ilustrator"],
         penulis: json["penulis"],
         hargaBeli: json["hargaBeli"],
         hargaSewa: json["hargaSewa"],
         assetSampulId: json["assetSampulId"],
-        katalog: json["katalog"] == null ? null : Katalog.fromJson(json["katalog"]),
+        bahasa: json["bahasa"] == null ? null : Bahasa.fromJson(json["bahasa"]),
+        kategori: json["kategori"] == null ? null : Kategori.fromJson(json["kategori"]),
         penerbit: json["penerbit"] == null ? null : Penerbit.fromJson(json["penerbit"]),
         id: json["id"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
@@ -114,13 +114,13 @@ class ModelBuku {
         "tahunTerbit": tahunTerbit,
         "isbn": isbn,
         "eIsbn": eIsbn,
-        "bahasa": bahasa,
         "ilustrator": ilustrator,
         "penulis": penulis,
         "hargaBeli": hargaBeli,
         "hargaSewa": hargaSewa,
         "assetSampulId": assetSampulId,
-        "katalog": katalog?.toJson(),
+        "bahasa": bahasa?.toJson(),
+        "kategori": kategori?.toJson(),
         "penerbit": penerbit?.toJson(),
         "id": id,
         "createdAt": createdAt?.toIso8601String(),
@@ -129,37 +129,82 @@ class ModelBuku {
       };
 }
 
-class Katalog {
+class Bahasa {
+  final String? id;
+  final String? bahasaResmi;
+  final String? negara;
+  final String? deletedAt;
+
+  Bahasa({
+    this.id,
+    this.bahasaResmi,
+    this.negara,
+    this.deletedAt,
+  });
+
+  Bahasa copyWith({
+    String? id,
+    String? bahasaResmi,
+    String? negara,
+    String? deletedAt,
+  }) =>
+      Bahasa(
+        id: id ?? this.id,
+        bahasaResmi: bahasaResmi ?? this.bahasaResmi,
+        negara: negara ?? this.negara,
+        deletedAt: deletedAt ?? this.deletedAt,
+      );
+
+  factory Bahasa.fromRawJson(String str) => Bahasa.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Bahasa.fromJson(Map<String, dynamic> json) => Bahasa(
+        id: json["id"],
+        bahasaResmi: json["bahasaResmi"],
+        negara: json["negara"],
+        deletedAt: json["deletedAt"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "bahasaResmi": bahasaResmi,
+        "negara": negara,
+        "deletedAt": deletedAt,
+      };
+}
+
+class Kategori {
   final String? id;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? nama;
 
-  Katalog({
+  Kategori({
     this.id,
     this.createdAt,
     this.updatedAt,
     this.nama,
   });
 
-  Katalog copyWith({
+  Kategori copyWith({
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? nama,
   }) =>
-      Katalog(
+      Kategori(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         nama: nama ?? this.nama,
       );
 
-  factory Katalog.fromRawJson(String str) => Katalog.fromJson(json.decode(str));
+  factory Kategori.fromRawJson(String str) => Kategori.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Katalog.fromJson(Map<String, dynamic> json) => Katalog(
+  factory Kategori.fromJson(Map<String, dynamic> json) => Kategori(
         id: json["id"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
@@ -181,7 +226,10 @@ class Penerbit {
   final String? nama;
   final String? kode;
   final String? noTelepon;
-  final dynamic deskripsi;
+  final String? deskripsi;
+  final String? email;
+  final String? namaPic;
+  final String? contactPersonPic;
   final String? tahunBerdiri;
 
   Penerbit({
@@ -192,6 +240,9 @@ class Penerbit {
     this.kode,
     this.noTelepon,
     this.deskripsi,
+    this.email,
+    this.namaPic,
+    this.contactPersonPic,
     this.tahunBerdiri,
   });
 
@@ -202,7 +253,10 @@ class Penerbit {
     String? nama,
     String? kode,
     String? noTelepon,
-    dynamic deskripsi,
+    String? deskripsi,
+    String? email,
+    String? namaPic,
+    String? contactPersonPic,
     String? tahunBerdiri,
   }) =>
       Penerbit(
@@ -213,6 +267,9 @@ class Penerbit {
         kode: kode ?? this.kode,
         noTelepon: noTelepon ?? this.noTelepon,
         deskripsi: deskripsi ?? this.deskripsi,
+        email: email ?? this.email,
+        namaPic: namaPic ?? this.namaPic,
+        contactPersonPic: contactPersonPic ?? this.contactPersonPic,
         tahunBerdiri: tahunBerdiri ?? this.tahunBerdiri,
       );
 
@@ -228,6 +285,9 @@ class Penerbit {
         kode: json["kode"],
         noTelepon: json["noTelepon"],
         deskripsi: json["deskripsi"],
+        email: json["email"],
+        namaPic: json["namaPIC"],
+        contactPersonPic: json["contactPersonPIC"],
         tahunBerdiri: json["tahunBerdiri"],
       );
 
@@ -239,6 +299,9 @@ class Penerbit {
         "kode": kode,
         "noTelepon": noTelepon,
         "deskripsi": deskripsi,
+        "email": email,
+        "namaPIC": namaPic,
+        "contactPersonPIC": contactPersonPic,
         "tahunBerdiri": tahunBerdiri,
       };
 }

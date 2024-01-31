@@ -80,8 +80,8 @@ class BukuPerpustakaan {
   final Buku? buku;
   final int? jumlahSoftCopy;
   final int? jumlahSiapPinjam;
+  final String? bukuId;
   final bool? isPin;
-  final dynamic kategoriBukuPerpustakaanId;
 
   BukuPerpustakaan({
     this.id,
@@ -90,8 +90,8 @@ class BukuPerpustakaan {
     this.buku,
     this.jumlahSoftCopy,
     this.jumlahSiapPinjam,
+    this.bukuId,
     this.isPin,
-    this.kategoriBukuPerpustakaanId,
   });
 
   BukuPerpustakaan copyWith({
@@ -101,8 +101,8 @@ class BukuPerpustakaan {
     Buku? buku,
     int? jumlahSoftCopy,
     int? jumlahSiapPinjam,
+    String? bukuId,
     bool? isPin,
-    dynamic kategoriBukuPerpustakaanId,
   }) =>
       BukuPerpustakaan(
         id: id ?? this.id,
@@ -111,8 +111,8 @@ class BukuPerpustakaan {
         buku: buku ?? this.buku,
         jumlahSoftCopy: jumlahSoftCopy ?? this.jumlahSoftCopy,
         jumlahSiapPinjam: jumlahSiapPinjam ?? this.jumlahSiapPinjam,
+        bukuId: bukuId ?? this.bukuId,
         isPin: isPin ?? this.isPin,
-        kategoriBukuPerpustakaanId: kategoriBukuPerpustakaanId ?? this.kategoriBukuPerpustakaanId,
       );
 
   factory BukuPerpustakaan.fromRawJson(String str) => BukuPerpustakaan.fromJson(json.decode(str));
@@ -126,8 +126,8 @@ class BukuPerpustakaan {
         buku: json["buku"] == null ? null : Buku.fromJson(json["buku"]),
         jumlahSoftCopy: json["jumlahSoftCopy"],
         jumlahSiapPinjam: json["jumlahSiapPinjam"],
+        bukuId: json["bukuId"],
         isPin: json["isPin"],
-        kategoriBukuPerpustakaanId: json["kategoriBukuPerpustakaanId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -137,8 +137,8 @@ class BukuPerpustakaan {
         "buku": buku?.toJson(),
         "jumlahSoftCopy": jumlahSoftCopy,
         "jumlahSiapPinjam": jumlahSiapPinjam,
+        "bukuId": bukuId,
         "isPin": isPin,
-        "kategoriBukuPerpustakaanId": kategoriBukuPerpustakaanId,
       };
 }
 
@@ -151,14 +151,12 @@ class Buku {
   final int? jumlahHalaman;
   final String? tahunTerbit;
   final String? isbn;
-  final String? eIsbn;
-  final String? bahasa;
-  final String? ilustrator;
+  final dynamic eIsbn;
+  final dynamic ilustrator;
   final String? penulis;
-  final String? hargaBeli;
-  final String? hargaSewa;
+  final int? hargaBeli;
+  final int? hargaSewa;
   final String? assetSampulId;
-  final String? assetBukuId;
   final Penerbit? penerbit;
 
   Buku({
@@ -171,13 +169,11 @@ class Buku {
     this.tahunTerbit,
     this.isbn,
     this.eIsbn,
-    this.bahasa,
     this.ilustrator,
     this.penulis,
     this.hargaBeli,
     this.hargaSewa,
     this.assetSampulId,
-    this.assetBukuId,
     this.penerbit,
   });
 
@@ -190,14 +186,12 @@ class Buku {
     int? jumlahHalaman,
     String? tahunTerbit,
     String? isbn,
-    String? eIsbn,
-    String? bahasa,
-    String? ilustrator,
+    dynamic eIsbn,
+    dynamic ilustrator,
     String? penulis,
-    String? hargaBeli,
-    String? hargaSewa,
+    int? hargaBeli,
+    int? hargaSewa,
     String? assetSampulId,
-    String? assetBukuId,
     Penerbit? penerbit,
   }) =>
       Buku(
@@ -210,13 +204,11 @@ class Buku {
         tahunTerbit: tahunTerbit ?? this.tahunTerbit,
         isbn: isbn ?? this.isbn,
         eIsbn: eIsbn ?? this.eIsbn,
-        bahasa: bahasa ?? this.bahasa,
         ilustrator: ilustrator ?? this.ilustrator,
         penulis: penulis ?? this.penulis,
         hargaBeli: hargaBeli ?? this.hargaBeli,
         hargaSewa: hargaSewa ?? this.hargaSewa,
         assetSampulId: assetSampulId ?? this.assetSampulId,
-        assetBukuId: assetBukuId ?? this.assetBukuId,
         penerbit: penerbit ?? this.penerbit,
       );
 
@@ -234,13 +226,11 @@ class Buku {
         tahunTerbit: json["tahunTerbit"],
         isbn: json["isbn"],
         eIsbn: json["eIsbn"],
-        bahasa: json["bahasa"],
         ilustrator: json["ilustrator"],
         penulis: json["penulis"],
         hargaBeli: json["hargaBeli"],
         hargaSewa: json["hargaSewa"],
         assetSampulId: json["assetSampulId"],
-        assetBukuId: json["assetBukuId"],
         penerbit: json["penerbit"] == null ? null : Penerbit.fromJson(json["penerbit"]),
       );
 
@@ -254,13 +244,11 @@ class Buku {
         "tahunTerbit": tahunTerbit,
         "isbn": isbn,
         "eIsbn": eIsbn,
-        "bahasa": bahasa,
         "ilustrator": ilustrator,
         "penulis": penulis,
         "hargaBeli": hargaBeli,
         "hargaSewa": hargaSewa,
         "assetSampulId": assetSampulId,
-        "assetBukuId": assetBukuId,
         "penerbit": penerbit?.toJson(),
       };
 }
@@ -272,7 +260,10 @@ class Penerbit {
   final String? nama;
   final String? kode;
   final String? noTelepon;
-  final dynamic deskripsi;
+  final String? deskripsi;
+  final String? email;
+  final String? namaPic;
+  final String? contactPersonPic;
   final String? tahunBerdiri;
 
   Penerbit({
@@ -283,6 +274,9 @@ class Penerbit {
     this.kode,
     this.noTelepon,
     this.deskripsi,
+    this.email,
+    this.namaPic,
+    this.contactPersonPic,
     this.tahunBerdiri,
   });
 
@@ -293,7 +287,10 @@ class Penerbit {
     String? nama,
     String? kode,
     String? noTelepon,
-    dynamic deskripsi,
+    String? deskripsi,
+    String? email,
+    String? namaPic,
+    String? contactPersonPic,
     String? tahunBerdiri,
   }) =>
       Penerbit(
@@ -304,6 +301,9 @@ class Penerbit {
         kode: kode ?? this.kode,
         noTelepon: noTelepon ?? this.noTelepon,
         deskripsi: deskripsi ?? this.deskripsi,
+        email: email ?? this.email,
+        namaPic: namaPic ?? this.namaPic,
+        contactPersonPic: contactPersonPic ?? this.contactPersonPic,
         tahunBerdiri: tahunBerdiri ?? this.tahunBerdiri,
       );
 
@@ -319,6 +319,9 @@ class Penerbit {
         kode: json["kode"],
         noTelepon: json["noTelepon"],
         deskripsi: json["deskripsi"],
+        email: json["email"],
+        namaPic: json["namaPIC"],
+        contactPersonPic: json["contactPersonPIC"],
         tahunBerdiri: json["tahunBerdiri"],
       );
 
@@ -330,6 +333,9 @@ class Penerbit {
         "kode": kode,
         "noTelepon": noTelepon,
         "deskripsi": deskripsi,
+        "email": email,
+        "namaPIC": namaPic,
+        "contactPersonPIC": contactPersonPic,
         "tahunBerdiri": tahunBerdiri,
       };
 }

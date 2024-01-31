@@ -20,10 +20,14 @@ class BooksPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Semua Buku"),
         actions: [
-          IconButton(
-            onPressed: controller.showFilter,
-            icon: SvgPicture.asset("assets/icons/filter.svg"),
-          ),
+          Obx(() {
+            final categories = controller.categories.value;
+            if (categories == null) return const SizedBox();
+            return IconButton(
+              onPressed: controller.showFilter,
+              icon: SvgPicture.asset("assets/icons/filter.svg"),
+            );
+          }),
           HGap.r,
         ],
       ),

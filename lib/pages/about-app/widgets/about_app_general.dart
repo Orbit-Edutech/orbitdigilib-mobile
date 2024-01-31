@@ -37,8 +37,21 @@ class AboutAppGeneral extends StatelessWidget {
           ],
         ),
         VGap.r,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Klik, Baca, Berkembang",
+            style: AppTextStyle.ts10Light,
+            textAlign: TextAlign.justify,
+          ),
+        ),
+        VGap.s,
         Text(
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised i",
+          """ORBIT Digital Library, Solusi Perpustakaan Digital Mudah & Lengkap.\n 
+Selamat datang di ORBIT Digital Library, solusi perpustakaan digital yang dirancang untuk membantu sekolah untuk mengelola perpustakaan berbasis digital sekaligus meningkatkan literasi siswa. Jelajahi ilmu tak terbatas dengan ribuan buku digital dengan ragam tema yang menarik akan menjadi sumber belajar yang menyenangkan untuk siswa dalam meningkatkan pengetahuan.\n
+Dilengkapi oleh koleksi buku yang kaya akan ragam topik untuk memenuhi kebutuhan dan minat pembaca. Mudah diakses oleh semua, termasuk memudahkan pustakawan sekolah dalam mengelola perpustakaan digital. Aplikasi ini bersifat interaktif yang memungkinkan siswa untuk terlibat aktif dan membuat proses membaca jadi lebih menarik. Efisiensi dalam hal peminjaman, penyewaan, dan pembelian buku semakin mempermudah pustakawan, siswa, maupun sekolah dalam menggunakan perpustakaan digital. Sekolah akan mendapatkan aplikasi Perpustakaan Digital secara eksklusif, tanpa perlu khawatir mengenai keamanan data dan privasi yang tersebar.\n
+ORBIT Digital Library adalah langkah maju dalam dunia Literasi Digital, menjadi mitra setia dan progresif bagi pustakawan, siswa, dan sekolah.
+""",
           style: AppTextStyle.ts10Light,
           textAlign: TextAlign.justify,
         ),

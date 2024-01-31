@@ -56,7 +56,7 @@ class TokenPage extends StatelessWidget {
             SizedBox(
               width: 250,
               child: Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                "Masukkan kode voucher Anda sekarang dan nikmati buku yang ingin Anda baca.",
                 style: AppTextStyle.ts12Reg,
                 textAlign: TextAlign.center,
               ),

@@ -4,7 +4,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
-import '../../api/kategori-perpus/model/model_kategori_perpus_all.dart' as k;
+import '../../api/katalog-perpus/model/model_katalog_perpus_all.dart' as k;
 import '../../api/wishlist/model/model_wishlist_all.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
@@ -24,7 +24,7 @@ class CategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CategoryController>();
-    final k.KategoriBukuPerpustakaan category = Get.arguments;
+    final k.KatalogBukuPerpustakaan category = Get.arguments;
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
     final isWide = size.width >= 600;
@@ -131,7 +131,7 @@ class CategoryPage extends StatelessWidget {
                           penulis: buku?.penulis ?? '-',
                           idSampul: buku?.assetSampulId ?? '-',
                           copy: "${payload.jumlahSiapPinjam ?? '-'}",
-                          harga: (int.parse(buku?.hargaSewa ?? "0") ~/ 100).toString(),
+                          harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
                           onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                           onChangeWishlist: () {},
                         );

@@ -7,6 +7,7 @@ import '../../../constants/sizes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../../utils/launch_url.dart';
 
 class RegisterInfo extends StatelessWidget {
   const RegisterInfo({super.key});
@@ -39,9 +40,8 @@ class RegisterInfo extends StatelessWidget {
             VGap.xs,
             SizedBox(
               width: 250,
-              // TODO: Copywriting untuk informasi pendaftaran
               child: Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                "Sebelum menggunakan aplikasi, silahkan registrasi akun terlebih dahulu.",
                 style: AppTextStyle.ts12Reg,
                 textAlign: TextAlign.center,
               ),
@@ -51,7 +51,11 @@ class RegisterInfo extends StatelessWidget {
               state: ButtonState.enable,
               type: ButtonType.elevated,
               backgroundColor: AppColor.whatsapp,
-              onPressed: () {},
+              onPressed: () async {
+                const String url =
+                    "https://api.whatsapp.com/send?phone=6285161400360&text=Halo!%20Saya%20NAMA%20ANDA%20dari%20ASAL%20SEKOLAH.%20Saya%20ingin%20menggunakan%20ORBIT%20Digital%20Library%20untuk%20sekolah%20kami.%20Apakah%20bisa%20dibantu%20untuk%20tahap%20berikutnya%3F";
+                await launchUrl(url);
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

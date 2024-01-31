@@ -51,8 +51,8 @@ class RecommendationController extends GetxController {
 
   void sort() {
     books.value?.sort((a, b) {
-      final hargaSewaTerendah = int.parse(a.buku?.hargaSewa ?? "0");
-      final hargaSewaTertinggi = int.parse(b.buku?.hargaSewa ?? "0");
+      final hargaSewaTerendah = (a.buku?.hargaSewa ?? 0);
+      final hargaSewaTertinggi = (b.buku?.hargaSewa ?? 0);
       return asc.value ? hargaSewaTerendah.compareTo(hargaSewaTertinggi) : hargaSewaTertinggi.compareTo(hargaSewaTerendah);
     });
     asc.value = !asc.value;

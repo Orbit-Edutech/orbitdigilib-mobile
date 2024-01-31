@@ -1,17 +1,17 @@
 import 'dart:convert';
 
 class KategoriPerpusAll {
-  final List<KategoriBukuPerpustakaan>? listKategoriBukuPerpustakaan;
+  final List<KatalogBukuPerpustakaan>? listKatalogBukuPerpustakaan;
 
   KategoriPerpusAll({
-    this.listKategoriBukuPerpustakaan,
+    this.listKatalogBukuPerpustakaan,
   });
 
   KategoriPerpusAll copyWith({
-    List<KategoriBukuPerpustakaan>? listKategoriBukuPerpustakaan,
+    List<KatalogBukuPerpustakaan>? listKatalogBukuPerpustakaan,
   }) =>
       KategoriPerpusAll(
-        listKategoriBukuPerpustakaan: listKategoriBukuPerpustakaan ?? this.listKategoriBukuPerpustakaan,
+        listKatalogBukuPerpustakaan: listKatalogBukuPerpustakaan ?? this.listKatalogBukuPerpustakaan,
       );
 
   factory KategoriPerpusAll.fromRawJson(String str) => KategoriPerpusAll.fromJson(json.decode(str));
@@ -19,58 +19,63 @@ class KategoriPerpusAll {
   String toRawJson() => json.encode(toJson());
 
   factory KategoriPerpusAll.fromJson(Map<String, dynamic> json) => KategoriPerpusAll(
-        listKategoriBukuPerpustakaan: json["listKategoriBukuPerpustakaan"] == null
+        listKatalogBukuPerpustakaan: json["listKatalogBukuPerpustakaan"] == null
             ? []
-            : List<KategoriBukuPerpustakaan>.from(
-                json["listKategoriBukuPerpustakaan"]!.map((x) => KategoriBukuPerpustakaan.fromJson(x))),
+            : List<KatalogBukuPerpustakaan>.from(
+                json["listKatalogBukuPerpustakaan"]!.map((x) => KatalogBukuPerpustakaan.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "listKategoriBukuPerpustakaan": listKategoriBukuPerpustakaan == null
+        "listKatalogBukuPerpustakaan": listKatalogBukuPerpustakaan == null
             ? []
-            : List<dynamic>.from(listKategoriBukuPerpustakaan!.map((x) => x.toJson())),
+            : List<dynamic>.from(listKatalogBukuPerpustakaan!.map((x) => x.toJson())),
       };
 }
 
-class KategoriBukuPerpustakaan {
+class KatalogBukuPerpustakaan {
   final String? id;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? nama;
+  final int? urutanDitampilkan;
   final Icon? icon;
 
-  KategoriBukuPerpustakaan({
+  KatalogBukuPerpustakaan({
     this.id,
     this.createdAt,
     this.updatedAt,
     this.nama,
+    this.urutanDitampilkan,
     this.icon,
   });
 
-  KategoriBukuPerpustakaan copyWith({
+  KatalogBukuPerpustakaan copyWith({
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? nama,
+    int? urutanDitampilkan,
     Icon? icon,
   }) =>
-      KategoriBukuPerpustakaan(
+      KatalogBukuPerpustakaan(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         nama: nama ?? this.nama,
+        urutanDitampilkan: urutanDitampilkan ?? this.urutanDitampilkan,
         icon: icon ?? this.icon,
       );
 
-  factory KategoriBukuPerpustakaan.fromRawJson(String str) => KategoriBukuPerpustakaan.fromJson(json.decode(str));
+  factory KatalogBukuPerpustakaan.fromRawJson(String str) => KatalogBukuPerpustakaan.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory KategoriBukuPerpustakaan.fromJson(Map<String, dynamic> json) => KategoriBukuPerpustakaan(
+  factory KatalogBukuPerpustakaan.fromJson(Map<String, dynamic> json) => KatalogBukuPerpustakaan(
         id: json["id"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         nama: json["nama"],
+        urutanDitampilkan: json["urutanDitampilkan"],
         icon: json["icon"] == null ? null : Icon.fromJson(json["icon"]),
       );
 
@@ -79,6 +84,7 @@ class KategoriBukuPerpustakaan {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "nama": nama,
+        "urutanDitampilkan": urutanDitampilkan,
         "icon": icon?.toJson(),
       };
 }

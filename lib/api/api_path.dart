@@ -1,5 +1,5 @@
 class APIPath {
-  static const base = "http://192.168.0.43:4001";
+  static const base = "http://192.168.0.44:4001";
 
   /// /asset/{id}
   static String asset(String id) => "$base/asset/$id";
@@ -55,11 +55,11 @@ class APIPath {
   /// /beli
   static const beli = "/beli";
 
-  /// /kategori-buku-perpustakaan
-  static const kategoriBukuPerpustakaan = "/kategori-buku-perpustakaan";
+  /// /katalog-buku-perpustakaan
+  static const katalogBukuPerpustakaan = "/katalog-buku-perpustakaan";
 
-  /// /kategori-buku-perpustakaan/{id}
-  static String kategoriBukuPerpustakaanGetOne(String id) => "/kategori-buku-perpustakaan/$id";
+  /// /katalog-buku-perpustakaan/{id}
+  static String katalogBukuPerpustakaanGetOne(String id) => "/katalog-buku-perpustakaan/$id";
 
   /// /wishlist
   static const wishlist = "/wishlist";

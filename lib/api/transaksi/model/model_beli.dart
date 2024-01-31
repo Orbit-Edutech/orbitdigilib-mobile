@@ -62,10 +62,9 @@ class Buku {
   final String? judul;
   final int? jumlahHalaman;
   final String? tahunTerbit;
-  final String? bahasa;
   final String? penulis;
-  final String? hargaBeli;
-  final String? hargaSewa;
+  final int? hargaBeli;
+  final int? hargaSewa;
   final String? assetSampulId;
 
   Buku({
@@ -73,7 +72,6 @@ class Buku {
     this.judul,
     this.jumlahHalaman,
     this.tahunTerbit,
-    this.bahasa,
     this.penulis,
     this.hargaBeli,
     this.hargaSewa,
@@ -85,10 +83,9 @@ class Buku {
     String? judul,
     int? jumlahHalaman,
     String? tahunTerbit,
-    String? bahasa,
     String? penulis,
-    String? hargaBeli,
-    String? hargaSewa,
+    int? hargaBeli,
+    int? hargaSewa,
     String? assetSampulId,
   }) =>
       Buku(
@@ -96,7 +93,6 @@ class Buku {
         judul: judul ?? this.judul,
         jumlahHalaman: jumlahHalaman ?? this.jumlahHalaman,
         tahunTerbit: tahunTerbit ?? this.tahunTerbit,
-        bahasa: bahasa ?? this.bahasa,
         penulis: penulis ?? this.penulis,
         hargaBeli: hargaBeli ?? this.hargaBeli,
         hargaSewa: hargaSewa ?? this.hargaSewa,
@@ -112,7 +108,6 @@ class Buku {
         judul: json["judul"],
         jumlahHalaman: json["jumlahHalaman"],
         tahunTerbit: json["tahunTerbit"],
-        bahasa: json["bahasa"],
         penulis: json["penulis"],
         hargaBeli: json["hargaBeli"],
         hargaSewa: json["hargaSewa"],
@@ -124,7 +119,6 @@ class Buku {
         "judul": judul,
         "jumlahHalaman": jumlahHalaman,
         "tahunTerbit": tahunTerbit,
-        "bahasa": bahasa,
         "penulis": penulis,
         "hargaBeli": hargaBeli,
         "hargaSewa": hargaSewa,

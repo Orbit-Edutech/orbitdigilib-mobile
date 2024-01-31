@@ -30,13 +30,14 @@ class SearchPageController extends GetxController {
 
   void sortBooks() {
     books.value?.sort((a, b) {
-      final hargaSewaTerendah = int.parse(a.buku?.hargaSewa ?? "0");
-      final hargaSewaTertinggi = int.parse(b.buku?.hargaSewa ?? "0");
+      final hargaSewaTerendah = (a.buku?.hargaSewa ?? 0);
+      final hargaSewaTertinggi = (b.buku?.hargaSewa ?? 0);
       return isReversed.value
           ? hargaSewaTerendah.compareTo(hargaSewaTertinggi)
           : hargaSewaTertinggi.compareTo(hargaSewaTerendah);
     });
     isReversed.value = !isReversed.value;
+    update();
   }
 
   Future<void> search(String keyword) async {
@@ -50,8 +51,9 @@ class SearchPageController extends GetxController {
       cancelToken = CancelToken();
       final response = await getAllBukuPerpustakaan(qp, cancelToken);
       if (response.data != null) {
-        books.value = response.data?.payload;
+        books.value = response.data!.payload ?? [];
       }
+      update();
     });
   }
 
@@ -68,9 +70,8 @@ class SearchPageController extends GetxController {
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
           books.value?.addAll(response.data?.payload ?? []);
-          final result = books.value;
-          books.value = result;
           page.value++;
+          update();
         }
       }
       isLoadedMore.value = false;

@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../api/api_path.dart';
-import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart' as k;
+import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart' as k;
 import '../../../constants/gaps.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
@@ -15,7 +17,7 @@ class BooksCategoryCard extends StatelessWidget {
     required this.filters,
   });
 
-  final k.KategoriBukuPerpustakaan kategori;
+  final k.KatalogBukuPerpustakaan kategori;
   final Function(String) filter;
   final List<String> filters;
 
@@ -24,7 +26,10 @@ class BooksCategoryCard extends StatelessWidget {
     final theme = Theme.of(context);
     final isSelected = filters.contains(kategori.nama);
     return InkWell(
-      onTap: () => filter(kategori.nama!),
+      onTap: () {
+        log(kategori.nama!);
+        filter(kategori.nama!);
+      },
       child: Column(
         children: [
           Stack(

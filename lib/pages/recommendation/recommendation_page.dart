@@ -128,7 +128,7 @@ class RecommendationPage extends StatelessWidget {
                           penulis: buku?.penulis ?? '-',
                           idSampul: buku?.assetSampulId ?? '-',
                           copy: "${payload.jumlahSiapPinjam ?? '-'}",
-                          harga: (int.parse(buku?.hargaSewa ?? "0") ~/ 100).toString(),
+                          harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
                           onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                           onChangeWishlist: () {},
                         );

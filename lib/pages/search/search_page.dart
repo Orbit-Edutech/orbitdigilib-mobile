@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
@@ -58,7 +58,7 @@ class SearchPage extends StatelessWidget {
           ),
           VGap.s,
           Expanded(
-            child: Obx(() {
+            child: GetBuilder<SearchPageController>(builder: (c) {
               final _ = controller.isReversed.value;
               final books = controller.books.value;
               if (books == null) {
@@ -89,7 +89,7 @@ class SearchPage extends StatelessWidget {
                         penulis: book?.penulis ?? "-",
                         idSampul: book?.assetSampulId ?? "-",
                         copy: "${books[idx].jumlahSiapPinjam ?? '-'}",
-                        harga: (int.parse(book?.hargaSewa ?? "0") ~/ 100).toString(),
+                        harga: ((book?.hargaSewa ?? 0) ~/ 100).toString(),
                         onTap: () => Get.toNamed(AppRoutes.book, arguments: books[idx]),
                       ),
                       VGap.s,

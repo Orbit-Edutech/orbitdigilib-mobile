@@ -7,7 +7,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
-import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
+import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart';
 import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
@@ -25,11 +25,11 @@ class CategoryController extends GetxController {
 
   Rx<List<Payload>?> books = Rx<List<Payload>?>(null);
   Rx<List<Payload>?> filteredBooks = Rx<List<Payload>?>(null);
-  final KategoriBukuPerpustakaan category = Get.arguments;
+  final KatalogBukuPerpustakaan category = Get.arguments;
 
   @override
   Future<void> onInit() async {
-    Map<String, dynamic> qp = {"kategoriBukuPerpustakaanId": category.id};
+    Map<String, dynamic> qp = {"katalogBukuPerpustakaanId": category.id};
     final response = await getAllBukuPerpustakaan(qp);
     if (response.data != null) {
       books.value = response.data!.payload;

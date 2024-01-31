@@ -7,7 +7,7 @@ class ModelAllBukuPerpustakaan {
   final int? totalPage;
   final int? currentPage;
   final int? lastPage;
-  final dynamic nextPage;
+  final int? nextPage;
   final dynamic previousPage;
   final List<Payload>? payload;
 
@@ -30,7 +30,7 @@ class ModelAllBukuPerpustakaan {
     int? totalPage,
     int? currentPage,
     int? lastPage,
-    dynamic nextPage,
+    int? nextPage,
     dynamic previousPage,
     List<Payload>? payload,
   }) =>
@@ -82,9 +82,9 @@ class Payload {
   final Buku? buku;
   final int? jumlahSoftCopy;
   final int? jumlahSiapPinjam;
+  final String? bukuId;
   final bool? isPin;
-  final dynamic kategoriBukuPerpustakaanId;
-  final dynamic kategoriBukuPerpustakaan;
+  final dynamic katalogBukuPerpustakaan;
 
   Payload({
     this.id,
@@ -93,9 +93,9 @@ class Payload {
     this.buku,
     this.jumlahSoftCopy,
     this.jumlahSiapPinjam,
+    this.bukuId,
     this.isPin,
-    this.kategoriBukuPerpustakaanId,
-    this.kategoriBukuPerpustakaan,
+    this.katalogBukuPerpustakaan,
   });
 
   Payload copyWith({
@@ -105,9 +105,9 @@ class Payload {
     Buku? buku,
     int? jumlahSoftCopy,
     int? jumlahSiapPinjam,
+    String? bukuId,
     bool? isPin,
-    dynamic kategoriBukuPerpustakaanId,
-    dynamic kategoriBukuPerpustakaan,
+    dynamic katalogBukuPerpustakaan,
   }) =>
       Payload(
         id: id ?? this.id,
@@ -116,9 +116,9 @@ class Payload {
         buku: buku ?? this.buku,
         jumlahSoftCopy: jumlahSoftCopy ?? this.jumlahSoftCopy,
         jumlahSiapPinjam: jumlahSiapPinjam ?? this.jumlahSiapPinjam,
+        bukuId: bukuId ?? this.bukuId,
         isPin: isPin ?? this.isPin,
-        kategoriBukuPerpustakaanId: kategoriBukuPerpustakaanId ?? this.kategoriBukuPerpustakaanId,
-        kategoriBukuPerpustakaan: kategoriBukuPerpustakaan ?? this.kategoriBukuPerpustakaan,
+        katalogBukuPerpustakaan: katalogBukuPerpustakaan ?? this.katalogBukuPerpustakaan,
       );
 
   factory Payload.fromRawJson(String str) => Payload.fromJson(json.decode(str));
@@ -132,9 +132,9 @@ class Payload {
         buku: json["buku"] == null ? null : Buku.fromJson(json["buku"]),
         jumlahSoftCopy: json["jumlahSoftCopy"],
         jumlahSiapPinjam: json["jumlahSiapPinjam"],
+        bukuId: json["bukuId"],
         isPin: json["isPin"],
-        kategoriBukuPerpustakaanId: json["kategoriBukuPerpustakaanId"],
-        kategoriBukuPerpustakaan: json["kategoriBukuPerpustakaan"],
+        katalogBukuPerpustakaan: json["katalogBukuPerpustakaan"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -144,56 +144,80 @@ class Payload {
         "buku": buku?.toJson(),
         "jumlahSoftCopy": jumlahSoftCopy,
         "jumlahSiapPinjam": jumlahSiapPinjam,
+        "bukuId": bukuId,
         "isPin": isPin,
-        "kategoriBukuPerpustakaanId": kategoriBukuPerpustakaanId,
-        "kategoriBukuPerpustakaan": kategoriBukuPerpustakaan,
+        "katalogBukuPerpustakaan": katalogBukuPerpustakaan,
       };
 }
 
 class Buku {
   final String? id;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   final String? judul;
+  final String? sinopsis;
   final int? jumlahHalaman;
   final String? tahunTerbit;
-  final String? bahasa;
+  final String? isbn;
+  final dynamic eIsbn;
+  final dynamic ilustrator;
   final String? penulis;
-  final String? hargaBeli;
-  final String? hargaSewa;
+  final int? hargaBeli;
+  final int? hargaSewa;
   final String? assetSampulId;
+  final dynamic promo;
 
   Buku({
     this.id,
+    this.createdAt,
+    this.updatedAt,
     this.judul,
+    this.sinopsis,
     this.jumlahHalaman,
     this.tahunTerbit,
-    this.bahasa,
+    this.isbn,
+    this.eIsbn,
+    this.ilustrator,
     this.penulis,
     this.hargaBeli,
     this.hargaSewa,
     this.assetSampulId,
+    this.promo,
   });
 
   Buku copyWith({
     String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     String? judul,
+    String? sinopsis,
     int? jumlahHalaman,
     String? tahunTerbit,
-    String? bahasa,
+    String? isbn,
+    dynamic eIsbn,
+    dynamic ilustrator,
     String? penulis,
-    String? hargaBeli,
-    String? hargaSewa,
+    int? hargaBeli,
+    int? hargaSewa,
     String? assetSampulId,
+    dynamic promo,
   }) =>
       Buku(
         id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
         judul: judul ?? this.judul,
+        sinopsis: sinopsis ?? this.sinopsis,
         jumlahHalaman: jumlahHalaman ?? this.jumlahHalaman,
         tahunTerbit: tahunTerbit ?? this.tahunTerbit,
-        bahasa: bahasa ?? this.bahasa,
+        isbn: isbn ?? this.isbn,
+        eIsbn: eIsbn ?? this.eIsbn,
+        ilustrator: ilustrator ?? this.ilustrator,
         penulis: penulis ?? this.penulis,
         hargaBeli: hargaBeli ?? this.hargaBeli,
         hargaSewa: hargaSewa ?? this.hargaSewa,
         assetSampulId: assetSampulId ?? this.assetSampulId,
+        promo: promo ?? this.promo,
       );
 
   factory Buku.fromRawJson(String str) => Buku.fromJson(json.decode(str));
@@ -202,25 +226,37 @@ class Buku {
 
   factory Buku.fromJson(Map<String, dynamic> json) => Buku(
         id: json["id"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         judul: json["judul"],
+        sinopsis: json["sinopsis"],
         jumlahHalaman: json["jumlahHalaman"],
         tahunTerbit: json["tahunTerbit"],
-        bahasa: json["bahasa"],
+        isbn: json["isbn"],
+        eIsbn: json["eIsbn"],
+        ilustrator: json["ilustrator"],
         penulis: json["penulis"],
         hargaBeli: json["hargaBeli"],
         hargaSewa: json["hargaSewa"],
         assetSampulId: json["assetSampulId"],
+        promo: json["promo"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
         "judul": judul,
+        "sinopsis": sinopsis,
         "jumlahHalaman": jumlahHalaman,
         "tahunTerbit": tahunTerbit,
-        "bahasa": bahasa,
+        "isbn": isbn,
+        "eIsbn": eIsbn,
+        "ilustrator": ilustrator,
         "penulis": penulis,
         "hargaBeli": hargaBeli,
         "hargaSewa": hargaSewa,
         "assetSampulId": assetSampulId,
+        "promo": promo,
       };
 }

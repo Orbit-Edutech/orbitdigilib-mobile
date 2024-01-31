@@ -6,8 +6,8 @@ import 'package:get/route_manager.dart';
 import '../../../api/api_client.dart';
 import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
 import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
-import '../../../api/kategori-perpus/data/get_all_kategori_perpus.dart';
-import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
+import '../../../api/katalog-perpus/data/get_all_katalog_perpus.dart';
+import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart';
 import '../../../api/perpustakaan/data/perpustakaan_get_one.dart';
 import '../../../api/perpustakaan/model/model_perpustakaan.dart';
 
@@ -20,7 +20,7 @@ import '../widgets/index_large_banner.dart';
 
 class IndexController extends GetxController {
   final Rx<Perpustakaan?> perpustakaan = Rx<Perpustakaan?>(null);
-  Rx<List<KategoriBukuPerpustakaan>?> categories = Rx<List<KategoriBukuPerpustakaan>?>(null);
+  Rx<List<KatalogBukuPerpustakaan>?> categories = Rx<List<KatalogBukuPerpustakaan>?>(null);
   Rx<List<Payload>?> pinnedBooks = Rx<List<Payload>?>(null);
   Rx<List<Payload>?> allBooks = Rx<List<Payload>?>(null);
   Rx<List<Payload>?> promoBooks = Rx<List<Payload>?>(null);
@@ -81,9 +81,9 @@ class IndexController extends GetxController {
           }
         }
       }),
-      getAllKategoriPerpus().then((res) {
+      getAllKatalogPerpus().then((res) {
         if (res.data != null) {
-          categories.value = res.data?.listKategoriBukuPerpustakaan;
+          categories.value = res.data?.listKatalogBukuPerpustakaan;
         } else {
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");

@@ -24,7 +24,6 @@ class AboutAppFooter extends StatelessWidget {
                 style: AppTextStyle.ts10Bold,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    debugPrint("Kebijakan Privasi");
                     //TODO: Arahin ke kebijakan privasi,
                   },
               ),
@@ -34,7 +33,6 @@ class AboutAppFooter extends StatelessWidget {
                 style: AppTextStyle.ts10Bold,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    debugPrint("Syarat dan Ketentuan");
                     //TODO: Arahin ke syarat dan ketentuan,
                   },
               ),

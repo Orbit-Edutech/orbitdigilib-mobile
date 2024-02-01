@@ -26,7 +26,7 @@ class _ReadPageState extends State<ReadPage> {
 
   @override
   void initState() {
-    // _methodChannel.invokeMethod("secure", {"isSecure": true});
+    _methodChannel.invokeMethod("secure", {"isSecure": true});
     super.initState();
   }
 

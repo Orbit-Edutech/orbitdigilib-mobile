@@ -46,63 +46,32 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (type) {
-      case TextFieldType.normal:
-        return TextField(
-          onSubmitted: onSubmitted,
-          onEditingComplete: onEditingComplete,
-          controller: controller,
-          focusNode: focusNode,
-          onTapOutside: onTapOutside,
-          onChanged: onChanged,
-          obscureText: isObscure,
-          decoration: InputDecoration(
-            contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
-              borderSide: BorderSide(color: AppColor.lightGrey),
-            ),
-            enabledBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
-              borderSide: BorderSide(color: AppColor.lightGrey),
-            ),
-            label: label,
-            errorText: isError ? errorText : null,
-            errorStyle: errorText?.isEmpty ?? false ? const TextStyle(height: 0) : null,
-            suffixIcon: suffix,
-            suffixIconConstraints: const BoxConstraints(minWidth: 50),
-          ),
-          enabled: enabled,
-          keyboardType: keyboardType,
-        );
-      case TextFieldType.rounded:
-        return TextField(
-          onSubmitted: onSubmitted,
-          onEditingComplete: onEditingComplete,
-          controller: controller,
-          focusNode: focusNode,
-          onTapOutside: onTapOutside,
-          onChanged: onChanged,
-          obscureText: isObscure,
-          decoration: InputDecoration(
-            contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(99)),
-              borderSide: BorderSide(color: AppColor.lightGrey),
-            ),
-            enabledBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(99)),
-              borderSide: BorderSide(color: AppColor.lightGrey),
-            ),
-            label: label,
-            errorText: isError ? errorText : null,
-            errorStyle: errorText?.isEmpty ?? false ? const TextStyle(height: 0) : null,
-            suffixIcon: suffix,
-            suffixIconConstraints: const BoxConstraints(minWidth: 50),
-          ),
-          enabled: enabled,
-          keyboardType: keyboardType,
-        );
-    }
+    return TextField(
+      onSubmitted: onSubmitted,
+      onEditingComplete: onEditingComplete,
+      controller: controller,
+      focusNode: focusNode,
+      onTapOutside: onTapOutside,
+      onChanged: onChanged,
+      obscureText: isObscure,
+      decoration: InputDecoration(
+        contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(type == TextFieldType.normal ? Sizes.s : 99)),
+          borderSide: const BorderSide(color: AppColor.lightGrey),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(type == TextFieldType.normal ? Sizes.s : 99)),
+          borderSide: const BorderSide(color: AppColor.lightGrey),
+        ),
+        label: label,
+        errorText: isError ? errorText : null,
+        errorStyle: errorText?.isEmpty ?? false ? const TextStyle(height: 0) : null,
+        suffixIcon: suffix,
+        suffixIconConstraints: const BoxConstraints(minWidth: 50),
+      ),
+      enabled: enabled,
+      keyboardType: keyboardType,
+    );
   }
 }

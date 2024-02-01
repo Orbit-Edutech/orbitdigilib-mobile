@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../api/api_path.dart';
-import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
+import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
@@ -18,7 +18,7 @@ class IndexCategoriesModal extends StatelessWidget {
     required this.categories,
   });
 
-  final List<KategoriBukuPerpustakaan> categories;
+  final List<KatalogBukuPerpustakaan> categories;
 
   @override
   Widget build(BuildContext context) {

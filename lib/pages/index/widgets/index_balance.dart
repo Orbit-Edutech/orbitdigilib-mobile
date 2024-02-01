@@ -51,46 +51,51 @@ class IndexBalance extends StatelessWidget {
               clipBehavior: Clip.antiAliasWithSaveLayer,
             );
           }),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: Sizes.xs),
-                child: Text(
-                  "Token DIGILIB Anda",
-                  style: AppTextStyle.ts12Reg,
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: Sizes.xs),
+                  child: Text(
+                    "Token DIGILIB Anda",
+                    style: AppTextStyle.ts12Reg,
+                  ),
                 ),
-              ),
-              Obx(() {
-                final isVisible = controller.isBalanceVisible.value;
-                final balance = profileController.profile.value?.token ?? "0";
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/coin.svg",
-                      width: 24,
-                      height: 24,
-                      colorFilter: const ColorFilter.mode(AppColor.black, BlendMode.srcIn),
-                    ),
-                    HGap.xs,
-                    Text(
-                      isVisible ? balance : "• • • •",
-                      style: AppTextStyle.ts20Bold,
-                    ),
-                    HGap.xs,
-                    GestureDetector(
-                      onTap: () => controller.isBalanceVisible.value = !controller.isBalanceVisible.value,
-                      child: Icon(
-                        isVisible ? Icons.visibility_rounded : Icons.visibility_off_rounded,
-                        size: 16,
-                        color: AppColor.black,
+                Obx(() {
+                  final isVisible = controller.isBalanceVisible.value;
+                  final balance = profileController.profile.value?.token?.split(".")[0] ?? "0";
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/coin.svg",
+                        width: 24,
+                        height: 24,
+                        colorFilter: const ColorFilter.mode(AppColor.black, BlendMode.srcIn),
                       ),
-                    )
-                  ],
-                );
-              }),
-            ],
+                      HGap.xs,
+                      Flexible(
+                        child: Text(
+                          isVisible ? balance : "• • • •",
+                          style: AppTextStyle.ts20Bold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      HGap.xs,
+                      GestureDetector(
+                        onTap: () => controller.isBalanceVisible.value = !controller.isBalanceVisible.value,
+                        child: Icon(
+                          isVisible ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                          size: 16,
+                          color: AppColor.black,
+                        ),
+                      )
+                    ],
+                  );
+                }),
+              ],
+            ),
           ),
           GestureDetector(
             onTap: () => Get.toNamed(AppRoutes.token),

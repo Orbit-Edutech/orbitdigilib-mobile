@@ -85,7 +85,7 @@ class BookAbout extends StatelessWidget {
                     style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey),
                   ),
                   Text(
-                    book?.bahasa ?? "-",
+                    book?.bahasa?.bahasaResmi ?? "-",
                     style: AppTextStyle.ts12Bold.copyWith(color: AppColor.grey),
                   ),
                 ],

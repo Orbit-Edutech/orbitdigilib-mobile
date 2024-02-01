@@ -4,7 +4,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
-import '../../api/kategori-perpus/model/model_kategori_perpus_all.dart' as k;
+import '../../api/katalog-perpus/model/model_katalog_perpus_all.dart' as k;
 import '../../api/wishlist/model/model_wishlist_all.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
@@ -24,8 +24,10 @@ class CategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CategoryController>();
-    final k.KategoriBukuPerpustakaan category = Get.arguments;
+    final k.KatalogBukuPerpustakaan category = Get.arguments;
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width >= 600;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -82,7 +84,7 @@ class CategoryPage extends StatelessWidget {
                     if (filteredBooks == null) {
                       return AlignedGridView.count(
                         shrinkWrap: true,
-                        crossAxisCount: 2,
+                        crossAxisCount: isWide ? 4 : 2,
                         itemCount: 10,
                         mainAxisSpacing: Sizes.r,
                         crossAxisSpacing: Sizes.r,
@@ -114,22 +116,23 @@ class CategoryPage extends StatelessWidget {
                     }
                     return AlignedGridView.count(
                       shrinkWrap: true,
-                      crossAxisCount: 2,
-                      itemCount: 10,
+                      crossAxisCount: isWide ? 4 : 2,
+                      itemCount: filteredBooks.length,
                       mainAxisSpacing: Sizes.r,
                       crossAxisSpacing: Sizes.r,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        // final buku = filteredBooks[index].buku;
+                        final payload = filteredBooks[index];
+                        final buku = payload.buku;
                         return BookCard(
-                          bukuPerpustakaan: BukuPerpustakaan(),
-                          id: "",
-                          judul: "Lorem Ipsum Dolor Sit Amet",
-                          penulis: "Aku Ready",
-                          idSampul: '0696f2d7-942f-4e48-94ed-ef10d266263a',
-                          harga: '1',
-                          copy: '2',
-                          onTap: () => Get.toNamed(AppRoutes.book, arguments: "payload"),
+                          bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
+                          id: buku?.id ?? "-",
+                          judul: buku?.judul ?? '-',
+                          penulis: buku?.penulis ?? '-',
+                          idSampul: buku?.assetSampulId ?? '-',
+                          copy: "${payload.jumlahSiapPinjam ?? '-'}",
+                          harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
+                          onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                           onChangeWishlist: () {},
                         );
                       },

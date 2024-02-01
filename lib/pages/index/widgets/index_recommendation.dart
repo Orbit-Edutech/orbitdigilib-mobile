@@ -38,7 +38,7 @@ class IndexRecommendation extends StatelessWidget {
                   style: AppTextStyle.ts14Bold,
                 ),
                 GestureDetector(
-                  onTap: () => Get.toNamed(AppRoutes.highlight),
+                  onTap: () => Get.toNamed(AppRoutes.recommendation, arguments: payloads),
                   child: Text(
                     "Lihat Semua",
                     style: AppTextStyle.ts12Reg.copyWith(color: theme.primaryColor),
@@ -60,7 +60,7 @@ class IndexRecommendation extends StatelessWidget {
                     penulis: payload.buku?.penulis ?? '-',
                     idSampul: payload.buku?.assetSampulId ?? '-',
                     copy: "${payload.jumlahSiapPinjam ?? '-'}",
-                    harga: (int.parse(payload.buku?.hargaSewa ?? "0") ~/ 100).toString(),
+                    harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
                     onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                     onChangeWishlist: () {},
                   ),

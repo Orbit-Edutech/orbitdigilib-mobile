@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 
 import '../../../constants/gaps.dart';
 import '../../../theme/app_color.dart';
@@ -12,6 +13,7 @@ class ReadAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ReadController>();
+    final isSample = Get.arguments["type"] == "sample";
     final ThemeData theme = Theme.of(context);
     return Obx(() {
       final isFullScreen = controller.isFullScreen.value;
@@ -23,7 +25,7 @@ class ReadAppBar extends StatelessWidget implements PreferredSizeWidget {
             duration: const Duration(milliseconds: 150),
             child: AppBar(
               actions: [
-                if (!controller.isOnSearch.value)
+                if (!controller.isOnSearch.value && !isSample)
                   IconButton(
                     onPressed: () {
                       controller.isOnSearch.value = true;
@@ -54,16 +56,6 @@ class ReadAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ],
                         ),
                       ),
-                      const PopupMenuItem(
-                        value: 3,
-                        child: Row(
-                          children: [
-                            Icon(Icons.hotel_class_outlined, color: AppColor.black),
-                            HGap.s,
-                            Text("Bintangi Halaman"),
-                          ],
-                        ),
-                      ),
                     ];
                   },
                   onSelected: (value) {
@@ -72,8 +64,7 @@ class ReadAppBar extends StatelessWidget implements PreferredSizeWidget {
                         controller.showPageSearchDiaog();
                         break;
                       case 2:
-                        break;
-                      case 3:
+                        controller.goToLastPageSeen();
                         break;
                     }
                   },

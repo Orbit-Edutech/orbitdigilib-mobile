@@ -12,9 +12,17 @@ import '../../../utils/is_today.dart';
 import 'collection_read_dialog.dart';
 
 class CollectionBookCard extends StatelessWidget {
-  const CollectionBookCard({super.key, required this.status, required this.payload});
+  const CollectionBookCard({
+    super.key,
+    required this.status,
+    required this.payload,
+    required this.lastPageSeen,
+    required this.totalPage,
+  });
 
   final String status;
+  final int lastPageSeen;
+  final int totalPage;
   final Payload payload;
 
   @override
@@ -33,6 +41,8 @@ class CollectionBookCard extends StatelessWidget {
             CollectionReadDialog(
               buku: payload.buku,
               type: payload.tipe ?? "-",
+              lastPageSeen: lastPageSeen,
+              totalPages: totalPage,
             ),
             enableDrag: false,
             isScrollControlled: true,
@@ -137,7 +147,7 @@ class CollectionBookCard extends StatelessWidget {
                         ),
                         HGap.xs,
                         Text(
-                          "Hal - 213 / 250",
+                          "Hal - $lastPageSeen / $totalPage",
                           style: AppTextStyle.ts10Light.copyWith(color: AppColor.grey),
                         ),
                       ],

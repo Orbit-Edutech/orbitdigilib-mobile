@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/utils.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
-import '../../api/api_path.dart';
 import '../../constants/sizes.dart';
 import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
@@ -113,22 +113,21 @@ class _ReadPageState extends State<ReadPage> {
               child: Obx(() {
                 final noResultFound = controller.noResultFound.value;
                 final book = controller.buku.value;
-                final tokens = controller.tokens.value;
-                if (tokens == null || book == null) return const SizedBox();
+                final pdf = controller.pdf.value;
+                if (book == null || pdf == null) return const SizedBox();
                 return Stack(
                   children: [
                     SfPdfViewerTheme(
                       data: SfPdfViewerThemeData(backgroundColor: AppColor.white),
-                      child: SfPdfViewer.network(
-                        APIPath.asset(book.assetBukuId ?? ""),
-                        headers: {"Authorization": 'Bearer ${tokens.access}'},
+                      child: SfPdfViewer.file(
+                        pdf,
                         key: pdfKey,
                         controller: controller.pdfController,
                         currentSearchTextHighlightColor: theme.primaryColor.withOpacity(.5),
                         otherSearchTextHighlightColor: theme.primaryColor.withOpacity(.25),
                         scrollDirection: PdfScrollDirection.horizontal,
                         pageLayoutMode: PdfPageLayoutMode.single,
-                        onPageChanged: (details) => controller.currentPage.value = details.newPageNumber,
+                        onPageChanged: (details) => controller.onPageChanged(details.newPageNumber),
                         enableDoubleTapZooming: false,
                         pageSpacing: 0,
                         enableTextSelection: false,
@@ -193,6 +192,7 @@ class _ReadPageState extends State<ReadPage> {
             Obx(() {
               final currentPage = controller.currentPage.value;
               final isFullScreen = controller.isFullScreen.value;
+              final isStared = controller.staredPages.value?.firstWhereOrNull((page) => page == currentPage) != null;
               return AnimatedContainer(
                 height: isFullScreen ? 0 : kToolbarHeight,
                 duration: const Duration(milliseconds: 150),
@@ -209,9 +209,36 @@ class _ReadPageState extends State<ReadPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(
-                      Icons.star,
-                      color: currentPage % 2 == 0 ? Colors.black : Colors.transparent,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: controller.onStarChanged,
+                          child: Icon(
+                            isStared ? Icons.star : Icons.star_outline,
+                            color: Colors.black,
+                          ),
+                        ),
+                        if (controller.staredPages.value?.isNotEmpty ?? false) ...[
+                          PopupMenuButton(
+                            surfaceTintColor: Colors.white,
+                            color: Colors.white,
+                            itemBuilder: (context) {
+                              return controller.staredPages.value!.map((e) {
+                                return PopupMenuItem(
+                                  value: e,
+                                  child: Text(e.toString()),
+                                );
+                              }).toList();
+                            },
+                            onSelected: (value) {
+                              controller.pdfController.jumpToPage(value);
+                            },
+                            child: const Icon(Icons.keyboard_arrow_up_rounded),
+                          ),
+                        ],
+                      ],
                     ),
                     Text(
                       currentPage.toString(),

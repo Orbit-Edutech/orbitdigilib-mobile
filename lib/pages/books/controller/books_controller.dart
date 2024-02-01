@@ -4,26 +4,25 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../api/api_client.dart';
-import '../../../api/buku-perpustakaan/model/model_categories_books.dart';
-import '../../../api/kategori-perpus/data/get_all_kategori_perpus.dart';
-import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
+import '../../../api/katalog-perpus/data/get_all_katalog_perpus.dart';
+import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
 import '../widgets/books_category_filter.dart';
 
 class BooksController extends GetxController {
-  Rx<List<KategoriBukuPerpustakaan>?> categories = Rx<List<KategoriBukuPerpustakaan>?>(null);
-  RxList<String> filters = RxList<String>([]);
-  Rx<List<CategoriesBooks>> datas = Rx<List<CategoriesBooks>>([]);
+  Rx<List<KatalogBukuPerpustakaan>?> categories = Rx<List<KatalogBukuPerpustakaan>?>(null);
+  Rx<List<KatalogBukuPerpustakaan>?> filteredCategories = Rx<List<KatalogBukuPerpustakaan>?>(null);
   @override
   Future<void> onInit() async {
     categories.value = null;
-    filters.value = [];
-    datas.value = [];
-    getAllKategoriPerpus().then((res) {
+    filteredCategories.value = [];
+    getAllKatalogPerpus().then((res) {
       if (res.data != null) {
-        categories.value = res.data?.listKategoriBukuPerpustakaan;
+        categories.value = res.data?.listKatalogBukuPerpustakaan;
+        filteredCategories.value = res.data?.listKatalogBukuPerpustakaan;
+        filteredCategories.value!.add(KatalogBukuPerpustakaan(nama: "Lainnya", id: "Lainnya"));
       } else {
         if (res.error == ResponseStatus.connectionError) {
           showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
@@ -37,7 +36,7 @@ class BooksController extends GetxController {
 
   void showFilter() {
     Get.bottomSheet(
-      BooksCategoryFilter(categories: categories.value ?? []),
+      const BooksCategoryFilter(),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(Sizes.r)),
@@ -45,9 +44,5 @@ class BooksController extends GetxController {
       isScrollControlled: true,
       enableDrag: false,
     );
-  }
-
-  void filter(String filter) {
-    filters.contains(filter) ? filters.remove(filter) : filters.add(filter);
   }
 }

@@ -42,9 +42,9 @@ class ProfileLogoutDialog extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: SizedBox(
-                width: 210,
+                width: 250,
                 child: Text(
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                  "Pastikan semua perubahan Anda disimpan dengan baik sebelum keluar dari Aplikasi. Kami selalu disini jika Anda kembali.",
                   style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey),
                   textAlign: TextAlign.center,
                 ),

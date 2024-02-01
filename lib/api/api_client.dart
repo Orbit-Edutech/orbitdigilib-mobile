@@ -175,6 +175,28 @@ class APIClient {
       return error;
     }
   }
+
+  Future<APIResponse> download<T>({required APIParam<T> param, required String savePath, CancelToken? cancelToken}) async {
+    try {
+      final response = await _dio.download(
+        param.path,
+        savePath,
+        queryParameters: param.queryParameters,
+        cancelToken: cancelToken,
+        data: param.data,
+        options: param.options,
+      );
+      final APIResponse<T> result = APIResponse(
+        data: null,
+        error: null,
+        statusCode: response.statusCode,
+      );
+      return result;
+    } on DioException catch (e) {
+      final APIResponse<T> error = await _errorHandler(e);
+      return error;
+    }
+  }
 }
 
 final APIClient apiClient = APIClient();

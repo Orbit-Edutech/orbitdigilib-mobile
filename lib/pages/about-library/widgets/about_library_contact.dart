@@ -48,7 +48,7 @@ class AboutLibraryContact extends StatelessWidget {
           VGap.s,
           Text("Alamat Perpustakaan", style: AppTextStyle.ts10Bold),
           Text(
-            "Jl. Kemang Sel. No.98, RT.11/RW.4, Cilandak Tim., Ps. Minggu, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12560",
+            "${perpustakaan.alamat?.detailAlamat ?? '-'}",
             style: AppTextStyle.ts10Reg,
           ),
         ],

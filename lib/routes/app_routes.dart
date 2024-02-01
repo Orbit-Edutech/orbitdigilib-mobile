@@ -27,6 +27,8 @@ import '../pages/change-password/binding/change_password_binding.dart';
 import '../pages/change-password/change_password_page.dart';
 import '../pages/read/binding/read_binding.dart';
 import '../pages/read/read_page.dart';
+import '../pages/recommendation/binding/recommendation_binding.dart';
+import '../pages/recommendation/recommendation_page.dart';
 import '../pages/search/binding/seach_binding.dart';
 import '../pages/search/search_page.dart';
 import '../pages/splash/binding/splash_binding.dart';
@@ -75,6 +77,9 @@ class AppRoutes {
 
   /// /category
   static const String category = "/category";
+
+  /// /recommendation
+  static const String recommendation = "/recommendation";
 
   /// /wishlist
   static const String wishlist = "/wishlist";
@@ -182,6 +187,13 @@ class AppRoutes {
       name: category,
       page: () => const CategoryPage(),
       binding: CategoryBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: recommendation,
+      page: () => const RecommendationPage(),
+      binding: RecommendationBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

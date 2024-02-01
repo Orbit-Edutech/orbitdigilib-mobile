@@ -6,6 +6,7 @@ import 'package:get/instance_manager.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/app_button.dart';
+import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
 import '../controller/book_controller.dart';
 
@@ -15,11 +16,13 @@ class OptionsCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     this.suffix,
+    this.enabled = true,
   });
 
   final String title;
   final String subtitle;
   final String? suffix;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class OptionsCard extends StatelessWidget {
       final isSelected = controller.optionSelected.value == title;
       final state = controller.buttonState.value;
       return InkWell(
-        onTap: state == ButtonState.loading
+        onTap: state == ButtonState.loading || !enabled
             ? null
             : () {
                 controller.optionSelected.value = title;
@@ -40,7 +43,7 @@ class OptionsCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(100)),
-            border: Border.all(color: theme.primaryColor),
+            border: Border.all(color: theme.primaryColor.withOpacity(enabled ? 1 : 0.5)),
           ),
           child: Row(
             children: [
@@ -55,12 +58,28 @@ class OptionsCard extends StatelessWidget {
               Expanded(
                 child: Row(
                   children: [
-                    Text("$title ", style: AppTextStyle.ts14Bold),
-                    Text(subtitle, style: AppTextStyle.ts12Reg),
+                    Text(
+                      "$title ",
+                      style: AppTextStyle.ts14Bold.copyWith(
+                        color: AppColor.black.withOpacity(enabled ? 1 : 0.5),
+                      ),
+                    ),
+                    Text(
+                      subtitle,
+                      style: AppTextStyle.ts12Reg.copyWith(
+                        color: AppColor.black.withOpacity(enabled ? 1 : 0.5),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              if (suffix != null) Text(suffix!, style: AppTextStyle.ts10Reg),
+              if (suffix != null)
+                Text(
+                  suffix!,
+                  style: AppTextStyle.ts10Reg.copyWith(
+                    color: AppColor.black.withOpacity(enabled ? 1 : 0.5),
+                  ),
+                ),
             ],
           ),
         ),

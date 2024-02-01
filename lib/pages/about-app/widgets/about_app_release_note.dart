@@ -17,7 +17,10 @@ class AboutAppReleaseNote extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.circle),
+              Text(
+                "•",
+                style: AppTextStyle.ts10Bold,
+              ),
               HGap.s,
               Expanded(
                 child: Column(

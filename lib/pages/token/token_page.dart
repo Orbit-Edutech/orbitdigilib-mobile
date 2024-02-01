@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 
 import '../../constants/gaps.dart';
@@ -29,15 +30,18 @@ class TokenPage extends StatelessWidget {
           children: [
             VGap.l,
             VGap.l,
-            Text.rich(
-              TextSpan(text: "Token DIGILIB Anda ", children: [
-                TextSpan(
-                  text: "2800",
-                  style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.bold),
-                )
-              ]),
-              style: AppTextStyle.ts16Reg,
-            ),
+            Obx(() {
+              final token = controller.profileController.profile.value?.token;
+              return Text.rich(
+                TextSpan(text: "Token DIGILIB Anda ", children: [
+                  TextSpan(
+                    text: token?.split(".")[0],
+                    style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.bold),
+                  )
+                ]),
+                style: AppTextStyle.ts16Reg,
+              );
+            }),
             VGap.r,
             SvgPicture.asset(
               "assets/illustrations/token.svg",
@@ -52,7 +56,7 @@ class TokenPage extends StatelessWidget {
             SizedBox(
               width: 250,
               child: Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                "Masukkan kode voucher Anda sekarang dan nikmati buku yang ingin Anda baca.",
                 style: AppTextStyle.ts12Reg,
                 textAlign: TextAlign.center,
               ),
@@ -62,7 +66,12 @@ class TokenPage extends StatelessWidget {
               type: TextFieldType.normal,
               controller: controller.voucherController,
               focusNode: controller.voucherFocusNode,
+              onSubmitted: (text) {
+                if (text.isEmpty) return;
+                controller.redeem();
+              },
               onTapOutside: (_) => controller.voucherFocusNode.unfocus(),
+              onChanged: controller.onChanged,
               isError: false,
               label: const Text("Kode Voucher"),
             ),
@@ -70,11 +79,15 @@ class TokenPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                AppButton(
-                  type: ButtonType.elevated,
-                  onPressed: () {},
-                  child: const Text("Isi Voucher"),
-                ),
+                Obx(() {
+                  final state = controller.buttonState.value;
+                  return AppButton(
+                    state: state,
+                    type: ButtonType.elevated,
+                    onPressed: controller.redeem,
+                    child: const Text("Isi Voucher"),
+                  );
+                }),
                 VGap.s,
                 GestureDetector(
                   onTap: controller.showVoucherInfo,

@@ -74,10 +74,9 @@ class Buku {
   final String? judul;
   final int? jumlahHalaman;
   final String? tahunTerbit;
-  final String? bahasa;
   final String? penulis;
-  final String? hargaBeli;
-  final String? hargaSewa;
+  final int? hargaBeli;
+  final int? hargaSewa;
   final String? assetSampulId;
 
   Buku({
@@ -85,7 +84,6 @@ class Buku {
     this.judul,
     this.jumlahHalaman,
     this.tahunTerbit,
-    this.bahasa,
     this.penulis,
     this.hargaBeli,
     this.hargaSewa,
@@ -97,10 +95,9 @@ class Buku {
     String? judul,
     int? jumlahHalaman,
     String? tahunTerbit,
-    String? bahasa,
     String? penulis,
-    String? hargaBeli,
-    String? hargaSewa,
+    int? hargaBeli,
+    int? hargaSewa,
     String? assetSampulId,
   }) =>
       Buku(
@@ -108,7 +105,6 @@ class Buku {
         judul: judul ?? this.judul,
         jumlahHalaman: jumlahHalaman ?? this.jumlahHalaman,
         tahunTerbit: tahunTerbit ?? this.tahunTerbit,
-        bahasa: bahasa ?? this.bahasa,
         penulis: penulis ?? this.penulis,
         hargaBeli: hargaBeli ?? this.hargaBeli,
         hargaSewa: hargaSewa ?? this.hargaSewa,
@@ -124,7 +120,6 @@ class Buku {
         judul: json["judul"],
         jumlahHalaman: json["jumlahHalaman"],
         tahunTerbit: json["tahunTerbit"],
-        bahasa: json["bahasa"],
         penulis: json["penulis"],
         hargaBeli: json["hargaBeli"],
         hargaSewa: json["hargaSewa"],
@@ -136,7 +131,6 @@ class Buku {
         "judul": judul,
         "jumlahHalaman": jumlahHalaman,
         "tahunTerbit": tahunTerbit,
-        "bahasa": bahasa,
         "penulis": penulis,
         "hargaBeli": hargaBeli,
         "hargaSewa": hargaSewa,
@@ -151,6 +145,7 @@ class User {
   final String? email;
   final String? nama;
   final String? jenisKelamin;
+  final dynamic noTelepon;
   final dynamic urlFotoProfil;
   final dynamic tokenForgotPassword;
   final dynamic tokenForgotPasswordExpiredAt;
@@ -164,6 +159,7 @@ class User {
     this.email,
     this.nama,
     this.jenisKelamin,
+    this.noTelepon,
     this.urlFotoProfil,
     this.tokenForgotPassword,
     this.tokenForgotPasswordExpiredAt,
@@ -178,6 +174,7 @@ class User {
     String? email,
     String? nama,
     String? jenisKelamin,
+    dynamic noTelepon,
     dynamic urlFotoProfil,
     dynamic tokenForgotPassword,
     dynamic tokenForgotPasswordExpiredAt,
@@ -191,6 +188,7 @@ class User {
         email: email ?? this.email,
         nama: nama ?? this.nama,
         jenisKelamin: jenisKelamin ?? this.jenisKelamin,
+        noTelepon: noTelepon ?? this.noTelepon,
         urlFotoProfil: urlFotoProfil ?? this.urlFotoProfil,
         tokenForgotPassword: tokenForgotPassword ?? this.tokenForgotPassword,
         tokenForgotPasswordExpiredAt: tokenForgotPasswordExpiredAt ?? this.tokenForgotPasswordExpiredAt,
@@ -209,6 +207,7 @@ class User {
         email: json["email"],
         nama: json["nama"],
         jenisKelamin: json["jenisKelamin"],
+        noTelepon: json["noTelepon"],
         urlFotoProfil: json["urlFotoProfil"],
         tokenForgotPassword: json["tokenForgotPassword"],
         tokenForgotPasswordExpiredAt: json["tokenForgotPasswordExpiredAt"],
@@ -223,6 +222,7 @@ class User {
         "email": email,
         "nama": nama,
         "jenisKelamin": jenisKelamin,
+        "noTelepon": noTelepon,
         "urlFotoProfil": urlFotoProfil,
         "tokenForgotPassword": tokenForgotPassword,
         "tokenForgotPasswordExpiredAt": tokenForgotPasswordExpiredAt,

@@ -30,29 +30,30 @@ class SearchPageController extends GetxController {
 
   void sortBooks() {
     books.value?.sort((a, b) {
-      final hargaSewaTerendah = int.parse(a.buku?.hargaSewa ?? "0");
-      final hargaSewaTertinggi = int.parse(b.buku?.hargaSewa ?? "0");
+      final hargaSewaTerendah = (a.buku?.hargaSewa ?? 0);
+      final hargaSewaTertinggi = (b.buku?.hargaSewa ?? 0);
       return isReversed.value
           ? hargaSewaTerendah.compareTo(hargaSewaTertinggi)
           : hargaSewaTertinggi.compareTo(hargaSewaTerendah);
     });
     isReversed.value = !isReversed.value;
+    update();
   }
 
   Future<void> search(String keyword) async {
     if (_timer?.isActive ?? false) _timer?.cancel();
     _timer = Timer(const Duration(milliseconds: 500), () async {
-      books.value = null;
       Map<String, dynamic> qp = {};
       if (keyword.trim().isNotEmpty) {
-        qp["buku[judul][like]"] = keyword;
+        qp["buku[judul][lke]"] = keyword;
       }
       cancelToken.cancel();
       cancelToken = CancelToken();
       final response = await getAllBukuPerpustakaan(qp, cancelToken);
       if (response.data != null) {
-        books.value = response.data?.payload;
+        books.value = response.data!.payload ?? [];
       }
+      update();
     });
   }
 
@@ -62,16 +63,15 @@ class SearchPageController extends GetxController {
       Map<String, dynamic> qp = {};
       final keyword = textController.value.text;
       if (keyword.trim().isNotEmpty) {
-        qp["buku[judul][like]"] = keyword;
+        qp["buku[judul][lke]"] = keyword;
       }
       qp["page"] = page.value;
       final response = await getAllBukuPerpustakaan(qp);
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
           books.value?.addAll(response.data?.payload ?? []);
-          final result = books.value;
-          books.value = result;
           page.value++;
+          update();
         }
       }
       isLoadedMore.value = false;

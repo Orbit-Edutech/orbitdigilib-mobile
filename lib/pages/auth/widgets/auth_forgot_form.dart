@@ -21,7 +21,6 @@ class AuthForgotForm extends StatelessWidget {
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // TODO: Copywriting untuk berhasil mengirimkan email reset password
                 Text(
                   "Permintaan Reset Password Berhasil!",
                   style: AppTextStyle.ts16Bold,
@@ -46,7 +45,6 @@ class AuthForgotForm extends StatelessWidget {
             )
           : Column(
               children: [
-                // TODO: Copywriting lupa password
                 Text(
                   "Lupa Password",
                   style: AppTextStyle.ts14Bold,

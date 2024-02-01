@@ -6,7 +6,7 @@ import 'sql_constants.dart';
 
 class SQLParam<T> {
   final String table;
-  final Map<String, Object>? values;
+  final Map<String, Object?>? values;
   final List<String>? columns;
   final String? where;
   final List<Object?>? whereArgs;
@@ -29,7 +29,8 @@ class SQLHelper {
       id_user TEXT NOT NULL,
       last_page_seen INTEGER,
       total_pages INTEGER NOT NULL,
-      status TEXT DEFAULT "unread"
+      expired DATE,
+      status TEXT DEFAULT "Belum Dibaca"
     )""";
     final createBukuHalamanBintangQuery = """CREATE TABLE ${constants.table.bukuHalamanBintang}(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -62,7 +63,7 @@ class SQLHelper {
     );
   }
 
-  Future<List<Map<String, dynamic>>> read(SQLParam param) async {
+  Future<List<Map<String, Object?>>> read(SQLParam param) async {
     final database = await db();
     final result = database.query(
       param.table,
@@ -108,24 +109,6 @@ class SQLHelper {
 
 final SQLHelper sqlHelper = SQLHelper();
 
-final buku = {
-  "id": "",
-  "id_buku": "",
-  "id_user": "",
-  "last_page_seen": 11,
-  "total_pages": 120,
-  "status": "undone",
-};
-
-final bukuHalamanBintang = {
-  "id": "",
-  "id_buku": "123dd",
-  "id_user": "3d2",
-  "halaman": 1,
-};
-
-const queryBukuHalamanBintang = "SELECT * FROM bukuHalamanBintang WHERE id_buku = ? AND id_user = ?";
-
 final notifications = {
   "id": 0,
   "id_user": "",
@@ -135,6 +118,3 @@ final notifications = {
   "readAt": "", // DATE
   "receivedAt": "", // DATE
 };
-
-const queryNotifications = "SELECT * FROM notifications";
-const queryInsertNotifications = "INSERT INTO notifications VALUES (?,?,?,?,?,?)";

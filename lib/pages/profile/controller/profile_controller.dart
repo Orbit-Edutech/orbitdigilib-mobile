@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -53,13 +51,7 @@ class ProfileController extends GetxController {
 
   Future<void> logout() async {
     logoutButtonState.value = ButtonState.loading;
-    await auth.logout().then((res) {
-      if (res.data != null) {
-        log(res.data.toString());
-      } else {
-        log(res.error.toString());
-      }
-    });
+    auth.logout();
     final prefs = {
       "isLogin": false,
       "access": "",

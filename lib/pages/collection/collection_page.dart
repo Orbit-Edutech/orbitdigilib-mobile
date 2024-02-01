@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 
@@ -34,7 +35,8 @@ class CollectionPage extends StatelessWidget {
                 final filter = controller.filter.value;
                 final books = getBooks(controller, filter);
                 final _ = controller.page.value;
-                if (books == null) {
+                final localBooks = controller.localBooks.value;
+                if (books == null || localBooks == null) {
                   return ListView.builder(
                     padding: const EdgeInsets.all(Sizes.m),
                     shrinkWrap: true,
@@ -110,12 +112,11 @@ class CollectionPage extends StatelessWidget {
                   itemCount: books.length,
                   itemBuilder: (ctx, idx) {
                     final payload = books[idx];
+                    final lb = localBooks.firstWhereOrNull((lb) => lb.idBuku == payload.buku?.id);
                     return CollectionBookCard(
-                      status: idx % 2 == 0
-                          ? "Selesai Dibaca"
-                          : idx % 3 == 1
-                              ? "Belum Dibaca"
-                              : "Belum Selesai",
+                      status: lb?.status ?? "-",
+                      lastPageSeen: lb?.lastPageSeen ?? 0,
+                      totalPage: lb?.totalPages ?? 0,
                       payload: payload,
                     );
                   },

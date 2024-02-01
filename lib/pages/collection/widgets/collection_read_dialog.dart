@@ -14,11 +14,18 @@ import '../../../theme/app_text_stlye.dart';
 import '../controller/collection_controller.dart';
 
 class CollectionReadDialog extends StatelessWidget {
-  const CollectionReadDialog({super.key, this.buku, required this.type});
+  const CollectionReadDialog({
+    super.key,
+    this.buku,
+    required this.type,
+    required this.lastPageSeen,
+    required this.totalPages,
+  });
 
   final Buku? buku;
   final String type;
-
+  final int lastPageSeen;
+  final int totalPages;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -102,7 +109,7 @@ class CollectionReadDialog extends StatelessWidget {
                             ),
                             HGap.xs,
                             Text(
-                              "Hal - 213 / 250",
+                              "Hal - $lastPageSeen / $totalPages",
                               style: AppTextStyle.ts10Light.copyWith(color: AppColor.grey),
                             ),
                           ],
@@ -134,7 +141,8 @@ class CollectionReadDialog extends StatelessWidget {
             AppButton(
               type: ButtonType.elevated,
               onPressed: () {
-                Get.toNamed(AppRoutes.read, arguments: buku?.id ?? '');
+                Get.back();
+                Get.toNamed(AppRoutes.read, arguments: {"asset": buku?.id ?? "", "type": "read"});
               },
               child: const Text("Baca"),
             ),

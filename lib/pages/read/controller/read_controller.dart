@@ -1,23 +1,34 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+import '../../../api/api_client.dart';
+import '../../../api/api_path.dart';
 import '../../../api/buku/data/buku_get_one.dart';
 import '../../../api/buku/model/model_buku.dart';
 import '../../../constants/sizes.dart';
-import '../../../shared/widget/app_button.dart';
-import '../../../shared/widget/app_textfield.dart';
 import '../../../shared/widget/show_snackbar.dart';
-import '../../../sql/sql_constants.dart';
-import '../../../sql/sql_helper.dart';
+import '../../../sql/books/data/update_buku_sqlite.dart';
+import '../../../sql/stared-pages/data/delete_stared_page.dart';
+import '../../../sql/stared-pages/data/get_stared_pages.dart';
+import '../../../sql/stared-pages/data/insert_stared_page.dart';
 import '../../../theme/app_color.dart';
-import '../../../theme/app_text_stlye.dart';
-import '../../../utils/get_tokens.dart';
+import '../../collection/controller/collection_controller.dart';
+import '../../profile/controller/profile_controller.dart';
+import '../widgets/read_go_to_page.dart';
 import '../widgets/read_menu.dart';
 
 class ReadController extends GetxController {
+  final profileController = Get.find<ProfileController>();
+  final collectionController = Get.find<CollectionController>();
+
   PdfViewerController pdfController = PdfViewerController();
   PdfTextSearchResult searchResult = PdfTextSearchResult();
 
@@ -26,31 +37,111 @@ class ReadController extends GetxController {
   final searchFocusNode = FocusNode();
   final searchPageFocusNode = FocusNode();
 
+  Timer? _timer;
   Rx<int> currentPage = 1.obs;
+  int lastPageSeen = 1;
   Rx<bool> isFullScreen = false.obs;
   Rx<bool> isOnSearch = false.obs;
   Rx<bool> noResultFound = false.obs;
+  bool isSample = false;
+  int sampleLimit = 10;
 
-  Rx<Tokens?> tokens = Rx<Tokens?>(null);
   Rx<ModelBuku?> buku = Rx<ModelBuku?>(null);
+  Rx<File?> pdf = Rx<File?>(null);
+  Rx<List<int>?> staredPages = Rx<List<int>?>(null);
 
   @override
   Future<void> onInit() async {
-    final String? args = Get.arguments;
-    tokens.value = await getTokens();
-    final response = await getOneBuku(args ?? "");
-    final a = await SQLHelper().read(SQLParam(table: SQLConstants().table.buku));
-    print(a.toString());
-    if (response.data != null) {
-      buku.value = response.data;
-    } else {
-      showSnackbar(message: "Terjadi kesalahan", backgroundColor: AppColor.red);
-    }
+    await getBuku();
+    pdf.value = await downloadPdf();
+    staredPages.value = await getStaredPages();
     super.onInit();
   }
 
+  Future getBuku() async {
+    final Map<String, String?> args = Get.arguments;
+    isSample = args["type"] == "sample";
+    final response = await getOneBuku(args["asset"] ?? "");
+    if (response.data != null) {
+      buku.value = response.data;
+      final Map<String, Object> values = {"total_pages": response.data?.jumlahHalaman ?? 0};
+      await updateBukuSQLite(
+        bukuId: response.data?.id ?? "",
+        userId: profileController.profile.value?.id ?? "",
+        values: values,
+      );
+      await collectionController.onInit();
+    } else {
+      showSnackbar(message: "Terjadi kesalahan", backgroundColor: AppColor.red);
+    }
+  }
+
+  Future<File> downloadPdf() async {
+    final String pdfId = buku.value?.assetBukuId ?? "";
+    final dir = await getTemporaryDirectory();
+    final path = "${dir.path}/${buku.value?.id}.pdf";
+    if (!(await File(path).exists())) {
+      await apiClient.download(
+        param: APIParam(path: APIPath.asset(pdfId), fromJson: (data) => data),
+        savePath: path,
+      );
+    }
+    final result = File(path);
+    return result;
+  }
+
+  Future<List<int>> getStaredPages() async {
+    final pages = await getStaredPagesSQLite(
+      buku.value?.id ?? "",
+      profileController.profile.value?.id ?? "",
+    );
+    final result = pages.map((e) => e.halaman ?? 0).toList();
+    result.sort();
+    return result;
+  }
+
+  void goToLastPageSeen() {
+    pdfController.jumpToPage(lastPageSeen);
+  }
+
   void onPageChanged(int page) {
+    if (isSample && page > sampleLimit) {
+      pdfController.jumpToPage(sampleLimit);
+      return;
+    }
     currentPage.value = page;
+    if (_timer?.isActive ?? false) _timer?.cancel();
+    if (page > lastPageSeen) {
+      lastPageSeen = page;
+      _timer = Timer(const Duration(seconds: 2), () async {
+        await updateBukuSQLite(
+          bukuId: buku.value?.id ?? "",
+          userId: profileController.profile.value?.id ?? "",
+          values: {
+            "last_page_seen": lastPageSeen,
+            "status": currentPage.value == buku.value?.jumlahHalaman ? "Selesai Dibaca" : "Belum Selesai",
+          },
+        );
+        await collectionController.onInit();
+      });
+    }
+  }
+
+  void onStarChanged() async {
+    if (staredPages.value?.contains(currentPage.value) ?? false) {
+      await deleteStaredPageSQLite(
+        idBuku: buku.value?.id ?? "",
+        idUser: profileController.profile.value?.id ?? "",
+        halaman: currentPage.value,
+      );
+    } else {
+      await insertStaredPageSQLite(
+        idBuku: buku.value?.id ?? "",
+        idUser: profileController.profile.value?.id ?? "",
+        halaman: currentPage.value,
+      );
+    }
+    staredPages.value = await getStaredPages();
   }
 
   void showMenu() {
@@ -67,45 +158,12 @@ class ReadController extends GetxController {
 
   void showPageSearchDiaog() {
     Get.dialog(
-      AlertDialog(
-        backgroundColor: AppColor.white,
-        surfaceTintColor: AppColor.white,
-        title: const Text("Masukan halaman buku"),
-        content: AppTextField(
-          type: TextFieldType.normal,
-          controller: searchPageController,
-          focusNode: searchPageFocusNode,
-          keyboardType: TextInputType.number,
-          isError: false,
-          onChanged: (text) {
-            if (text.isNotEmpty) {
-              if (int.parse(text) > pdfController.pageCount) {
-                searchPageController.text = pdfController.pageCount.toString();
-              }
-            }
-          },
-          label: Text(
-            "Halaman",
-            style: AppTextStyle.ts14Reg.copyWith(color: AppColor.grey),
-          ),
-        ),
-        actions: [
-          AppButton(
-            type: ButtonType.text,
-            onPressed: Get.back,
-            child: const Text("Batal"),
-          ),
-          AppButton(
-            type: ButtonType.elevated,
-            padding: const EdgeInsets.symmetric(vertical: Sizes.xs, horizontal: Sizes.m),
-            onPressed: () {
-              final pageNumber = int.parse(searchPageController.text);
-              pdfController.jumpToPage(pageNumber);
-              Get.back();
-            },
-            child: const Text("Cari"),
-          ),
-        ],
+      ReadGoToPage(
+        searchPageController: searchPageController,
+        searchPageFocusNode: searchPageFocusNode,
+        pdfController: pdfController,
+        isSample: isSample,
+        sampleLimit: sampleLimit,
       ),
       transitionDuration: const Duration(milliseconds: 100),
     );

@@ -1,5 +1,5 @@
 class APIPath {
-  static const base = "http://192.168.0.43:4001";
+  static const base = "http://192.168.1.61:4001";
 
   /// /asset/{id}
   static String asset(String id) => "$base/asset/$id";
@@ -52,11 +52,14 @@ class APIPath {
   /// /sewa
   static const sewa = "/sewa";
 
-  /// /kategori-buku-perpustakaan
-  static const kategoriBukuPerpustakaan = "/kategori-buku-perpustakaan";
+  /// /beli
+  static const beli = "/beli";
 
-  /// /kategori-buku-perpustakaan/{id}
-  static String kategoriBukuPerpustakaanGetOne(String id) => "/kategori-buku-perpustakaan/$id";
+  /// /katalog-buku-perpustakaan
+  static const katalogBukuPerpustakaan = "/katalog-buku-perpustakaan";
+
+  /// /katalog-buku-perpustakaan/{id}
+  static String katalogBukuPerpustakaanGetOne(String id) => "/katalog-buku-perpustakaan/$id";
 
   /// /wishlist
   static const wishlist = "/wishlist";
@@ -72,4 +75,10 @@ class APIPath {
 
   /// /faq
   static const faq = "/faq";
+
+  /// /voucher/redeem/{kode}
+  static String redeemVoucher(String voucher) => "/voucher/redeem/$voucher";
+
+  /// /list-get-voucher
+  static String listGetVoucherAll = "/list-get-voucher";
 }

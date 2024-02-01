@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 import '../../../api/api_path.dart';
 import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
 import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
-import '../../../api/buku-perpustakaan/model/model_categories_books.dart';
-import '../../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
+import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart' as k;
 import '../../../api/wishlist/model/model_wishlist_all.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
@@ -22,7 +21,7 @@ class BooksCategoryContainer extends StatefulWidget {
     required this.category,
   });
 
-  final KategoriBukuPerpustakaan category;
+  final k.KatalogBukuPerpustakaan category;
 
   @override
   State<BooksCategoryContainer> createState() => _BooksCategoryContainerState();
@@ -33,29 +32,27 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
   List<Payload>? books;
   @override
   void initState() {
-    final categoryBooks = controller.datas.value.firstWhereOrNull((data) {
-      return data.category.id == widget.category.id;
-    });
-    if (categoryBooks != null) {
-      books = categoryBooks.books;
+    Map<String, dynamic> qp = <String, dynamic>{};
+    if (widget.category.nama == "Lainnya") {
+      qp = {"katalogBukuPerpustakaanId": "null"};
     } else {
-      final qp = {"kategoriBukuPerpustakaanId": widget.category.id};
-      getAllBukuPerpustakaan(qp).then((res) {
-        if (res.data != null) {
-          if (mounted) {
-            setState(() {
-              controller.datas.value.add(CategoriesBooks(category: widget.category, books: res.data!.payload!));
-              books = res.data!.payload;
-            });
-          }
-        }
-      });
+      qp = {"katalogBukuPerpustakaanId": widget.category.id};
     }
+    getAllBukuPerpustakaan(qp).then((res) {
+      if (res.data != null) {
+        if (mounted) {
+          setState(() {
+            books = res.data!.payload;
+          });
+        }
+      }
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -72,11 +69,18 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
               Expanded(
                 child: Row(
                   children: [
-                    Image.network(APIPath.publicAsset(widget.category.icon?.id ?? "-")),
+                    if (widget.category.icon?.id != null) ...[
+                      Image.network(
+                        APIPath.publicAsset(widget.category.icon!.id!),
+                        color: theme.primaryColor,
+                      ),
+                    ] else ...[
+                      Icon(Icons.more_vert, color: theme.primaryColor)
+                    ],
                     HGap.s,
                     Expanded(
                       child: Text(
-                        widget.category.nama ?? "-",
+                        widget.category.nama ?? "Lainnya",
                         style: AppTextStyle.ts14Bold,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -85,7 +89,12 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                 ),
               ),
               GestureDetector(
-                onTap: () => Get.toNamed(AppRoutes.category, arguments: widget.category),
+                onTap: () => Get.toNamed(
+                  AppRoutes.category,
+                  arguments: widget.category.nama == "Lainnya"
+                      ? k.KatalogBukuPerpustakaan(nama: "Lainnya", id: "null")
+                      : widget.category,
+                ),
                 child: Text(
                   "Lihat Semua",
                   style: AppTextStyle.ts10Light,
@@ -99,14 +108,15 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
           padding: const EdgeInsets.only(left: Sizes.m, right: Sizes.s),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (books == null) ...[
-                for (var _ in [1, 1, 1, 1, 1]) ...[
+                for (var _ in List.generate(10, (i) => i)) ...[
                   const BookCardSkeleton(),
                   HGap.r,
                 ],
               ],
-              if (books?.isEmpty ?? true) ...[
+              if (books?.isEmpty ?? false) ...[
                 EmptyList(
                   description: "Tidak ada buku di Kategori ${widget.category.nama ?? '-'}",
                 )
@@ -120,11 +130,12 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                     penulis: payload.buku?.penulis ?? "-",
                     idSampul: payload.buku?.assetSampulId ?? "",
                     copy: "${payload.jumlahSiapPinjam ?? '-'}",
-                    harga: (int.parse(payload.buku?.hargaSewa ?? "0") ~/ 100).toString(),
+                    harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
                     onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                     onChangeWishlist: () {},
                   ),
-                ]
+                  HGap.r,
+                ],
               ]
             ],
           ),

@@ -16,7 +16,7 @@ class SplashController extends GetxController {
   @override
   void onInit() async {
     buttonState.value = ButtonState.loading;
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     final response = await authValidate();
     if (response.data != null) {
       final color = await SharedPreferencesManager.readPref<String>("color");

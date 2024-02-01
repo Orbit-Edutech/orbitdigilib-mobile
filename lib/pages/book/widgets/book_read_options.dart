@@ -55,37 +55,39 @@ class BookReadOptions extends StatelessWidget {
                       ),
                     ),
                     HGap.r,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          payload?.buku?.judul ?? "-",
-                          style: AppTextStyle.ts14Bold,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        VGap.s,
-                        Text(
-                          payload?.buku?.penerbit?.nama ?? "-",
-                          style: AppTextStyle.ts14Light,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        VGap.s,
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: Sizes.xs, horizontal: Sizes.s),
-                          decoration: BoxDecoration(
-                            color: theme.primaryColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(Sizes.xh),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            payload?.buku?.judul ?? "-",
+                            style: AppTextStyle.ts14Bold,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          VGap.s,
+                          Text(
+                            payload?.buku?.penerbit?.nama ?? "-",
+                            style: AppTextStyle.ts14Light,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          VGap.s,
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: Sizes.xs, horizontal: Sizes.s),
+                            decoration: BoxDecoration(
+                              color: theme.primaryColor,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(Sizes.xh),
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            payload?.buku?.tahunTerbit ?? "-",
-                            style: AppTextStyle.ts10Bold.copyWith(color: calculateLuminance(theme.primaryColor)),
-                          ),
-                        )
-                      ],
+                            child: Text(
+                              payload?.buku?.tahunTerbit ?? "-",
+                              style: AppTextStyle.ts10Bold.copyWith(color: calculateLuminance(theme.primaryColor)),
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -111,16 +113,17 @@ class BookReadOptions extends StatelessWidget {
                   title: "Pinjam",
                   subtitle: "(Gratis)",
                   suffix: "Tersedia: ${payload?.jumlahSiapPinjam ?? 0}",
+                  enabled: (payload?.jumlahSiapPinjam ?? 0) > 0,
                 ),
                 VGap.s,
                 OptionsCard(
                   title: "Sewa",
-                  subtitle: "(${int.parse(payload?.buku?.hargaSewa ?? "0") ~/ 100} Token)",
+                  subtitle: "(${(payload?.buku?.hargaSewa ?? 0) ~/ 100} Token)",
                 ),
                 VGap.s,
                 OptionsCard(
                   title: "Beli",
-                  subtitle: "(${int.parse(payload?.buku?.hargaBeli ?? "0") ~/ 100} Token)",
+                  subtitle: "(${(payload?.buku?.hargaBeli ?? 0) ~/ 100} Token)",
                 ),
               ],
             ),

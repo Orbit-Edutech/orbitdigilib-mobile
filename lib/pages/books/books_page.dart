@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 
-import '../../api/kategori-perpus/model/model_kategori_perpus_all.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../shared/widget/book_card_skeleton.dart';
@@ -21,18 +20,22 @@ class BooksPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Semua Buku"),
         actions: [
-          IconButton(
-            onPressed: controller.showFilter,
-            icon: SvgPicture.asset("assets/icons/filter.svg"),
-          ),
+          Obx(() {
+            final categories = controller.categories.value;
+            if (categories == null) return const SizedBox();
+            return IconButton(
+              onPressed: controller.showFilter,
+              icon: SvgPicture.asset("assets/icons/filter.svg"),
+            );
+          }),
           HGap.r,
         ],
       ),
       body: RefreshIndicator(
         onRefresh: controller.onInit,
         child: Obx(() {
-          final categories = controller.categories.value;
-          if (categories == null) {
+          final filteredCategories = controller.filteredCategories.value;
+          if (filteredCategories == null) {
             return AlignedGridView.count(
               padding: const EdgeInsets.all(Sizes.m),
               shrinkWrap: true,
@@ -49,9 +52,9 @@ class BooksPage extends StatelessWidget {
           return ListView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.only(top: Sizes.s, bottom: Sizes.m),
-            itemCount: controller.categories.value?.length,
+            itemCount: filteredCategories.length,
             itemBuilder: (ctx, idx) {
-              KategoriBukuPerpustakaan category = controller.categories.value![idx];
+              final category = filteredCategories[idx];
               return BooksCategoryContainer(category: category);
             },
           );

@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../../api/api_path.dart';
 import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart' as k;
@@ -12,23 +11,22 @@ import '../../../theme/app_text_stlye.dart';
 class BooksCategoryCard extends StatelessWidget {
   const BooksCategoryCard({
     super.key,
-    required this.kategori,
+    required this.category,
     required this.filter,
-    required this.filters,
+    required this.categories,
   });
 
-  final k.KatalogBukuPerpustakaan kategori;
-  final Function(String) filter;
-  final List<String> filters;
+  final k.KatalogBukuPerpustakaan category;
+  final Function(k.KatalogBukuPerpustakaan) filter;
+  final List<k.KatalogBukuPerpustakaan> categories;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isSelected = filters.contains(kategori.nama);
+    final isSelected = categories.firstWhereOrNull((category) => this.category.nama == category.nama) != null;
     return InkWell(
       onTap: () {
-        log(kategori.nama!);
-        filter(kategori.nama!);
+        filter(category);
       },
       child: Column(
         children: [
@@ -44,14 +42,14 @@ class BooksCategoryCard extends StatelessWidget {
                   BlendMode.srcIn,
                 ),
               ),
-              if (kategori.nama == "Lainnya") ...[
+              if (category.nama == "Lainnya") ...[
                 Icon(
                   Icons.more_vert_rounded,
                   color: theme.primaryColor,
                 )
               ] else ...[
                 Image.network(
-                  APIPath.publicAsset(kategori.icon?.id ?? "-"),
+                  APIPath.publicAsset(category.icon?.id ?? "-"),
                   width: 24,
                   height: 24,
                   color: theme.primaryColor,
@@ -61,7 +59,7 @@ class BooksCategoryCard extends StatelessWidget {
           ),
           VGap.xs,
           Text(
-            kategori.nama ?? "-",
+            category.nama ?? "-",
             style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey),
             overflow: TextOverflow.ellipsis,
           )

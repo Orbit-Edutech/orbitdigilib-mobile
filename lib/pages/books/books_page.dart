@@ -34,8 +34,8 @@ class BooksPage extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: controller.onInit,
         child: Obx(() {
-          final categories = controller.categories.value;
-          if (categories == null) {
+          final filteredCategories = controller.filteredCategories.value;
+          if (filteredCategories == null) {
             return AlignedGridView.count(
               padding: const EdgeInsets.all(Sizes.m),
               shrinkWrap: true,
@@ -49,16 +49,13 @@ class BooksPage extends StatelessWidget {
               },
             );
           }
-          final filteredCategories = categories.where((category) {
-            return controller.filters.contains(category.nama);
-          }).toList();
-          final datas = filteredCategories.isEmpty ? categories : filteredCategories;
           return ListView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.only(top: Sizes.s, bottom: Sizes.m),
-            itemCount: datas.length,
+            itemCount: filteredCategories.length,
             itemBuilder: (ctx, idx) {
-              return BooksCategoryContainer(category: datas[idx]);
+              final category = filteredCategories[idx];
+              return BooksCategoryContainer(category: category);
             },
           );
         }),

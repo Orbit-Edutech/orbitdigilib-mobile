@@ -12,8 +12,6 @@ void main() async {
   ImageUtils.prechacheImages();
 }
 
-// TODO: Benerin: All Books (filter), copywriting, responsive
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

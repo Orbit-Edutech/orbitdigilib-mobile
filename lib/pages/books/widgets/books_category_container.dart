@@ -70,7 +70,10 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                 child: Row(
                   children: [
                     if (widget.category.icon?.id != null) ...[
-                      Image.network(APIPath.publicAsset(widget.category.icon!.id!)),
+                      Image.network(
+                        APIPath.publicAsset(widget.category.icon!.id!),
+                        color: theme.primaryColor,
+                      ),
                     ] else ...[
                       Icon(Icons.more_vert, color: theme.primaryColor)
                     ],

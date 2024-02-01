@@ -20,9 +20,9 @@ class BooksCategoryFilter extends StatefulWidget {
 
 class _BooksCategoryFilterState extends State<BooksCategoryFilter> {
   final controller = Get.find<BooksController>();
-  List<String> tempFilter = [];
+  List<KatalogBukuPerpustakaan> tempFilter = [];
   List<KatalogBukuPerpustakaan> categories = [];
-  void filter(String filter) {
+  void filter(KatalogBukuPerpustakaan filter) {
     setState(() {
       tempFilter.contains(filter) ? tempFilter.remove(filter) : tempFilter.add(filter);
     });
@@ -30,13 +30,14 @@ class _BooksCategoryFilterState extends State<BooksCategoryFilter> {
 
   @override
   void initState() {
-    // tempFilter = controller.filters;
+    tempFilter.addAll(controller.filteredCategories.value!);
     categories = controller.categories.value!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
     return SizedBox(
       height: size.height * 0.75,
@@ -56,10 +57,27 @@ class _BooksCategoryFilterState extends State<BooksCategoryFilter> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              "Kategori Buku",
-              style: AppTextStyle.ts14Bold,
-              textAlign: TextAlign.start,
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "Kategori Buku",
+                    style: AppTextStyle.ts14Bold,
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      tempFilter.clear();
+                    });
+                  },
+                  child: Text(
+                    "Hapus",
+                    style: AppTextStyle.ts12Bold.copyWith(color: theme.primaryColor),
+                  ),
+                )
+              ],
             ),
             VGap.r,
             Expanded(
@@ -73,9 +91,9 @@ class _BooksCategoryFilterState extends State<BooksCategoryFilter> {
                 itemBuilder: ((ctx, idx) {
                   final kategori = categories[idx];
                   return BooksCategoryCard(
-                    kategori: kategori,
+                    category: kategori,
                     filter: filter,
-                    filters: tempFilter,
+                    categories: tempFilter,
                   );
                 }),
               ),
@@ -83,10 +101,11 @@ class _BooksCategoryFilterState extends State<BooksCategoryFilter> {
             VGap.r,
             AppButton(
               type: ButtonType.elevated,
-              onPressed: () {
+              onPressed: () async {
                 Get.back();
-                controller.filters.value = [];
-                controller.filters.value = tempFilter;
+                controller.filteredCategories.value = null;
+                await Future.delayed(const Duration(milliseconds: 10));
+                controller.filteredCategories.value = tempFilter;
               },
               child: Text("Terapkan", style: AppTextStyle.ts14Bold),
             ),

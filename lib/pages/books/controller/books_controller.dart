@@ -13,15 +13,16 @@ import '../widgets/books_category_filter.dart';
 
 class BooksController extends GetxController {
   Rx<List<KatalogBukuPerpustakaan>?> categories = Rx<List<KatalogBukuPerpustakaan>?>(null);
-  RxList<String> filters = RxList<String>([]);
+  Rx<List<KatalogBukuPerpustakaan>?> filteredCategories = Rx<List<KatalogBukuPerpustakaan>?>(null);
   @override
   Future<void> onInit() async {
     categories.value = null;
-    filters.value = [];
+    filteredCategories.value = [];
     getAllKatalogPerpus().then((res) {
       if (res.data != null) {
         categories.value = res.data?.listKatalogBukuPerpustakaan;
-        categories.value!.add(KatalogBukuPerpustakaan(nama: "Lainnya", id: "Lainnya"));
+        filteredCategories.value = res.data?.listKatalogBukuPerpustakaan;
+        filteredCategories.value!.add(KatalogBukuPerpustakaan(nama: "Lainnya", id: "Lainnya"));
       } else {
         if (res.error == ResponseStatus.connectionError) {
           showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");

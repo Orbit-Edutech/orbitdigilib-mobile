@@ -3,10 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
-import '../../../api/api_path.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
+import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
 import '../../../utils/compute_luminance.dart';
 import '../controller/profile_controller.dart';
@@ -64,13 +64,15 @@ class ProfileHeader extends StatelessWidget {
                   Container(
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
+                      color: Colors.white,
                     ),
                     width: 50,
                     height: 50,
                     clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Image.network(
-                      APIPath.publicAsset(controller.profile.value?.urlFotoProfil ?? "550c1a88-bfe5-467f-9b3e-05abb74de218"),
-                      fit: BoxFit.cover,
+                    child: Icon(
+                      controller.profile.value?.jenisKelamin == "Perempuan" ? Icons.person_2 : Icons.person,
+                      size: 40,
+                      color: AppColor.black,
                     ),
                   ),
                   HGap.r,

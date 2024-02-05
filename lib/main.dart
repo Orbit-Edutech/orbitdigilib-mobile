@@ -12,6 +12,8 @@ void main() async {
   ImageUtils.prechacheImages();
 }
 
+// TODO: Tambahin Update Alert jika versi sekarang kurang dari versi terbaru
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

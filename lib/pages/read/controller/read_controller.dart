@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import '../../../api/buku/data/buku_get_one.dart';
 import '../../../api/buku/model/model_buku.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/show_snackbar.dart';
+import '../../../sql/books/data/get_one_buku_sqlite.dart';
 import '../../../sql/books/data/update_buku_sqlite.dart';
 import '../../../sql/stared-pages/data/delete_stared_page.dart';
 import '../../../sql/stared-pages/data/get_stared_pages.dart';
@@ -39,7 +41,7 @@ class ReadController extends GetxController {
 
   Timer? _timer;
   Rx<int> currentPage = 1.obs;
-  int lastPageSeen = 1;
+  int? lastPageSeen;
   Rx<bool> isFullScreen = false.obs;
   Rx<bool> isOnSearch = false.obs;
   Rx<bool> noResultFound = false.obs;
@@ -70,6 +72,7 @@ class ReadController extends GetxController {
         userId: profileController.profile.value?.id ?? "",
         values: values,
       );
+      lastPageSeen = await getLastPageSeen(response.data?.id ?? "");
       await collectionController.onInit();
     } else {
       showSnackbar(message: "Terjadi kesalahan", backgroundColor: AppColor.red);
@@ -90,6 +93,11 @@ class ReadController extends GetxController {
     return result;
   }
 
+  Future<int> getLastPageSeen(String idBuku) async {
+    final result = await getOneBukuSQLite(idBuku, profileController.profile.value?.id ?? "");
+    return result.lastPageSeen;
+  }
+
   Future<List<int>> getStaredPages() async {
     final pages = await getStaredPagesSQLite(
       buku.value?.id ?? "",
@@ -101,24 +109,25 @@ class ReadController extends GetxController {
   }
 
   void goToLastPageSeen() {
-    pdfController.jumpToPage(lastPageSeen);
+    pdfController.jumpToPage(lastPageSeen ?? 1);
   }
 
   void onPageChanged(int page) {
+    currentPage.value = page;
+    log((page > (lastPageSeen ?? 1)).toString());
     if (isSample && page > sampleLimit) {
       pdfController.jumpToPage(sampleLimit);
       return;
     }
-    currentPage.value = page;
-    if (_timer?.isActive ?? false) _timer?.cancel();
-    if (page > lastPageSeen) {
+    if (page > (lastPageSeen ?? 1)) {
       lastPageSeen = page;
+      if (_timer?.isActive ?? false) _timer?.cancel();
       _timer = Timer(const Duration(seconds: 2), () async {
         await updateBukuSQLite(
           bukuId: buku.value?.id ?? "",
           userId: profileController.profile.value?.id ?? "",
           values: {
-            "last_page_seen": lastPageSeen,
+            "last_page_seen": lastPageSeen ?? 1,
             "status": currentPage.value == buku.value?.jumlahHalaman ? "Selesai Dibaca" : "Belum Selesai",
           },
         );

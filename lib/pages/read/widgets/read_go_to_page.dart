@@ -36,6 +36,7 @@ class ReadGoToPage extends StatelessWidget {
         focusNode: searchPageFocusNode,
         keyboardType: TextInputType.number,
         isError: false,
+        autoFocus: true,
         onSubmitted: (text) {
           Get.back();
           pdfController.jumpToPage(int.parse(text));

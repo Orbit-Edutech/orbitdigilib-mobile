@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -55,7 +57,7 @@ class ProfileSettings extends StatelessWidget {
             SettingCard(
               icon: const Icon(Icons.info_outline_rounded),
               title: "Tentang Aplikasi",
-              subTitle: "v${AppInfo.version}",
+              subTitle: "v${Platform.isAndroid ? AppInfo.android.versionName : AppInfo.iOs.versionName}",
               onTap: () => Get.toNamed(AppRoutes.aboutApp),
             ),
           ],

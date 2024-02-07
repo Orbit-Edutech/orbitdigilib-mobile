@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class AuthValidate {
   final User? user;
-  final Version? version;
+  final Versions? version;
 
   AuthValidate({
     this.user,
@@ -11,7 +11,7 @@ class AuthValidate {
 
   AuthValidate copyWith({
     User? user,
-    Version? version,
+    Versions? version,
   }) =>
       AuthValidate(
         user: user ?? this.user,
@@ -24,7 +24,7 @@ class AuthValidate {
 
   factory AuthValidate.fromJson(Map<String, dynamic> json) => AuthValidate(
         user: json["user"] == null ? null : User.fromJson(json["user"]),
-        version: json["version"] == null ? null : Version.fromJson(json["version"]),
+        version: json["version"] == null ? null : Versions.fromJson(json["version"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -158,8 +158,9 @@ class Perpustakaan {
   final String? kode;
   final String? noTelepon;
   final String? deskripsi;
-  final int? tahunBerdiri;
+  final String? tahunBerdiri;
   final String? warnaDasar;
+  final String? email;
   final String? namaPic;
   final String? contactPersonPic;
   final bool? isAktif;
@@ -174,6 +175,7 @@ class Perpustakaan {
     this.deskripsi,
     this.tahunBerdiri,
     this.warnaDasar,
+    this.email,
     this.namaPic,
     this.contactPersonPic,
     this.isAktif,
@@ -187,8 +189,9 @@ class Perpustakaan {
     String? kode,
     String? noTelepon,
     String? deskripsi,
-    int? tahunBerdiri,
+    String? tahunBerdiri,
     String? warnaDasar,
+    String? email,
     String? namaPic,
     String? contactPersonPic,
     bool? isAktif,
@@ -203,6 +206,7 @@ class Perpustakaan {
         deskripsi: deskripsi ?? this.deskripsi,
         tahunBerdiri: tahunBerdiri ?? this.tahunBerdiri,
         warnaDasar: warnaDasar ?? this.warnaDasar,
+        email: email ?? this.email,
         namaPic: namaPic ?? this.namaPic,
         contactPersonPic: contactPersonPic ?? this.contactPersonPic,
         isAktif: isAktif ?? this.isAktif,
@@ -222,6 +226,7 @@ class Perpustakaan {
         deskripsi: json["deskripsi"],
         tahunBerdiri: json["tahunBerdiri"],
         warnaDasar: json["warnaDasar"],
+        email: json["email"],
         namaPic: json["namaPIC"],
         contactPersonPic: json["contactPersonPIC"],
         isAktif: json["isAktif"],
@@ -237,6 +242,7 @@ class Perpustakaan {
         "deskripsi": deskripsi,
         "tahunBerdiri": tahunBerdiri,
         "warnaDasar": warnaDasar,
+        "email": email,
         "namaPIC": namaPic,
         "contactPersonPIC": contactPersonPic,
         "isAktif": isAktif,
@@ -267,6 +273,39 @@ class Role {
 
   Map<String, dynamic> toJson() => {
         "nama": nama,
+      };
+}
+
+class Versions {
+  final Version? android;
+  final Version? iOs;
+
+  Versions({
+    this.android,
+    this.iOs,
+  });
+
+  Versions copyWith({
+    Version? android,
+    Version? iOs,
+  }) =>
+      Versions(
+        android: android ?? this.android,
+        iOs: iOs ?? this.iOs,
+      );
+
+  factory Versions.fromRawJson(String str) => Versions.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Versions.fromJson(Map<String, dynamic> json) => Versions(
+        android: json["android"] == null ? null : Version.fromJson(json["android"]),
+        iOs: json["iOS"] == null ? null : Version.fromJson(json["iOS"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "android": android?.toJson(),
+        "iOS": iOs?.toJson(),
       };
 }
 

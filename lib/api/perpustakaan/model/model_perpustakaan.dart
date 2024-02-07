@@ -8,8 +8,9 @@ class Perpustakaan {
   final String? kode;
   final String? noTelepon;
   final String? deskripsi;
-  final int? tahunBerdiri;
+  final String? tahunBerdiri;
   final String? warnaDasar;
+  final dynamic email;
   final String? namaPic;
   final String? contactPersonPic;
   final AssetLogo? assetLogo;
@@ -27,6 +28,7 @@ class Perpustakaan {
     this.deskripsi,
     this.tahunBerdiri,
     this.warnaDasar,
+    this.email,
     this.namaPic,
     this.contactPersonPic,
     this.assetLogo,
@@ -43,8 +45,9 @@ class Perpustakaan {
     String? kode,
     String? noTelepon,
     String? deskripsi,
-    int? tahunBerdiri,
+    String? tahunBerdiri,
     String? warnaDasar,
+    dynamic email,
     String? namaPic,
     String? contactPersonPic,
     AssetLogo? assetLogo,
@@ -62,6 +65,7 @@ class Perpustakaan {
         deskripsi: deskripsi ?? this.deskripsi,
         tahunBerdiri: tahunBerdiri ?? this.tahunBerdiri,
         warnaDasar: warnaDasar ?? this.warnaDasar,
+        email: email ?? this.email,
         namaPic: namaPic ?? this.namaPic,
         contactPersonPic: contactPersonPic ?? this.contactPersonPic,
         assetLogo: assetLogo ?? this.assetLogo,
@@ -84,6 +88,7 @@ class Perpustakaan {
         deskripsi: json["deskripsi"],
         tahunBerdiri: json["tahunBerdiri"],
         warnaDasar: json["warnaDasar"],
+        email: json["email"],
         namaPic: json["namaPIC"],
         contactPersonPic: json["contactPersonPIC"],
         assetLogo: json["assetLogo"] == null ? null : AssetLogo.fromJson(json["assetLogo"]),
@@ -102,6 +107,7 @@ class Perpustakaan {
         "deskripsi": deskripsi,
         "tahunBerdiri": tahunBerdiri,
         "warnaDasar": warnaDasar,
+        "email": email,
         "namaPIC": namaPic,
         "contactPersonPIC": contactPersonPic,
         "assetLogo": assetLogo?.toJson(),
@@ -112,7 +118,7 @@ class Perpustakaan {
 }
 
 class Alamat {
-  final dynamic detailAlamat;
+  final String? detailAlamat;
   final dynamic dusun;
   final dynamic kelurahan;
   final dynamic kecamatan;
@@ -135,7 +141,7 @@ class Alamat {
   });
 
   Alamat copyWith({
-    dynamic detailAlamat,
+    String? detailAlamat,
     dynamic dusun,
     dynamic kelurahan,
     dynamic kecamatan,

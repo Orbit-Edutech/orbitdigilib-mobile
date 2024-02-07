@@ -120,7 +120,7 @@ class Perpustakaan {
   final String? kode;
   final String? noTelepon;
   final String? deskripsi;
-  final int? tahunBerdiri;
+  final String? tahunBerdiri;
   final String? warnaDasar;
   final bool? isAktif;
 
@@ -145,7 +145,7 @@ class Perpustakaan {
     String? kode,
     String? noTelepon,
     String? deskripsi,
-    int? tahunBerdiri,
+    String? tahunBerdiri,
     String? warnaDasar,
     bool? isAktif,
   }) =>

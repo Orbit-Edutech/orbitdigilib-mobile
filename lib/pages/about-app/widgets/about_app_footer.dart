@@ -1,3 +1,5 @@
+import "dart:io";
+
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 
@@ -48,7 +50,8 @@ class AboutAppFooter extends StatelessWidget {
           children: [
             Text("Versi Aplikasi", style: AppTextStyle.ts10Reg),
             HGap.xs,
-            Text("v${AppInfo.version}", style: AppTextStyle.ts10Bold),
+            Text("v${Platform.isAndroid ? AppInfo.android.versionName : AppInfo.iOs.versionName}",
+                style: AppTextStyle.ts10Bold),
           ],
         )
       ],

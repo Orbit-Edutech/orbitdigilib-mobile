@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
@@ -5,6 +7,7 @@ import 'package:get/route_manager.dart';
 import '../../../api/api_client.dart';
 import '../../../api/auth/data/auth_validate.dart';
 import '../../../api/auth/model/model_auth_validate.dart';
+import '../../../constants/app_info.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../theme/app_theme.dart';
@@ -22,9 +25,12 @@ class SplashController extends GetxController {
     final response = await authValidate();
     if (response.data != null) {
       validate = response.data;
+      final isNeedUpate = Platform.isAndroid
+          ? AppInfo.android.versionCode! < (response.data?.version?.android?.versionCode ?? 1)
+          : AppInfo.iOs.versionCode! < (response.data?.version?.iOs?.versionCode ?? 1);
       final color = await SharedPreferencesManager.readPref<String>("color");
       await AppTheme.changePerpusTheme(color);
-      Get.offAllNamed(AppRoutes.navigator);
+      Get.offAllNamed(isNeedUpate ? AppRoutes.update : AppRoutes.navigator);
     } else {
       if (response.error == ResponseStatus.connectionError) {
         Get.dialog(

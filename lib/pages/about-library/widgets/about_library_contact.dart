@@ -29,7 +29,7 @@ class AboutLibraryContact extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Tahun Berdiri", style: AppTextStyle.ts10Bold),
-                    Text("${perpustakaan.tahunBerdiri ?? "-"}", style: AppTextStyle.ts10Reg),
+                    Text(perpustakaan.tahunBerdiri ?? "-", style: AppTextStyle.ts10Reg),
                   ],
                 ),
               ),
@@ -48,7 +48,7 @@ class AboutLibraryContact extends StatelessWidget {
           VGap.s,
           Text("Alamat Perpustakaan", style: AppTextStyle.ts10Bold),
           Text(
-            "${perpustakaan.alamat?.detailAlamat ?? '-'}",
+            perpustakaan.alamat?.detailAlamat ?? '-',
             style: AppTextStyle.ts10Reg,
           ),
         ],

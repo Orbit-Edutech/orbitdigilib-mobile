@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+// import 'package:flutter_svg/svg.dart';
 import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
+// import 'package:get/route_manager.dart';
 
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
-import '../../../routes/app_routes.dart';
+// import '../../../routes/app_routes.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
 import '../../../utils/compute_luminance.dart';
@@ -42,20 +42,21 @@ class ProfileHeader extends StatelessWidget {
                     "Akun",
                     style: AppTextStyle.ts20Bold.copyWith(color: calculateLuminance(theme.primaryColor)),
                   ),
-                  GestureDetector(
-                    onTap: () => Get.toNamed(AppRoutes.notifications),
-                    child: isRead
-                        ? SvgPicture.asset(
-                            "assets/icons/notifications.svg",
-                            height: 20,
-                            width: 24,
-                          )
-                        : SvgPicture.asset(
-                            "assets/icons/notifications-unread.svg",
-                            height: 20,
-                            width: 24,
-                          ),
-                  ),
+                  // TODO: Fitur notifikasi akan dikembangkan pada fase 2
+                  // GestureDetector(
+                  //   onTap: () => Get.toNamed(AppRoutes.notifications),
+                  //   child: isRead
+                  //       ? SvgPicture.asset(
+                  //           "assets/icons/notifications.svg",
+                  //           height: 20,
+                  //           width: 24,
+                  //         )
+                  //       : SvgPicture.asset(
+                  //           "assets/icons/notifications-unread.svg",
+                  //           height: 20,
+                  //           width: 24,
+                  //         ),
+                  // ),
                 ],
               ),
               VGap.m,

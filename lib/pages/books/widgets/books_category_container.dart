@@ -118,7 +118,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
               ],
               if (books?.isEmpty ?? false) ...[
                 EmptyList(
-                  description: "Tidak ada buku di Kategori ${widget.category.nama ?? '-'}",
+                  description: "Tidak ada buku di Katalog ${widget.category.nama ?? '-'}",
                 )
               ],
               if (books != null && books!.isNotEmpty) ...[

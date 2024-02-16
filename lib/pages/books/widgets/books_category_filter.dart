@@ -61,7 +61,7 @@ class _BooksCategoryFilterState extends State<BooksCategoryFilter> {
               children: [
                 Expanded(
                   child: Text(
-                    "Kategori Buku",
+                    "Katalog Buku",
                     style: AppTextStyle.ts14Bold,
                     textAlign: TextAlign.start,
                   ),

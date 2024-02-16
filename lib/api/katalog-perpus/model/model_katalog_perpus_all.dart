@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-class KategoriPerpusAll {
+class KatalogPerpusAll {
   final List<KatalogBukuPerpustakaan>? listKatalogBukuPerpustakaan;
 
-  KategoriPerpusAll({
+  KatalogPerpusAll({
     this.listKatalogBukuPerpustakaan,
   });
 
-  KategoriPerpusAll copyWith({
+  KatalogPerpusAll copyWith({
     List<KatalogBukuPerpustakaan>? listKatalogBukuPerpustakaan,
   }) =>
-      KategoriPerpusAll(
+      KatalogPerpusAll(
         listKatalogBukuPerpustakaan: listKatalogBukuPerpustakaan ?? this.listKatalogBukuPerpustakaan,
       );
 
-  factory KategoriPerpusAll.fromRawJson(String str) => KategoriPerpusAll.fromJson(json.decode(str));
+  factory KatalogPerpusAll.fromRawJson(String str) => KatalogPerpusAll.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory KategoriPerpusAll.fromJson(Map<String, dynamic> json) => KategoriPerpusAll(
+  factory KatalogPerpusAll.fromJson(Map<String, dynamic> json) => KatalogPerpusAll(
         listKatalogBukuPerpustakaan: json["listKatalogBukuPerpustakaan"] == null
             ? []
             : List<KatalogBukuPerpustakaan>.from(

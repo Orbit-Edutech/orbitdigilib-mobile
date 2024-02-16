@@ -31,7 +31,7 @@ class IndexCategories extends StatelessWidget {
           children: [
             VGap.r,
             Text(
-              "Kategori Buku",
+              "Katalog Buku",
               style: AppTextStyle.ts14Bold,
             ),
             VGap.r,

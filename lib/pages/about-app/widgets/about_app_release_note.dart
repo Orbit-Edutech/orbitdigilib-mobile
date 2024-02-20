@@ -8,12 +8,14 @@ class AboutAppReleaseNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final releaseNotes = [];
+    if (releaseNotes.isEmpty) return const SizedBox.shrink();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("Apa yang baru?", style: AppTextStyle.ts14Bold),
         VGap.s,
-        for (var _ in [1, 2, 3, 4, 5]) ...[
+        for (var _ in releaseNotes) ...[
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

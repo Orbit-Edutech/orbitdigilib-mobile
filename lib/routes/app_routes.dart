@@ -35,12 +35,16 @@ import '../pages/splash/binding/splash_binding.dart';
 import '../pages/splash/splash_page.dart';
 import '../pages/token/binding/token_binding.dart';
 import '../pages/token/token_page.dart';
+import '../pages/update/update_page.dart';
 import '../pages/wishlist/binding/wishlist_binding.dart';
 import '../pages/wishlist/wishlist_page.dart';
 
 class AppRoutes {
   /// /splash
   static const String splash = "/splash";
+
+  /// /update
+  static const String update = "/update";
 
   /// /auth-library
   static const String authLibrary = "/auth-library";
@@ -104,6 +108,12 @@ class AppRoutes {
       name: splash,
       page: () => const SplashPage(),
       binding: SplashBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: update,
+      page: () => const UpdatePage(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

@@ -22,9 +22,9 @@ class AuthLibraryPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColor.def,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(Sizes.m),
                   bottomRight: Radius.circular(Sizes.m),
                 ),

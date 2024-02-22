@@ -22,7 +22,6 @@ class AboutAppPage extends StatelessWidget {
             AboutAppGeneral(),
             VGap.m,
             AboutAppDetail(),
-            VGap.m,
             AboutAppReleaseNote(),
             VGap.h,
             AboutAppFooter(),

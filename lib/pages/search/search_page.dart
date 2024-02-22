@@ -49,6 +49,7 @@ class SearchPage extends StatelessWidget {
               onTapOutside: (_) => controller.searchFocusNode.unfocus(),
               onChanged: controller.search,
               isError: false,
+              autoFocus: true,
               contentPadding: const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
               label: Text(
                 "Pencarian...",

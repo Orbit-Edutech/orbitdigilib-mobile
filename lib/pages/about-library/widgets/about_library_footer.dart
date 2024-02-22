@@ -1,3 +1,5 @@
+import "dart:io";
+
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 
@@ -24,7 +26,6 @@ class AboutLibraryFooter extends StatelessWidget {
                 style: AppTextStyle.ts10Bold,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    debugPrint("Kebijakan Privasi");
                     //TODO: Arahin ke kebijakan privasi,
                   },
               ),
@@ -34,7 +35,6 @@ class AboutLibraryFooter extends StatelessWidget {
                 style: AppTextStyle.ts10Bold,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    debugPrint("Syarat dan Ketentuan");
                     //TODO: Arahin ke syarat dan ketentuan,
                   },
               ),
@@ -50,7 +50,8 @@ class AboutLibraryFooter extends StatelessWidget {
           children: [
             Text("Versi Aplikasi", style: AppTextStyle.ts10Reg),
             HGap.xs,
-            Text("v${AppInfo.version}", style: AppTextStyle.ts10Bold),
+            Text("v${Platform.isAndroid ? AppInfo.android.versionName : AppInfo.iOs.versionName}",
+                style: AppTextStyle.ts10Bold),
           ],
         )
       ],

@@ -317,7 +317,7 @@ class Penerbit {
   final String? email;
   final String? namaPic;
   final String? contactPersonPic;
-  final String? tahunBerdiri;
+  final dynamic tahunBerdiri;
 
   Penerbit({
     this.id,
@@ -344,7 +344,7 @@ class Penerbit {
     String? email,
     String? namaPic,
     String? contactPersonPic,
-    String? tahunBerdiri,
+    dynamic tahunBerdiri,
   }) =>
       Penerbit(
         id: id ?? this.id,

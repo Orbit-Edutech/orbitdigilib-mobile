@@ -36,66 +36,69 @@ class IndexBalance extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Obx(() {
-            final idLogo = controller.perpustakaan.value?.assetLogo?.id ?? "";
-            return Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: NetworkImage(APIPath.publicAsset(idLogo)),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-            );
-          }),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: Sizes.xs),
-                  child: Text(
-                    "Token DIGILIB Anda",
-                    style: AppTextStyle.ts12Reg,
+          Row(
+            children: [
+              Obx(() {
+                final idLogo = controller.perpustakaan.value?.assetLogo?.id ?? "";
+                return Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage(APIPath.publicAsset(idLogo)),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                Obx(() {
-                  final isVisible = controller.isBalanceVisible.value;
-                  final balance = profileController.profile.value?.token?.split(".")[0] ?? "0";
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/coin.svg",
-                        width: 24,
-                        height: 24,
-                        colorFilter: const ColorFilter.mode(AppColor.black, BlendMode.srcIn),
-                      ),
-                      HGap.xs,
-                      Flexible(
-                        child: Text(
-                          isVisible ? balance : "• • • •",
-                          style: AppTextStyle.ts20Bold,
-                          overflow: TextOverflow.ellipsis,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                );
+              }),
+              HGap.m,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: Sizes.xs),
+                    child: Text(
+                      "Token DIGILIB Anda",
+                      style: AppTextStyle.ts12Reg,
+                    ),
+                  ),
+                  Obx(() {
+                    final isVisible = controller.isBalanceVisible.value;
+                    final balance = profileController.profile.value?.token?.split(".")[0] ?? "0";
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/coin.svg",
+                          width: 24,
+                          height: 24,
+                          colorFilter: const ColorFilter.mode(AppColor.black, BlendMode.srcIn),
                         ),
-                      ),
-                      HGap.xs,
-                      GestureDetector(
-                        onTap: () => controller.isBalanceVisible.value = !controller.isBalanceVisible.value,
-                        child: Icon(
-                          isVisible ? Icons.visibility_rounded : Icons.visibility_off_rounded,
-                          size: 16,
-                          color: AppColor.black,
+                        HGap.xs,
+                        Flexible(
+                          child: Text(
+                            isVisible ? balance : "• • • •",
+                            style: AppTextStyle.ts20Bold,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      )
-                    ],
-                  );
-                }),
-              ],
-            ),
+                        HGap.xs,
+                        GestureDetector(
+                          onTap: () => controller.isBalanceVisible.value = !controller.isBalanceVisible.value,
+                          child: Icon(
+                            isVisible ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                            size: 16,
+                            color: AppColor.black,
+                          ),
+                        )
+                      ],
+                    );
+                  }),
+                ],
+              ),
+            ],
           ),
           GestureDetector(
             onTap: () => Get.toNamed(AppRoutes.token),

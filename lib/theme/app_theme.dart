@@ -13,12 +13,12 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       toolbarHeight: 50,
       titleTextStyle: AppTextStyle.ts18Bold,
-      backgroundColor: Colors.lightBlue.shade500,
-      foregroundColor: calculateLuminance(Colors.lightBlue.shade500),
+      backgroundColor: AppColor.def,
+      foregroundColor: calculateLuminance(AppColor.def),
     ),
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.lightBlue,
-      primary: Colors.lightBlue.shade500,
+      primary: AppColor.def,
     ),
     textTheme: GoogleFonts.robotoTextTheme(textTheme),
     useMaterial3: true,
@@ -72,7 +72,7 @@ class AppTheme {
       case "Cyan":
         return PerpusColor(seed: Colors.cyan, primary: Colors.cyan.shade500);
       case "Light Blue":
-        return PerpusColor(seed: Colors.lightBlue, primary: Colors.lightBlue.shade500);
+        return PerpusColor(seed: Colors.lightBlue, primary: AppColor.def);
       case "Blue":
         return PerpusColor(seed: Colors.blue, primary: Colors.blue.shade500);
       case "Indigo":

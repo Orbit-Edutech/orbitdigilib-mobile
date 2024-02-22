@@ -88,7 +88,7 @@ class Buku {
   final String? judul;
   final String? sinopsis;
   final int? jumlahHalaman;
-  final String? tahunTerbit;
+  final dynamic tahunTerbit;
   final String? isbn;
   final dynamic eIsbn;
   final dynamic ilustrator;
@@ -125,7 +125,7 @@ class Buku {
     String? judul,
     String? sinopsis,
     int? jumlahHalaman,
-    String? tahunTerbit,
+    dynamic tahunTerbit,
     String? isbn,
     dynamic eIsbn,
     dynamic ilustrator,
@@ -335,7 +335,7 @@ class Perpustakaan {
   final String? nama;
   final String? deskripsi;
   final String? noTelepon;
-  final int? tahunBerdiri;
+  final dynamic tahunBerdiri;
   final String? warnaDasar;
   final String? namaPic;
   final String? contactPersonPic;
@@ -356,7 +356,7 @@ class Perpustakaan {
     String? nama,
     String? deskripsi,
     String? noTelepon,
-    int? tahunBerdiri,
+    dynamic tahunBerdiri,
     String? warnaDasar,
     String? namaPic,
     String? contactPersonPic,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/instance_manager.dart';
@@ -35,7 +33,6 @@ class BookController extends GetxController {
   Future<void> onInit() async {
     args = Get.arguments;
     final response = await getOneBukuPerpustakaan(args!.id!);
-    log(args!.buku!.id!);
     final check = await checkCollection(args!.buku!.id!);
     if (check.data != null) isInCollections.value = true;
     if (response.data != null) {

@@ -9,6 +9,7 @@ import "../../../constants/gaps.dart";
 import "../../../constants/sizes.dart";
 import "../../../routes/app_routes.dart";
 import "../../../shared/widget/book_card.dart";
+import "../../../shared/widget/empty_list.dart";
 import "../../../theme/app_text_stlye.dart";
 import "../controller/index_controller.dart";
 
@@ -23,20 +24,18 @@ class IndexRecommendation extends StatelessWidget {
     return Obx(() {
       final controller = Get.find<IndexController>();
       final payloads = controller.pinnedBooks.value?.toList();
-      if (payloads?.isEmpty ?? true) return const SizedBox();
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           VGap.m,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Rekomendasi Buku",
-                  style: AppTextStyle.ts14Bold,
-                ),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(
+                "Rekomendasi Buku",
+                style: AppTextStyle.ts14Bold,
+              ),
+              if (payloads?.isNotEmpty ?? false) ...[
                 GestureDetector(
                   onTap: () => Get.toNamed(AppRoutes.recommendation, arguments: payloads),
                   child: Text(
@@ -45,8 +44,12 @@ class IndexRecommendation extends StatelessWidget {
                   ),
                 )
               ],
-            ),
+            ]),
           ),
+          if (payloads?.isEmpty ?? true) ...[
+            VGap.r,
+            const EmptyList(description: "Rekomendasi buku masih kosong"),
+          ],
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.all(Sizes.m),

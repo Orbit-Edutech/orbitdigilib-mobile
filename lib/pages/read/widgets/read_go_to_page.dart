@@ -44,8 +44,10 @@ class ReadGoToPage extends StatelessWidget {
         onChanged: (text) {
           if (text.isNotEmpty) {
             try {
-              if (isSample && sampleLimit > pdfController.pageCount) {
-                if (int.parse(text) > sampleLimit) {
+              if (isSample) {
+                if (sampleLimit > pdfController.pageCount) {
+                  searchPageController.text = pdfController.pageCount.toString();
+                } else if (int.parse(text) > sampleLimit) {
                   searchPageController.text = "$sampleLimit";
                 }
               } else if (int.parse(text) > pdfController.pageCount) {

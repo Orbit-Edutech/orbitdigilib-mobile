@@ -51,6 +51,9 @@ class IndexAllBooks extends StatelessWidget {
                 },
               );
             }
+            //   else if ( payloads?.isEmpty ?? true            VGap.r,
+            //   EmptyList(description: "Rekomendasi"),
+            // ],)
             return AlignedGridView.count(
               shrinkWrap: true,
               crossAxisCount: isWide ? 4 : 2,

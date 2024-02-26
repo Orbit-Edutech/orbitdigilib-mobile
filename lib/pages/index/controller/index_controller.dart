@@ -14,6 +14,7 @@ import '../../../api/perpustakaan/model/model_perpustakaan.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
+import '../../../theme/app_theme.dart';
 import '../../../utils/shared_preferences_manager.dart';
 import '../widgets/index_categories_modal.dart';
 import '../widgets/index_large_banner.dart';
@@ -40,6 +41,7 @@ class IndexController extends GetxController {
       getOnePerpustakaan(kode).then((res) {
         if (res.data != null) {
           perpustakaan.value = res.data;
+          AppTheme.changePerpusTheme(perpustakaan.value!.warnaDasar);
         } else {
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
@@ -52,6 +54,7 @@ class IndexController extends GetxController {
         if (res.data != null) {
           pinnedBooks.value = res.data?.payload;
         } else {
+          pinnedBooks.value = [];
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
           } else {

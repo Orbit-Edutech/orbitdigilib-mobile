@@ -17,6 +17,7 @@ class AppTextField extends StatelessWidget {
     required this.isError,
     required this.label,
     this.isObscure = false,
+    this.autoFocus = false,
     this.onTapOutside,
     this.onChanged,
     this.errorText,
@@ -41,6 +42,7 @@ class AppTextField extends StatelessWidget {
   final Widget label;
   final Widget? suffix;
   final bool? enabled;
+  final bool autoFocus;
   final EdgeInsetsGeometry? contentPadding;
   final TextInputType? keyboardType;
 
@@ -54,6 +56,7 @@ class AppTextField extends StatelessWidget {
       onTapOutside: onTapOutside,
       onChanged: onChanged,
       obscureText: isObscure,
+      autofocus: autoFocus,
       decoration: InputDecoration(
         contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
         border: OutlineInputBorder(

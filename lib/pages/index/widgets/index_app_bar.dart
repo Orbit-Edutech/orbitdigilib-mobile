@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+// import 'package:flutter_svg/svg.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
@@ -48,21 +48,22 @@ class _IndexAppBarState extends State<IndexAppBar> {
           onTap: () => Get.toNamed(AppRoutes.search),
           child: const Icon(Icons.search_rounded, size: 24),
         ),
-        HGap.r,
-        GestureDetector(
-          onTap: () => Get.toNamed(AppRoutes.notifications),
-          child: isRead
-              ? SvgPicture.asset(
-                  "assets/icons/notifications.svg",
-                  height: 20,
-                  width: 24,
-                )
-              : SvgPicture.asset(
-                  "assets/icons/notifications-unread.svg",
-                  height: 20,
-                  width: 24,
-                ),
-        ),
+        // TODO: Fitur notifikasi akan dikembangkan pada fase 2
+        // HGap.r,
+        // GestureDetector(
+        //   onTap: () => Get.toNamed(AppRoutes.notifications),
+        //   child: isRead
+        //       ? SvgPicture.asset(
+        //           "assets/icons/notifications.svg",
+        //           height: 20,
+        //           width: 24,
+        //         )
+        //       : SvgPicture.asset(
+        //           "assets/icons/notifications-unread.svg",
+        //           height: 20,
+        //           width: 24,
+        //         ),
+        // ),
         HGap.m,
       ],
     );

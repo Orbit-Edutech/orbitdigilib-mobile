@@ -99,7 +99,7 @@ class CategoryPage extends StatelessWidget {
                         children: [
                           VGap.m,
                           EmptyList(
-                            description: "Tidak ada buku di Kategori ${category.nama}",
+                            description: "Tidak ada buku di Katalog ${category.nama}",
                           ),
                         ],
                       );

@@ -4,11 +4,13 @@ import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
 
 // import "../../../api/buku/model/model_all_buku.dart";
+import "../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart";
 import "../../../api/wishlist/model/model_wishlist_all.dart";
 import "../../../constants/gaps.dart";
 import "../../../constants/sizes.dart";
 import "../../../routes/app_routes.dart";
 import "../../../shared/widget/book_card.dart";
+import "../../../shared/widget/empty_list.dart";
 import "../../../theme/app_text_stlye.dart";
 import "../controller/index_controller.dart";
 
@@ -23,20 +25,18 @@ class IndexRecommendation extends StatelessWidget {
     return Obx(() {
       final controller = Get.find<IndexController>();
       final payloads = controller.pinnedBooks.value?.toList();
-      if (payloads?.isEmpty ?? true) return const SizedBox();
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           VGap.m,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Rekomendasi Buku",
-                  style: AppTextStyle.ts14Bold,
-                ),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(
+                "Rekomendasi Buku",
+                style: AppTextStyle.ts14Bold,
+              ),
+              if (payloads?.isNotEmpty ?? false) ...[
                 GestureDetector(
                   onTap: () => Get.toNamed(AppRoutes.recommendation, arguments: payloads),
                   child: Text(
@@ -45,14 +45,18 @@ class IndexRecommendation extends StatelessWidget {
                   ),
                 )
               ],
-            ),
+            ]),
           ),
+          if (payloads?.isEmpty ?? true) ...[
+            VGap.r,
+            const EmptyList(description: "Rekomendasi buku masih kosong"),
+          ],
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.all(Sizes.m),
             child: Row(
               children: [
-                for (var payload in payloads!) ...[
+                for (Payload payload in payloads ?? []) ...[
                   BookCard(
                     bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
                     id: payload.buku?.id ?? "-",

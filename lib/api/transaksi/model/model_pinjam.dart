@@ -245,7 +245,7 @@ class Perpustakaan {
   final String? nama;
   final String? deskripsi;
   final String? noTelepon;
-  final int? tahunBerdiri;
+  final dynamic tahunBerdiri;
   final String? warnaDasar;
   final String? namaPic;
   final String? contactPersonPic;
@@ -266,7 +266,7 @@ class Perpustakaan {
     String? nama,
     String? deskripsi,
     String? noTelepon,
-    int? tahunBerdiri,
+    dynamic tahunBerdiri,
     String? warnaDasar,
     String? namaPic,
     String? contactPersonPic,

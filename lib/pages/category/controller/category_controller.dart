@@ -59,7 +59,7 @@ class CategoryController extends GetxController {
     _timer = Timer(const Duration(milliseconds: 500), () async {
       books.value = null;
       Map<String, dynamic> qp = {};
-      qp["kategoriBukuPerpustakaanId"] = category.id;
+      qp["katalogBukuPerpustakaanId"] = category.id;
       if (keyword.trim().isNotEmpty) qp["buku[judul][lke]"] = keyword;
       cancelToken.cancel();
       cancelToken = CancelToken();
@@ -76,7 +76,7 @@ class CategoryController extends GetxController {
       isLoadedMore.value = true;
       Map<String, dynamic> qp = {};
       final keyword = textController.value.text;
-      qp["kategoriBukuPerpustakaanId"] = category.id;
+      qp["katalogBukuPerpustakaanId"] = category.id;
       if (keyword.trim().isNotEmpty) qp["buku[judul][lke]"] = keyword;
       qp["page"] = page.value;
       final response = await getAllBukuPerpustakaan(qp);

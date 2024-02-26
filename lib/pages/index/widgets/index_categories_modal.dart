@@ -43,7 +43,7 @@ class IndexCategoriesModal extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              "Kategori Buku",
+              "Katalog Buku",
               style: AppTextStyle.ts14Bold,
               textAlign: TextAlign.start,
             ),

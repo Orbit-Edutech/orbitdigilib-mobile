@@ -7,6 +7,7 @@ import "package:get/route_manager.dart";
 import "../../../constants/gaps.dart";
 import "../../../constants/sizes.dart";
 import "../../../routes/app_routes.dart";
+import "../../../shared/widget/empty_list.dart";
 import "../../../theme/app_text_stlye.dart";
 import "../controller/index_controller.dart";
 import "index_category_card.dart";
@@ -31,34 +32,38 @@ class IndexCategories extends StatelessWidget {
           children: [
             VGap.r,
             Text(
-              "Kategori Buku",
+              "Katalog Buku",
               style: AppTextStyle.ts14Bold,
             ),
             VGap.r,
-            AlignedGridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              crossAxisCount: isWide ? 8 : 4,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: Sizes.xs,
-              itemCount: isMoreThan7 ? 8 : categories.length,
-              itemBuilder: (BuildContext context, int index) {
-                final category = categories[index];
-                if (index == 7) {
+            if (categories.isEmpty) ...[
+              const EmptyList(description: "Katalog buku masih kosong"),
+            ] else ...[
+              AlignedGridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                crossAxisCount: isWide ? 8 : 4,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: Sizes.xs,
+                itemCount: isMoreThan7 ? 8 : categories.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final category = categories[index];
+                  if (index == 7) {
+                    return IndexCategoryCard(
+                      path: "assets/icons/all-category.svg",
+                      name: "Semua",
+                      onTap: controller.showCategories,
+                    );
+                  }
                   return IndexCategoryCard(
-                    path: "assets/icons/all-category.svg",
-                    name: "Semua",
-                    onTap: controller.showCategories,
+                    path: category.icon?.id ?? "-",
+                    name: category.nama ?? "-",
+                    onTap: () => Get.toNamed(AppRoutes.category, arguments: category),
                   );
-                }
-                return IndexCategoryCard(
-                  path: category.icon?.id ?? "-",
-                  name: category.nama ?? "-",
-                  onTap: () => Get.toNamed(AppRoutes.category, arguments: category),
-                );
-              },
-            ),
+                },
+              ),
+            ]
           ],
         ),
       );

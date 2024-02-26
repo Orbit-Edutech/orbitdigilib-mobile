@@ -1,7 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
-import '../pages/about-app/aboud_app_page.dart';
+import '../pages/about-app/about_app_page.dart';
 import '../pages/about-library/about_library_page.dart';
 import '../pages/about-library/binding/about_library_binding.dart';
 import '../pages/auth/auth_library_page.dart';

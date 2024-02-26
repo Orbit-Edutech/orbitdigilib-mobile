@@ -4,6 +4,7 @@ import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
 
 // import "../../../api/buku/model/model_all_buku.dart";
+import "../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart";
 import "../../../api/wishlist/model/model_wishlist_all.dart";
 import "../../../constants/gaps.dart";
 import "../../../constants/sizes.dart";
@@ -55,7 +56,7 @@ class IndexRecommendation extends StatelessWidget {
             padding: const EdgeInsets.all(Sizes.m),
             child: Row(
               children: [
-                for (var payload in payloads!) ...[
+                for (Payload payload in payloads ?? []) ...[
                   BookCard(
                     bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
                     id: payload.buku?.id ?? "-",

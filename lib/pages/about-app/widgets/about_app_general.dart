@@ -11,27 +11,28 @@ class AboutAppGeneral extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    const features = {
+      "1": "Tampilan Dalam Aplikasi Sesuai Identitas Sekolah",
+      "2": "Pinjam Buku Gratis Atau Sewa Dengan Harga Murah",
+      "3": "Tersedia Ribuan Buku Menarik Beragam Kategori",
+      "4": "Mudah Menandai Halaman Atau Mencari Isi Buku",
+      "5": "Dashboard Pustakawan",
+    };
     return Column(
       children: [
-        Container(
-          width: 100,
-          height: 100,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: AssetImage("assets/icons/icon.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
+        Image.asset(
+          "assets/logo/orbit-digilib-logo.png",
+          width: size.width / 2,
         ),
         VGap.s,
-        Text("ORBIT DIGILIB", style: AppTextStyle.ts24Bold),
+        Text("ORBIT DIGILIB", style: AppTextStyle.ts18Bold),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Dikembangkan oleh ", style: AppTextStyle.ts12Reg),
             Text(
-              "Orbit360",
+              "ORBIT EDUTECH",
               style: AppTextStyle.ts12Bold.copyWith(color: AppColor.orange),
             ),
           ],
@@ -39,19 +40,72 @@ class AboutAppGeneral extends StatelessWidget {
         VGap.r,
         Align(
           alignment: Alignment.centerLeft,
-          child: Text(
-            "Klik, Baca, Berkembang",
+          child: Text.rich(
+            TextSpan(
+              text: "ORBIT DIGILIB",
+              style: AppTextStyle.ts10Bold,
+              children: [
+                TextSpan(
+                  text: ", Perpustakaan Digital Untuk Semua",
+                  style: AppTextStyle.ts10Light,
+                )
+              ],
+            ),
             style: AppTextStyle.ts10Light,
             textAlign: TextAlign.justify,
           ),
         ),
         VGap.s,
+        Text.rich(
+          TextSpan(
+            text: "ORBIT DIGILIB",
+            style: AppTextStyle.ts10Bold,
+            children: [
+              TextSpan(
+                text:
+                    " adalah platform perpustakaan digital yang dapat digunakan sekolah-sekolah di Indonesia untuk menyediakan Perpustakaan Digital bagi siswa-siswanya. Siswa dapat meminjam atau menyewa buku-buku digital dengan beragam tema yang menarik di mana pun dan kapan pun. Aplikasi ini sesuai dengan kebijakan Kurikulum Merdeka yang mendorong peningkatan literasi siswa. ",
+                style: AppTextStyle.ts10Light,
+              )
+            ],
+          ),
+          style: AppTextStyle.ts10Light,
+          textAlign: TextAlign.justify,
+        ),
+        VGap.s,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Fitur Unggulan: ",
+            style: AppTextStyle.ts10Bold,
+            textAlign: TextAlign.left,
+          ),
+        ),
+        VGap.xs,
+        for (String key in features.keys) ...[
+          Row(
+            children: [
+              Text(
+                "$key.  ",
+                style: AppTextStyle.ts10Light,
+              ),
+              Flexible(
+                  child: Text(
+                features[key].toString(),
+                style: AppTextStyle.ts10Light,
+              )),
+            ],
+          ),
+          const SizedBox(height: 2),
+        ],
+        VGap.s,
         Text(
-          """ORBIT Digital Library, Solusi Perpustakaan Digital Mudah & Lengkap.\n 
-Selamat datang di ORBIT Digital Library, solusi perpustakaan digital yang dirancang untuk membantu sekolah untuk mengelola perpustakaan berbasis digital sekaligus meningkatkan literasi siswa. Jelajahi ilmu tak terbatas dengan ribuan buku digital dengan ragam tema yang menarik akan menjadi sumber belajar yang menyenangkan untuk siswa dalam meningkatkan pengetahuan.\n
-Dilengkapi oleh koleksi buku yang kaya akan ragam topik untuk memenuhi kebutuhan dan minat pembaca. Mudah diakses oleh semua, termasuk memudahkan pustakawan sekolah dalam mengelola perpustakaan digital. Aplikasi ini bersifat interaktif yang memungkinkan siswa untuk terlibat aktif dan membuat proses membaca jadi lebih menarik. Efisiensi dalam hal peminjaman, penyewaan, dan pembelian buku semakin mempermudah pustakawan, siswa, maupun sekolah dalam menggunakan perpustakaan digital. Sekolah akan mendapatkan aplikasi Perpustakaan Digital secara eksklusif, tanpa perlu khawatir mengenai keamanan data dan privasi yang tersebar.\n
-ORBIT Digital Library adalah langkah maju dalam dunia Literasi Digital, menjadi mitra setia dan progresif bagi pustakawan, siswa, dan sekolah.
-""",
+          "Sekolah-sekolah yang bergabung sebagai Mitra ORBIT DIGILIB berkesempatan tergabung dalam The Habibie Literacy Networks, sebuah jejaring kolaborasi peningkatan literasi di sekolah.",
+          style: AppTextStyle.ts10Light,
+          textAlign: TextAlign.justify,
+        ),
+        VGap.s,
+        Text(
+          "ORBIT DIGILIB adalah langkah maju dalam dunia Literasi Digital, menjadi mitra setia dan progresif bagi pustakawan, siswa, dan sekolah.",
           style: AppTextStyle.ts10Light,
           textAlign: TextAlign.justify,
         ),

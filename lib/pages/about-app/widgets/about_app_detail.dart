@@ -17,6 +17,7 @@ class AboutAppDetail extends StatelessWidget {
         VGap.s,
         Row(
           children: [
+            // TODO: Jangan lupa ganti release date saat akan melakukan deployment
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

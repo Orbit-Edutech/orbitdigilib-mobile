@@ -13,22 +13,16 @@ class AboutLibraryGeneral extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<AboutLibraryController>();
+    final size = MediaQuery.of(context).size;
     return Obx(() {
       final perpustakaan = controller.perpustakaan.value;
       if (perpustakaan == null) return const SizedBox();
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: NetworkImage(APIPath.publicAsset(perpustakaan.assetLogo?.id ?? "-")),
-                fit: BoxFit.cover,
-              ),
-            ),
+          Image.network(
+            APIPath.publicAsset(perpustakaan.assetLogo?.id ?? "-"),
+            width: size.width / 3,
           ),
           VGap.s,
           Text(perpustakaan.nama ?? "-", style: AppTextStyle.ts24Bold),

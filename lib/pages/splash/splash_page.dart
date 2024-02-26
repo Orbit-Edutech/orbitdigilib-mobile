@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
+import '../../constants/app_info.dart';
 import '../../constants/gaps.dart';
+import '../../theme/app_text_stlye.dart';
 import 'controller/splash_controller.dart';
 
 class SplashPage extends StatelessWidget {
@@ -16,9 +18,12 @@ class SplashPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/icons/icon.png", width: size.width / 4),
-            VGap.s,
-            Image.asset("assets/icons/text-icon.png", width: size.width / 4),
+            Expanded(child: Image.asset("assets/logo/orbit-digilib-logo.png", width: size.width / 3)),
+            Text(
+              "Version ${AppInfo.android.versionName}",
+              style: AppTextStyle.ts10Reg,
+            ),
+            VGap.m,
           ],
         ),
       ),

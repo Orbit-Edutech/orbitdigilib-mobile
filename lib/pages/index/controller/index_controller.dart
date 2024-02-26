@@ -54,6 +54,7 @@ class IndexController extends GetxController {
         if (res.data != null) {
           pinnedBooks.value = res.data?.payload;
         } else {
+          pinnedBooks.value = [];
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
           } else {

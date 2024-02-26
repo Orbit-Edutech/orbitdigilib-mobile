@@ -15,7 +15,7 @@ class FAQPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<FAQController>();
-
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Pusat Bantuan"),
@@ -24,23 +24,18 @@ class FAQPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: Sizes.m),
         child: Column(
           children: [
-            Container(
-              width: 100,
-              height: 100,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage("assets/icons/icon.png"),
-                ),
-              ),
+            Image.asset(
+              "assets/logo/orbit-digilib-logo.png",
+              width: size.width / 2,
             ),
-            Text("ORBIT DIGILIB", style: AppTextStyle.ts24Bold),
+            VGap.s,
+            Text("ORBIT DIGILIB", style: AppTextStyle.ts18Bold),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Dikembangkan oleh ", style: AppTextStyle.ts12Reg),
                 Text(
-                  "Orbit360",
+                  "ORBIT EDUTECH",
                   style: AppTextStyle.ts12Bold.copyWith(color: AppColor.orange),
                 ),
               ],

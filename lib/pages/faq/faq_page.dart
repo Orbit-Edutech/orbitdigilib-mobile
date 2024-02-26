@@ -20,57 +20,61 @@ class FAQPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Pusat Bantuan"),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: Sizes.m),
-        child: Column(
-          children: [
-            Image.asset(
-              "assets/logo/orbit-digilib-logo.png",
-              width: size.width / 2,
-            ),
-            VGap.s,
-            Text("ORBIT DIGILIB", style: AppTextStyle.ts18Bold),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Dikembangkan oleh ", style: AppTextStyle.ts12Reg),
-                Text(
-                  "ORBIT EDUTECH",
-                  style: AppTextStyle.ts12Bold.copyWith(color: AppColor.orange),
-                ),
-              ],
-            ),
-            VGap.m,
-            Obx(() {
-              final listFAQ = controller.listFAQ.value;
-              if (listFAQ == null) {
-                return Column(
-                  children: List.generate(10, (index) => index).map((e) {
-                    return Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.s),
-                      decoration: const BoxDecoration(
-                        color: AppColor.lightGrey,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(Sizes.xs),
+      body: RefreshIndicator(
+        onRefresh: controller.onInit,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(vertical: Sizes.m),
+          child: Column(
+            children: [
+              Image.asset(
+                "assets/logo/orbit-digilib-logo.png",
+                width: size.width / 2,
+              ),
+              VGap.s,
+              Text("ORBIT DIGILIB", style: AppTextStyle.ts18Bold),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Dikembangkan oleh ", style: AppTextStyle.ts12Reg),
+                  Text(
+                    "ORBIT EDUTECH",
+                    style: AppTextStyle.ts12Bold.copyWith(color: AppColor.orange),
+                  ),
+                ],
+              ),
+              VGap.m,
+              Obx(() {
+                final listFAQ = controller.listFAQ.value;
+                if (listFAQ == null) {
+                  return Column(
+                    children: List.generate(10, (index) => index).map((e) {
+                      return Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.s),
+                        decoration: const BoxDecoration(
+                          color: AppColor.lightGrey,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(Sizes.xs),
+                          ),
                         ),
-                      ),
-                    );
-                  }).toList(),
+                      );
+                    }).toList(),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: listFAQ.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final faq = listFAQ[index];
+                    return FAQCard(faq: faq);
+                  },
                 );
-              }
-              return ListView.builder(
-                itemCount: listFAQ.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final faq = listFAQ[index];
-                  return FAQCard(faq: faq);
-                },
-              );
-            })
-          ],
+              })
+            ],
+          ),
         ),
       ),
     );

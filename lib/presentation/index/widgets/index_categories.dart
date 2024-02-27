@@ -4,11 +4,11 @@ import "package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart";
 import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
 
-import "../../../constants/gaps.dart";
-import "../../../constants/sizes.dart";
-import "../../../routes/app_routes.dart";
-import "../../../shared/widget/empty_list.dart";
-import "../../../theme/app_text_stlye.dart";
+import '../../../constants/gaps.dart';
+import '../../../constants/sizes.dart';
+import '../../../routes/app_routes.dart';
+import '../../../shared/widget/empty_list.dart';
+import '../../../theme/app_text_stlye.dart';
 import "../controller/index_controller.dart";
 import "index_category_card.dart";
 

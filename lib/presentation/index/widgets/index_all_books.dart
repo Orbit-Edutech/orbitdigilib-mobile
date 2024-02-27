@@ -4,14 +4,14 @@ import "package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart";
 import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
 
-import "../../../api/wishlist/model/model_wishlist_all.dart";
-import "../../../constants/gaps.dart";
-import "../../../constants/sizes.dart";
-import "../../../routes/app_routes.dart";
-import "../../../shared/widget/app_button.dart";
-import "../../../shared/widget/book_card.dart";
-import "../../../shared/widget/book_card_skeleton.dart";
-import "../../../theme/app_text_stlye.dart";
+import '../../../api/wishlist/model/model_wishlist_all.dart';
+import '../../../constants/gaps.dart';
+import '../../../constants/sizes.dart';
+import '../../../routes/app_routes.dart';
+import '../../../shared/widget/app_button.dart';
+import '../../../shared/widget/book_card.dart';
+import '../../../shared/widget/book_card_skeleton.dart';
+import '../../../theme/app_text_stlye.dart';
 import "../controller/index_controller.dart";
 
 class IndexAllBooks extends StatelessWidget {

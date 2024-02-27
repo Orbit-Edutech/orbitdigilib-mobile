@@ -4,12 +4,12 @@ import "package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart";
 import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
 
-import "../../../api/api_path.dart";
-import "../../../constants/gaps.dart";
-import "../../../constants/sizes.dart";
-import "../../../routes/app_routes.dart";
-import "../../../theme/app_color.dart";
-import "../../../theme/app_text_stlye.dart";
+import '../../../api/api_path.dart';
+import '../../../constants/gaps.dart';
+import '../../../constants/sizes.dart';
+import '../../../routes/app_routes.dart';
+import '../../../theme/app_color.dart';
+import '../../../theme/app_text_stlye.dart';
 import "../../profile/controller/profile_controller.dart";
 import "../controller/index_controller.dart";
 

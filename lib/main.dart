@@ -12,6 +12,7 @@ void main() async {
   ImageUtils.prechacheImages();
 }
 
+// TODO: Implementasi Adaptive Icon (Android)
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

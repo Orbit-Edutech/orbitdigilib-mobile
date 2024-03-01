@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import '../../api/wishlist/data/wishlist_create_one.dart';
 import '../../api/wishlist/data/wishlist_delete_one.dart';
 import '../../api/wishlist/model/model_wishlist_all.dart';
-import '../../pages/wishlist/controller/wishlist_controller.dart';
+import '../../presentation/wishlist/controller/wishlist_controller.dart';
 
 class WishlistButton extends StatefulWidget {
   const WishlistButton({super.key, this.onChange, required this.bukuPerpustakaan, this.color});

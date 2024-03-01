@@ -3,9 +3,9 @@ import "dart:io";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 
-import "../../../constants/app_info.dart";
-import "../../../constants/gaps.dart";
-import "../../../theme/app_text_stlye.dart";
+import '../../../constants/app_info.dart';
+import '../../../constants/gaps.dart';
+import '../../../theme/app_text_stlye.dart';
 
 class AboutAppFooter extends StatelessWidget {
   const AboutAppFooter({

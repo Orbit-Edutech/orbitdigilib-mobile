@@ -1,9 +1,9 @@
 import 'package:get/instance_manager.dart';
 
-import '../pages/collection/controller/collection_controller.dart';
-import '../pages/index/controller/index_controller.dart';
-import '../pages/profile/controller/profile_controller.dart';
-import '../pages/wishlist/controller/wishlist_controller.dart';
+import '../presentation/collection/controller/collection_controller.dart';
+import '../presentation/index/controller/index_controller.dart';
+import '../presentation/profile/controller/profile_controller.dart';
+import '../presentation/wishlist/controller/wishlist_controller.dart';
 
 class AppBindings extends Bindings {
   @override

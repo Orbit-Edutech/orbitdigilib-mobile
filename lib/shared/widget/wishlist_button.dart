@@ -12,7 +12,7 @@ import '../../presentation/wishlist/controller/wishlist_controller.dart';
 class WishlistButton extends StatefulWidget {
   const WishlistButton({super.key, this.onChange, required this.bukuPerpustakaan, this.color});
 
-  final Function()? onChange;
+  final Future<bool> Function()? onChange;
   final BukuPerpustakaan bukuPerpustakaan;
   final Color? color;
 
@@ -108,13 +108,22 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
       final wishlist = controller.wishlist.value;
       if (wishlist == null) return const SizedBox();
       return GestureDetector(
-        onTap: () {
-          widget.onChange;
-          setState(() => isWishlist = !isWishlist!);
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            hitWishlistEndPoint(controller);
-          });
-          wishlistAnimationController.reverse().then((value) => wishlistAnimationController.forward());
+        onTap: () async {
+          if (isWishlist!) {
+            final bool result = await (widget.onChange ?? () async => true)();
+            if (result) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                hitWishlistEndPoint(controller);
+              });
+              wishlistAnimationController.reverse().then((value) => wishlistAnimationController.forward());
+            }
+          } else {
+            setState(() => isWishlist = !isWishlist!);
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              hitWishlistEndPoint(controller);
+            });
+            wishlistAnimationController.reverse().then((value) => wishlistAnimationController.forward());
+          }
         },
         child: ScaleTransition(
           scale: Tween(begin: 0.7, end: 1.0).animate(

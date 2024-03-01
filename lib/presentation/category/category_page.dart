@@ -133,7 +133,6 @@ class CategoryPage extends StatelessWidget {
                           copy: "${payload.jumlahSiapPinjam ?? '-'}",
                           harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
                           onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
-                          onChangeWishlist: () {},
                         );
                       },
                     );

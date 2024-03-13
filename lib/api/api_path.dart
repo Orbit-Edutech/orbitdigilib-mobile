@@ -1,5 +1,6 @@
 class APIPath {
-  static const base = "http://192.168.0.43:4001";
+  static const base = "https://api.orbitdigilib.com";
+  // static const base = "http://192.168.0.42:4001"; // base API for dev (localhost)
 
   /// /asset/{id}
   static String asset(String id) => "$base/asset/$id";

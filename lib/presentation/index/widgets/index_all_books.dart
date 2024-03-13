@@ -11,6 +11,7 @@ import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../shared/widget/book_card.dart';
 import '../../../shared/widget/book_card_skeleton.dart';
+import '../../../shared/widget/empty_list.dart';
 import '../../../theme/app_text_stlye.dart';
 import "../controller/index_controller.dart";
 
@@ -50,10 +51,9 @@ class IndexAllBooks extends StatelessWidget {
                   return const BookCardSkeleton();
                 },
               );
+            } else if (books.isEmpty) {
+              return const EmptyList(description: "Buku perpustakaan masih kosong");
             }
-            //   else if ( payloads?.isEmpty ?? true            VGap.r,
-            //   EmptyList(description: "Rekomendasi"),
-            // ],)
             return AlignedGridView.count(
               shrinkWrap: true,
               crossAxisCount: isWide ? 4 : 2,
@@ -78,12 +78,16 @@ class IndexAllBooks extends StatelessWidget {
             );
           }),
           VGap.r,
-          AppButton(
-            type: ButtonType.elevated,
-            backgroundColor: theme.primaryColor,
-            onPressed: () => Get.toNamed(AppRoutes.books),
-            child: const Text("Lihat Semua"),
-          ),
+          Obx(() {
+            final isBooksEmpty = (controller.allBooks.value ?? []).isEmpty;
+            if (isBooksEmpty) return const SizedBox();
+            return AppButton(
+              type: ButtonType.elevated,
+              backgroundColor: theme.primaryColor,
+              onPressed: () => Get.toNamed(AppRoutes.books),
+              child: const Text("Lihat Semua"),
+            );
+          })
         ],
       ),
     );

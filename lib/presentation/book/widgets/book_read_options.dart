@@ -27,7 +27,7 @@ class BookReadOptions extends StatelessWidget {
     final theme = Theme.of(context);
     final profileController = Get.find<ProfileController>();
     return Container(
-      height: size.height * .6,
+      height: size.height * .65,
       width: size.width,
       decoration: const BoxDecoration(
         color: AppColor.white,

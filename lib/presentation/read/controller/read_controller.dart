@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -114,7 +113,6 @@ class ReadController extends GetxController {
 
   void onPageChanged(int page) {
     currentPage.value = page;
-    log((page > (lastPageSeen ?? 1)).toString());
     if (isSample && page > sampleLimit) {
       pdfController.jumpToPage(sampleLimit);
       return;

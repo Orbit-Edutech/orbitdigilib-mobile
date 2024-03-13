@@ -30,7 +30,7 @@ class BookCard extends StatelessWidget {
   final String harga;
   final String? copy;
   final Function() onTap;
-  final Function()? onChangeWishlist;
+  final Future<bool> Function()? onChangeWishlist;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,10 @@ class BookCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      WishlistButton(bukuPerpustakaan: bukuPerpustakaan),
+                      WishlistButton(
+                        onChange: onChangeWishlist,
+                        bukuPerpustakaan: bukuPerpustakaan,
+                      ),
                     ],
                   ),
                   VGap.xs,

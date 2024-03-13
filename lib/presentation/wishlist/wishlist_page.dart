@@ -8,6 +8,7 @@ import '../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../routes/app_routes.dart';
+import '../../shared/widget/app_button.dart';
 import '../../shared/widget/app_textfield.dart';
 import '../../shared/widget/book_card.dart';
 import '../../shared/widget/book_card_skeleton.dart';
@@ -141,7 +142,45 @@ class WishlistPage extends StatelessWidget {
                             copy: "${payload.jumlahSiapPinjam ?? '-'}",
                             harga: ((buku?.hargaSewa ?? 0) ~/ 100).toString(),
                             onTap: () => Get.toNamed(AppRoutes.book, arguments: Payload.fromJson(payload.toJson())),
-                            onChangeWishlist: () {},
+                            onChangeWishlist: () async {
+                              bool result = false;
+                              await Get.dialog(
+                                AlertDialog(
+                                  surfaceTintColor: AppColor.white,
+                                  content: Text.rich(
+                                    TextSpan(text: "Apakah Anda yakin untuk menghapus ", children: [
+                                      TextSpan(
+                                        text: '"${buku?.judul ?? '-'}"',
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      const TextSpan(text: " dari Wishlist?")
+                                    ]),
+                                  ),
+                                  actions: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        AppButton(
+                                          type: ButtonType.elevated,
+                                          onPressed: () {
+                                            result = true;
+                                            Get.back();
+                                          },
+                                          child: const Text("Hapus"),
+                                        ),
+                                        VGap.s,
+                                        AppButton(
+                                          type: ButtonType.outlined,
+                                          onPressed: Get.back,
+                                          child: const Text("Batal"),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              );
+                              return result;
+                            },
                           );
                         },
                       );

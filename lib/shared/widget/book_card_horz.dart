@@ -88,7 +88,7 @@ class BookCardHorz extends StatelessWidget {
                           colorFilter: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
                         ),
                         Text(
-                          harga,
+                          " ${int.parse(harga) < 1 ? "Gratis" : 0}",
                           style: AppTextStyle.ts10Bold.copyWith(color: theme.primaryColor),
                         ),
                       ],

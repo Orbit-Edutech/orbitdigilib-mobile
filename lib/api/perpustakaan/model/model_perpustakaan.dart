@@ -10,9 +10,10 @@ class Perpustakaan {
   final String? deskripsi;
   final dynamic tahunBerdiri;
   final String? warnaDasar;
-  final dynamic email;
+  final String? email;
   final String? namaPic;
   final String? contactPersonPic;
+  final dynamic nomorIndukSekolah;
   final AssetLogo? assetLogo;
   final List<Banner>? banner;
   final bool? isAktif;
@@ -31,6 +32,7 @@ class Perpustakaan {
     this.email,
     this.namaPic,
     this.contactPersonPic,
+    this.nomorIndukSekolah,
     this.assetLogo,
     this.banner,
     this.isAktif,
@@ -47,9 +49,10 @@ class Perpustakaan {
     String? deskripsi,
     dynamic tahunBerdiri,
     String? warnaDasar,
-    dynamic email,
+    String? email,
     String? namaPic,
     String? contactPersonPic,
+    dynamic nomorIndukSekolah,
     AssetLogo? assetLogo,
     List<Banner>? banner,
     bool? isAktif,
@@ -68,6 +71,7 @@ class Perpustakaan {
         email: email ?? this.email,
         namaPic: namaPic ?? this.namaPic,
         contactPersonPic: contactPersonPic ?? this.contactPersonPic,
+        nomorIndukSekolah: nomorIndukSekolah ?? this.nomorIndukSekolah,
         assetLogo: assetLogo ?? this.assetLogo,
         banner: banner ?? this.banner,
         isAktif: isAktif ?? this.isAktif,
@@ -91,6 +95,7 @@ class Perpustakaan {
         email: json["email"],
         namaPic: json["namaPIC"],
         contactPersonPic: json["contactPersonPIC"],
+        nomorIndukSekolah: json["nomorIndukSekolah"],
         assetLogo: json["assetLogo"] == null ? null : AssetLogo.fromJson(json["assetLogo"]),
         banner: json["banner"] == null ? [] : List<Banner>.from(json["banner"]!.map((x) => Banner.fromJson(x))),
         isAktif: json["isAktif"],
@@ -110,6 +115,7 @@ class Perpustakaan {
         "email": email,
         "namaPIC": namaPic,
         "contactPersonPIC": contactPersonPic,
+        "nomorIndukSekolah": nomorIndukSekolah,
         "assetLogo": assetLogo?.toJson(),
         "banner": banner == null ? [] : List<dynamic>.from(banner!.map((x) => x.toJson())),
         "isAktif": isAktif,

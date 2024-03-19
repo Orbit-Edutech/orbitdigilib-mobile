@@ -30,7 +30,7 @@ class BookCard extends StatelessWidget {
   final String harga;
   final String? copy;
   final Function() onTap;
-  final Function()? onChangeWishlist;
+  final Future<bool> Function()? onChangeWishlist;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,10 @@ class BookCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      WishlistButton(bukuPerpustakaan: bukuPerpustakaan),
+                      WishlistButton(
+                        onChange: onChangeWishlist,
+                        bukuPerpustakaan: bukuPerpustakaan,
+                      ),
                     ],
                   ),
                   VGap.xs,
@@ -95,7 +98,7 @@ class BookCard extends StatelessWidget {
                         colorFilter: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
                       ),
                       Text(
-                        harga,
+                        " ${int.parse(harga) < 1 ? "Gratis" : 0}",
                         style: AppTextStyle.ts10Bold.copyWith(color: theme.primaryColor),
                       ),
                     ],

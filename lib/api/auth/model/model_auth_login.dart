@@ -179,7 +179,7 @@ class Perpustakaan {
   final String? kode;
   final String? noTelepon;
   final String? deskripsi;
-  final int? tahunBerdiri;
+  final dynamic tahunBerdiri;
 
   Perpustakaan({
     this.id,
@@ -200,7 +200,7 @@ class Perpustakaan {
     String? kode,
     String? noTelepon,
     String? deskripsi,
-    int? tahunBerdiri,
+    dynamic tahunBerdiri,
   }) =>
       Perpustakaan(
         id: id ?? this.id,

@@ -1,41 +1,50 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
-import '../pages/about-app/aboud_app_page.dart';
-import '../pages/about-library/about_library_page.dart';
-import '../pages/about-library/binding/about_library_binding.dart';
-import '../pages/auth/auth_library_page.dart';
-import '../pages/auth/auth_user_page.dart';
-import '../pages/auth/binding/auth_binding.dart';
-import '../pages/books/binding/books_binding.dart';
-import '../pages/books/books_page.dart';
-import '../pages/category/binding/category_binding.dart';
-import '../pages/category/category_page.dart';
-import '../pages/faq/binding/faq_binding.dart';
-import '../pages/faq/faq_page.dart';
-import '../pages/highlight/highlight_page.dart';
-import '../pages/index/binding/index_binding.dart';
-import '../pages/index/index_page.dart';
-import '../pages/navigator/binding/navigator_binding.dart';
-import '../pages/navigator/navigator_page.dart';
-import '../pages/notifications/binding/notifications_binding.dart';
-import '../pages/notifications/notification_page.dart';
-import '../pages/notifications/notifications_page.dart';
-import '../pages/profile/profile_page.dart';
-import '../pages/change-password/binding/change_password_binding.dart';
-import '../pages/change-password/change_password_page.dart';
-import '../pages/search/binding/seach_binding.dart';
-import '../pages/search/search_page.dart';
-import '../pages/splash/binding/splash_binding.dart';
-import '../pages/splash/splash_page.dart';
-import '../pages/token/binding/token_binding.dart';
-import '../pages/token/token_page.dart';
-import '../pages/wishlist/binding/wishlist_binding.dart';
-import '../pages/wishlist/wishlist_page.dart';
+import '../presentation/about-app/about_app_page.dart';
+import '../presentation/about-library/about_library_page.dart';
+import '../presentation/about-library/binding/about_library_binding.dart';
+import '../presentation/auth/auth_library_page.dart';
+import '../presentation/auth/auth_user_page.dart';
+import '../presentation/auth/binding/auth_binding.dart';
+import '../presentation/book/binding/book_binding.dart';
+import '../presentation/book/book_page.dart';
+import '../presentation/books/binding/books_binding.dart';
+import '../presentation/books/books_page.dart';
+import '../presentation/category/binding/category_binding.dart';
+import '../presentation/category/category_page.dart';
+import '../presentation/faq/binding/faq_binding.dart';
+import '../presentation/faq/faq_page.dart';
+import '../presentation/highlight/highlight_page.dart';
+import '../presentation/index/binding/index_binding.dart';
+import '../presentation/index/index_page.dart';
+import '../presentation/navigator/binding/navigator_binding.dart';
+import '../presentation/navigator/navigator_page.dart';
+import '../presentation/notification/binding/notifications_binding.dart';
+import '../presentation/notification/notifications_page.dart';
+import '../presentation/profile/profile_page.dart';
+import '../presentation/change-password/binding/change_password_binding.dart';
+import '../presentation/change-password/change_password_page.dart';
+import '../presentation/read/binding/read_binding.dart';
+import '../presentation/read/read_page.dart';
+import '../presentation/recommendation/binding/recommendation_binding.dart';
+import '../presentation/recommendation/recommendation_page.dart';
+import '../presentation/search/binding/seach_binding.dart';
+import '../presentation/search/search_page.dart';
+import '../presentation/splash/binding/splash_binding.dart';
+import '../presentation/splash/splash_page.dart';
+import '../presentation/token/binding/token_binding.dart';
+import '../presentation/token/token_page.dart';
+import '../presentation/update/update_page.dart';
+import '../presentation/wishlist/binding/wishlist_binding.dart';
+import '../presentation/wishlist/wishlist_page.dart';
 
 class AppRoutes {
   /// /splash
   static const String splash = "/splash";
+
+  /// /update
+  static const String update = "/update";
 
   /// /auth-library
   static const String authLibrary = "/auth-library";
@@ -55,9 +64,6 @@ class AppRoutes {
   /// /notifications
   static const String notifications = "/notifications";
 
-  /// /notification
-  static const String notification = "/notification";
-
   /// /token
   static const String token = "/token";
 
@@ -67,8 +73,17 @@ class AppRoutes {
   /// /books
   static const String books = "/books";
 
+  /// /book
+  static const String book = "/book";
+
+  /// /read
+  static const String read = "/read";
+
   /// /category
   static const String category = "/category";
+
+  /// /recommendation
+  static const String recommendation = "/recommendation";
 
   /// /wishlist
   static const String wishlist = "/wishlist";
@@ -93,6 +108,12 @@ class AppRoutes {
       name: splash,
       page: () => const SplashPage(),
       binding: SplashBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: update,
+      page: () => const UpdatePage(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),
@@ -152,13 +173,6 @@ class AppRoutes {
       transitionDuration: const Duration(milliseconds: 0),
     ),
     GetPage(
-      name: notification,
-      page: () => const NotificationPage(),
-      binding: NotificationsBinding(),
-      transition: Transition.noTransition,
-      transitionDuration: const Duration(milliseconds: 0),
-    ),
-    GetPage(
       name: books,
       page: () => const BooksPage(),
       binding: BooksBinding(),
@@ -166,9 +180,30 @@ class AppRoutes {
       transitionDuration: const Duration(milliseconds: 0),
     ),
     GetPage(
+      name: book,
+      page: () => const BookPage(),
+      binding: BookBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: read,
+      page: () => const ReadPage(),
+      binding: ReadBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
       name: category,
       page: () => const CategoryPage(),
       binding: CategoryBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: recommendation,
+      page: () => const RecommendationPage(),
+      binding: RecommendationBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

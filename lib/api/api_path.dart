@@ -1,5 +1,6 @@
 class APIPath {
-  static const base = "http://192.168.0.44:4001";
+  static const base = "https://api.orbitdigilib.com";
+  // static const base = "http://192.168.0.42:4001"; // base API for dev (localhost)
 
   /// /asset/{id}
   static String asset(String id) => "$base/asset/$id";
@@ -38,20 +39,47 @@ class APIPath {
   static String perpustakaanGetOne(String kode) => "$perpustakaan/$kode";
 
   /// /buku-perpustakaan
-  static const allBuku = "/buku-perpustakaan";
+  static const allBukuPerpus = "/buku-perpustakaan";
 
-  /// /kategori-buku-perpustakaan
-  static const kategoriBukuPerpustakaan = "/kategori-buku-perpustakaan";
+  /// /buku-perpustakaan/{id}
+  static oneBukuPerpus(String id) => "/buku-perpustakaan/$id";
 
-  /// /kategori-buku-perpustakaan/{id}
-  static String kategoriBukuPerpustakaanGetOne(String id) => "/kategori-buku-perpustakaan/$id";
+  /// /buku/{id}
+  static oneBuku(String id) => "/buku/$id";
+
+  /// /pinjam
+  static const pinjam = "/pinjam";
+
+  /// /sewa
+  static const sewa = "/sewa";
+
+  /// /beli
+  static const beli = "/beli";
+
+  /// /katalog-buku-perpustakaan
+  static const katalogBukuPerpustakaan = "/katalog-buku-perpustakaan";
+
+  /// /katalog-buku-perpustakaan/{id}
+  static String katalogBukuPerpustakaanGetOne(String id) => "/katalog-buku-perpustakaan/$id";
 
   /// /wishlist
   static const wishlist = "/wishlist";
 
   /// /wishlist/{id}
-  static String wishlistGetOne(String id) => "/wishlist/$id";
+  static String oneWishlist(String id) => "/wishlist/$id";
+
+  /// /koleksi
+  static const koleksi = "/koleksi";
+
+  /// /koleksi/check/{id}
+  static koleksiCheck(String id) => "/koleksi/check/$id";
 
   /// /faq
   static const faq = "/faq";
+
+  /// /voucher/redeem/{kode}
+  static String redeemVoucher(String voucher) => "/voucher/redeem/$voucher";
+
+  /// /list-get-voucher
+  static String listGetVoucherAll = "/list-get-voucher";
 }

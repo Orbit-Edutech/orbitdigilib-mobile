@@ -8,29 +8,46 @@ import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 
 class BookCardHorz extends StatelessWidget {
-  const BookCardHorz({super.key});
+  const BookCardHorz({
+    super.key,
+    required this.id,
+    required this.idSampul,
+    required this.judul,
+    required this.penulis,
+    required this.harga,
+    this.copy,
+    required this.onTap,
+  });
+
+  final String id;
+  final String idSampul;
+  final String judul;
+  final String penulis;
+  final String harga;
+  final String? copy;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
-        height: 100,
+        height: 120,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
           color: Colors.white,
         ),
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Row(
           children: [
             Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
               ),
-              clipBehavior: Clip.antiAlias,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Image.network(
-                APIPath.publicAsset("0696f2d7-942f-4e48-94ed-ef10d266263a"),
+                APIPath.publicAsset(idSampul),
                 fit: BoxFit.cover,
                 width: 75,
               ),
@@ -44,14 +61,14 @@ class BookCardHorz extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Lorem",
+                      judul,
                       style: AppTextStyle.ts14Bold,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     VGap.s,
                     Text(
-                      "Nama Pengarang",
+                      penulis,
                       style: AppTextStyle.ts14Light,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -61,7 +78,7 @@ class BookCardHorz extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Copy: 10 Buku",
+                          "Tersedia: $copy Buku",
                           style: AppTextStyle.ts10Reg.copyWith(color: AppColor.grey),
                         ),
                         HGap.s,
@@ -71,7 +88,7 @@ class BookCardHorz extends StatelessWidget {
                           colorFilter: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
                         ),
                         Text(
-                          "20",
+                          " ${int.parse(harga) < 1 ? "Gratis" : 0}",
                           style: AppTextStyle.ts10Bold.copyWith(color: theme.primaryColor),
                         ),
                       ],

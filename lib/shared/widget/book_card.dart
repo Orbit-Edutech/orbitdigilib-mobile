@@ -1,79 +1,55 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../api/api_path.dart';
+import '../../api/wishlist/model/model_wishlist_all.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
+import 'wishlist_button.dart';
 
-class BookCard extends StatefulWidget {
+class BookCard extends StatelessWidget {
   const BookCard({
     super.key,
+    required this.bukuPerpustakaan,
+    required this.id,
     required this.idSampul,
     required this.judul,
     required this.penulis,
     required this.harga,
-    required this.isWishlist,
     required this.onTap,
     this.onChangeWishlist,
     this.copy,
   });
+  final BukuPerpustakaan bukuPerpustakaan;
+  final String id;
   final String idSampul;
   final String judul;
   final String penulis;
   final String harga;
   final String? copy;
-  final bool isWishlist;
   final Function() onTap;
-  final Function()? onChangeWishlist;
-
-  @override
-  State<BookCard> createState() => _BookCardState();
-}
-
-class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin {
-  late bool isWishlist;
-  Timer? _timer;
-
-  late final _wishlistAnimationController = AnimationController(
-    vsync: this,
-    value: 1.0,
-    duration: const Duration(milliseconds: 100),
-  );
-
-  @override
-  void initState() {
-    isWishlist = widget.isWishlist;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _wishlistAnimationController.dispose();
-    super.dispose();
-  }
+  final Future<bool> Function()? onChangeWishlist;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return GestureDetector(
-      onTap: widget.onTap,
+      onTap: onTap,
       child: Container(
         width: 140,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
           color: Colors.white,
         ),
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Column(
           children: [
             SizedBox(
               height: 160,
               child: Image.network(
-                APIPath.publicAsset(widget.idSampul),
+                APIPath.publicAsset(idSampul),
                 fit: BoxFit.cover,
                 width: 200,
               ),
@@ -84,7 +60,7 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.judul,
+                    judul,
                     style: AppTextStyle.ts12Reg,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -94,42 +70,24 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
                     children: [
                       Expanded(
                         child: Text(
-                          widget.penulis,
+                          penulis,
                           style: AppTextStyle.ts12Bold.copyWith(color: AppColor.grey),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          widget.onChangeWishlist;
-                          if (_timer?.isActive ?? false) _timer?.cancel();
-                          _timer = Timer(const Duration(milliseconds: 250), () {});
-                          setState(() => isWishlist = !isWishlist);
-                          _wishlistAnimationController.reverse().then((value) => _wishlistAnimationController.forward());
-                        },
-                        child: ScaleTransition(
-                          scale: Tween(begin: 0.7, end: 1.0).animate(
-                            CurvedAnimation(
-                              parent: _wishlistAnimationController,
-                              curve: Curves.easeOut,
-                            ),
-                          ),
-                          child: Icon(
-                            isWishlist ? Icons.bookmark_outline_rounded : Icons.bookmark_rounded,
-                            color: theme.primaryColor,
-                            size: 24,
-                          ),
-                        ),
-                      )
+                      WishlistButton(
+                        onChange: onChangeWishlist,
+                        bukuPerpustakaan: bukuPerpustakaan,
+                      ),
                     ],
                   ),
                   VGap.xs,
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      if (widget.copy != null) ...[
+                      if (copy != null) ...[
                         Text(
-                          "Copy: ${widget.copy} Buku",
+                          "Copy: $copy Buku",
                           style: AppTextStyle.ts10Reg.copyWith(color: AppColor.grey),
                         ),
                         HGap.s,
@@ -140,7 +98,7 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
                         colorFilter: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
                       ),
                       Text(
-                        widget.harga,
+                        " ${int.parse(harga) < 1 ? "Gratis" : 0}",
                         style: AppTextStyle.ts10Bold.copyWith(color: theme.primaryColor),
                       ),
                     ],

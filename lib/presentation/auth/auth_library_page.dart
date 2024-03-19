@@ -108,6 +108,28 @@ class AuthLibraryPage extends StatelessWidget {
                   VGap.h,
                 ],
               ),
+            ),
+            VGap.h,
+            Padding(
+              padding: const EdgeInsets.all(Sizes.m),
+              child: Column(
+                children: [
+                  Image.asset("assets/logo/orbit-digilib-logo.png", width: 100),
+                  VGap.s,
+                  Column(
+                    children: [
+                      Text(
+                        "Perpustakaan Digital Untuk Semua",
+                        style: AppTextStyle.ts12Reg,
+                      ),
+                      Text(
+                        "© 2024 ORBIT DIGILIB. Powered by ORBIT EDUTECH.",
+                        style: AppTextStyle.ts10Reg,
+                      ),
+                    ],
+                  )
+                ],
+              ),
             )
           ],
         ),

@@ -1,0 +1,11 @@
+{
+  "discord.customButtonEnabled": true,
+  "discord.largeImageIdling": "Turu",
+  "discord.removeRemoteRepository": true,
+  "discord.lowerDetailsIdling": "Turu",
+  "discord.customButtonText": "View Repository",
+  "discord.customButtonUrl": "https://youtu.be/MaP5Uwts5ZY?si=ExrWicgLiVb-V7f2",
+  "discord.customButtonHoist": "above",
+  "discord.removeLowerDetails": false,
+  "discord.detailsIdling": "Turu"
+}

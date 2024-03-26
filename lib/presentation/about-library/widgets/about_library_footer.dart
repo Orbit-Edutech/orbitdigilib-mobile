@@ -6,6 +6,7 @@ import "package:flutter/material.dart";
 import '../../../constants/app_info.dart';
 import '../../../constants/gaps.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../../utils/launch_url.dart';
 
 class AboutLibraryFooter extends StatelessWidget {
   const AboutLibraryFooter({
@@ -26,7 +27,7 @@ class AboutLibraryFooter extends StatelessWidget {
                 style: AppTextStyle.ts10Bold,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    //TODO: Arahin ke kebijakan privasi,
+                    launchUrl("https://orbitdigilib.com/kebijakanprivasi");
                   },
               ),
               const TextSpan(text: "serta "),
@@ -35,7 +36,7 @@ class AboutLibraryFooter extends StatelessWidget {
                 style: AppTextStyle.ts10Bold,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    //TODO: Arahin ke syarat dan ketentuan,
+                    launchUrl("https://orbitdigilib.com/syaratdanketentuan");
                   },
               ),
               const TextSpan(text: "aplikasi"),

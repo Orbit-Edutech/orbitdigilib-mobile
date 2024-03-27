@@ -6,10 +6,10 @@ import '../../../theme/app_color.dart';
 class LargeBanner extends StatefulWidget {
   const LargeBanner({
     super.key,
-    required this.bannerId,
+    required this.banners,
   });
 
-  final String bannerId;
+  final List<String> banners;
 
   @override
   State<LargeBanner> createState() => _LargeBannerState();
@@ -52,23 +52,32 @@ class _LargeBannerState extends State<LargeBanner> {
   Widget build(BuildContext context) {
     return Dialog.fullscreen(
       backgroundColor: AppColor.black,
-      child: InteractiveViewer(
-        transformationController: _controller,
-        boundaryMargin: const EdgeInsets.all(80),
-        minScale: 1,
-        maxScale: 5,
-        onInteractionUpdate: (details) {
-          onInteractionUpdate();
-        },
-        child: GestureDetector(
-          onDoubleTapDown: (details) {
-            onTransformationChanged(details.globalPosition);
-          },
-          child: Image.network(
-            APIPath.publicAsset(widget.bannerId),
-            fit: BoxFit.contain,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          const CloseButton(color: AppColor.white),
+          Expanded(
+            child: InteractiveViewer(
+              transformationController: _controller,
+              boundaryMargin: const EdgeInsets.all(80),
+              minScale: 1,
+              maxScale: 5,
+              onInteractionUpdate: (details) {
+                onInteractionUpdate();
+              },
+              child: GestureDetector(
+                onDoubleTapDown: (details) {
+                  onTransformationChanged(details.globalPosition);
+                },
+                child: PageView(
+                  children: widget.banners.map((banner) {
+                    return Image.network(APIPath.publicAsset(banner), fit: BoxFit.contain);
+                  }).toList(),
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

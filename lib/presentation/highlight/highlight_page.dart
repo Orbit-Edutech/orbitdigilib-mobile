@@ -5,7 +5,6 @@ import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
 import '../../api/api_path.dart';
-import '../../api/perpustakaan/model/model_perpustakaan.dart' as p;
 import '../../api/wishlist/model/model_wishlist_all.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
@@ -29,15 +28,15 @@ class HighlightPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
         child: Obx(() {
-          final banners = controller.perpustakaan.value?.banner;
+          final banners = controller.banners.value;
           final promoBooks = controller.promoBooks.value;
           return ListView(
             controller: controller.scrollController,
             children: [
               VGap.m,
-              for (p.Banner banner in banners ?? []) ...[
+              for (var banner in banners) ...[
                 InkWell(
-                  onTap: () => controller.showLargeBanner(banner.id!),
+                  onTap: () => controller.showLargeBanner(banners),
                   borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
                   child: Container(
                     height: 150,
@@ -45,7 +44,7 @@ class HighlightPage extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(APIPath.publicAsset(banner.id ?? "")),
+                        image: NetworkImage(APIPath.publicAsset(banner)),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),

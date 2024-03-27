@@ -17,13 +17,12 @@ class AboutAppDetail extends StatelessWidget {
         VGap.s,
         Row(
           children: [
-            // TODO: Jangan lupa ganti release date saat akan melakukan deployment
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Dirilis tanggal", style: AppTextStyle.ts10Bold),
-                  Text("1 Januari 2024", style: AppTextStyle.ts10Reg),
+                  Text("18 Mar 2024", style: AppTextStyle.ts10Reg),
                 ],
               ),
             ),
@@ -31,6 +30,7 @@ class AboutAppDetail extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // TODO: Jangan lupa ganti date saat akan melakukan deployment
                   Text("Diupdate tanggal", style: AppTextStyle.ts10Bold),
                   Text("10 Januari 2024", style: AppTextStyle.ts10Reg),
                 ],

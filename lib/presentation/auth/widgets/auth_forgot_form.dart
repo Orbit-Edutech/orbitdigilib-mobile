@@ -66,6 +66,7 @@ class AuthForgotForm extends StatelessWidget {
                   final isError = controller.isForgotError.value;
                   final isLoading = controller.forgotButtonState.value == ButtonState.loading;
                   final errorMessage = controller.forgotErrorMsg.value;
+                  final isValid = controller.forgotButtonState.value == ButtonState.enable;
                   return AppTextField(
                     type: TextFieldType.normal,
                     label: Text(
@@ -73,6 +74,7 @@ class AuthForgotForm extends StatelessWidget {
                       style: AppTextStyle.ts14Reg,
                     ),
                     onChanged: controller.onForgotFormChange,
+                    onSubmitted: (_) => isValid ? controller.onSubmitForgot() : null,
                     controller: controller.emailController,
                     focusNode: controller.emailFocusNode,
                     enabled: !isLoading,

@@ -37,7 +37,7 @@ class _IndexBannerState extends State<IndexBanner> {
             carouselController: carouselController,
             items: (isEmpty ? emptyBanners : banners).map((banner) {
               return InkWell(
-                onTap: () => controller.showLargeBanner(banners),
+                onTap: () => controller.showLargeBanner(banners, banners.indexOf(banner)),
                 borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
                 child: Container(
                   height: 150,

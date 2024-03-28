@@ -134,9 +134,9 @@ class IndexController extends GetxController {
     );
   }
 
-  void showLargeBanner(List<String> banners) {
+  void showLargeBanner(List<String> banners, int index) {
     Get.dialog(
-      LargeBanner(banners: banners),
+      LargeBanner(banners: banners, index: index),
       transitionDuration: const Duration(milliseconds: 100),
     );
   }

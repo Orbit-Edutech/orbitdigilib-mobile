@@ -36,7 +36,7 @@ class HighlightPage extends StatelessWidget {
               VGap.m,
               for (var banner in banners) ...[
                 InkWell(
-                  onTap: () => controller.showLargeBanner(banners),
+                  onTap: () => controller.showLargeBanner(banners, banners.indexOf(banner)),
                   borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
                   child: Container(
                     height: 150,

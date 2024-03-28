@@ -50,9 +50,9 @@ class FAQPage extends StatelessWidget {
                   return Column(
                     children: List.generate(10, (index) => index).map((e) {
                       return Container(
-                        height: 50,
+                        height: 20,
                         width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.s),
+                        margin: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.xs),
                         decoration: const BoxDecoration(
                           color: AppColor.lightGrey,
                           borderRadius: BorderRadius.all(

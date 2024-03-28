@@ -8,8 +8,9 @@ import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
 import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 import '../../../api/katalog-perpus/data/get_all_katalog_perpus.dart';
 import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart';
+import '../../../api/perpustakaan/data/perpustakaan_get_banner_default.dart';
 import '../../../api/perpustakaan/data/perpustakaan_get_one.dart';
-import '../../../api/perpustakaan/model/model_perpustakaan.dart';
+import '../../../api/perpustakaan/model/model_perpustakaan.dart' as p;
 
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/show_snackbar.dart';
@@ -20,11 +21,12 @@ import '../widgets/index_categories_modal.dart';
 import '../widgets/index_large_banner.dart';
 
 class IndexController extends GetxController {
-  final Rx<Perpustakaan?> perpustakaan = Rx<Perpustakaan?>(null);
+  final Rx<p.Perpustakaan?> perpustakaan = Rx<p.Perpustakaan?>(null);
   Rx<List<KatalogBukuPerpustakaan>?> categories = Rx<List<KatalogBukuPerpustakaan>?>(null);
   Rx<List<Payload>?> pinnedBooks = Rx<List<Payload>?>(null);
   Rx<List<Payload>?> allBooks = Rx<List<Payload>?>(null);
   Rx<List<Payload>?> promoBooks = Rx<List<Payload>?>(null);
+  Rx<List<String>> banners = Rx<List<String>>([]);
 
   Rx<bool> isBalanceVisible = false.obs;
   Rx<bool> isLoadedMore = false.obs;
@@ -38,9 +40,29 @@ class IndexController extends GetxController {
     final id = await SharedPreferencesManager.readPref("idPerpustakaan");
     debugPrint(id.toString());
     Future.wait([
+      getBannerDefault(kode).then((res) {
+        if (res.data != null) {
+          final banners = <String>[];
+          for (var banner in res.data!.listBanner!) {
+            banners.add(banner.id!);
+          }
+          this.banners.value = banners;
+        } else {
+          if (res.error == ResponseStatus.connectionError) {
+            showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
+          } else {
+            showSnackbar(backgroundColor: AppColor.red, title: "Error ${res.statusCode}", message: res.error["message"]);
+          }
+        }
+      }),
       getOnePerpustakaan(kode).then((res) {
         if (res.data != null) {
           perpustakaan.value = res.data;
+          final banners = this.banners.value;
+          for (var banner in perpustakaan.value!.banner!) {
+            banners.add(banner.id!);
+          }
+          this.banners.value = banners;
           AppTheme.changePerpusTheme(perpustakaan.value!.warnaDasar);
         } else {
           if (res.error == ResponseStatus.connectionError) {
@@ -112,9 +134,9 @@ class IndexController extends GetxController {
     );
   }
 
-  void showLargeBanner(String bannerId) {
+  void showLargeBanner(List<String> banners) {
     Get.dialog(
-      LargeBanner(bannerId: bannerId),
+      LargeBanner(banners: banners),
       transitionDuration: const Duration(milliseconds: 100),
     );
   }

@@ -5,7 +5,6 @@ import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
 
 import '../../../api/api_path.dart';
-import '../../../api/perpustakaan/model/model_perpustakaan.dart' as p;
 import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
 import '../../../theme/app_color.dart';
@@ -23,7 +22,7 @@ class _IndexBannerState extends State<IndexBanner> {
   final controller = Get.find<IndexController>();
   final carouselController = CarouselController();
   int currentBanner = 0;
-  List<p.Banner> emptyBanners = [p.Banner(), p.Banner(), p.Banner(), p.Banner()];
+  List<String> emptyBanners = ["", "", "", ""];
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +31,13 @@ class _IndexBannerState extends State<IndexBanner> {
     return Column(
       children: [
         Obx(() {
-          final banners = controller.perpustakaan.value?.banner;
-          final isEmpty = banners == null;
+          final banners = controller.banners.value;
+          final isEmpty = banners.isEmpty;
           return CarouselSlider(
             carouselController: carouselController,
             items: (isEmpty ? emptyBanners : banners).map((banner) {
               return InkWell(
-                onTap: () => controller.showLargeBanner(banner.id!),
+                onTap: () => controller.showLargeBanner(banners),
                 borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
                 child: Container(
                   height: 150,
@@ -48,12 +47,7 @@ class _IndexBannerState extends State<IndexBanner> {
                     color: AppColor.lightGrey,
                     borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
                   ),
-                  child: isEmpty
-                      ? const SizedBox()
-                      : Image.network(
-                          APIPath.publicAsset(banner.id!),
-                          fit: BoxFit.cover,
-                        ),
+                  child: isEmpty ? const SizedBox() : Image.network(APIPath.publicAsset(banner), fit: BoxFit.cover),
                 ),
               );
             }).toList(),
@@ -86,12 +80,12 @@ class _IndexBannerState extends State<IndexBanner> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Obx(() {
-                final banners = controller.perpustakaan.value?.banner;
-                final isEmpty = banners?.isEmpty ?? true;
+                final banners = controller.banners.value;
+                final isEmpty = banners.isEmpty;
                 return Row(
-                  children: (isEmpty ? emptyBanners : banners)!.map((i) {
-                    final index = (isEmpty ? emptyBanners : banners)!.indexOf(i);
-                    final current = (isEmpty ? emptyBanners : banners)!.elementAt(currentBanner) == i;
+                  children: (isEmpty ? emptyBanners : banners).map((i) {
+                    final index = (isEmpty ? emptyBanners : banners).indexOf(i);
+                    final current = (isEmpty ? emptyBanners : banners).elementAt(currentBanner) == i;
                     return GestureDetector(
                       onTap: () => carouselController.animateToPage(index),
                       child: Container(

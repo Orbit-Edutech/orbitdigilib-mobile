@@ -39,22 +39,22 @@ class IndexController extends GetxController {
     final kode = await SharedPreferencesManager.readPref("kodePerpustakaan");
     final id = await SharedPreferencesManager.readPref("idPerpustakaan");
     debugPrint(id.toString());
-    Future.wait([
-      getBannerDefault(kode).then((res) {
-        if (res.data != null) {
-          final banners = <String>[];
-          for (var banner in res.data!.listBanner!) {
-            banners.add(banner.id!);
-          }
-          this.banners.value = banners;
-        } else {
-          if (res.error == ResponseStatus.connectionError) {
-            showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
-          } else {
-            showSnackbar(backgroundColor: AppColor.red, title: "Error ${res.statusCode}", message: res.error["message"]);
-          }
+    await getBannerDefault(kode).then((res) {
+      if (res.data != null) {
+        final banners = <String>[];
+        for (var banner in res.data!.listBanner!) {
+          banners.add(banner.id!);
         }
-      }),
+        this.banners.value = banners;
+      } else {
+        if (res.error == ResponseStatus.connectionError) {
+          showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
+        } else {
+          showSnackbar(backgroundColor: AppColor.red, title: "Error ${res.statusCode}", message: res.error["message"]);
+        }
+      }
+    });
+    Future.wait([
       getOnePerpustakaan(kode).then((res) {
         if (res.data != null) {
           perpustakaan.value = res.data;

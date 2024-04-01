@@ -23,7 +23,6 @@ class WishlistButton extends StatefulWidget {
 class _WishlistButtonState extends State<WishlistButton> with SingleTickerProviderStateMixin {
   CancelToken postCancelToken = CancelToken();
   CancelToken delCancelToken = CancelToken();
-  Timer? timer;
   bool? isWishlist;
   final wishlistController = Get.find<WishlistController>();
 
@@ -71,7 +70,6 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
   }
 
   void hitWishlistEndPoint(WishlistController controller) async {
-    if (timer?.isActive ?? true) timer?.cancel();
     if (controller.wishlist.value?.firstWhereOrNull((wishlist) {
           final result = wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id;
           return result;
@@ -79,7 +77,7 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
         null) {
       delCancelToken.cancel();
       delCancelToken = CancelToken();
-      await deleteOneWishlist(widget.bukuPerpustakaan.id!, delCancelToken);
+      deleteOneWishlist(widget.bukuPerpustakaan.id!, delCancelToken);
       final filteredWishlist = controller.filteredWishlist.value;
       filteredWishlist?.removeWhere(
         (wishlist) => wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id,
@@ -89,15 +87,14 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
     } else {
       postCancelToken.cancel();
       postCancelToken = CancelToken();
-      final response = await createOneWishlist(widget.bukuPerpustakaan.id!, postCancelToken);
-      if (response.data != null) {
-        final filteredWishlist = controller.filteredWishlist.value;
-        final wishlist = Wishlist.fromJson({"bukuPerpustakaan": widget.bukuPerpustakaan.toJson()});
-        filteredWishlist?.add(wishlist);
-        controller.filteredWishlist.value = filteredWishlist;
-        controller.update();
-      }
+      createOneWishlist(widget.bukuPerpustakaan.id!, postCancelToken);
+      final filteredWishlist = controller.filteredWishlist.value;
+      final wishlist = Wishlist.fromJson({"bukuPerpustakaan": widget.bukuPerpustakaan.toJson()});
+      filteredWishlist?.add(wishlist);
+      controller.filteredWishlist.value = filteredWishlist;
+      controller.update();
     }
+    controller.onInit();
   }
 
   @override
@@ -111,6 +108,7 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
         onTap: () async {
           if (isWishlist!) {
             final bool result = await (widget.onChange ?? () async => true)();
+            setState(() => isWishlist = !isWishlist!);
             if (result) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 hitWishlistEndPoint(controller);

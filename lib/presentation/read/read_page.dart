@@ -60,6 +60,7 @@ class _ReadPageState extends State<ReadPage> {
               child: Obx(() {
                 final buku = controller.buku.value;
                 final isOnSearch = controller.isOnSearch.value;
+                final isFullScreen = controller.isFullScreen.value;
                 if (isOnSearch) {
                   return SearchToolbar(
                     controller: controller.pdfController,
@@ -71,6 +72,7 @@ class _ReadPageState extends State<ReadPage> {
                         controller.isOnSearch.value = false;
                         controller.isFullScreen.value = false;
                         controller.noResultFound.value = false;
+                        controller.pdfController.jumpToPage(controller.currentPage.value);
                       }
                       if (toolbarItem.toString() == 'noResultFound') {
                         controller.noResultFound.value = true;
@@ -81,6 +83,7 @@ class _ReadPageState extends State<ReadPage> {
                     },
                   );
                 } else {
+                  if (isFullScreen) return const SizedBox();
                   return Padding(
                     padding: const EdgeInsets.only(
                       top: Sizes.r,
@@ -98,6 +101,7 @@ class _ReadPageState extends State<ReadPage> {
                         Text(
                           buku?.penulis ?? "-",
                           style: AppTextStyle.ts14Reg,
+                          textAlign: TextAlign.center,
                         ),
                         Text(
                           "${buku?.jumlahHalaman ?? "-"} halaman",
@@ -114,7 +118,14 @@ class _ReadPageState extends State<ReadPage> {
                 final noResultFound = controller.noResultFound.value;
                 final book = controller.buku.value;
                 final pdf = controller.pdf.value;
-                if (book == null || pdf == null) return const SizedBox();
+                if (book == null || pdf == null) {
+                  return SingleChildScrollView(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: Sizes.m),
+                      child: const EmptyList(description: "Buku sedang dimuat"),
+                    ),
+                  );
+                }
                 return Stack(
                   children: [
                     SfPdfViewerTheme(
@@ -131,8 +142,8 @@ class _ReadPageState extends State<ReadPage> {
                         enableDoubleTapZooming: false,
                         pageSpacing: 0,
                         enableTextSelection: false,
-                        canShowPageLoadingIndicator: false,
-                        canShowScrollHead: false,
+                        canShowPageLoadingIndicator: true,
+                        canShowScrollHead: true,
                         onAnnotationSelected: (annotation) {},
                         onTextSelectionChanged: (details) {},
                         onDocumentLoaded: (details) {},

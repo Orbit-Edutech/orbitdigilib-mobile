@@ -108,7 +108,7 @@ class IndexController extends GetxController {
       }),
       getAllKatalogPerpus().then((res) {
         if (res.data != null) {
-          categories.value = res.data?.listKatalogBukuPerpustakaan;
+          categories.value = res.data?.listKatalogBukuPerpustakaan?.where((katalog) => katalog.deletedAt == null).toList();
         } else {
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");

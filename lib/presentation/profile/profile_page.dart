@@ -14,9 +14,17 @@ class ProfilePage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ProfileHeader(isRead: false),
-          VGap.r,
-          ProfileSettings(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ProfileHeader(isRead: false),
+                  VGap.r,
+                  ProfileSettings(),
+                ],
+              ),
+            ),
+          ),
           ProfileLogoutButton(),
         ],
       ),

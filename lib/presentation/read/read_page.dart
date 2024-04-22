@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -26,13 +28,17 @@ class _ReadPageState extends State<ReadPage> {
 
   @override
   void initState() {
-    _methodChannel.invokeMethod("secure", {"isSecure": true});
+    if (Platform.isAndroid) {
+      _methodChannel.invokeMethod("secure", {"isSecure": true});
+    } else {}
     super.initState();
   }
 
   @override
   void dispose() {
-    _methodChannel.invokeMethod("secure", {"isSecure": false});
+    if (Platform.isAndroid) {
+      _methodChannel.invokeMethod("secure", {"isSecure": false});
+    } else {}
     super.dispose();
   }
 

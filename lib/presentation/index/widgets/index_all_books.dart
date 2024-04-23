@@ -72,6 +72,7 @@ class IndexAllBooks extends StatelessWidget {
                   idSampul: book?.assetSampulId ?? "-",
                   copy: "${payload.jumlahSiapPinjam ?? '-'}",
                   harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
+                  isPromo: payload.buku?.promo != null,
                   onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                 );
               },

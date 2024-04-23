@@ -1,16 +1,20 @@
 import 'dart:convert';
 
 class KatalogPerpusAll {
+  final int? totalAllData;
   final List<KatalogBukuPerpustakaan>? listKatalogBukuPerpustakaan;
 
   KatalogPerpusAll({
+    this.totalAllData,
     this.listKatalogBukuPerpustakaan,
   });
 
   KatalogPerpusAll copyWith({
+    int? totalAllData,
     List<KatalogBukuPerpustakaan>? listKatalogBukuPerpustakaan,
   }) =>
       KatalogPerpusAll(
+        totalAllData: totalAllData ?? this.totalAllData,
         listKatalogBukuPerpustakaan: listKatalogBukuPerpustakaan ?? this.listKatalogBukuPerpustakaan,
       );
 
@@ -19,6 +23,7 @@ class KatalogPerpusAll {
   String toRawJson() => json.encode(toJson());
 
   factory KatalogPerpusAll.fromJson(Map<String, dynamic> json) => KatalogPerpusAll(
+        totalAllData: json["totalAllData"],
         listKatalogBukuPerpustakaan: json["listKatalogBukuPerpustakaan"] == null
             ? []
             : List<KatalogBukuPerpustakaan>.from(
@@ -26,6 +31,7 @@ class KatalogPerpusAll {
       );
 
   Map<String, dynamic> toJson() => {
+        "totalAllData": totalAllData,
         "listKatalogBukuPerpustakaan": listKatalogBukuPerpustakaan == null
             ? []
             : List<dynamic>.from(listKatalogBukuPerpustakaan!.map((x) => x.toJson())),
@@ -39,6 +45,7 @@ class KatalogBukuPerpustakaan {
   final String? nama;
   final int? urutanDitampilkan;
   final Icon? icon;
+  final DateTime? deletedAt;
 
   KatalogBukuPerpustakaan({
     this.id,
@@ -47,6 +54,7 @@ class KatalogBukuPerpustakaan {
     this.nama,
     this.urutanDitampilkan,
     this.icon,
+    this.deletedAt,
   });
 
   KatalogBukuPerpustakaan copyWith({
@@ -56,6 +64,7 @@ class KatalogBukuPerpustakaan {
     String? nama,
     int? urutanDitampilkan,
     Icon? icon,
+    DateTime? deletedAt,
   }) =>
       KatalogBukuPerpustakaan(
         id: id ?? this.id,
@@ -64,6 +73,7 @@ class KatalogBukuPerpustakaan {
         nama: nama ?? this.nama,
         urutanDitampilkan: urutanDitampilkan ?? this.urutanDitampilkan,
         icon: icon ?? this.icon,
+        deletedAt: deletedAt ?? this.deletedAt,
       );
 
   factory KatalogBukuPerpustakaan.fromRawJson(String str) => KatalogBukuPerpustakaan.fromJson(json.decode(str));
@@ -77,6 +87,7 @@ class KatalogBukuPerpustakaan {
         nama: json["nama"],
         urutanDitampilkan: json["urutanDitampilkan"],
         icon: json["icon"] == null ? null : Icon.fromJson(json["icon"]),
+        deletedAt: json["deletedAt"] == null ? null : DateTime.parse(json["deletedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -86,6 +97,7 @@ class KatalogBukuPerpustakaan {
         "nama": nama,
         "urutanDitampilkan": urutanDitampilkan,
         "icon": icon?.toJson(),
+        "deletedAt": deletedAt?.toIso8601String(),
       };
 }
 

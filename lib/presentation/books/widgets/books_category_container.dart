@@ -42,7 +42,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
       if (res.data != null) {
         if (mounted) {
           setState(() {
-            books = res.data!.payload;
+            books = res.data!.payload?.where((book) => book.isVisible!).toList();
           });
         }
       }
@@ -131,6 +131,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                     idSampul: payload.buku?.assetSampulId ?? "",
                     copy: "${payload.jumlahSiapPinjam ?? '-'}",
                     harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
+                    isPromo: payload.buku?.promo != null,
                     onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
                   ),
                   HGap.r,

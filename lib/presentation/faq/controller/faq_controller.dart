@@ -13,6 +13,7 @@ class FAQController extends GetxController {
   set setCurrentFAQ(FAQ faq) => currentFAQ.value = faq;
   @override
   Future<void> onInit() async {
+    listFAQ.value = null;
     final response = await getFaq();
     if (response.data != null) {
       listFAQ.value = response.data!.listFaq;

@@ -49,6 +49,7 @@ class BooksPage extends StatelessWidget {
               },
             );
           }
+          filteredCategories.sort((a, b) => a.urutanDitampilkan?.compareTo(b.urutanDitampilkan ?? 0) ?? 0);
           return ListView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.only(top: Sizes.s, bottom: Sizes.m),

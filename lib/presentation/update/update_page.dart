@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 
 import '../../constants/gaps.dart';
+import '../../routes/app_routes.dart';
 import '../../shared/widget/app_button.dart';
 import '../../utils/launch_url.dart';
 
@@ -28,11 +30,17 @@ class UpdatePage extends StatelessWidget {
                   if (Platform.isAndroid) {
                     url = "market://details?id=com.orbit360.digilib";
                   } else if (Platform.isIOS) {
-                    url = "https://apps.apple.com/app/id"; //TODO Tambahin iOS appstore id
+                    url = "https://apps.apple.com/"; //TODO Tambahin iOS appstore id
                   }
                   launchUrl(url);
                 },
                 child: const Text("Perbarui Sekarang"),
+              ),
+              VGap.s,
+              AppButton(
+                type: ButtonType.outlined,
+                onPressed: () => Get.offAllNamed(AppRoutes.navigator),
+                child: const Text("Perbarui Nanti"),
               ),
             ],
           ),

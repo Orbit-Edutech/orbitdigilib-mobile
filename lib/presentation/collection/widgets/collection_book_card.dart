@@ -27,6 +27,7 @@ class CollectionBookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now().toUtc();
     return Container(
       height: 100,
       decoration: const BoxDecoration(
@@ -91,7 +92,7 @@ class CollectionBookCard extends StatelessWidget {
                           ),
                           HGap.xs,
                           Text(
-                            "${payload.waktuHabis?.hour}j ${payload.waktuHabis?.minute}m",
+                            "${(payload.waktuHabis!.hour - now.hour).isNegative ? 0 : payload.waktuHabis!.hour - now.hour}j ${(payload.waktuHabis!.hour - now.hour).isNegative ? 0 : payload.waktuHabis!.minute - now.minute}m",
                             style: AppTextStyle.ts10Reg,
                           )
                         ],

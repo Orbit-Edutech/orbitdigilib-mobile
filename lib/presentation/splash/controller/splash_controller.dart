@@ -25,12 +25,10 @@ class SplashController extends GetxController {
     final response = await authValidate();
     if (response.data != null) {
       validate = response.data;
-      final isNeedUpate = Platform.isAndroid
-          ? AppInfo.android.versionCode! < (response.data?.version?.android?.versionCode ?? 1)
-          : AppInfo.iOs.versionCode! < (response.data?.version?.iOs?.versionCode ?? 1);
+      final isUpdateAvailable = checkUpdateStatus();
       final color = await SharedPreferencesManager.readPref<String>("color");
       await AppTheme.changePerpusTheme(color);
-      Get.offAllNamed(isNeedUpate ? AppRoutes.update : AppRoutes.navigator);
+      Get.offAllNamed(isUpdateAvailable ? AppRoutes.update : AppRoutes.navigator);
     } else {
       if (response.error == ResponseStatus.connectionError) {
         Get.dialog(
@@ -42,5 +40,28 @@ class SplashController extends GetxController {
       }
     }
     super.onInit();
+  }
+
+  /// Akan mengembalikan nilai [True] jika terdapat versi yang terbaru
+  bool checkUpdateStatus() {
+    if (Platform.isAndroid) {
+      final int localVersion = AppInfo.android.versionCode!;
+      final int productionVersion = validate?.version?.android?.versionCode ?? 1;
+      if (localVersion < productionVersion) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (Platform.isIOS) {
+      final int localVersion = AppInfo.iOs.versionCode!;
+      final int productionVersion = validate?.version?.iOs?.versionCode ?? 1;
+      if (localVersion < productionVersion) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 }

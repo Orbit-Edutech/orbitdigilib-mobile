@@ -29,7 +29,8 @@ class WishlistController extends GetxController {
     cancelToken = CancelToken();
     final response = await getAllWishlist(cancelToken);
     if (response.data != null) {
-      wishlist.value = response.data?.listWishlist;
+      wishlist.value =
+          response.data?.listWishlist?.where((element) => element.bukuPerpustakaan?.isVisible ?? false).toList();
       filteredWishlist.value = wishlist.value;
     }
     update();

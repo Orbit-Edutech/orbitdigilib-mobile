@@ -6,6 +6,7 @@ import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
+import '../../utils/compute_luminance.dart';
 
 class BookCardHorz extends StatelessWidget {
   const BookCardHorz({
@@ -17,6 +18,7 @@ class BookCardHorz extends StatelessWidget {
     required this.harga,
     this.copy,
     required this.onTap,
+    required this.isPromo,
   });
 
   final String id;
@@ -25,6 +27,7 @@ class BookCardHorz extends StatelessWidget {
   final String penulis;
   final String harga;
   final String? copy;
+  final bool isPromo;
   final Function() onTap;
 
   @override
@@ -41,16 +44,40 @@ class BookCardHorz extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Row(
           children: [
-            Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
-              ),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: Image.network(
-                APIPath.publicAsset(idSampul),
-                fit: BoxFit.cover,
-                width: 75,
-              ),
+            Stack(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: Image.network(
+                    APIPath.publicAsset(idSampul),
+                    fit: BoxFit.cover,
+                    width: 75,
+                  ),
+                ),
+                if (isPromo)
+                  Positioned(
+                    left: -50,
+                    child: Transform.rotate(
+                      angle: -.8,
+                      child: Container(
+                        width: 100,
+                        color: theme.primaryColor,
+                        margin: const EdgeInsets.all(Sizes.sr),
+                        padding: const EdgeInsets.symmetric(vertical: 2),
+                        child: Text(
+                          "     Diskon",
+                          style: AppTextStyle.ts10Bold.copyWith(
+                            color: calculateLuminance(theme.primaryColor),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  )
+              ],
             ),
             HGap.s,
             Expanded(

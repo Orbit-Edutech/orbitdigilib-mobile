@@ -7,6 +7,7 @@ import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
+import '../../utils/compute_luminance.dart';
 import 'wishlist_button.dart';
 
 class BookCard extends StatelessWidget {
@@ -21,6 +22,7 @@ class BookCard extends StatelessWidget {
     required this.onTap,
     this.onChangeWishlist,
     this.copy,
+    required this.isPromo,
   });
   final BukuPerpustakaan bukuPerpustakaan;
   final String id;
@@ -31,6 +33,7 @@ class BookCard extends StatelessWidget {
   final String? copy;
   final Function() onTap;
   final Future<bool> Function()? onChangeWishlist;
+  final bool isPromo;
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +49,37 @@ class BookCard extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Column(
           children: [
-            SizedBox(
-              height: 160,
-              child: Image.network(
-                APIPath.publicAsset(idSampul),
-                fit: BoxFit.cover,
-                width: 200,
-              ),
+            Stack(
+              children: [
+                SizedBox(
+                  height: 160,
+                  child: Image.network(
+                    APIPath.publicAsset(idSampul),
+                    fit: BoxFit.cover,
+                    width: 200,
+                  ),
+                ),
+                if (isPromo)
+                  Positioned(
+                    left: -50,
+                    child: Transform.rotate(
+                      angle: -.8,
+                      child: Container(
+                        width: 100,
+                        color: theme.primaryColor,
+                        margin: const EdgeInsets.all(Sizes.sr),
+                        padding: const EdgeInsets.all(Sizes.xs),
+                        child: Text(
+                          "      Diskon",
+                          style: AppTextStyle.ts12Bold.copyWith(
+                            color: calculateLuminance(theme.primaryColor),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  )
+              ],
             ),
             Container(
               padding: const EdgeInsets.all(Sizes.s),

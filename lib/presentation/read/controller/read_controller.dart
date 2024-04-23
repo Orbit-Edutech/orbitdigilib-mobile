@@ -94,7 +94,7 @@ class ReadController extends GetxController {
 
   Future<int> getLastPageSeen(String idBuku) async {
     final result = await getOneBukuSQLite(idBuku, profileController.profile.value?.id ?? "");
-    return result.lastPageSeen;
+    return result?.lastPageSeen ?? 1;
   }
 
   Future<List<int>> getStaredPages() async {

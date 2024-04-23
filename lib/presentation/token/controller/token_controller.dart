@@ -64,10 +64,12 @@ class TokenController extends GetxController {
   }
 
   void redeem() async {
+    buttonState.value = ButtonState.loading;
     final voucher = voucherController.text;
     final response = await redeemVoucher(voucher);
     if (response.data != null) {
       voucherController.clear();
+      buttonState.value = ButtonState.disable;
       showSnackbar(backgroundColor: AppColor.green, message: "Voucher berhasil digunakan!");
       Get.find<ProfileController>().onInit();
     } else {
@@ -80,6 +82,7 @@ class TokenController extends GetxController {
           message: response.error["message"],
         );
       }
+      buttonState.value = ButtonState.enable;
     }
   }
 }

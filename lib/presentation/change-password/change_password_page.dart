@@ -79,7 +79,7 @@ class ChangePasswordPage extends StatelessWidget {
                   focusNode: controller.newPassFN,
                   onTapOutside: (_) => controller.newPassFN.unfocus(),
                   onChanged: controller.onFormChange,
-                  onSubmitted: (_) => controller.newPassFN.requestFocus(),
+                  onSubmitted: (_) => controller.conPassFN.requestFocus(),
                   enabled: !isLoading,
                   isError: isError,
                   errorText: "",
@@ -108,6 +108,7 @@ class ChangePasswordPage extends StatelessWidget {
             Obx(() {
               final isFocus = controller.focus.value == "conPass";
               final isLoading = controller.buttonState.value == ButtonState.loading;
+              final isValid = controller.buttonState.value == ButtonState.enable;
               final isError = controller.isError.value;
               final errorMsg = controller.errorMsg.value;
               final isObscure = controller.isConPassObscure.value;
@@ -120,7 +121,7 @@ class ChangePasswordPage extends StatelessWidget {
                   focusNode: controller.conPassFN,
                   onTapOutside: (_) => controller.conPassFN.unfocus(),
                   onChanged: controller.onFormChange,
-                  onSubmitted: (_) => controller.newPassFN.requestFocus(),
+                  onSubmitted: (_) => isValid ? controller.resetPassword() : null,
                   enabled: !isLoading,
                   isError: isError,
                   errorText: errorMsg,

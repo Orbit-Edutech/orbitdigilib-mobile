@@ -32,7 +32,7 @@ class CategoryController extends GetxController {
     Map<String, dynamic> qp = {"katalogBukuPerpustakaanId": category.id};
     final response = await getAllBukuPerpustakaan(qp);
     if (response.data != null) {
-      books.value = response.data!.payload;
+      books.value = response.data!.payload?.where((book) => book.isVisible!).toList();
       filteredBooks.value = books.value;
     } else {
       showSnackbar(
@@ -65,7 +65,7 @@ class CategoryController extends GetxController {
       cancelToken = CancelToken();
       final response = await getAllBukuPerpustakaan(qp, cancelToken);
       if (response.data != null) {
-        books.value = response.data?.payload;
+        books.value = response.data?.payload?.where((book) => book.isVisible!).toList();
         filteredBooks.value = books.value;
       }
     });
@@ -82,7 +82,7 @@ class CategoryController extends GetxController {
       final response = await getAllBukuPerpustakaan(qp);
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
-          books.value?.addAll(response.data?.payload ?? []);
+          books.value?.addAll(response.data?.payload?.where((book) => book.isVisible!).toList() ?? []);
           final result = books.value;
           books.value = result;
           filteredBooks.value = books.value;

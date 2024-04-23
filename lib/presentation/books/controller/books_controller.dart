@@ -20,8 +20,9 @@ class BooksController extends GetxController {
     filteredCategories.value = [];
     getAllKatalogPerpus().then((res) {
       if (res.data != null) {
-        categories.value = res.data?.listKatalogBukuPerpustakaan;
-        filteredCategories.value = res.data?.listKatalogBukuPerpustakaan;
+        categories.value = res.data?.listKatalogBukuPerpustakaan?.where((katalog) => katalog.deletedAt == null).toList();
+        filteredCategories.value =
+            res.data?.listKatalogBukuPerpustakaan?.where((katalog) => katalog.deletedAt == null).toList();
         filteredCategories.value!.add(KatalogBukuPerpustakaan(nama: "Lainnya", id: "Lainnya"));
       } else {
         if (res.error == ResponseStatus.connectionError) {

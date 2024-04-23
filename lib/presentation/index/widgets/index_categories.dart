@@ -48,6 +48,7 @@ class IndexCategories extends StatelessWidget {
                 mainAxisSpacing: Sizes.xs,
                 itemCount: isMoreThan7 ? 8 : categories.length,
                 itemBuilder: (BuildContext context, int index) {
+                  categories.sort((a, b) => a.urutanDitampilkan?.compareTo(b.urutanDitampilkan ?? 0) ?? 0);
                   final category = categories[index];
                   if (index == 7) {
                     return IndexCategoryCard(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -8,7 +10,7 @@ import '../../../api/api_client.dart';
 import '../../../api/koleksi/data/get_koleksi.dart';
 import '../../../api/koleksi/model/model_koleksi.dart';
 import '../../../shared/widget/show_snackbar.dart';
-import '../../../sql/books/data/delete_buku_sqlite.dart';
+// import '../../../sql/books/data/delete_buku_sqlite.dart';
 import '../../../sql/books/data/get_buku_sqlite.dart';
 import '../../../sql/books/data/insert_buku_sqlite.dart';
 import '../../../sql/books/model/model_buku_sql.dart';
@@ -75,6 +77,7 @@ class CollectionController extends GetxController {
     for (Payload book in response) {
       final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (book.buku?.id ?? '-')) != null;
       if (!isExist) {
+        log(book.waktuHabis.toString());
         await insertBukuSQLite(
           ModelBukuSql(
             idBuku: book.buku?.id ?? "",
@@ -87,11 +90,11 @@ class CollectionController extends GetxController {
         );
       }
     }
-    for (ModelBukuSql lb in localBooks.value ?? []) {
-      if (lb.expired.isBefore(DateTime.now())) {
-        deleteBukuSQLite(idBuku: lb.idBuku, idUser: idUser);
-      }
-    }
+    // for (ModelBukuSql lb in localBooks.value ?? []) {
+    //   if (lb.expired.isBefore(DateTime.now())) {
+    //     deleteBukuSQLite(idBuku: lb.idBuku, idUser: idUser);
+    //   }
+    // }
     localBooks.value = await getBukuSQLite(user?.id ?? "");
   }
 }

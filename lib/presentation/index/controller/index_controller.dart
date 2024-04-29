@@ -74,7 +74,7 @@ class IndexController extends GetxController {
       }),
       getAllBukuPerpustakaan({"isPin": true}).then((res) {
         if (res.data != null) {
-          pinnedBooks.value = res.data?.payload;
+          pinnedBooks.value = res.data?.payload?.where((book) => book.isVisible!).toList();
         } else {
           pinnedBooks.value = [];
           if (res.error == ResponseStatus.connectionError) {
@@ -86,7 +86,7 @@ class IndexController extends GetxController {
       }),
       getAllBukuPerpustakaan({"buku[promo][noteql]": "null"}).then((res) {
         if (res.data != null) {
-          promoBooks.value = res.data?.payload;
+          promoBooks.value = res.data?.payload?.where((book) => book.isVisible!).toList();
         } else {
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
@@ -97,7 +97,7 @@ class IndexController extends GetxController {
       }),
       getAllBukuPerpustakaan().then((res) {
         if (res.data != null) {
-          allBooks.value = res.data!.payload;
+          allBooks.value = res.data?.payload?.where((book) => book.isVisible!).toList();
         } else {
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
@@ -108,7 +108,7 @@ class IndexController extends GetxController {
       }),
       getAllKatalogPerpus().then((res) {
         if (res.data != null) {
-          categories.value = res.data?.listKatalogBukuPerpustakaan;
+          categories.value = res.data?.listKatalogBukuPerpustakaan?.where((katalog) => katalog.deletedAt == null).toList();
         } else {
           if (res.error == ResponseStatus.connectionError) {
             showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
@@ -147,7 +147,7 @@ class IndexController extends GetxController {
       final response = await getAllBukuPerpustakaan({"buku[promo][noteql]": "null", "page": promoPage.value});
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
-          promoBooks.value?.addAll(response.data?.payload ?? []);
+          promoBooks.value?.addAll(response.data?.payload?.where((book) => book.isVisible!).toList() ?? []);
           final result = promoBooks.value;
           promoBooks.value = result;
           promoPage.value++;

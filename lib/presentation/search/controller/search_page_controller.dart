@@ -51,7 +51,7 @@ class SearchPageController extends GetxController {
       cancelToken = CancelToken();
       final response = await getAllBukuPerpustakaan(qp, cancelToken);
       if (response.data != null) {
-        books.value = response.data!.payload ?? [];
+        books.value = response.data!.payload?.where((book) => book.isVisible!).toList() ?? [];
       }
       update();
     });
@@ -69,7 +69,7 @@ class SearchPageController extends GetxController {
       final response = await getAllBukuPerpustakaan(qp);
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
-          books.value?.addAll(response.data?.payload ?? []);
+          books.value?.addAll(response.data?.payload?.where((book) => book.isVisible!).toList() ?? []);
           page.value++;
           update();
         }

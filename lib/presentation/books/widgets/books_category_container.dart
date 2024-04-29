@@ -42,7 +42,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
       if (res.data != null) {
         if (mounted) {
           setState(() {
-            books = res.data!.payload;
+            books = res.data!.payload?.where((book) => book.isVisible!).toList();
           });
         }
       }

@@ -80,7 +80,7 @@ class ReadController extends GetxController {
 
   Future<File> downloadPdf() async {
     final String pdfId = buku.value?.assetBukuId ?? "";
-    final dir = await getTemporaryDirectory();
+    final dir = await getApplicationCacheDirectory();
     final path = "${dir.path}/${buku.value?.id}.pdf";
     if (!(await File(path).exists())) {
       await apiClient.download(

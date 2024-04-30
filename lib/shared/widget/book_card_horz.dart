@@ -12,7 +12,7 @@ class BookCardHorz extends StatelessWidget {
   const BookCardHorz({
     super.key,
     required this.id,
-    required this.idSampul,
+    this.idSampul,
     required this.judul,
     required this.penulis,
     required this.harga,
@@ -22,7 +22,7 @@ class BookCardHorz extends StatelessWidget {
   });
 
   final String id;
-  final String idSampul;
+  final String? idSampul;
   final String judul;
   final String penulis;
   final String harga;
@@ -51,11 +51,21 @@ class BookCardHorz extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
                   ),
                   clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Image.network(
-                    APIPath.publicAsset(idSampul),
-                    fit: BoxFit.cover,
-                    width: 75,
-                  ),
+                  child: idSampul == null
+                      ? Container(
+                          width: 75,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(Sizes.s),
+                          child: const Text(
+                            "Sampul Kosong",
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : Image.network(
+                          APIPath.publicAsset(idSampul!),
+                          fit: BoxFit.cover,
+                          width: 75,
+                        ),
                 ),
                 if (isPromo)
                   Positioned(

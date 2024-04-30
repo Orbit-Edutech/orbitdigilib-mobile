@@ -69,7 +69,7 @@ class IndexAllBooks extends StatelessWidget {
                   id: book?.id ?? "-",
                   judul: book?.judul ?? "-",
                   penulis: book?.penulis ?? "-",
-                  idSampul: book?.assetSampulId ?? "-",
+                  idSampul: book?.assetSampulId,
                   copy: "${payload.jumlahSiapPinjam ?? '-'}",
                   harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
                   isPromo: payload.buku?.promo != null,

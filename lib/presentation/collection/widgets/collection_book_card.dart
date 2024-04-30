@@ -61,12 +61,22 @@ class CollectionBookCard extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
-                  Image(
-                    image: NetworkImage(APIPath.publicAsset(payload.buku?.assetSampulId ?? "")),
-                    fit: BoxFit.cover,
-                    width: 75,
-                    height: 100,
-                  ),
+                  if (payload.buku?.assetSampulId == null)
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(Sizes.s),
+                      child: const Text(
+                        "Sampul Kosong",
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  else
+                    Image(
+                      image: NetworkImage(APIPath.publicAsset(payload.buku?.assetSampulId ?? '')),
+                      fit: BoxFit.cover,
+                      width: 75,
+                      height: 100,
+                    ),
                   if (isToday(payload.waktuHabis) ?? false)
                     Container(
                       width: 75,

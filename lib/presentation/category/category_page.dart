@@ -76,11 +76,14 @@ class CategoryPage extends StatelessWidget {
               child: RefreshIndicator(
                 onRefresh: () async => await controller.onInit(),
                 child: SingleChildScrollView(
+                  controller: controller.scrollController,
                   padding: const EdgeInsets.only(bottom: Sizes.m),
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Obx(() {
                     final filteredBooks = controller.filteredBooks.value;
                     final _ = controller.asc.value; // Untuk trigger re-render
+                    // ignore: unused_local_variable
+                    final page = controller.page.value; // Untuk trigger re-render
                     if (filteredBooks == null) {
                       return AlignedGridView.count(
                         shrinkWrap: true,
@@ -129,7 +132,7 @@ class CategoryPage extends StatelessWidget {
                           id: buku?.id ?? "-",
                           judul: buku?.judul ?? '-',
                           penulis: buku?.penulis ?? '-',
-                          idSampul: buku?.assetSampulId ?? '-',
+                          idSampul: buku?.assetSampulId,
                           copy: "${payload.jumlahSiapPinjam ?? '-'}",
                           harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
                           isPromo: buku?.promo != null,

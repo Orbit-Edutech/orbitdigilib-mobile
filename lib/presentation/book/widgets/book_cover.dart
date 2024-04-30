@@ -19,15 +19,22 @@ class BookCover extends StatelessWidget {
       child: Container(
         width: 160,
         height: 200,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           border: Border.all(color: theme.primaryColor),
-          image: DecorationImage(
-            image: NetworkImage(
-              APIPath.publicAsset(book?.assetSampulId ?? ""),
-            ),
-            fit: BoxFit.cover,
-          ),
+          image: book?.assetSampulId == null
+              ? null
+              : DecorationImage(
+                  image: NetworkImage(
+                    APIPath.publicAsset(book?.assetSampulId ?? ""),
+                  ),
+                  fit: BoxFit.cover,
+                ),
           borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
+        ),
+        child: const Text(
+          "Sampul Kosong",
+          textAlign: TextAlign.center,
         ),
       ),
     );

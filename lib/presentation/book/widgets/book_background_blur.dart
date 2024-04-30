@@ -17,10 +17,12 @@ class BookBackgroundBlur extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(APIPath.publicAsset(book?.assetSampulId ?? '')),
-          alignment: Alignment.topCenter,
-        ),
+        image: book?.assetSampulId == null
+            ? null
+            : DecorationImage(
+                image: NetworkImage(APIPath.publicAsset(book?.assetSampulId ?? '')),
+                alignment: Alignment.topCenter,
+              ),
       ),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),

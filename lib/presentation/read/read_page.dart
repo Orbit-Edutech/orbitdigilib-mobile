@@ -124,11 +124,16 @@ class _ReadPageState extends State<ReadPage> {
                 final noResultFound = controller.noResultFound.value;
                 final book = controller.buku.value;
                 final pdf = controller.pdf.value;
+                final isAssetBukuNull = controller.isAssetBukuNull.value;
                 if (book == null || pdf == null) {
                   return SingleChildScrollView(
                     child: Container(
                       margin: const EdgeInsets.only(top: Sizes.m),
-                      child: const EmptyList(description: "Buku sedang dimuat"),
+                      child: EmptyList(
+                        description: isAssetBukuNull
+                            ? "Buku tidak ditemukan, mohon hubungi pihak perpustakaan"
+                            : "Buku sedang dimuat",
+                      ),
                     ),
                   );
                 }

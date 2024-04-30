@@ -77,22 +77,22 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
         null) {
       delCancelToken.cancel();
       delCancelToken = CancelToken();
-      deleteOneWishlist(widget.bukuPerpustakaan.id!, delCancelToken);
       final filteredWishlist = controller.filteredWishlist.value;
       filteredWishlist?.removeWhere(
         (wishlist) => wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id,
       );
       controller.filteredWishlist.value = filteredWishlist;
       controller.update();
+      await deleteOneWishlist(widget.bukuPerpustakaan.id!, delCancelToken);
     } else {
       postCancelToken.cancel();
       postCancelToken = CancelToken();
-      createOneWishlist(widget.bukuPerpustakaan.id!, postCancelToken);
       final filteredWishlist = controller.filteredWishlist.value;
       final wishlist = Wishlist.fromJson({"bukuPerpustakaan": widget.bukuPerpustakaan.toJson()});
       filteredWishlist?.add(wishlist);
       controller.filteredWishlist.value = filteredWishlist;
       controller.update();
+      await createOneWishlist(widget.bukuPerpustakaan.id!, postCancelToken);
     }
     controller.onInit();
   }

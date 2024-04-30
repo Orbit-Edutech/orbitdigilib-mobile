@@ -38,18 +38,19 @@ class User {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? username;
-  final dynamic passwordUpdatedAt;
+  final DateTime? passwordUpdatedAt;
   final String? email;
   final String? nama;
   final String? jenisKelamin;
-  final dynamic noTelepon;
+  final String? noTelepon;
   final dynamic urlFotoProfil;
-  final dynamic tokenForgotPassword;
-  final dynamic tokenForgotPasswordExpiredAt;
+  final String? tokenForgotPassword;
+  final DateTime? tokenForgotPasswordExpiredAt;
   final String? token;
   final Role? role;
   final Perpustakaan? perpustakaan;
   final dynamic penerbit;
+  final bool? isAktif;
 
   User({
     this.id,
@@ -68,6 +69,7 @@ class User {
     this.role,
     this.perpustakaan,
     this.penerbit,
+    this.isAktif,
   });
 
   User copyWith({
@@ -75,18 +77,19 @@ class User {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? username,
-    dynamic passwordUpdatedAt,
+    DateTime? passwordUpdatedAt,
     String? email,
     String? nama,
     String? jenisKelamin,
-    dynamic noTelepon,
+    String? noTelepon,
     dynamic urlFotoProfil,
-    dynamic tokenForgotPassword,
-    dynamic tokenForgotPasswordExpiredAt,
+    String? tokenForgotPassword,
+    DateTime? tokenForgotPasswordExpiredAt,
     String? token,
     Role? role,
     Perpustakaan? perpustakaan,
     dynamic penerbit,
+    bool? isAktif,
   }) =>
       User(
         id: id ?? this.id,
@@ -105,6 +108,7 @@ class User {
         role: role ?? this.role,
         perpustakaan: perpustakaan ?? this.perpustakaan,
         penerbit: penerbit ?? this.penerbit,
+        isAktif: isAktif ?? this.isAktif,
       );
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
@@ -116,18 +120,20 @@ class User {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         username: json["username"],
-        passwordUpdatedAt: json["passwordUpdatedAt"],
+        passwordUpdatedAt: json["passwordUpdatedAt"] == null ? null : DateTime.parse(json["passwordUpdatedAt"]),
         email: json["email"],
         nama: json["nama"],
         jenisKelamin: json["jenisKelamin"],
         noTelepon: json["noTelepon"],
         urlFotoProfil: json["urlFotoProfil"],
         tokenForgotPassword: json["tokenForgotPassword"],
-        tokenForgotPasswordExpiredAt: json["tokenForgotPasswordExpiredAt"],
+        tokenForgotPasswordExpiredAt:
+            json["tokenForgotPasswordExpiredAt"] == null ? null : DateTime.parse(json["tokenForgotPasswordExpiredAt"]),
         token: json["token"],
         role: json["role"] == null ? null : Role.fromJson(json["role"]),
         perpustakaan: json["perpustakaan"] == null ? null : Perpustakaan.fromJson(json["perpustakaan"]),
         penerbit: json["penerbit"],
+        isAktif: json["isAktif"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -135,18 +141,19 @@ class User {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "username": username,
-        "passwordUpdatedAt": passwordUpdatedAt,
+        "passwordUpdatedAt": passwordUpdatedAt?.toIso8601String(),
         "email": email,
         "nama": nama,
         "jenisKelamin": jenisKelamin,
         "noTelepon": noTelepon,
         "urlFotoProfil": urlFotoProfil,
         "tokenForgotPassword": tokenForgotPassword,
-        "tokenForgotPasswordExpiredAt": tokenForgotPasswordExpiredAt,
+        "tokenForgotPasswordExpiredAt": tokenForgotPasswordExpiredAt?.toIso8601String(),
         "token": token,
         "role": role?.toJson(),
         "perpustakaan": perpustakaan?.toJson(),
         "penerbit": penerbit,
+        "isAktif": isAktif,
       };
 }
 
@@ -157,12 +164,13 @@ class Perpustakaan {
   final String? nama;
   final String? kode;
   final String? noTelepon;
-  final String? deskripsi;
-  final dynamic tahunBerdiri;
+  final dynamic deskripsi;
+  final String? tahunBerdiri;
   final String? warnaDasar;
   final String? email;
   final String? namaPic;
   final String? contactPersonPic;
+  final String? nomorIndukSekolah;
   final bool? isAktif;
 
   Perpustakaan({
@@ -178,6 +186,7 @@ class Perpustakaan {
     this.email,
     this.namaPic,
     this.contactPersonPic,
+    this.nomorIndukSekolah,
     this.isAktif,
   });
 
@@ -188,12 +197,13 @@ class Perpustakaan {
     String? nama,
     String? kode,
     String? noTelepon,
-    String? deskripsi,
-    dynamic tahunBerdiri,
+    dynamic deskripsi,
+    String? tahunBerdiri,
     String? warnaDasar,
     String? email,
     String? namaPic,
     String? contactPersonPic,
+    String? nomorIndukSekolah,
     bool? isAktif,
   }) =>
       Perpustakaan(
@@ -209,6 +219,7 @@ class Perpustakaan {
         email: email ?? this.email,
         namaPic: namaPic ?? this.namaPic,
         contactPersonPic: contactPersonPic ?? this.contactPersonPic,
+        nomorIndukSekolah: nomorIndukSekolah ?? this.nomorIndukSekolah,
         isAktif: isAktif ?? this.isAktif,
       );
 
@@ -229,6 +240,7 @@ class Perpustakaan {
         email: json["email"],
         namaPic: json["namaPIC"],
         contactPersonPic: json["contactPersonPIC"],
+        nomorIndukSekolah: json["nomorIndukSekolah"],
         isAktif: json["isAktif"],
       );
 
@@ -245,6 +257,7 @@ class Perpustakaan {
         "email": email,
         "namaPIC": namaPic,
         "contactPersonPIC": contactPersonPic,
+        "nomorIndukSekolah": nomorIndukSekolah,
         "isAktif": isAktif,
       };
 }
@@ -310,19 +323,23 @@ class Versions {
 }
 
 class Version {
+  final DateTime? updatedAt;
   final int? versionCode;
   final String? versionName;
 
   Version({
+    this.updatedAt,
     this.versionCode,
     this.versionName,
   });
 
   Version copyWith({
+    DateTime? updatedAt,
     int? versionCode,
     String? versionName,
   }) =>
       Version(
+        updatedAt: updatedAt ?? this.updatedAt,
         versionCode: versionCode ?? this.versionCode,
         versionName: versionName ?? this.versionName,
       );
@@ -332,11 +349,13 @@ class Version {
   String toRawJson() => json.encode(toJson());
 
   factory Version.fromJson(Map<String, dynamic> json) => Version(
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         versionCode: json["versionCode"],
         versionName: json["versionName"],
       );
 
   Map<String, dynamic> toJson() => {
+        "updatedAt": updatedAt?.toIso8601String(),
         "versionCode": versionCode,
         "versionName": versionName,
       };

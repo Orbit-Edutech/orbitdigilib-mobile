@@ -69,6 +69,7 @@ class CollectionController extends GetxController {
           collections.value?.addAll(response.data?.payload ?? []);
           final result = collections.value;
           collections.value = result;
+          await synchronizeData(collections.value!);
           page.value++;
         }
       }

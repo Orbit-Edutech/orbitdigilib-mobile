@@ -20,7 +20,7 @@ import '../../profile/controller/profile_controller.dart';
 class CollectionController extends GetxController {
   final user = Get.find<ProfileController>().profile.value;
 
-  Rx<List<Payload>?> allCollections = Rx<List<Payload>?>(null);
+  Rx<List<Payload>?> collections = Rx<List<Payload>?>(null);
   Rx<List<ModelBukuSql>?> localBooks = Rx<List<ModelBukuSql>?>(null);
 
   final profileController = Get.find<ProfileController>();
@@ -32,11 +32,18 @@ class CollectionController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    allCollections.value = null;
-    final response = await getCollections();
+    await loadCollections(filter.value != "Semua Koleksi" ? filter.value : null);
+    scrollController.addListener(loadMore);
+    super.onInit();
+  }
+
+  Future<void> loadCollections([String? filter]) async {
+    collections.value = null;
+    final qp = filter != null ? {"tipe": filter} : null;
+    final response = await getCollections(qp);
     if (response.data != null) {
-      allCollections.value = response.data?.payload;
-      await synchronizeData(allCollections.value!);
+      collections.value = response.data?.payload;
+      await synchronizeData(collections.value!);
       page.value = 2;
     } else {
       if (response.error == ResponseStatus.connectionError) {
@@ -49,19 +56,19 @@ class CollectionController extends GetxController {
         );
       }
     }
-    scrollController.addListener(loadMore);
-    super.onInit();
   }
 
   Future<void> loadMore() async {
     if (scrollController.position.pixels == scrollController.position.maxScrollExtent && !isLoadedMore.value) {
       isLoadedMore.value = true;
-      final response = await getCollections({"page": page.value});
+      final Map<String, dynamic> qp = {"page": page.value};
+      filter.value != "Semua Koleksi" ? qp['tipe'] = filter.value : null;
+      final response = await getCollections(qp);
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
-          allCollections.value?.addAll(response.data?.payload ?? []);
-          final result = allCollections.value;
-          allCollections.value = result;
+          collections.value?.addAll(response.data?.payload ?? []);
+          final result = collections.value;
+          collections.value = result;
           page.value++;
         }
       }
@@ -69,7 +76,10 @@ class CollectionController extends GetxController {
     }
   }
 
-  void onFilterChange(String filter) => this.filter.value = filter;
+  void onChangeFilter(String filter) {
+    this.filter.value = filter;
+    loadCollections(filter != "Semua Koleksi" ? this.filter.value : null);
+  }
 
   Future<void> synchronizeData(List<Payload> response) async {
     localBooks.value = await getBukuSQLite(user?.id ?? "");

@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 
 import '../../../constants/gaps.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../splash/controller/splash_controller.dart';
 
 class AboutAppDetail extends StatelessWidget {
   const AboutAppDetail({
@@ -10,6 +14,7 @@ class AboutAppDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final validate = Get.find<SplashController>().validate;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,7 +36,10 @@ class AboutAppDetail extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Diupdate tanggal", style: AppTextStyle.ts10Bold),
-                  Text("1 April 2024", style: AppTextStyle.ts10Reg),
+                  Text(
+                    "${Platform.isAndroid ? validate?.version?.android?.updatedAt : validate?.version?.iOs?.updatedAt}",
+                    style: AppTextStyle.ts10Reg,
+                  ),
                 ],
               ),
             ),

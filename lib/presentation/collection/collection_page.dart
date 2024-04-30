@@ -132,13 +132,13 @@ class CollectionPage extends StatelessWidget {
   List<Payload>? getBooks(CollectionController controller, String filter) {
     switch (filter) {
       case "Pinjam":
-        return controller.allCollections.value?.where((payload) => payload.tipe == "Pinjam").toList();
+        return controller.collections.value?.where((payload) => payload.tipe == "Pinjam").toList();
       case "Sewa":
-        return controller.allCollections.value?.where((payload) => payload.tipe == "Sewa").toList();
+        return controller.collections.value?.where((payload) => payload.tipe == "Sewa").toList();
       case "Beli":
-        return controller.allCollections.value?.where((payload) => payload.tipe == "Beli").toList();
+        return controller.collections.value?.where((payload) => payload.tipe == "Beli").toList();
       default:
-        return controller.allCollections.value;
+        return controller.collections.value;
     }
   }
 }

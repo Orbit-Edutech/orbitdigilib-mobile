@@ -29,11 +29,13 @@ class CategoryController extends GetxController {
 
   @override
   Future<void> onInit() async {
+    filteredBooks.value = null;
     Map<String, dynamic> qp = {"katalogBukuPerpustakaanId": category.id};
     final response = await getAllBukuPerpustakaan(qp);
     if (response.data != null) {
       books.value = response.data!.payload?.where((book) => book.isVisible!).toList();
       filteredBooks.value = books.value;
+      page.value = 2;
     } else {
       showSnackbar(
         title: "Error: ${response.statusCode}",
@@ -58,6 +60,7 @@ class CategoryController extends GetxController {
     if (_timer?.isActive ?? false) _timer?.cancel();
     _timer = Timer(const Duration(milliseconds: 500), () async {
       books.value = null;
+      filteredBooks.value = null;
       Map<String, dynamic> qp = {};
       qp["katalogBukuPerpustakaanId"] = category.id;
       if (keyword.trim().isNotEmpty) qp["buku[judul][lke]"] = keyword;
@@ -82,11 +85,11 @@ class CategoryController extends GetxController {
       final response = await getAllBukuPerpustakaan(qp);
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
+          page.value = page.value + 1;
           books.value?.addAll(response.data?.payload?.where((book) => book.isVisible!).toList() ?? []);
           final result = books.value;
           books.value = result;
           filteredBooks.value = books.value;
-          page.value++;
         }
       }
       isLoadedMore.value = false;

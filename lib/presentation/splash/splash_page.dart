@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
@@ -20,7 +22,7 @@ class SplashPage extends StatelessWidget {
           children: [
             Expanded(child: Image.asset("assets/logo/orbit-digilib-logo.png", width: size.width / 3)),
             Text(
-              "Version ${AppInfo.android.versionName}",
+              "Version ${Platform.isAndroid ? AppInfo.android.versionName : AppInfo.iOs.versionName}",
               style: AppTextStyle.ts10Reg,
             ),
             VGap.m,

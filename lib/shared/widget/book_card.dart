@@ -15,7 +15,7 @@ class BookCard extends StatelessWidget {
     super.key,
     required this.bukuPerpustakaan,
     required this.id,
-    required this.idSampul,
+    this.idSampul,
     required this.judul,
     required this.penulis,
     required this.harga,
@@ -26,7 +26,7 @@ class BookCard extends StatelessWidget {
   });
   final BukuPerpustakaan bukuPerpustakaan;
   final String id;
-  final String idSampul;
+  final String? idSampul;
   final String judul;
   final String penulis;
   final String harga;
@@ -53,11 +53,20 @@ class BookCard extends StatelessWidget {
               children: [
                 SizedBox(
                   height: 160,
-                  child: Image.network(
-                    APIPath.publicAsset(idSampul),
-                    fit: BoxFit.cover,
-                    width: 200,
-                  ),
+                  child: idSampul == null
+                      ? Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(Sizes.s),
+                          child: const Text(
+                            "Sampul Kosong",
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : Image.network(
+                          APIPath.publicAsset(idSampul!),
+                          fit: BoxFit.cover,
+                          width: 200,
+                        ),
                 ),
                 if (isPromo)
                   Positioned(

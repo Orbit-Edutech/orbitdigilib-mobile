@@ -138,7 +138,7 @@ class WishlistPage extends StatelessWidget {
                             id: buku?.id ?? "-",
                             judul: buku?.judul ?? "-",
                             penulis: buku?.penulis ?? "-",
-                            idSampul: buku?.assetSampulId ?? "-",
+                            idSampul: buku?.assetSampulId,
                             copy: "${payload.jumlahSiapPinjam ?? '-'}",
                             harga: ((buku?.hargaSewa ?? 0) ~/ 100).toString(),
                             isPromo: buku?.promo != null,

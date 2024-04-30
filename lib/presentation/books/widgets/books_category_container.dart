@@ -128,7 +128,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                     id: payload.buku?.id ?? "-",
                     judul: payload.buku?.judul ?? "-",
                     penulis: payload.buku?.penulis ?? "-",
-                    idSampul: payload.buku?.assetSampulId ?? "",
+                    idSampul: payload.buku?.assetSampulId,
                     copy: "${payload.jumlahSiapPinjam ?? '-'}",
                     harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
                     isPromo: payload.buku?.promo != null,

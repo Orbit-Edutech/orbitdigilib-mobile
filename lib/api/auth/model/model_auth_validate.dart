@@ -323,7 +323,7 @@ class Versions {
 }
 
 class Version {
-  final DateTime? updatedAt;
+  final String? updatedAt;
   final int? versionCode;
   final String? versionName;
 
@@ -334,7 +334,7 @@ class Version {
   });
 
   Version copyWith({
-    DateTime? updatedAt,
+    String? updatedAt,
     int? versionCode,
     String? versionName,
   }) =>
@@ -349,13 +349,13 @@ class Version {
   String toRawJson() => json.encode(toJson());
 
   factory Version.fromJson(Map<String, dynamic> json) => Version(
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        updatedAt: json["updatedAt"],
         versionCode: json["versionCode"],
         versionName: json["versionName"],
       );
 
   Map<String, dynamic> toJson() => {
-        "updatedAt": updatedAt?.toIso8601String(),
+        "updatedAt": updatedAt,
         "versionCode": versionCode,
         "versionName": versionName,
       };

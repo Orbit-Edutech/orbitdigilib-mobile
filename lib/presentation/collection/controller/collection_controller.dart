@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -88,7 +86,6 @@ class CollectionController extends GetxController {
     for (Payload book in response) {
       final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (book.buku?.id ?? '-')) != null;
       if (!isExist) {
-        log(book.waktuHabis.toString());
         await insertBukuSQLite(
           ModelBukuSql(
             idBuku: book.buku?.id ?? "",

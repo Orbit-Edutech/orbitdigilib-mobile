@@ -43,7 +43,9 @@ class IndexController extends GetxController {
       if (res.data != null) {
         final banners = <String>[];
         for (var banner in res.data!.listBanner!) {
-          banners.add(banner.id!);
+          if (!this.banners.value.contains(banner.id)) {
+            banners.add(banner.id!);
+          }
         }
         this.banners.value = banners;
       } else {
@@ -60,7 +62,9 @@ class IndexController extends GetxController {
           perpustakaan.value = res.data;
           final banners = this.banners.value;
           for (var banner in perpustakaan.value!.banner!) {
-            banners.add(banner.id!);
+            if (!this.banners.value.contains(banner.id)) {
+              banners.add(banner.id!);
+            }
           }
           this.banners.value = banners;
           AppTheme.changePerpusTheme(perpustakaan.value!.warnaDasar);

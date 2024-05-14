@@ -50,15 +50,13 @@ class BooksPage extends StatelessWidget {
               icon: SvgPicture.asset("assets/icons/filter.svg"),
             );
           }),
-          GetBuilder<BooksController>(builder: (_) {
-            return IconButton(
-              onPressed: controller.sortBooks,
-              icon: Icon(
-                Icons.swap_vert_rounded,
-                color: calculateLuminance(theme.primaryColor),
-              ),
-            );
-          }),
+          IconButton(
+            onPressed: controller.sortBooks,
+            icon: Icon(
+              Icons.swap_vert_rounded,
+              color: calculateLuminance(theme.primaryColor),
+            ),
+          ),
           HGap.sr,
         ],
       ),
@@ -101,7 +99,7 @@ class BooksPage extends StatelessWidget {
           Expanded(
             child: RefreshIndicator(
               onRefresh: controller.onInit,
-              child: Obx(() {
+              child: GetBuilder<BooksController>(builder: (_) {
                 final books = controller.books.value;
                 final _ = controller.isLoadedMore.value;
                 if (books == null) {

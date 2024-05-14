@@ -124,6 +124,7 @@ class BooksController extends GetxController {
   }
 
   void changeCategory(KatalogBukuPerpustakaan? category) {
+    if (this.category.value == category) return;
     this.category.value = category;
     search(textController.text);
   }

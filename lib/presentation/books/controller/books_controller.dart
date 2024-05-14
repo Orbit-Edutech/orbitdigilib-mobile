@@ -57,6 +57,18 @@ class BooksController extends GetxController {
     isOnSearch.value = !isOnSearch.value;
   }
 
+  void sortBooks() {
+    books.value?.sort((a, b) {
+      final hargaSewaTerendah = (a.buku?.hargaSewa ?? 0);
+      final hargaSewaTertinggi = (b.buku?.hargaSewa ?? 0);
+      return isReversed.value
+          ? hargaSewaTerendah.compareTo(hargaSewaTertinggi)
+          : hargaSewaTertinggi.compareTo(hargaSewaTerendah);
+    });
+    isReversed.value = !isReversed.value;
+    update();
+  }
+
   Future<void> search(String keyword) async {
     if (_timer?.isActive ?? false) _timer?.cancel();
     _timer = Timer(Duration(milliseconds: keyword.isEmpty ? 0 : 250), () async {

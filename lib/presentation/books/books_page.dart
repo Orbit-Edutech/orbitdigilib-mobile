@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
@@ -44,12 +45,19 @@ class BooksPage extends StatelessWidget {
           Obx(() {
             final categories = controller.categories.value;
             if (categories == null) return const SizedBox();
-            return Row(children: [
-              IconButton(
-                onPressed: controller.showFilter,
-                icon: SvgPicture.asset("assets/icons/filter.svg"),
+            return IconButton(
+              onPressed: controller.showFilter,
+              icon: SvgPicture.asset("assets/icons/filter.svg"),
+            );
+          }),
+          GetBuilder<BooksController>(builder: (_) {
+            return IconButton(
+              onPressed: controller.sortBooks,
+              icon: Icon(
+                Icons.swap_vert_rounded,
+                color: calculateLuminance(theme.primaryColor),
               ),
-            ]);
+            );
           }),
           HGap.sr,
         ],
@@ -110,7 +118,10 @@ class BooksPage extends StatelessWidget {
                     },
                   );
                 } else if (books.isEmpty) {
-                  return const EmptyList(description: "Buku yang Anda cari tidak ada");
+                  return const Padding(
+                    padding: EdgeInsets.all(Sizes.m),
+                    child: EmptyList(description: "Buku yang Anda cari tidak ada"),
+                  );
                 }
                 return AlignedGridView.count(
                   controller: controller.scrollController,

@@ -51,13 +51,15 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
           });
         });
       } else {
-        setState(() {
-          isWishlist = wishlistController.wishlist.value?.firstWhereOrNull((wishlist) {
-                final result = wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id;
-                return result;
-              }) !=
-              null;
-        });
+        if (mounted) {
+          setState(() {
+            isWishlist = wishlistController.wishlist.value?.firstWhereOrNull((wishlist) {
+                  final result = wishlist.bukuPerpustakaan?.id == widget.bukuPerpustakaan.id;
+                  return result;
+                }) !=
+                null;
+          });
+        }
       }
     });
     super.initState();

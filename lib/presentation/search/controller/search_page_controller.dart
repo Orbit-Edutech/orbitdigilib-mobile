@@ -42,7 +42,7 @@ class SearchPageController extends GetxController {
 
   Future<void> search(String keyword) async {
     if (_timer?.isActive ?? false) _timer?.cancel();
-    _timer = Timer(const Duration(milliseconds: 500), () async {
+    _timer = Timer(const Duration(milliseconds: 250), () async {
       Map<String, dynamic> qp = {};
       if (keyword.trim().isNotEmpty) {
         qp["buku[judul][lke]"] = keyword;

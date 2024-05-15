@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../api/api_client.dart';
 import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
@@ -32,6 +33,7 @@ class IndexController extends GetxController {
   Rx<bool> isLoadedMore = false.obs;
   Rx<int> promoPage = 1.obs;
   final scrollController = ScrollController();
+  final persistentController = PersistentTabController();
 
   @override
   Future onInit() async {
@@ -43,7 +45,9 @@ class IndexController extends GetxController {
       if (res.data != null) {
         final banners = <String>[];
         for (var banner in res.data!.listBanner!) {
-          banners.add(banner.id!);
+          if (!this.banners.value.contains(banner.id)) {
+            banners.add(banner.id!);
+          }
         }
         this.banners.value = banners;
       } else {
@@ -60,7 +64,9 @@ class IndexController extends GetxController {
           perpustakaan.value = res.data;
           final banners = this.banners.value;
           for (var banner in perpustakaan.value!.banner!) {
-            banners.add(banner.id!);
+            if (!this.banners.value.contains(banner.id)) {
+              banners.add(banner.id!);
+            }
           }
           this.banners.value = banners;
           AppTheme.changePerpusTheme(perpustakaan.value!.warnaDasar);

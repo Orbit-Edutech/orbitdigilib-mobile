@@ -13,7 +13,7 @@ class Perpustakaan {
   final String? email;
   final String? namaPic;
   final String? contactPersonPic;
-  final dynamic nomorIndukSekolah;
+  final String? npsn;
   final AssetLogo? assetLogo;
   final List<Banner>? banner;
   final bool? isAktif;
@@ -32,7 +32,7 @@ class Perpustakaan {
     this.email,
     this.namaPic,
     this.contactPersonPic,
-    this.nomorIndukSekolah,
+    this.npsn,
     this.assetLogo,
     this.banner,
     this.isAktif,
@@ -52,7 +52,7 @@ class Perpustakaan {
     String? email,
     String? namaPic,
     String? contactPersonPic,
-    dynamic nomorIndukSekolah,
+    String? npsn,
     AssetLogo? assetLogo,
     List<Banner>? banner,
     bool? isAktif,
@@ -71,7 +71,7 @@ class Perpustakaan {
         email: email ?? this.email,
         namaPic: namaPic ?? this.namaPic,
         contactPersonPic: contactPersonPic ?? this.contactPersonPic,
-        nomorIndukSekolah: nomorIndukSekolah ?? this.nomorIndukSekolah,
+        npsn: npsn ?? this.npsn,
         assetLogo: assetLogo ?? this.assetLogo,
         banner: banner ?? this.banner,
         isAktif: isAktif ?? this.isAktif,
@@ -95,7 +95,7 @@ class Perpustakaan {
         email: json["email"],
         namaPic: json["namaPIC"],
         contactPersonPic: json["contactPersonPIC"],
-        nomorIndukSekolah: json["nomorIndukSekolah"],
+        npsn: json["NPSN"],
         assetLogo: json["assetLogo"] == null ? null : AssetLogo.fromJson(json["assetLogo"]),
         banner: json["banner"] == null ? [] : List<Banner>.from(json["banner"]!.map((x) => Banner.fromJson(x))),
         isAktif: json["isAktif"],
@@ -115,7 +115,7 @@ class Perpustakaan {
         "email": email,
         "namaPIC": namaPic,
         "contactPersonPIC": contactPersonPic,
-        "nomorIndukSekolah": nomorIndukSekolah,
+        "NPSN": npsn,
         "assetLogo": assetLogo?.toJson(),
         "banner": banner == null ? [] : List<dynamic>.from(banner!.map((x) => x.toJson())),
         "isAktif": isAktif,
@@ -125,47 +125,35 @@ class Perpustakaan {
 
 class Alamat {
   final String? detailAlamat;
-  final dynamic dusun;
-  final dynamic kelurahan;
-  final dynamic kecamatan;
-  final dynamic kabupatenKota;
-  final dynamic provinsi;
-  final dynamic rt;
-  final dynamic rw;
-  final dynamic kodePos;
+  final String? kelurahan;
+  final String? kecamatan;
+  final String? kabupatenKota;
+  final String? provinsi;
+  final String? kodePos;
 
   Alamat({
     this.detailAlamat,
-    this.dusun,
     this.kelurahan,
     this.kecamatan,
     this.kabupatenKota,
     this.provinsi,
-    this.rt,
-    this.rw,
     this.kodePos,
   });
 
   Alamat copyWith({
     String? detailAlamat,
-    dynamic dusun,
-    dynamic kelurahan,
-    dynamic kecamatan,
-    dynamic kabupatenKota,
-    dynamic provinsi,
-    dynamic rt,
-    dynamic rw,
-    dynamic kodePos,
+    String? kelurahan,
+    String? kecamatan,
+    String? kabupatenKota,
+    String? provinsi,
+    String? kodePos,
   }) =>
       Alamat(
         detailAlamat: detailAlamat ?? this.detailAlamat,
-        dusun: dusun ?? this.dusun,
         kelurahan: kelurahan ?? this.kelurahan,
         kecamatan: kecamatan ?? this.kecamatan,
         kabupatenKota: kabupatenKota ?? this.kabupatenKota,
         provinsi: provinsi ?? this.provinsi,
-        rt: rt ?? this.rt,
-        rw: rw ?? this.rw,
         kodePos: kodePos ?? this.kodePos,
       );
 
@@ -175,25 +163,19 @@ class Alamat {
 
   factory Alamat.fromJson(Map<String, dynamic> json) => Alamat(
         detailAlamat: json["detailAlamat"],
-        dusun: json["dusun"],
         kelurahan: json["kelurahan"],
         kecamatan: json["kecamatan"],
         kabupatenKota: json["kabupatenKota"],
         provinsi: json["provinsi"],
-        rt: json["rt"],
-        rw: json["rw"],
         kodePos: json["kodePos"],
       );
 
   Map<String, dynamic> toJson() => {
         "detailAlamat": detailAlamat,
-        "dusun": dusun,
         "kelurahan": kelurahan,
         "kecamatan": kecamatan,
         "kabupatenKota": kabupatenKota,
         "provinsi": provinsi,
-        "rt": rt,
-        "rw": rw,
         "kodePos": kodePos,
       };
 }

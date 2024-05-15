@@ -28,7 +28,6 @@ dependencies:
   syncfusion_flutter_core: ^24.1.45
   path: ^1.8.3
   url_launcher: ^6.2.4
-  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -57,10 +56,10 @@ flutter:
   #         weight: 700
 
 flutter_launcher_icons:
-  android: true
+  android: false # ganti ke true jika ingin modifikasi android app icon
   ios: true
   min_sdk_android: 19
   remove_alpha_ios: true
-  image_path: "assets/logo/orbit-digilib-logo-o.png"
-  # adaptive_icon_foreground: "assets/logo/orbit-digilib-logo-o.png"
-  # adaptive_icon_background: "assets/logo/orbit-digilib-logo-o.png"
+  image_path: "assets/logo/orbit-digilib-logo-o-white.png"
+  adaptive_icon_foreground: "assets/logo/orbit-digilib-logo-o-foreground.png"
+  adaptive_icon_background: "assets/logo/orbit-digilib-logo-o-background.png"

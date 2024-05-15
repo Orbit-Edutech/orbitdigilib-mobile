@@ -6,9 +6,12 @@ import 'package:get/instance_manager.dart';
 import '../../api/koleksi/model/model_koleksi.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
+import '../../shared/widget/app_textfield.dart';
 import '../../shared/widget/book_card_skeleton.dart';
 import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
+import '../../theme/app_text_stlye.dart';
+import '../../utils/compute_luminance.dart';
 import 'controller/collection_controller.dart';
 import 'widgets/collection_book_card.dart';
 import 'widgets/collection_filter.dart';
@@ -19,14 +22,59 @@ class CollectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CollectionController>();
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Koleksi Saya"),
+        actions: [
+          IconButton(
+            onPressed: controller.onSearch,
+            icon: Icon(
+              Icons.search,
+              color: calculateLuminance(theme.primaryColor),
+            ),
+          ),
+          HGap.sr,
+        ],
       ),
       body: Column(
         children: [
-          VGap.m,
+          VGap.r,
           const CollectionFilter(),
+          Obx(() {
+            return Column(
+              children: [
+                if (controller.isOnSearch.value) ...[
+                  VGap.r,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
+                    child: AppTextField(
+                      type: TextFieldType.rounded,
+                      controller: controller.textController,
+                      focusNode: controller.searchFocusNode,
+                      onTapOutside: (_) => controller.searchFocusNode.unfocus(),
+                      onChanged: controller.search,
+                      isError: false,
+                      autoFocus: true,
+                      suffix: IconButton(
+                        onPressed: () {
+                          if (controller.textController.text.isNotEmpty) controller.search("");
+                          controller.textController.clear();
+                        },
+                        icon: const Icon(Icons.close_rounded),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
+                      label: Text(
+                        "Pencarian...",
+                        style: AppTextStyle.ts18Reg.copyWith(color: AppColor.lightGrey),
+                      ),
+                    ),
+                  ),
+                  VGap.s,
+                ],
+              ],
+            );
+          }),
           VGap.s,
           Expanded(
             child: RefreshIndicator(

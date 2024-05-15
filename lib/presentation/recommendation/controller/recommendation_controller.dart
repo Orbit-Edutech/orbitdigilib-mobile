@@ -33,7 +33,7 @@ class RecommendationController extends GetxController {
 
   void onSearch(String keyword) {
     if (_timer?.isActive ?? false) _timer?.cancel();
-    _timer = Timer(const Duration(milliseconds: 500), () async {
+    _timer = Timer(const Duration(milliseconds: 250), () async {
       books.value = null;
       Map<String, dynamic> qp = {};
       qp["isPin"] = true;

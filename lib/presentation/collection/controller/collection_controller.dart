@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -20,19 +23,51 @@ class CollectionController extends GetxController {
 
   Rx<List<Payload>?> collections = Rx<List<Payload>?>(null);
   Rx<List<ModelBukuSql>?> localBooks = Rx<List<ModelBukuSql>?>(null);
+  CancelToken cancelToken = CancelToken();
 
   final profileController = Get.find<ProfileController>();
+  final textController = TextEditingController();
+  final searchFocusNode = FocusNode();
 
   Rx<int> page = 1.obs;
   Rx<String> filter = "Semua Koleksi".obs;
   final scrollController = ScrollController();
   Rx<bool> isLoadedMore = false.obs;
+  Rx<bool> isOnSearch = false.obs;
+  Timer? _timer;
 
   @override
   Future<void> onInit() async {
     await loadCollections(filter.value != "Semua Koleksi" ? filter.value : null);
     scrollController.addListener(loadMore);
     super.onInit();
+  }
+
+  void search(String keyword) {
+    if (_timer?.isActive ?? false) _timer?.cancel();
+    _timer = Timer(Duration(milliseconds: keyword.isEmpty ? 0 : 250), () async {
+      collections.value = null;
+      Map<String, dynamic> qp = {};
+      if (keyword.trim().isNotEmpty) {
+        qp["buku[judul][lke]"] = keyword;
+      }
+      if (filter.value != "Semua Koleksi") {
+        qp["tipe"] = filter.value;
+      }
+      cancelToken.cancel();
+      cancelToken = CancelToken();
+      final response = await getCollections(qp, cancelToken);
+      if (response.data != null) {
+        collections.value = response.data?.payload;
+        await synchronizeData(collections.value!);
+        page.value = 2;
+      }
+      update();
+    });
+  }
+
+  void onSearch() {
+    isOnSearch.value = !isOnSearch.value;
   }
 
   Future<void> loadCollections([String? filter]) async {

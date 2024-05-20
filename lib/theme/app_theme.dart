@@ -49,6 +49,12 @@ class AppTheme {
 
   static PerpusColor getPerpusColor(String color) {
     switch (color) {
+      case "Grab":
+        return PerpusColor(seed: AppColor.grabColors, primary: AppColor.grabColors.shade500);
+      case "Garuda":
+        return PerpusColor(seed: AppColor.garudaColors, primary: AppColor.garudaColors.shade500);
+      case "Blue Bird":
+        return PerpusColor(seed: AppColor.blueBirdColors, primary: AppColor.blueBirdColors.shade500);
       case "Pink":
         return PerpusColor(seed: Colors.pink, primary: Colors.pink.shade500);
       case "Red":

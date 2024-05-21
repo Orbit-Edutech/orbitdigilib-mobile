@@ -32,10 +32,12 @@ class BookCover extends StatelessWidget {
                 ),
           borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
         ),
-        child: const Text(
-          "Sampul Kosong",
-          textAlign: TextAlign.center,
-        ),
+        child: book?.assetSampulId == null
+            ? const Text(
+                "Sampul Kosong",
+                textAlign: TextAlign.center,
+              )
+            : null,
       ),
     );
   }

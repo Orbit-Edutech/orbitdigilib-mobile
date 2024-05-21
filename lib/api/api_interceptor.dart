@@ -41,7 +41,13 @@ class APIInterceptor extends InterceptorsWrapper {
     final isAccesExpired = message == "Akses token expired";
     final isRefreshExpired = message.contains("Waktu login sudah habis");
     final isPasswordChanged = message.contains("mengubah password");
-    if (isAccesExpired) {
+    final isAccessTokenEmpty = tokens.access.toString().isEmpty || tokens.access == null;
+    final isRefreshTokenEmpty = tokens.access.toString().isEmpty || tokens.access == null;
+    final isTokensEmpty = isAccessTokenEmpty || isRefreshTokenEmpty;
+    if (isRefreshExpired || isPasswordChanged || isTokensEmpty) {
+      if (Get.currentRoute != AppRoutes.authLibrary) Get.offAllNamed(AppRoutes.authLibrary);
+      return super.onError(err, handler);
+    } else if (isAccesExpired) {
       try {
         await refreshAccessToken();
         err.requestOptions.headers["Authorization"] = "Bearer ${tokens.access}";
@@ -56,9 +62,6 @@ class APIInterceptor extends InterceptorsWrapper {
       } on DioException catch (e) {
         return super.onError(e, handler);
       }
-    } else if (isRefreshExpired || isPasswordChanged) {
-      Get.offAllNamed(AppRoutes.authLibrary);
-      return super.onError(err, handler);
     } else {
       return super.onError(err, handler);
     }

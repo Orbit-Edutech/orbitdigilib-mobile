@@ -23,22 +23,27 @@ class SplashController extends GetxController {
     buttonState.value = ButtonState.loading;
     await Future.delayed(const Duration(seconds: 1));
     final response = await authValidate();
-    if (response.data != null) {
-      validate = response.data;
-      final isUpdateAvailable = checkUpdateStatus();
-      final color = await SharedPreferencesManager.readPref<String>("color");
-      await AppTheme.changePerpusTheme(color);
-      Get.offAllNamed(isUpdateAvailable ? AppRoutes.update : AppRoutes.navigator);
+    final isUpdateAvailable = checkUpdateStatus();
+    if (isUpdateAvailable) {
+      Get.offAllNamed(AppRoutes.update);
     } else {
-      if (response.error == ResponseStatus.connectionError) {
-        Get.dialog(
-          const SplashErrorDialog(),
-          barrierDismissible: false,
-        );
+      if (response.data != null) {
+        validate = response.data;
+        final color = await SharedPreferencesManager.readPref<String>("color");
+        await AppTheme.changePerpusTheme(color);
+        Get.offAllNamed(AppRoutes.navigator);
       } else {
-        Get.offAllNamed(AppRoutes.authLibrary);
+        if (response.error == ResponseStatus.connectionError) {
+          Get.dialog(
+            const SplashErrorDialog(),
+            barrierDismissible: false,
+          );
+        } else {
+          Get.offAllNamed(AppRoutes.authLibrary);
+        }
       }
     }
+
     super.onInit();
   }
 

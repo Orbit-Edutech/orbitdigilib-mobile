@@ -8,6 +8,7 @@ import '../../constants/gaps.dart';
 import '../../routes/app_routes.dart';
 import '../../shared/widget/app_button.dart';
 import '../../utils/launch_url.dart';
+import '../../utils/shared_preferences_manager.dart';
 
 class UpdatePage extends StatelessWidget {
   const UpdatePage({super.key});
@@ -39,7 +40,10 @@ class UpdatePage extends StatelessWidget {
               VGap.s,
               AppButton(
                 type: ButtonType.outlined,
-                onPressed: () => Get.offAllNamed(AppRoutes.navigator),
+                onPressed: () async {
+                  final isLogin = await SharedPreferencesManager.readPref("isLogin");
+                  Get.offAllNamed(isLogin ? AppRoutes.navigator : AppRoutes.authLibrary);
+                },
                 child: const Text("Perbarui Nanti"),
               ),
             ],

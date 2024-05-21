@@ -35,7 +35,7 @@ class WishlistPage extends StatelessWidget {
             HGap.s,
             Expanded(
               child: Text(
-                "Perpustakaan Orbit",
+                "Wishlist",
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyle.ts18Bold,
               ),

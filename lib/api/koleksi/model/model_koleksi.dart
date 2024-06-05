@@ -7,7 +7,7 @@ class ModelKoleksi {
   final int? totalPage;
   final int? currentPage;
   final int? lastPage;
-  final dynamic nextPage;
+  final int? nextPage;
   final dynamic previousPage;
   final List<Payload>? payload;
 
@@ -30,7 +30,7 @@ class ModelKoleksi {
     int? totalPage,
     int? currentPage,
     int? lastPage,
-    dynamic nextPage,
+    int? nextPage,
     dynamic previousPage,
     List<Payload>? payload,
   }) =>
@@ -147,15 +147,18 @@ class Buku {
   final int? jumlahHalaman;
   final String? tahunTerbit;
   final String? isbn;
-  final dynamic eIsbn;
-  final dynamic ilustrator;
+  final String? eIsbn;
+  final String? ilustrator;
   final String? penulis;
   final int? hargaBeli;
   final int? hargaSewa;
   final String? assetSampulId;
+  final String? namaPenerbitReal;
+  final bool? peringatan;
+  final dynamic keterangan;
   final Kategori? kategori;
   final Penerbit? penerbit;
-  final dynamic promo;
+  final Promo? promo;
 
   Buku({
     this.id,
@@ -172,6 +175,9 @@ class Buku {
     this.hargaBeli,
     this.hargaSewa,
     this.assetSampulId,
+    this.namaPenerbitReal,
+    this.peringatan,
+    this.keterangan,
     this.kategori,
     this.penerbit,
     this.promo,
@@ -186,15 +192,18 @@ class Buku {
     int? jumlahHalaman,
     String? tahunTerbit,
     String? isbn,
-    dynamic eIsbn,
-    dynamic ilustrator,
+    String? eIsbn,
+    String? ilustrator,
     String? penulis,
     int? hargaBeli,
     int? hargaSewa,
     String? assetSampulId,
+    String? namaPenerbitReal,
+    bool? peringatan,
+    dynamic keterangan,
     Kategori? kategori,
     Penerbit? penerbit,
-    dynamic promo,
+    Promo? promo,
   }) =>
       Buku(
         id: id ?? this.id,
@@ -211,6 +220,9 @@ class Buku {
         hargaBeli: hargaBeli ?? this.hargaBeli,
         hargaSewa: hargaSewa ?? this.hargaSewa,
         assetSampulId: assetSampulId ?? this.assetSampulId,
+        namaPenerbitReal: namaPenerbitReal ?? this.namaPenerbitReal,
+        peringatan: peringatan ?? this.peringatan,
+        keterangan: keterangan ?? this.keterangan,
         kategori: kategori ?? this.kategori,
         penerbit: penerbit ?? this.penerbit,
         promo: promo ?? this.promo,
@@ -235,9 +247,12 @@ class Buku {
         hargaBeli: json["hargaBeli"],
         hargaSewa: json["hargaSewa"],
         assetSampulId: json["assetSampulId"],
+        namaPenerbitReal: json["namaPenerbitReal"],
+        peringatan: json["peringatan"],
+        keterangan: json["keterangan"],
         kategori: json["kategori"] == null ? null : Kategori.fromJson(json["kategori"]),
         penerbit: json["penerbit"] == null ? null : Penerbit.fromJson(json["penerbit"]),
-        promo: json["promo"],
+        promo: json["promo"] == null ? null : Promo.fromJson(json["promo"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -255,9 +270,12 @@ class Buku {
         "hargaBeli": hargaBeli,
         "hargaSewa": hargaSewa,
         "assetSampulId": assetSampulId,
+        "namaPenerbitReal": namaPenerbitReal,
+        "peringatan": peringatan,
+        "keterangan": keterangan,
         "kategori": kategori?.toJson(),
         "penerbit": penerbit?.toJson(),
-        "promo": promo,
+        "promo": promo?.toJson(),
       };
 }
 
@@ -266,12 +284,14 @@ class Kategori {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? nama;
+  final dynamic deletedAt;
 
   Kategori({
     this.id,
     this.createdAt,
     this.updatedAt,
     this.nama,
+    this.deletedAt,
   });
 
   Kategori copyWith({
@@ -279,12 +299,14 @@ class Kategori {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? nama,
+    dynamic deletedAt,
   }) =>
       Kategori(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         nama: nama ?? this.nama,
+        deletedAt: deletedAt ?? this.deletedAt,
       );
 
   factory Kategori.fromRawJson(String str) => Kategori.fromJson(json.decode(str));
@@ -296,6 +318,7 @@ class Kategori {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         nama: json["nama"],
+        deletedAt: json["deletedAt"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -303,6 +326,7 @@ class Kategori {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "nama": nama,
+        "deletedAt": deletedAt,
       };
 }
 
@@ -313,11 +337,11 @@ class Penerbit {
   final String? nama;
   final String? kode;
   final String? noTelepon;
-  final String? deskripsi;
+  final dynamic deskripsi;
   final String? email;
   final String? namaPic;
   final String? contactPersonPic;
-  final dynamic tahunBerdiri;
+  final String? tahunBerdiri;
 
   Penerbit({
     this.id,
@@ -340,11 +364,11 @@ class Penerbit {
     String? nama,
     String? kode,
     String? noTelepon,
-    String? deskripsi,
+    dynamic deskripsi,
     String? email,
     String? namaPic,
     String? contactPersonPic,
-    dynamic tahunBerdiri,
+    String? tahunBerdiri,
   }) =>
       Penerbit(
         id: id ?? this.id,
@@ -390,5 +414,68 @@ class Penerbit {
         "namaPIC": namaPic,
         "contactPersonPIC": contactPersonPic,
         "tahunBerdiri": tahunBerdiri,
+      };
+}
+
+class Promo {
+  final String? id;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final DateTime? mulaiPromo;
+  final DateTime? batasPromo;
+  final String? tipe;
+  final int? jumlah;
+
+  Promo({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.mulaiPromo,
+    this.batasPromo,
+    this.tipe,
+    this.jumlah,
+  });
+
+  Promo copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    DateTime? mulaiPromo,
+    DateTime? batasPromo,
+    String? tipe,
+    int? jumlah,
+  }) =>
+      Promo(
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        mulaiPromo: mulaiPromo ?? this.mulaiPromo,
+        batasPromo: batasPromo ?? this.batasPromo,
+        tipe: tipe ?? this.tipe,
+        jumlah: jumlah ?? this.jumlah,
+      );
+
+  factory Promo.fromRawJson(String str) => Promo.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Promo.fromJson(Map<String, dynamic> json) => Promo(
+        id: json["id"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        mulaiPromo: json["mulaiPromo"] == null ? null : DateTime.parse(json["mulaiPromo"]),
+        batasPromo: json["batasPromo"] == null ? null : DateTime.parse(json["batasPromo"]),
+        tipe: json["tipe"],
+        jumlah: json["jumlah"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "mulaiPromo": mulaiPromo?.toIso8601String(),
+        "batasPromo": batasPromo?.toIso8601String(),
+        "tipe": tipe,
+        "jumlah": jumlah,
       };
 }

@@ -12,7 +12,9 @@ class ModelBuku {
   final int? hargaBeli;
   final int? hargaSewa;
   final String? assetSampulId;
-  final dynamic namaPenerbitReal;
+  final String? namaPenerbitReal;
+  final bool? peringatan;
+  final dynamic keterangan;
   final Bahasa? bahasa;
   final Kategori? kategori;
   final Penerbit? penerbit;
@@ -35,6 +37,8 @@ class ModelBuku {
     this.hargaSewa,
     this.assetSampulId,
     this.namaPenerbitReal,
+    this.peringatan,
+    this.keterangan,
     this.bahasa,
     this.kategori,
     this.penerbit,
@@ -57,7 +61,9 @@ class ModelBuku {
     int? hargaBeli,
     int? hargaSewa,
     String? assetSampulId,
-    dynamic namaPenerbitReal,
+    String? namaPenerbitReal,
+    bool? peringatan,
+    dynamic keterangan,
     Bahasa? bahasa,
     Kategori? kategori,
     Penerbit? penerbit,
@@ -80,6 +86,8 @@ class ModelBuku {
         hargaSewa: hargaSewa ?? this.hargaSewa,
         assetSampulId: assetSampulId ?? this.assetSampulId,
         namaPenerbitReal: namaPenerbitReal ?? this.namaPenerbitReal,
+        peringatan: peringatan ?? this.peringatan,
+        keterangan: keterangan ?? this.keterangan,
         bahasa: bahasa ?? this.bahasa,
         kategori: kategori ?? this.kategori,
         penerbit: penerbit ?? this.penerbit,
@@ -107,6 +115,8 @@ class ModelBuku {
         hargaSewa: json["hargaSewa"],
         assetSampulId: json["assetSampulId"],
         namaPenerbitReal: json["namaPenerbitReal"],
+        peringatan: json["peringatan"],
+        keterangan: json["keterangan"],
         bahasa: json["bahasa"] == null ? null : Bahasa.fromJson(json["bahasa"]),
         kategori: json["kategori"] == null ? null : Kategori.fromJson(json["kategori"]),
         penerbit: json["penerbit"] == null ? null : Penerbit.fromJson(json["penerbit"]),
@@ -130,6 +140,8 @@ class ModelBuku {
         "hargaSewa": hargaSewa,
         "assetSampulId": assetSampulId,
         "namaPenerbitReal": namaPenerbitReal,
+        "peringatan": peringatan,
+        "keterangan": keterangan,
         "bahasa": bahasa?.toJson(),
         "kategori": kategori?.toJson(),
         "penerbit": penerbit?.toJson(),
@@ -328,6 +340,7 @@ class Promo {
   final String? id;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final DateTime? mulaiPromo;
   final DateTime? batasPromo;
   final String? tipe;
   final int? jumlah;
@@ -336,6 +349,7 @@ class Promo {
     this.id,
     this.createdAt,
     this.updatedAt,
+    this.mulaiPromo,
     this.batasPromo,
     this.tipe,
     this.jumlah,
@@ -345,6 +359,7 @@ class Promo {
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
+    DateTime? mulaiPromo,
     DateTime? batasPromo,
     String? tipe,
     int? jumlah,
@@ -353,6 +368,7 @@ class Promo {
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        mulaiPromo: mulaiPromo ?? this.mulaiPromo,
         batasPromo: batasPromo ?? this.batasPromo,
         tipe: tipe ?? this.tipe,
         jumlah: jumlah ?? this.jumlah,
@@ -366,6 +382,7 @@ class Promo {
         id: json["id"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        mulaiPromo: json["mulaiPromo"] == null ? null : DateTime.parse(json["mulaiPromo"]),
         batasPromo: json["batasPromo"] == null ? null : DateTime.parse(json["batasPromo"]),
         tipe: json["tipe"],
         jumlah: json["jumlah"],
@@ -375,6 +392,7 @@ class Promo {
         "id": id,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
+        "mulaiPromo": mulaiPromo?.toIso8601String(),
         "batasPromo": batasPromo?.toIso8601String(),
         "tipe": tipe,
         "jumlah": jumlah,

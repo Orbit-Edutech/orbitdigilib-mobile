@@ -21,6 +21,7 @@ class HighlightPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<IndexController>();
     final size = MediaQuery.of(context).size;
+    final isWide = size.width >= 600;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sorotan"),
@@ -62,7 +63,7 @@ class HighlightPage extends StatelessWidget {
               if (promoBooks?.isNotEmpty ?? false) ...[
                 AlignedGridView.count(
                   shrinkWrap: true,
-                  crossAxisCount: 2,
+                  crossAxisCount: isWide ? 4 : 2,
                   itemCount: promoBooks?.length,
                   mainAxisSpacing: Sizes.r,
                   crossAxisSpacing: Sizes.r,

@@ -53,7 +53,7 @@ class FAQPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
                           "Menemukan kendala perihal Aplikasi Orbit Digilib?",
@@ -81,7 +81,7 @@ class FAQPage extends StatelessWidget {
                     ),
                     VGap.s,
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
                           "Buku yang Anda cari tidak ada?",

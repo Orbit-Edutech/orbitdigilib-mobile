@@ -7,7 +7,7 @@ class ModelAllBukuPerpustakaan {
   final int? totalPage;
   final int? currentPage;
   final int? lastPage;
-  final dynamic nextPage;
+  final int? nextPage;
   final dynamic previousPage;
   final List<Payload>? payload;
 
@@ -30,7 +30,7 @@ class ModelAllBukuPerpustakaan {
     int? totalPage,
     int? currentPage,
     int? lastPage,
-    dynamic nextPage,
+    int? nextPage,
     dynamic previousPage,
     List<Payload>? payload,
   }) =>
@@ -169,6 +169,8 @@ class Buku {
   final int? hargaSewa;
   final String? assetSampulId;
   final dynamic namaPenerbitReal;
+  final bool? peringatan;
+  final dynamic keterangan;
   final Bahasa? bahasa;
   final Penerbit? penerbit;
   final Promo? promo;
@@ -190,6 +192,8 @@ class Buku {
     this.hargaSewa,
     this.assetSampulId,
     this.namaPenerbitReal,
+    this.peringatan,
+    this.keterangan,
     this.bahasa,
     this.penerbit,
     this.promo,
@@ -212,6 +216,8 @@ class Buku {
     int? hargaSewa,
     String? assetSampulId,
     dynamic namaPenerbitReal,
+    bool? peringatan,
+    dynamic keterangan,
     Bahasa? bahasa,
     Penerbit? penerbit,
     Promo? promo,
@@ -233,6 +239,8 @@ class Buku {
         hargaSewa: hargaSewa ?? this.hargaSewa,
         assetSampulId: assetSampulId ?? this.assetSampulId,
         namaPenerbitReal: namaPenerbitReal ?? this.namaPenerbitReal,
+        peringatan: peringatan ?? this.peringatan,
+        keterangan: keterangan ?? this.keterangan,
         bahasa: bahasa ?? this.bahasa,
         penerbit: penerbit ?? this.penerbit,
         promo: promo ?? this.promo,
@@ -259,6 +267,8 @@ class Buku {
         hargaSewa: json["hargaSewa"],
         assetSampulId: json["assetSampulId"],
         namaPenerbitReal: json["namaPenerbitReal"],
+        peringatan: json["peringatan"],
+        keterangan: json["keterangan"],
         bahasa: json["bahasa"] == null ? null : Bahasa.fromJson(json["bahasa"]),
         penerbit: json["penerbit"] == null ? null : Penerbit.fromJson(json["penerbit"]),
         promo: json["promo"] == null ? null : Promo.fromJson(json["promo"]),
@@ -281,6 +291,8 @@ class Buku {
         "hargaSewa": hargaSewa,
         "assetSampulId": assetSampulId,
         "namaPenerbitReal": namaPenerbitReal,
+        "peringatan": peringatan,
+        "keterangan": keterangan,
         "bahasa": bahasa?.toJson(),
         "penerbit": penerbit?.toJson(),
         "promo": promo?.toJson(),
@@ -427,6 +439,7 @@ class Promo {
   final String? id;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final DateTime? mulaiPromo;
   final DateTime? batasPromo;
   final String? tipe;
   final int? jumlah;
@@ -435,6 +448,7 @@ class Promo {
     this.id,
     this.createdAt,
     this.updatedAt,
+    this.mulaiPromo,
     this.batasPromo,
     this.tipe,
     this.jumlah,
@@ -444,6 +458,7 @@ class Promo {
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
+    DateTime? mulaiPromo,
     DateTime? batasPromo,
     String? tipe,
     int? jumlah,
@@ -452,6 +467,7 @@ class Promo {
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        mulaiPromo: mulaiPromo ?? this.mulaiPromo,
         batasPromo: batasPromo ?? this.batasPromo,
         tipe: tipe ?? this.tipe,
         jumlah: jumlah ?? this.jumlah,
@@ -465,6 +481,7 @@ class Promo {
         id: json["id"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        mulaiPromo: json["mulaiPromo"] == null ? null : DateTime.parse(json["mulaiPromo"]),
         batasPromo: json["batasPromo"] == null ? null : DateTime.parse(json["batasPromo"]),
         tipe: json["tipe"],
         jumlah: json["jumlah"],
@@ -474,6 +491,7 @@ class Promo {
         "id": id,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
+        "mulaiPromo": mulaiPromo?.toIso8601String(),
         "batasPromo": batasPromo?.toIso8601String(),
         "tipe": tipe,
         "jumlah": jumlah,

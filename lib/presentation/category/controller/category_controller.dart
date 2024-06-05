@@ -25,12 +25,12 @@ class CategoryController extends GetxController {
 
   Rx<List<Payload>?> books = Rx<List<Payload>?>(null);
   Rx<List<Payload>?> filteredBooks = Rx<List<Payload>?>(null);
-  final KatalogBukuPerpustakaan category = Get.arguments;
+  Rx<KatalogBukuPerpustakaan> category = (Get.arguments as KatalogBukuPerpustakaan).obs;
 
   @override
   Future<void> onInit() async {
     filteredBooks.value = null;
-    Map<String, dynamic> qp = {"katalogBukuPerpustakaanId": category.id};
+    Map<String, dynamic> qp = {"katalogBukuPerpustakaanId": category.value.id};
     final response = await getAllBukuPerpustakaan(qp);
     if (response.data != null) {
       books.value = response.data!.payload?.where((book) => book.isVisible!).toList();
@@ -62,7 +62,7 @@ class CategoryController extends GetxController {
       books.value = null;
       filteredBooks.value = null;
       Map<String, dynamic> qp = {};
-      qp["katalogBukuPerpustakaanId"] = category.id;
+      qp["katalogBukuPerpustakaanId"] = category.value.id;
       if (keyword.trim().isNotEmpty) qp["buku[judul][lke]"] = keyword;
       cancelToken.cancel();
       cancelToken = CancelToken();
@@ -79,7 +79,7 @@ class CategoryController extends GetxController {
       isLoadedMore.value = true;
       Map<String, dynamic> qp = {};
       final keyword = textController.value.text;
-      qp["katalogBukuPerpustakaanId"] = category.id;
+      qp["katalogBukuPerpustakaanId"] = category.value.id;
       if (keyword.trim().isNotEmpty) qp["buku[judul][lke]"] = keyword;
       qp["page"] = page.value;
       final response = await getAllBukuPerpustakaan(qp);

@@ -4,7 +4,6 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
-import '../../api/katalog-perpus/model/model_katalog_perpus_all.dart' as k;
 import '../../api/wishlist/model/model_wishlist_all.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
@@ -24,17 +23,19 @@ class CategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CategoryController>();
-    final k.KatalogBukuPerpustakaan category = Get.arguments;
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
     final isWide = size.width >= 600;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          category.nama ?? "-",
-          overflow: TextOverflow.ellipsis,
-          style: AppTextStyle.ts18Bold,
-        ),
+        title: Obx(() {
+          final String categoryName = controller.category.value.nama ?? "-";
+          return Text(
+            categoryName,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyle.ts18Bold,
+          );
+        }),
         actions: [
           IconButton(
             onPressed: controller.sort,
@@ -80,6 +81,7 @@ class CategoryPage extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: Sizes.m),
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Obx(() {
+                    final String categoryName = controller.category.value.nama ?? "-";
                     final filteredBooks = controller.filteredBooks.value;
                     final _ = controller.asc.value; // Untuk trigger re-render
                     // ignore: unused_local_variable
@@ -102,7 +104,7 @@ class CategoryPage extends StatelessWidget {
                         children: [
                           VGap.m,
                           EmptyList(
-                            description: "Tidak ada buku di Katalog ${category.nama}",
+                            description: "Tidak ada buku di Katalog $categoryName",
                           ),
                         ],
                       );

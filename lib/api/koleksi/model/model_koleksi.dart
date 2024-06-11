@@ -148,6 +148,7 @@ class Buku {
   final String? tahunTerbit;
   final String? isbn;
   final String? eIsbn;
+  final String? eIssn;
   final String? ilustrator;
   final String? penulis;
   final int? hargaBeli;
@@ -155,7 +156,7 @@ class Buku {
   final String? assetSampulId;
   final String? namaPenerbitReal;
   final bool? peringatan;
-  final dynamic keterangan;
+  final String? keterangan;
   final Kategori? kategori;
   final Penerbit? penerbit;
   final Promo? promo;
@@ -170,6 +171,7 @@ class Buku {
     this.tahunTerbit,
     this.isbn,
     this.eIsbn,
+    this.eIssn,
     this.ilustrator,
     this.penulis,
     this.hargaBeli,
@@ -193,6 +195,7 @@ class Buku {
     String? tahunTerbit,
     String? isbn,
     String? eIsbn,
+    String? eIssn,
     String? ilustrator,
     String? penulis,
     int? hargaBeli,
@@ -200,7 +203,7 @@ class Buku {
     String? assetSampulId,
     String? namaPenerbitReal,
     bool? peringatan,
-    dynamic keterangan,
+    String? keterangan,
     Kategori? kategori,
     Penerbit? penerbit,
     Promo? promo,
@@ -215,6 +218,7 @@ class Buku {
         tahunTerbit: tahunTerbit ?? this.tahunTerbit,
         isbn: isbn ?? this.isbn,
         eIsbn: eIsbn ?? this.eIsbn,
+        eIssn: eIssn ?? this.eIssn,
         ilustrator: ilustrator ?? this.ilustrator,
         penulis: penulis ?? this.penulis,
         hargaBeli: hargaBeli ?? this.hargaBeli,
@@ -242,6 +246,7 @@ class Buku {
         tahunTerbit: json["tahunTerbit"],
         isbn: json["isbn"],
         eIsbn: json["eIsbn"],
+        eIssn: json["eIssn"],
         ilustrator: json["ilustrator"],
         penulis: json["penulis"],
         hargaBeli: json["hargaBeli"],
@@ -265,6 +270,7 @@ class Buku {
         "tahunTerbit": tahunTerbit,
         "isbn": isbn,
         "eIsbn": eIsbn,
+        "eIssn": eIssn,
         "ilustrator": ilustrator,
         "penulis": penulis,
         "hargaBeli": hargaBeli,

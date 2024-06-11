@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/api_path.dart';
@@ -20,7 +21,7 @@ class BookBackgroundBlur extends StatelessWidget {
         image: book?.assetSampulId == null
             ? null
             : DecorationImage(
-                image: NetworkImage(APIPath.publicAsset(book?.assetSampulId ?? '')),
+                image: CachedNetworkImageProvider(APIPath.publicAsset(book?.assetSampulId ?? '')),
                 alignment: Alignment.topCenter,
               ),
       ),

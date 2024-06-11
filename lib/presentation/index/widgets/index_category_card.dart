@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -46,8 +47,8 @@ class IndexCategoryCard extends StatelessWidget {
                   height: 24,
                 )
               else
-                Image.network(
-                  APIPath.publicAsset(path),
+                CachedNetworkImage(
+                  imageUrl: APIPath.publicAsset(path),
                   width: 24,
                   height: 24,
                   color: theme.primaryColor,

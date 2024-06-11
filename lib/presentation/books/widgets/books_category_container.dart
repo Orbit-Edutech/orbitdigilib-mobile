@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -70,8 +71,8 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
                 child: Row(
                   children: [
                     if (widget.category.icon?.id != null) ...[
-                      Image.network(
-                        APIPath.publicAsset(widget.category.icon!.id!),
+                      CachedNetworkImage(
+                        imageUrl: APIPath.publicAsset(widget.category.icon!.id!),
                         color: theme.primaryColor,
                       ),
                     ] else ...[

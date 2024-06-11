@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -50,7 +51,7 @@ class AuthUserPage extends StatelessWidget {
                           borderRadius: const BorderRadius.all(Radius.circular(100)),
                           image: perpustakaan.assetLogo != null
                               ? DecorationImage(
-                                  image: NetworkImage(APIPath.publicAsset(perpustakaan.assetLogo?.id ?? "")),
+                                  image: CachedNetworkImageProvider(APIPath.publicAsset(perpustakaan.assetLogo?.id ?? "")),
                                   fit: BoxFit.cover,
                                 )
                               : null,

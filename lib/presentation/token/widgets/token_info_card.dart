@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/api_path.dart';
@@ -34,7 +35,7 @@ class TokenInfoCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(Sizes.xs)),
                 image: DecorationImage(
-                  image: NetworkImage(APIPath.publicAsset(option.icon?.id ?? "")),
+                  image: CachedNetworkImageProvider(APIPath.publicAsset(option.icon?.id ?? "")),
                   fit: BoxFit.cover,
                 ),
               ),

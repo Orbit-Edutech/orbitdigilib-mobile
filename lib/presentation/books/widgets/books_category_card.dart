@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -48,8 +49,8 @@ class BooksCategoryCard extends StatelessWidget {
                   color: theme.primaryColor,
                 )
               ] else ...[
-                Image.network(
-                  APIPath.publicAsset(category.icon?.id ?? "-"),
+                CachedNetworkImage(
+                  imageUrl: APIPath.publicAsset(category.icon?.id ?? "-"),
                   width: 24,
                   height: 24,
                   color: theme.primaryColor,

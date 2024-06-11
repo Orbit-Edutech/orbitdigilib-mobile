@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/api_path.dart';
@@ -25,7 +26,7 @@ class BookCover extends StatelessWidget {
           image: book?.assetSampulId == null
               ? null
               : DecorationImage(
-                  image: NetworkImage(
+                  image: CachedNetworkImageProvider(
                     APIPath.publicAsset(book?.assetSampulId ?? ""),
                   ),
                   fit: BoxFit.cover,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -75,8 +76,8 @@ class BooksCategoryFilter extends StatelessWidget {
                                   BlendMode.srcIn,
                                 ),
                               ),
-                              Image.network(
-                                APIPath.publicAsset(item.icon?.id ?? "-"),
+                              CachedNetworkImage(
+                                imageUrl: APIPath.publicAsset(item.icon?.id ?? "-"),
                                 width: 24,
                                 height: 24,
                                 color: theme.primaryColor,

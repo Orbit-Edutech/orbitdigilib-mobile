@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/api_path.dart';
@@ -84,7 +85,7 @@ class _LargeBannerState extends State<LargeBanner> {
                     PageView(
                       controller: _pageController,
                       children: widget.banners.map((banner) {
-                        return Image.network(APIPath.publicAsset(banner), fit: BoxFit.contain);
+                        return CachedNetworkImage(imageUrl: APIPath.publicAsset(banner), fit: BoxFit.contain);
                       }).toList(),
                     ),
                     Row(

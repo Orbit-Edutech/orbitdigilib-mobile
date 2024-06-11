@@ -1,3 +1,4 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:carousel_slider/carousel_slider.dart";
 import "package:flutter/material.dart";
 import "package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart";
@@ -47,7 +48,9 @@ class _IndexBannerState extends State<IndexBanner> {
                     color: AppColor.lightGrey,
                     borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
                   ),
-                  child: isEmpty ? const SizedBox() : Image.network(APIPath.publicAsset(banner), fit: BoxFit.cover),
+                  child: isEmpty
+                      ? const SizedBox()
+                      : CachedNetworkImage(imageUrl: APIPath.publicAsset(banner), fit: BoxFit.cover),
                 ),
               );
             }).toList(),

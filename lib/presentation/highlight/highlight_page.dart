@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -45,7 +46,7 @@ class HighlightPage extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(APIPath.publicAsset(banner)),
+                        image: CachedNetworkImageProvider(APIPath.publicAsset(banner)),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),

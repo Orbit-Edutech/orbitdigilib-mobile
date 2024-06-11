@@ -1,3 +1,4 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart";
@@ -46,7 +47,7 @@ class IndexBalance extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: NetworkImage(APIPath.publicAsset(idLogo)),
+                      image: CachedNetworkImageProvider(APIPath.publicAsset(idLogo)),
                       fit: BoxFit.cover,
                     ),
                   ),

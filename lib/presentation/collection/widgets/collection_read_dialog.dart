@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
@@ -66,7 +67,7 @@ class CollectionReadDialog extends StatelessWidget {
                         )
                       else
                         Image(
-                          image: NetworkImage(APIPath.publicAsset(buku?.assetSampulId ?? "")),
+                          image: CachedNetworkImageProvider(APIPath.publicAsset(buku?.assetSampulId ?? "")),
                           fit: BoxFit.cover,
                           width: 75,
                           height: 100,

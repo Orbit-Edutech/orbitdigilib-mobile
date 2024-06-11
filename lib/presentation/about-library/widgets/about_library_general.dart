@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -20,8 +21,8 @@ class AboutLibraryGeneral extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.network(
-            APIPath.publicAsset(perpustakaan.assetLogo?.id ?? "-"),
+          CachedNetworkImage(
+            imageUrl: APIPath.publicAsset(perpustakaan.assetLogo?.id ?? "-"),
             width: size.width / 3,
           ),
           VGap.s,

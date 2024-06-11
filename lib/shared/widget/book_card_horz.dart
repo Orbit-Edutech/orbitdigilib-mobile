@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -61,8 +62,8 @@ class BookCardHorz extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                         )
-                      : Image.network(
-                          APIPath.publicAsset(idSampul!),
+                      : CachedNetworkImage(
+                          imageUrl: APIPath.publicAsset(idSampul!),
                           fit: BoxFit.cover,
                           width: 75,
                         ),

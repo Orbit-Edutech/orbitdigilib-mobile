@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
@@ -77,8 +78,8 @@ class IndexCategoriesModal extends StatelessWidget {
                                 BlendMode.srcIn,
                               ),
                             ),
-                            Image.network(
-                              APIPath.publicAsset(kategori.icon?.id ?? "-"),
+                            CachedNetworkImage(
+                              imageUrl: APIPath.publicAsset(kategori.icon?.id ?? "-"),
                               width: 24,
                               height: 24,
                               color: theme.primaryColor,

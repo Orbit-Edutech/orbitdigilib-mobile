@@ -34,15 +34,18 @@ class SplashController extends GetxController {
         Get.offAllNamed(AppRoutes.navigator);
       } else {
         if (response.error == ResponseStatus.connectionError) {
-          Get.dialog(
-            const SplashErrorDialog(),
-            barrierDismissible: false,
-          );
+          final color = await SharedPreferencesManager.readPref<String>("color");
+          await AppTheme.changePerpusTheme(color);
+          Get.dialog(const SplashErrorDialog(), barrierDismissible: false);
         } else {
           Get.offAllNamed(AppRoutes.authLibrary);
         }
       }
     }
+
+    // final color = await SharedPreferencesManager.readPref<String>("color");
+    // await AppTheme.changePerpusTheme(color);
+    // Get.dialog(const SplashErrorDialog(), barrierDismissible: false);
 
     super.onInit();
   }

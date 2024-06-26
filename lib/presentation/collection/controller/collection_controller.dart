@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -6,12 +7,14 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../api/api_client.dart';
+import '../../../api/api_path.dart';
 import '../../../api/koleksi/data/get_koleksi.dart';
 import '../../../api/koleksi/model/model_koleksi.dart';
 import '../../../shared/widget/show_snackbar.dart';
-// import '../../../sql/books/data/delete_buku_sqlite.dart';
+import '../../../sql/books/data/delete_buku_sqlite.dart';
 import '../../../sql/books/data/get_buku_sqlite.dart';
 import '../../../sql/books/data/insert_buku_sqlite.dart';
 import '../../../sql/books/model/model_buku_sql.dart';
@@ -118,26 +121,44 @@ class CollectionController extends GetxController {
   Future<void> synchronizeData(List<Payload> response) async {
     localBooks.value = await getBukuSQLite(user?.id ?? "");
     final idUser = profileController.profile.value?.id ?? "";
-    for (Payload book in response) {
-      final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (book.buku?.id ?? '-')) != null;
+    for (Payload payload in response) {
+      final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (payload.buku?.id ?? '-')) != null;
       if (!isExist) {
+        final buku = payload.buku;
+        final dir = await getApplicationCacheDirectory();
+        final savePath = "${dir.path}/${payload.buku?.id}.png";
+        await apiClient.download(
+          param: APIParam(
+            path: APIPath.publicAsset(payload.buku?.assetSampulId ?? ''),
+            fromJson: (e) => e,
+          ),
+          savePath: savePath,
+        );
+        final assetSampulPath = File(savePath).path;
         await insertBukuSQLite(
           ModelBukuSql(
-            idBuku: book.buku?.id ?? "",
+            idBuku: buku?.id ?? "",
             idUser: idUser,
             lastPageSeen: 0,
-            totalPages: book.buku?.jumlahHalaman ?? 0,
+            totalPages: buku?.jumlahHalaman ?? 0,
             status: "Belum Dibaca",
-            expired: book.waktuHabis ?? DateTime.now().add(const Duration(days: 7)),
+            expired: payload.waktuHabis ?? DateTime.now().add(const Duration(days: 7)),
+            assetSampulPath: assetSampulPath,
+            assetBukuPath: null,
+            judul: buku?.judul ?? "-",
+            penulis: buku?.penulis ?? "-",
+            tipe: payload.tipe ?? "",
           ),
         );
       }
     }
-    // for (ModelBukuSql lb in localBooks.value ?? []) {
-    //   if (lb.expired.isBefore(DateTime.now())) {
-    //     deleteBukuSQLite(idBuku: lb.idBuku, idUser: idUser);
-    //   }
-    // }
+
+    for (ModelBukuSql lb in localBooks.value ?? []) {
+      if (lb.expired.isBefore(DateTime.now())) {
+        deleteBukuSQLite(idBuku: lb.idBuku, idUser: idUser);
+      }
+    }
+
     localBooks.value = await getBukuSQLite(user?.id ?? "");
   }
 }

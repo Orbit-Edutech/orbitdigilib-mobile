@@ -22,6 +22,10 @@ import '../presentation/navigator/binding/navigator_binding.dart';
 import '../presentation/navigator/navigator_page.dart';
 import '../presentation/notification/binding/notifications_binding.dart';
 import '../presentation/notification/notifications_page.dart';
+import '../presentation/offline-read/binding/offline_read_binding.dart';
+import '../presentation/offline-read/offline_read.dart';
+import '../presentation/offline/binding/offline_binding.dart';
+import '../presentation/offline/offline_page.dart';
 import '../presentation/profile/profile_page.dart';
 import '../presentation/change-password/binding/change_password_binding.dart';
 import '../presentation/change-password/change_password_page.dart';
@@ -42,6 +46,12 @@ import '../presentation/wishlist/wishlist_page.dart';
 class AppRoutes {
   /// /splash
   static const String splash = "/splash";
+
+  /// /offline
+  static const String offline = "/offline";
+
+  /// /offline-read
+  static const String offlineRead = "/offline-read";
 
   /// /update
   static const String update = "/update";
@@ -108,6 +118,20 @@ class AppRoutes {
       name: splash,
       page: () => const SplashPage(),
       binding: SplashBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: offline,
+      page: () => const OfflinePage(),
+      binding: OfflineBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: offlineRead,
+      page: () => const OfflineReadPage(),
+      binding: OfflineReadBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

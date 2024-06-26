@@ -62,7 +62,8 @@ class AuthUserController extends GetxController {
       idPerpustakaan: perpustakaan?.id ?? "",
     );
     if (response.data != null) {
-      final isMember = response.data?.user?.role?.nama == "Anggota";
+      final user = response.data?.user;
+      final isMember = user?.role?.nama == "Anggota";
       if (isMember) {
         final token = response.data!.token!;
         final prefs = {
@@ -70,6 +71,7 @@ class AuthUserController extends GetxController {
           "access": token.accessToken,
           "refresh": token.refreshToken,
           "username": usernameController.text,
+          "idUser": user?.id,
           "kodePerpustakaan": perpustakaan!.kode,
           "idPerpustakaan": perpustakaan!.id,
           "color": perpustakaan!.warnaDasar,

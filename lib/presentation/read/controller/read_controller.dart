@@ -66,11 +66,16 @@ class ReadController extends GetxController {
     final response = await getOneBuku(args["asset"] ?? "");
     if (response.data != null) {
       buku.value = response.data;
-      final Map<String, Object> values = {"total_pages": response.data?.jumlahHalaman ?? 0};
+      final dir = await getApplicationCacheDirectory();
+      final assetBukuPath = "${dir.path}/${buku.value?.id}.pdf";
       await updateBukuSQLite(
-        bukuId: response.data?.id ?? "",
+        bukuId: buku.value?.id ?? "",
         userId: profileController.profile.value?.id ?? "",
-        values: values,
+        values: {
+          "last_page_seen": lastPageSeen ?? 1,
+          "status": currentPage.value == buku.value?.jumlahHalaman ? "Selesai Dibaca" : "Belum Selesai",
+          "asset_buku_path": assetBukuPath
+        },
       );
       lastPageSeen = await getLastPageSeen(response.data?.id ?? "");
       await collectionController.onInit();
@@ -126,12 +131,15 @@ class ReadController extends GetxController {
       lastPageSeen = page;
       if (_timer?.isActive ?? false) _timer?.cancel();
       _timer = Timer(const Duration(seconds: 2), () async {
+        final dir = await getApplicationCacheDirectory();
+        final assetBukuPath = "${dir.path}/${buku.value?.id}.pdf";
         await updateBukuSQLite(
           bukuId: buku.value?.id ?? "",
           userId: profileController.profile.value?.id ?? "",
           values: {
             "last_page_seen": lastPageSeen ?? 1,
             "status": currentPage.value == buku.value?.jumlahHalaman ? "Selesai Dibaca" : "Belum Selesai",
+            "asset_buku_path": assetBukuPath
           },
         );
         await collectionController.onInit();

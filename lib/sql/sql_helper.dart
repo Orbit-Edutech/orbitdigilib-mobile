@@ -30,7 +30,12 @@ class SQLHelper {
       last_page_seen INTEGER,
       total_pages INTEGER NOT NULL,
       expired DATE,
-      status TEXT DEFAULT "Belum Dibaca"
+      status TEXT DEFAULT "Belum Dibaca",
+      asset_sampul_path TEXT,
+      asset_buku_path TEXT,
+      judul TEXT NOT NULL,
+      penulis TEXT NOT NULL,
+      tipe TEXT NOT NULL
     )""";
     final createBukuHalamanBintangQuery = """CREATE TABLE ${constants.table.bukuHalamanBintang}(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -108,13 +113,3 @@ class SQLHelper {
 }
 
 final SQLHelper sqlHelper = SQLHelper();
-
-final notifications = {
-  "id": 0,
-  "id_user": "",
-  "title": "title",
-  "description": "description",
-  "imgPath": "nullable",
-  "readAt": "", // DATE
-  "receivedAt": "", // DATE
-};

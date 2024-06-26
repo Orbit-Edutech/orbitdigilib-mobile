@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
+import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../theme/app_color.dart';
 import '../controller/splash_controller.dart';
@@ -20,7 +21,8 @@ class SplashErrorDialog extends StatelessWidget {
         backgroundColor: AppColor.white,
         title: const Text("Terjadi kesalahan"),
         content: const Text(
-            'Sistem sedang dalam pemeliharaan, atau periksa koneksi Anda. Tunggu beberapa saat lalu "Muat Ulang"'),
+          'Sistem sedang dalam pemeliharaan, atau periksa koneksi Anda. Tunggu beberapa saat lalu tekan "Muat Ulang", atau Anda ingin masuk ke mode offline? tekan "Mode Offline"',
+        ),
         actions: [
           AppButton(
             type: ButtonType.text,
@@ -29,6 +31,13 @@ class SplashErrorDialog extends StatelessWidget {
               controller.onInit();
             },
             child: const Text("Muat Ulang"),
+          ),
+          AppButton(
+            type: ButtonType.text,
+            onPressed: () {
+              Get.offAllNamed(AppRoutes.offline);
+            },
+            child: const Text("Mode Offline"),
           )
         ],
       ),

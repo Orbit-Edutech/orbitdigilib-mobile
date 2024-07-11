@@ -13,6 +13,7 @@ void main() async {
 }
 
 // TODO:
+// Update response dari backend (koleksi, sewa, beli, durasi membaca)
 // Update alert bug: tidak muncul
 // Offline Mode
 //  - Change theme sesuai sekolah dia

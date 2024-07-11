@@ -55,6 +55,8 @@ class AppTheme {
         return PerpusColor(seed: AppColor.garudaColors, primary: AppColor.garudaColors.shade500);
       case "Blue Bird":
         return PerpusColor(seed: AppColor.blueBirdColors, primary: AppColor.blueBirdColors.shade500);
+      case "Gojek":
+        return PerpusColor(seed: AppColor.gojekColors, primary: AppColor.gojekColors.shade500);
       case "Pink":
         return PerpusColor(seed: Colors.pink, primary: Colors.pink.shade500);
       case "Red":

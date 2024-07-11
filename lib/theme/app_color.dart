@@ -63,5 +63,21 @@ class AppColor {
       900: Color(0xFF05315A),
     },
   );
+  static const int gojek = 0xFF00ab14;
+  static const MaterialColor gojekColors = MaterialColor(
+    blueBird,
+    <int, Color>{
+      50: Color(0xFF80D58A),
+      100: Color(0xFF66CD72),
+      200: Color(0xFF4DC45B),
+      300: Color(0xFF33BC43),
+      400: Color(0xFF1AB32C),
+      500: Color(gojek),
+      600: Color(0xFF009A12),
+      700: Color(0xFF008910),
+      800: Color(0xFF00780E),
+      900: Color(0xFF00670C),
+    },
+  );
   static const int blueBird = 0xFF0B62AC;
 }

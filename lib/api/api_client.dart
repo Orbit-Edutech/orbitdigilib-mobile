@@ -185,6 +185,7 @@ class APIClient {
         cancelToken: cancelToken,
         data: param.data,
         options: param.options,
+        onReceiveProgress: param.onReceiveProgress,
       );
       final APIResponse<T> result = APIResponse(
         data: null,

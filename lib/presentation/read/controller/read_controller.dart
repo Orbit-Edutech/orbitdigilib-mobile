@@ -43,9 +43,11 @@ class ReadController extends GetxController {
   int? lastPageSeen;
   Rx<bool> isFullScreen = false.obs;
   Rx<bool> isOnSearch = false.obs;
+  Rx<bool> isOnDownload = false.obs;
   Rx<bool> noResultFound = false.obs;
   bool isSample = false;
   int sampleLimit = 10;
+  Rx<double> downloadProgress = 0.0.obs;
   Rx<bool> isAssetBukuNull = false.obs;
 
   Rx<ModelBuku?> buku = Rx<ModelBuku?>(null);
@@ -85,20 +87,29 @@ class ReadController extends GetxController {
   }
 
   Future<File?> downloadPdf() async {
+    isOnDownload.value = true;
     final String? pdfId = buku.value?.assetBukuId;
     if (pdfId != null) {
       final dir = await getApplicationCacheDirectory();
       final path = "${dir.path}/${buku.value?.id}.pdf";
       if (!(await File(path).exists())) {
         await apiClient.download(
-          param: APIParam(path: APIPath.asset(pdfId), fromJson: (data) => data),
+          param: APIParam(
+            path: APIPath.asset(pdfId),
+            fromJson: (data) => data,
+            onReceiveProgress: (p0, p1) {
+              downloadProgress.value = p0 / p1;
+            },
+          ),
           savePath: path,
         );
       }
       final result = File(path);
+      isOnDownload.value = false;
       return result;
     }
     isAssetBukuNull.value = true;
+    isOnDownload.value = false;
     return null;
   }
 

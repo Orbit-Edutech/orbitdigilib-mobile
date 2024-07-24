@@ -122,18 +122,32 @@ class _ReadPageState extends State<ReadPage> {
             Expanded(
               child: Obx(() {
                 final noResultFound = controller.noResultFound.value;
+                final isOnDownload = controller.isOnDownload.value;
+                final downloadProgress = controller.downloadProgress.value;
                 final book = controller.buku.value;
                 final pdf = controller.pdf.value;
                 final isAssetBukuNull = controller.isAssetBukuNull.value;
                 if (book == null || pdf == null) {
                   return SingleChildScrollView(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: Sizes.m),
-                      child: EmptyList(
-                        description: isAssetBukuNull
-                            ? "Buku tidak ditemukan, mohon hubungi pihak perpustakaan"
-                            : "Buku sedang dimuat",
-                      ),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: Sizes.m),
+                          child: EmptyList(
+                            description: isAssetBukuNull
+                                ? "Buku tidak ditemukan, mohon hubungi pihak perpustakaan"
+                                : "Buku sedang dimuat",
+                          ),
+                        ),
+                        if (isOnDownload) ...[
+                          Padding(
+                            padding: const EdgeInsets.all(Sizes.m),
+                            child: LinearProgressIndicator(
+                              value: downloadProgress,
+                            ),
+                          ),
+                        ]
+                      ],
                     ),
                   );
                 }

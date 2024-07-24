@@ -19,7 +19,6 @@ void main() async {
 //  - Change theme sesuai sekolah dia
 //  - Sinkronkan model local books dengan model remote books
 //  - Bikin opsi untuk pindah ke online mode -> jika ada koneksi internet
-// Progress Bar saat load buku
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

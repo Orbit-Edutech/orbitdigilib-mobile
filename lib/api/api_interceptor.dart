@@ -23,7 +23,7 @@ class APIInterceptor extends InterceptorsWrapper {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     final sc = err.response?.statusCode ?? 0;
-    if (sc == 401) {
+    if (sc == 401 || sc == 400) {
       await onAccessExpired(err, handler);
     } else {
       return super.onError(err, handler);
@@ -41,11 +41,14 @@ class APIInterceptor extends InterceptorsWrapper {
     final isAccesExpired = message == "Akses token expired";
     final isRefreshExpired = message.contains("Waktu login sudah habis");
     final isPasswordChanged = message.contains("mengubah password");
+    final isLibraryNonActive = message.contains("Perpustakaan tidak aktif");
     final isAccessTokenEmpty = tokens.access.toString().isEmpty || tokens.access == null;
     final isRefreshTokenEmpty = tokens.access.toString().isEmpty || tokens.access == null;
     final isTokensEmpty = isAccessTokenEmpty || isRefreshTokenEmpty;
-    if (isRefreshExpired || isPasswordChanged || isTokensEmpty) {
-      if (Get.currentRoute != AppRoutes.authLibrary) Get.offAllNamed(AppRoutes.authLibrary);
+    if (isRefreshExpired || isPasswordChanged || isTokensEmpty || isLibraryNonActive) {
+      if (Get.currentRoute != AppRoutes.authLibrary) {
+        Get.offAllNamed(AppRoutes.authLibrary);
+      }
       return super.onError(err, handler);
     } else if (isAccesExpired) {
       try {

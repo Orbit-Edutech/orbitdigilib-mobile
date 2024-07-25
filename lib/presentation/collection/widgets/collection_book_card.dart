@@ -41,7 +41,7 @@ class CollectionBookCard extends StatelessWidget {
         onTap: () {
           Get.bottomSheet(
             CollectionReadDialog(
-              buku: payload.buku,
+              buku: payload.bukuAnggota,
               type: payload.tipe ?? "-",
               lastPageSeen: lastPageSeen,
               totalPages: totalPage,
@@ -62,7 +62,7 @@ class CollectionBookCard extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
-                  if (payload.buku?.assetSampulId == null)
+                  if (payload.bukuAnggota?.assetSampulId == null)
                     Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(Sizes.s),
@@ -73,7 +73,7 @@ class CollectionBookCard extends StatelessWidget {
                     )
                   else
                     Image(
-                      image: CachedNetworkImageProvider(APIPath.publicAsset(payload.buku?.assetSampulId ?? '')),
+                      image: CachedNetworkImageProvider(APIPath.publicAsset(payload.bukuAnggota?.assetSampulId ?? '')),
                       fit: BoxFit.cover,
                       width: 75,
                       height: 100,
@@ -121,13 +121,13 @@ class CollectionBookCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      payload.buku?.judul ?? "-",
+                      payload.bukuAnggota?.judul ?? "-",
                       style: AppTextStyle.ts14Bold,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      payload.buku?.penulis ?? "-",
+                      payload.bukuAnggota?.penulis ?? "-",
                       style: AppTextStyle.ts14Light,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

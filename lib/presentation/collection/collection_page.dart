@@ -160,7 +160,7 @@ class CollectionPage extends StatelessWidget {
                   itemCount: books.length,
                   itemBuilder: (ctx, idx) {
                     final payload = books[idx];
-                    final lb = localBooks.firstWhereOrNull((lb) => lb.idBuku == payload.buku?.id);
+                    final lb = localBooks.firstWhereOrNull((lb) => lb.idBuku == payload.bukuAnggota?.id);
                     return CollectionBookCard(
                       status: lb?.status ?? "-",
                       lastPageSeen: lb?.lastPageSeen ?? 0,

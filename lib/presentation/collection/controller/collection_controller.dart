@@ -122,14 +122,14 @@ class CollectionController extends GetxController {
     localBooks.value = await getBukuSQLite(user?.id ?? "");
     final idUser = profileController.profile.value?.id ?? "";
     for (Payload payload in response) {
-      final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (payload.buku?.id ?? '-')) != null;
+      final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (payload.bukuAnggota?.id ?? '-')) != null;
       if (!isExist) {
-        final buku = payload.buku;
+        final buku = payload.bukuAnggota;
         final dir = await getApplicationCacheDirectory();
-        final savePath = "${dir.path}/${payload.buku?.id}.png";
+        final savePath = "${dir.path}/${payload.bukuAnggota?.id}.png";
         await apiClient.download(
           param: APIParam(
-            path: APIPath.publicAsset(payload.buku?.assetSampulId ?? ''),
+            path: APIPath.publicAsset(payload.bukuAnggota?.assetSampulId ?? ''),
             fromJson: (e) => e,
           ),
           savePath: savePath,

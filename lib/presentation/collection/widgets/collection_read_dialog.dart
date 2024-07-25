@@ -23,7 +23,7 @@ class CollectionReadDialog extends StatelessWidget {
     required this.totalPages,
   });
 
-  final Buku? buku;
+  final BukuAnggota? buku;
   final String type;
   final int lastPageSeen;
   final int totalPages;

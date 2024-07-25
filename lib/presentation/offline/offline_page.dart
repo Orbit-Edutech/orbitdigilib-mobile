@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
+import '../../routes/app_routes.dart';
 import '../../shared/widget/app_textfield.dart';
 import '../../shared/widget/book_card_skeleton.dart';
 import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 import '../../utils/compute_luminance.dart';
+import '../splash/controller/splash_controller.dart';
 import 'controller/offline_controller.dart';
 import 'widgets/offline_book_card.dart';
 
@@ -23,6 +26,12 @@ class OfflinePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        leading: BackButton(
+          onPressed: () {
+            Get.offAllNamed(AppRoutes.splash);
+            Get.find<SplashController>().onInit();
+          },
+        ),
         title: const Text("Koleksi Saya"),
         actions: [
           IconButton(

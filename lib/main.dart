@@ -37,20 +37,18 @@ class MyApp extends StatelessWidget {
 }
 
 var a = {
-  "name": "sewa.createOne | Create One Sewa",
+  "name": "beli.createOne | Create One",
   "type": "Success",
   "statusCode": 201,
   "result": {
-    "id": "5ffbb6c8-54ee-4217-8684-09e18ef9813f",
-    "createdAt": "2024-07-25T18:47:42.028Z",
-    "updatedAt": "2024-07-25T18:47:42.028Z",
-    "hargaSewa": 18,
-    "tanggalSewa": "2024-07-25T18:47:42.054Z",
-    "tanggalHabisSewa": "2024-08-08T18:47:42.054Z",
+    "id": "218529fc-f578-4bfe-be14-8edd7634c311",
+    "createdAt": "2024-07-25T18:51:10.657Z",
+    "updatedAt": "2024-07-25T18:51:10.657Z",
+    "hargaBeli": 0,
     "user": {
       "id": "5fb61c37-6882-40d7-b7db-d9d09df09765",
       "createdAt": "2024-03-25T07:13:02.238Z",
-      "updatedAt": "2024-06-19T06:52:23.105Z",
+      "updatedAt": "2024-07-25T18:47:42.028Z",
       "username": "bimantara",
       "passwordUpdatedAt": "2024-03-28T03:08:30.035Z",
       "email": "bimantarats@gmail.com",
@@ -60,7 +58,7 @@ var a = {
       "urlFotoProfil": null,
       "tokenForgotPassword": "1abb1269dae9a329e6967c64c8b4bbf808a76d7fea4452283e35ad9cfa55998d",
       "tokenForgotPasswordExpiredAt": "2024-05-13T08:27:01.045Z",
-      "token": "480.00",
+      "token": "462.00",
       "role": {"nama": "Anggota"},
       "perpustakaan": {
         "id": "9b38e44e-544e-42d3-8801-7c378532ded5",
@@ -82,22 +80,23 @@ var a = {
       "isAktif": true
     },
     "bukuAnggota": {
-      "id": "2c0c6026-094d-4d68-9f5a-956cefb875be",
-      "createdAt": "2024-07-25T18:47:42.028Z",
-      "updatedAt": "2024-07-25T18:47:42.028Z",
-      "namaKategori": "Teknik",
+      "id": "2b4f6954-d677-45dd-8123-849733aa4bff",
+      "createdAt": "2024-07-25T18:51:10.657Z",
+      "updatedAt": "2024-07-25T18:51:10.657Z",
+      "namaKategori": "Komik",
       "namaPenerbit": "Badan Bahasa",
-      "judul": "Guardians And Swindlers",
-      "sinopsis": "-",
-      "jumlahHalaman": 201,
-      "tahunTerbit": "2015",
+      "judul": "Ancaman di Desa Bersinar Jaya",
+      "sinopsis":
+          "Penyusun : Ignatus Yoshua, Ardi Timbul, Marhendi Wijaya W, Ika Setyawati\r\nTahun : 2021\r\nPenerbit : Ditjen Informasi dan komunikasi Publik Kominfo\r\n\r\nWarga Desa Bersinar Jaya gempar ketika sekumpulan monster aneh dan seram tiba-tiba menyerang desa mereka. Warga tidak bisa lari menyelematkan diri karena desa mereka sudah terkepung. Monster-monsteri itu memperkenalkan diri mereka sebagai Monster Candu dengan Molly Si Ratu Party sebagai pentolannya. Monster Narkoba ini mengajak warga untuk \"bersenang-senang\" sejenak, namun kemudian kesenangan itu harus dibayar mahal karena perlahan-lahan Narkoba merusak organ tubuh mereka yang berakhir overdosis dan beresiko menyebabkan kematian.",
+      "jumlahHalaman": 32,
+      "tahunTerbit": "2021",
       "isbn": "",
       "eIsbn": "",
       "bahasa": "Bahasa Indonesia",
-      "penulis": "Penulis 9, Penulis 10",
-      "ilustrator": "",
-      "assetSampulId": "6834d8e3-fb48-482f-8975-11941a07bc79",
-      "assetBukuId": "638ce44a-4492-4270-9e27-0d57575a7d0f"
+      "penulis": "Ignatus Yoshua Ardi Timbul  Marhendi W. W. Ika S.",
+      "ilustrator": "Ermambang B. Wijaya",
+      "assetSampulId": "302d4499-6b12-4973-bc01-9b16cbf35e90",
+      "assetBukuId": "a5f19210-ba6e-4a62-8d74-bad29be892e5"
     }
   }
 };

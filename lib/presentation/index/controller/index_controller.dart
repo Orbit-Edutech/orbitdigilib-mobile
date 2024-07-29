@@ -38,6 +38,10 @@ class IndexController extends GetxController {
   @override
   Future onInit() async {
     perpustakaan.value = null;
+    banners.value = [];
+    pinnedBooks.value = null;
+    allBooks.value = null;
+    promoBooks.value = null;
     final kode = await SharedPreferencesManager.readPref("kodePerpustakaan");
     final id = await SharedPreferencesManager.readPref("idPerpustakaan");
     debugPrint(id.toString());
@@ -54,7 +58,11 @@ class IndexController extends GetxController {
         if (res.error == ResponseStatus.connectionError) {
           showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
         } else {
-          showSnackbar(backgroundColor: AppColor.red, title: "Error ${res.statusCode}", message: res.error["message"]);
+          showSnackbar(
+            backgroundColor: AppColor.red,
+            title: "Error ${res.statusCode}",
+            message: res.error["message"] ?? "Terjadi Kesalahan",
+          );
         }
       }
     });

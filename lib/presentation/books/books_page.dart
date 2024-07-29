@@ -60,95 +60,114 @@ class BooksPage extends StatelessWidget {
           HGap.sr,
         ],
       ),
-      body: Column(
-        children: [
-          Obx(() {
-            return Column(
-              children: [
-                if (controller.isOnSearch.value) ...[
-                  VGap.r,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-                    child: AppTextField(
-                      type: TextFieldType.rounded,
-                      controller: controller.textController,
-                      focusNode: controller.searchFocusNode,
-                      onTapOutside: (_) => controller.searchFocusNode.unfocus(),
-                      onChanged: controller.search,
-                      isError: false,
-                      autoFocus: true,
-                      suffix: IconButton(
-                        onPressed: () {
-                          if (controller.textController.text.isNotEmpty) controller.search("");
-                          controller.textController.clear();
-                        },
-                        icon: const Icon(Icons.close_rounded),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
-                      label: Text(
-                        "Pencarian...",
-                        style: AppTextStyle.ts18Reg.copyWith(color: AppColor.lightGrey),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Obx(() {
+              return Column(
+                children: [
+                  if (controller.isOnSearch.value) ...[
+                    VGap.r,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
+                      child: AppTextField(
+                        type: TextFieldType.rounded,
+                        controller: controller.textController,
+                        focusNode: controller.searchFocusNode,
+                        onTapOutside: (_) => controller.searchFocusNode.unfocus(),
+                        onChanged: controller.search,
+                        isError: false,
+                        autoFocus: true,
+                        suffix: IconButton(
+                          onPressed: () {
+                            if (controller.textController.text.isNotEmpty) controller.search("");
+                            controller.textController.clear();
+                          },
+                          icon: const Icon(Icons.close_rounded),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(vertical: Sizes.s, horizontal: Sizes.r),
+                        label: Text(
+                          "Pencarian...",
+                          style: AppTextStyle.ts18Reg.copyWith(color: AppColor.lightGrey),
+                        ),
                       ),
                     ),
-                  ),
-                  VGap.s,
+                    VGap.s,
+                  ],
                 ],
-              ],
-            );
-          }),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: controller.onInit,
-              child: GetBuilder<BooksController>(builder: (_) {
-                final books = controller.books.value;
-                final _ = controller.isLoadedMore.value;
-                if (books == null) {
+              );
+            }),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: controller.onInit,
+                child: GetBuilder<BooksController>(builder: (_) {
+                  final books = controller.books.value;
+                  final _ = controller.isLoadedMore.value;
+                  if (books == null) {
+                    return AlignedGridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: isWide ? 4 : 2,
+                      itemCount: 10,
+                      mainAxisSpacing: Sizes.r,
+                      crossAxisSpacing: Sizes.r,
+                      padding: const EdgeInsets.all(Sizes.m),
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return const BookCardSkeleton();
+                      },
+                    );
+                  } else if (books.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.all(Sizes.m),
+                      child: EmptyList(description: "Buku yang Anda cari tidak ada"),
+                    );
+                  }
                   return AlignedGridView.count(
+                    controller: controller.scrollController,
                     shrinkWrap: true,
                     crossAxisCount: isWide ? 4 : 2,
-                    itemCount: 10,
+                    itemCount: books.length,
                     mainAxisSpacing: Sizes.r,
                     crossAxisSpacing: Sizes.r,
                     padding: const EdgeInsets.all(Sizes.m),
-                    physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      return const BookCardSkeleton();
+                      final payload = books[index];
+                      final book = payload.buku;
+                      return BookCard(
+                        bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
+                        id: book?.id ?? "-",
+                        judul: book?.judul ?? "-",
+                        penulis: book?.penulis ?? "-",
+                        idSampul: book?.assetSampulId,
+                        copy: "${payload.jumlahSiapPinjam ?? '-'}",
+                        harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
+                        isPromo: payload.buku?.promo != null,
+                        onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
+                      );
                     },
                   );
-                } else if (books.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.all(Sizes.m),
-                    child: EmptyList(description: "Buku yang Anda cari tidak ada"),
-                  );
-                }
-                return AlignedGridView.count(
-                  controller: controller.scrollController,
-                  shrinkWrap: true,
-                  crossAxisCount: isWide ? 4 : 2,
-                  itemCount: books.length,
-                  mainAxisSpacing: Sizes.r,
-                  crossAxisSpacing: Sizes.r,
-                  padding: const EdgeInsets.all(Sizes.m),
-                  itemBuilder: (context, index) {
-                    final payload = books[index];
-                    final book = payload.buku;
-                    return BookCard(
-                      bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
-                      id: book?.id ?? "-",
-                      judul: book?.judul ?? "-",
-                      penulis: book?.penulis ?? "-",
-                      idSampul: book?.assetSampulId,
-                      copy: "${payload.jumlahSiapPinjam ?? '-'}",
-                      harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
-                      isPromo: payload.buku?.promo != null,
-                      onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
-                    );
-                  },
-                );
-              }),
+                }),
+              ),
             ),
-          ),
-        ],
+            Obx(() {
+              final isLoadedMore = controller.isLoadedMore.value;
+              if (isLoadedMore) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: Sizes.s),
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                );
+              } else {
+                return const SizedBox();
+              }
+            })
+          ],
+        ),
       ),
     );
   }

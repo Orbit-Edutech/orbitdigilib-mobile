@@ -81,7 +81,7 @@ class Payload {
   final DateTime? updatedAt;
   final String? tipe;
   final String? harga;
-  final dynamic waktuHabis;
+  final DateTime? waktuHabis;
   final BukuAnggota? bukuAnggota;
 
   Payload({
@@ -100,7 +100,7 @@ class Payload {
     DateTime? updatedAt,
     String? tipe,
     String? harga,
-    dynamic waktuHabis,
+    DateTime? waktuHabis,
     BukuAnggota? bukuAnggota,
   }) =>
       Payload(
@@ -123,7 +123,7 @@ class Payload {
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         tipe: json["tipe"],
         harga: json["harga"],
-        waktuHabis: json["waktuHabis"],
+        waktuHabis: json["waktuHabis"] == null ? null : DateTime.parse(json["waktuHabis"]),
         bukuAnggota: json["bukuAnggota"] == null ? null : BukuAnggota.fromJson(json["bukuAnggota"]),
       );
 
@@ -133,7 +133,7 @@ class Payload {
         "updatedAt": updatedAt?.toIso8601String(),
         "tipe": tipe,
         "harga": harga,
-        "waktuHabis": waktuHabis,
+        "waktuHabis": waktuHabis?.toIso8601String(),
         "bukuAnggota": bukuAnggota?.toJson(),
       };
 }

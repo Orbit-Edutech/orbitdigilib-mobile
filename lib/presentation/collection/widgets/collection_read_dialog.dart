@@ -153,7 +153,7 @@ class CollectionReadDialog extends StatelessWidget {
               type: ButtonType.elevated,
               onPressed: () {
                 Get.back();
-                Get.toNamed(AppRoutes.read, arguments: {"asset": buku?.id ?? "", "type": "read"});
+                Get.toNamed(AppRoutes.read, arguments: {"asset": buku?.id ?? "", "type": "collection"});
               },
               child: const Text("Baca"),
             ),

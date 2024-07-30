@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -51,22 +49,14 @@ class OfflineReadDialog extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
-                      if (buku.assetSampulPath == null)
-                        Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(Sizes.s),
-                          child: const Text(
-                            "Sampul Kosong",
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      else
-                        Image(
-                          image: FileImage(File(buku.assetSampulPath!)),
-                          fit: BoxFit.cover,
-                          width: 75,
-                          height: 100,
+                      Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(Sizes.s),
+                        child: const Text(
+                          "Sampul Kosong",
+                          textAlign: TextAlign.center,
                         ),
+                      )
                     ],
                   ),
                 ),

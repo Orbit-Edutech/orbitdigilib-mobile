@@ -14,9 +14,9 @@ import '../../../api/api_path.dart';
 import '../../../api/koleksi/data/get_koleksi.dart';
 import '../../../api/koleksi/model/model_koleksi.dart';
 import '../../../shared/widget/show_snackbar.dart';
-import '../../../sql/books/data/delete_buku_sqlite.dart';
 import '../../../sql/books/data/get_buku_sqlite.dart';
 import '../../../sql/books/data/insert_buku_sqlite.dart';
+import '../../../sql/books/data/update_buku_sqlite.dart';
 import '../../../sql/books/model/model_buku_sql.dart';
 import '../../../theme/app_color.dart';
 import '../../profile/controller/profile_controller.dart';
@@ -123,8 +123,8 @@ class CollectionController extends GetxController {
     final idUser = profileController.profile.value?.id ?? "";
     for (Payload payload in response) {
       final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (payload.bukuAnggota?.id ?? '-')) != null;
+      final buku = payload.bukuAnggota;
       if (!isExist) {
-        final buku = payload.bukuAnggota;
         final dir = await getApplicationCacheDirectory();
         final savePath = "${dir.path}/${payload.bukuAnggota?.id}.png";
         await apiClient.download(
@@ -139,8 +139,8 @@ class CollectionController extends GetxController {
           ModelBukuSql(
             idBuku: buku?.id ?? "",
             idUser: idUser,
-            lastPageSeen: 0,
-            totalPages: buku?.jumlahHalaman ?? 0,
+            lastPageSeen: 1,
+            totalPages: buku?.jumlahHalaman ?? 1,
             status: "Belum Dibaca",
             expired: payload.waktuHabis ?? DateTime.now().add(const Duration(days: 7)),
             assetSampulPath: assetSampulPath,
@@ -150,12 +150,16 @@ class CollectionController extends GetxController {
             tipe: payload.tipe ?? "",
           ),
         );
-      }
-    }
-
-    for (ModelBukuSql lb in localBooks.value ?? []) {
-      if (lb.expired.isBefore(DateTime.now())) {
-        deleteBukuSQLite(idBuku: lb.idBuku, idUser: idUser);
+      } else {
+        await updateBukuSQLite(
+          bukuId: buku?.id ?? "",
+          userId: idUser,
+          values: {
+            "expired":
+                payload.waktuHabis?.toIso8601String() ?? DateTime.now().add(const Duration(days: 7)).toIso8601String(),
+            "tipe": payload.tipe ?? "",
+          },
+        );
       }
     }
 

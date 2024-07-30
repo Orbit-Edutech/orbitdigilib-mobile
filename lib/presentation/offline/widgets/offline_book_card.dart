@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
@@ -55,22 +53,14 @@ class OfflineBookCard extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
-                  if (book.assetSampulPath == null)
-                    Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(Sizes.s),
-                      child: const Text(
-                        "Sampul Kosong",
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  else
-                    Image(
-                      image: FileImage(File(book.assetSampulPath ?? '')),
-                      fit: BoxFit.cover,
-                      width: 75,
-                      height: 100,
+                  Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(Sizes.s),
+                    child: const Text(
+                      "Sampul Kosong",
+                      textAlign: TextAlign.center,
                     ),
+                  ),
                   if (isToday(book.expired) ?? false)
                     Container(
                       width: 75,

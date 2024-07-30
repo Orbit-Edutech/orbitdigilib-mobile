@@ -16,7 +16,9 @@ import '../../../api/buku/model/model_buku.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../sql/books/data/get_one_buku_sqlite.dart';
+import '../../../sql/books/data/insert_buku_sqlite.dart';
 import '../../../sql/books/data/update_buku_sqlite.dart';
+import '../../../sql/books/model/model_buku_sql.dart';
 import '../../../sql/stared-pages/data/delete_stared_page.dart';
 import '../../../sql/stared-pages/data/get_stared_pages.dart';
 import '../../../sql/stared-pages/data/insert_stared_page.dart';
@@ -63,6 +65,7 @@ class ReadController extends GetxController {
   }
 
   Future getBuku() async {
+    final idUser = profileController.profile.value?.id ?? "";
     final Map<String, String?> args = Get.arguments;
     isSample = args["type"] == "sample";
     final response = await getOneBuku(args["asset"] ?? "");
@@ -70,15 +73,38 @@ class ReadController extends GetxController {
       buku.value = response.data;
       final dir = await getApplicationCacheDirectory();
       final assetBukuPath = "${dir.path}/${buku.value?.id}.pdf";
-      await updateBukuSQLite(
-        bukuId: buku.value?.id ?? "",
-        userId: profileController.profile.value?.id ?? "",
-        values: {
-          "last_page_seen": lastPageSeen ?? 1,
-          "status": currentPage.value == buku.value?.jumlahHalaman ? "Selesai Dibaca" : "Belum Selesai",
-          "asset_buku_path": assetBukuPath
-        },
-      );
+      final localBook = await getOneBukuSQLite(buku.value?.id ?? "", idUser);
+      if (!isSample) {
+        if (localBook == null) {
+          final savePath = "${dir.path}/${response.data?.id}";
+          final assetSampulPath = File(savePath).path;
+          await insertBukuSQLite(
+            ModelBukuSql(
+              idBuku: buku.value?.id ?? "",
+              idUser: idUser,
+              lastPageSeen: 1,
+              totalPages: buku.value?.jumlahHalaman ?? 1,
+              status: "Belum Dibaca",
+              expired: DateTime.now().add(const Duration(days: 7)),
+              assetSampulPath: assetSampulPath,
+              assetBukuPath: assetBukuPath,
+              judul: buku.value?.judul ?? "-",
+              penulis: buku.value?.penulis ?? "-",
+              tipe: "",
+            ),
+          );
+        } else {
+          await updateBukuSQLite(
+            bukuId: buku.value?.id ?? "",
+            userId: profileController.profile.value?.id ?? "",
+            values: {
+              "last_page_seen": lastPageSeen ?? 1,
+              "status": currentPage.value == buku.value?.jumlahHalaman ? "Selesai Dibaca" : "Belum Selesai",
+              "asset_buku_path": assetBukuPath,
+            },
+          );
+        }
+      }
       lastPageSeen = await getLastPageSeen(response.data?.id ?? "");
       await collectionController.onInit();
     } else {
@@ -91,8 +117,8 @@ class ReadController extends GetxController {
     final String? pdfId = buku.value?.assetBukuId;
     if (pdfId != null) {
       final dir = await getApplicationCacheDirectory();
-      final path = "${dir.path}/${buku.value?.id}.pdf";
-      if (!(await File(path).exists())) {
+      final pdfPath = "${dir.path}/${buku.value?.id}.pdf";
+      if (!(await File(pdfPath).exists())) {
         await apiClient.download(
           param: APIParam(
             path: APIPath.asset(pdfId),
@@ -101,10 +127,24 @@ class ReadController extends GetxController {
               downloadProgress.value = p0 / p1;
             },
           ),
-          savePath: path,
+          savePath: pdfPath,
         );
       }
-      final result = File(path);
+      final imgPath = "${dir.path}/${buku.value?.id}";
+      if (!(await File(imgPath).exists())) {
+        await apiClient.download(
+          param: APIParam(
+            path: APIPath.asset(pdfId),
+            fromJson: (data) => data,
+            onReceiveProgress: (p0, p1) {
+              downloadProgress.value = p0 / p1;
+            },
+          ),
+          savePath: imgPath,
+        );
+      }
+
+      final result = File(pdfPath);
       isOnDownload.value = false;
       return result;
     }

@@ -47,6 +47,9 @@ class APIPath {
   /// /buku/{id}
   static oneBuku(String id) => "/buku/$id";
 
+  /// /buku-anggota/{id}
+  static oneBukuAnggota(String id) => "/buku-anggota/$id";
+
   /// /perpustakaan/default/banner
   static const bannerDefault = "/perpustakaan/default/banner";
 

@@ -12,13 +12,6 @@ void main() async {
   ImageUtils.prechacheImages();
 }
 
-// TODO:
-// Update response dari backend (koleksi, sewa, beli, durasi membaca)
-// Offline Mode
-//  - Change theme sesuai sekolah dia
-//  - Sinkronkan model local books dengan model remote books
-//  - Bikin opsi untuk pindah ke online mode -> jika ada koneksi internet
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

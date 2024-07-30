@@ -29,6 +29,8 @@ import '../presentation/offline/offline_page.dart';
 import '../presentation/profile/profile_page.dart';
 import '../presentation/change-password/binding/change_password_binding.dart';
 import '../presentation/change-password/change_password_page.dart';
+import '../presentation/read-collection/binding/read_collection_binding.dart';
+import '../presentation/read-collection/read_collection_page.dart';
 import '../presentation/read/binding/read_binding.dart';
 import '../presentation/read/read_page.dart';
 import '../presentation/recommendation/binding/recommendation_binding.dart';
@@ -88,6 +90,9 @@ class AppRoutes {
 
   /// /read
   static const String read = "/read";
+
+  /// /read-collection
+  static const String readCollection = "/read-collection";
 
   /// /category
   static const String category = "/category";
@@ -214,6 +219,13 @@ class AppRoutes {
       name: read,
       page: () => const ReadPage(),
       binding: ReadBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: readCollection,
+      page: () => const ReadCollectionPage(),
+      binding: ReadCollectionBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

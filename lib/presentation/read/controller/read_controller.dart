@@ -64,6 +64,16 @@ class ReadController extends GetxController {
     super.onInit();
   }
 
+  // {
+  //   "bukuId": "string",
+  //   "durasiHalaman": [
+  //     {
+  //       "halaman": 0,
+  //       "durasi": 0
+  //     }
+  //   ]
+  // }
+
   Future getBuku() async {
     final idUser = profileController.profile.value?.id ?? "";
     final Map<String, String?> args = Get.arguments;

@@ -83,6 +83,7 @@ class Payload {
   final String? harga;
   final DateTime? waktuHabis;
   final BukuAnggota? bukuAnggota;
+  final String? bukuId;
 
   Payload({
     this.id,
@@ -92,6 +93,7 @@ class Payload {
     this.harga,
     this.waktuHabis,
     this.bukuAnggota,
+    this.bukuId,
   });
 
   Payload copyWith({
@@ -102,6 +104,7 @@ class Payload {
     String? harga,
     DateTime? waktuHabis,
     BukuAnggota? bukuAnggota,
+    String? bukuId,
   }) =>
       Payload(
         id: id ?? this.id,
@@ -111,6 +114,7 @@ class Payload {
         harga: harga ?? this.harga,
         waktuHabis: waktuHabis ?? this.waktuHabis,
         bukuAnggota: bukuAnggota ?? this.bukuAnggota,
+        bukuId: bukuId ?? this.bukuId,
       );
 
   factory Payload.fromRawJson(String str) => Payload.fromJson(json.decode(str));
@@ -125,6 +129,7 @@ class Payload {
         harga: json["harga"],
         waktuHabis: json["waktuHabis"] == null ? null : DateTime.parse(json["waktuHabis"]),
         bukuAnggota: json["bukuAnggota"] == null ? null : BukuAnggota.fromJson(json["bukuAnggota"]),
+        bukuId: json["bukuId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -135,6 +140,7 @@ class Payload {
         "harga": harga,
         "waktuHabis": waktuHabis?.toIso8601String(),
         "bukuAnggota": bukuAnggota?.toJson(),
+        "bukuId": bukuId,
       };
 }
 

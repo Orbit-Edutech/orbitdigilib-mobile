@@ -16,6 +16,7 @@ class ReadGoToPage extends StatelessWidget {
     required this.pdfController,
     required this.isSample,
     required this.sampleLimit,
+    required this.onPageChanged,
   });
 
   final TextEditingController searchPageController;
@@ -23,6 +24,7 @@ class ReadGoToPage extends StatelessWidget {
   final PdfViewerController pdfController;
   final bool isSample;
   final int sampleLimit;
+  final Function(int) onPageChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class ReadGoToPage extends StatelessWidget {
         isError: false,
         autoFocus: true,
         onSubmitted: (text) {
+          onPageChanged(int.parse(text));
           Get.back();
           pdfController.jumpToPage(int.parse(text));
         },

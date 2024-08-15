@@ -13,6 +13,7 @@ import '../../../api/api_client.dart';
 import '../../../api/api_path.dart';
 import '../../../api/buku/data/buku_get_one.dart';
 import '../../../api/buku/model/model_buku.dart';
+import '../../../api/laporan-literasi/data/post_laporan_literasi.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../sql/books/data/get_one_buku_sqlite.dart';
@@ -40,6 +41,9 @@ class ReadController extends GetxController {
   final searchFocusNode = FocusNode();
   final searchPageFocusNode = FocusNode();
 
+  DateTime? startTime;
+  Timer? readTimer;
+  Duration readDuration = Duration.zero;
   Timer? _timer;
   Rx<int> currentPage = 1.obs;
   int? lastPageSeen;
@@ -61,18 +65,12 @@ class ReadController extends GetxController {
     await getBuku();
     pdf.value = await downloadPdf();
     staredPages.value = await getStaredPages();
+    startTime = DateTime.now();
+    readTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      readDuration = DateTime.now().difference(startTime!);
+    });
     super.onInit();
   }
-
-  // {
-  //   "bukuId": "string",
-  //   "durasiHalaman": [
-  //     {
-  //       "halaman": 0,
-  //       "durasi": 0
-  //     }
-  //   ]
-  // }
 
   Future getBuku() async {
     final idUser = profileController.profile.value?.id ?? "";
@@ -183,6 +181,21 @@ class ReadController extends GetxController {
   }
 
   void onPageChanged(int page) {
+    if (currentPage.value != page) {
+      if (readTimer?.isActive ?? false) readTimer?.cancel();
+      readTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+        readDuration = DateTime.now().difference(startTime!);
+      });
+      if (readDuration.inSeconds >= 30) {
+        postLaporanLiterasi(
+          bukuId: buku.value?.id,
+          halaman: currentPage.value,
+          durasi: readDuration.inSeconds,
+        );
+      }
+      startTime = DateTime.now();
+      readDuration = Duration.zero;
+    }
     currentPage.value = page;
     if (isSample && page > sampleLimit) {
       pdfController.jumpToPage(sampleLimit);
@@ -245,6 +258,7 @@ class ReadController extends GetxController {
         pdfController: pdfController,
         isSample: isSample,
         sampleLimit: sampleLimit,
+        onPageChanged: onPageChanged,
       ),
       transitionDuration: const Duration(milliseconds: 100),
     );

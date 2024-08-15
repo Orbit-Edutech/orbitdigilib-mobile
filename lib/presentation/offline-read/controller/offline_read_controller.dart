@@ -117,6 +117,7 @@ class OfflineReadController extends GetxController {
         pdfController: pdfController,
         isSample: isSample,
         sampleLimit: sampleLimit,
+        onPageChanged: onPageChanged,
       ),
       transitionDuration: const Duration(milliseconds: 100),
     );

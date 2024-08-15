@@ -23,11 +23,12 @@ class ReadPage extends StatefulWidget {
   State<ReadPage> createState() => _ReadPageState();
 }
 
-class _ReadPageState extends State<ReadPage> {
+class _ReadPageState extends State<ReadPage> with WidgetsBindingObserver {
   final MethodChannel _methodChannel = const MethodChannel("com.orbit360.digilib");
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     if (Platform.isAndroid) {
       _methodChannel.invokeMethod("secure", {"isSecure": true});
     } else {}
@@ -36,10 +37,17 @@ class _ReadPageState extends State<ReadPage> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     if (Platform.isAndroid) {
       _methodChannel.invokeMethod("secure", {"isSecure": false});
     } else {}
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+    super.didChangeAppLifecycleState(state);
   }
 
   final controller = Get.find<ReadController>();

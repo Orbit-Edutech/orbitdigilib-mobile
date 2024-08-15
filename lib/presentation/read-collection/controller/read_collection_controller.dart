@@ -13,6 +13,7 @@ import '../../../api/api_client.dart';
 import '../../../api/api_path.dart';
 import '../../../api/buku/data/buku_anggota_get_one.dart';
 import '../../../api/koleksi/model/model_koleksi.dart';
+import '../../../api/laporan-literasi/data/post_laporan_literasi.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../sql/books/data/get_one_buku_sqlite.dart';
@@ -40,6 +41,9 @@ class ReadCollectionController extends GetxController {
   final searchFocusNode = FocusNode();
   final searchPageFocusNode = FocusNode();
 
+  DateTime? startTime;
+  Timer? readTimer;
+  Duration readDuration = Duration.zero;
   Timer? _timer;
   Rx<int> currentPage = 1.obs;
   int? lastPageSeen;
@@ -61,6 +65,10 @@ class ReadCollectionController extends GetxController {
     await getBuku();
     pdf.value = await downloadPdf();
     staredPages.value = await getStaredPages();
+    startTime = DateTime.now();
+    readTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      readDuration = DateTime.now().difference(startTime!);
+    });
     super.onInit();
   }
 
@@ -173,6 +181,21 @@ class ReadCollectionController extends GetxController {
   }
 
   void onPageChanged(int page) {
+    if (currentPage.value != page) {
+      if (readTimer?.isActive ?? false) readTimer?.cancel();
+      readTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+        readDuration = DateTime.now().difference(startTime!);
+      });
+      if (readDuration.inSeconds >= 1) {
+        postLaporanLiterasi(
+          bukuId: Get.arguments["bukuId"],
+          halaman: currentPage.value,
+          durasi: readDuration.inSeconds,
+        );
+      }
+      startTime = DateTime.now();
+      readDuration = Duration.zero;
+    }
     currentPage.value = page;
     if (isSample && page > sampleLimit) {
       pdfController.jumpToPage(sampleLimit);
@@ -235,6 +258,7 @@ class ReadCollectionController extends GetxController {
         pdfController: pdfController,
         isSample: isSample,
         sampleLimit: sampleLimit,
+        onPageChanged: onPageChanged,
       ),
       transitionDuration: const Duration(milliseconds: 100),
     );

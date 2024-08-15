@@ -23,7 +23,7 @@ class CollectionReadDialog extends StatelessWidget {
     required this.totalPages,
   });
 
-  final BukuAnggota? buku;
+  final Payload? buku;
   final String type;
   final int lastPageSeen;
   final int totalPages;
@@ -56,7 +56,7 @@ class CollectionReadDialog extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
-                      if (buku?.assetSampulId == null)
+                      if (buku?.bukuAnggota?.assetSampulId == null)
                         Container(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(Sizes.s),
@@ -67,7 +67,7 @@ class CollectionReadDialog extends StatelessWidget {
                         )
                       else
                         Image(
-                          image: CachedNetworkImageProvider(APIPath.publicAsset(buku?.assetSampulId ?? "")),
+                          image: CachedNetworkImageProvider(APIPath.publicAsset(buku?.bukuAnggota?.assetSampulId ?? "")),
                           fit: BoxFit.cover,
                           width: 75,
                           height: 100,
@@ -84,14 +84,14 @@ class CollectionReadDialog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          buku?.judul ?? "-",
+                          buku?.bukuAnggota?.judul ?? "-",
                           style: AppTextStyle.ts14Bold,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         VGap.s,
                         Text(
-                          buku?.penulis ?? "-",
+                          buku?.bukuAnggota?.penulis ?? "-",
                           style: AppTextStyle.ts14Light,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -153,7 +153,11 @@ class CollectionReadDialog extends StatelessWidget {
               type: ButtonType.elevated,
               onPressed: () {
                 Get.back();
-                Get.toNamed(AppRoutes.readCollection, arguments: {"asset": buku?.id ?? "", "type": "collection"});
+                Get.toNamed(AppRoutes.readCollection, arguments: {
+                  "bukuId": buku?.bukuId,
+                  "asset": buku?.bukuAnggota?.id ?? "",
+                  "type": "collection",
+                });
               },
               child: const Text("Baca"),
             ),

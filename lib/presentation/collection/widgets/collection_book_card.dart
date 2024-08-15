@@ -41,7 +41,7 @@ class CollectionBookCard extends StatelessWidget {
         onTap: () {
           Get.bottomSheet(
             CollectionReadDialog(
-              buku: payload.bukuAnggota,
+              buku: payload,
               type: payload.tipe ?? "-",
               lastPageSeen: lastPageSeen,
               totalPages: totalPage,

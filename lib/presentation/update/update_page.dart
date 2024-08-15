@@ -31,7 +31,7 @@ class UpdatePage extends StatelessWidget {
                   if (Platform.isAndroid) {
                     url = "market://details?id=com.orbit360.digilib";
                   } else if (Platform.isIOS) {
-                    url = "https://apps.apple.com/"; //TODO Tambahin iOS appstore id
+                    url = "https://apps.apple.com/app/orbit-digilib/id6575359861";
                   }
                   launchUrl(url);
                 },

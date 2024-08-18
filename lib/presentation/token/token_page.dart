@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_instance/get_instance.dart';
@@ -89,14 +91,15 @@ class TokenPage extends StatelessWidget {
                   );
                 }),
                 VGap.s,
-                GestureDetector(
-                  onTap: controller.showVoucherInfo,
-                  child: Text(
-                    "Bagaimana cara mendapatkan Voucher?",
-                    style: AppTextStyle.ts12Reg.copyWith(color: AppColor.black),
-                    textAlign: TextAlign.center,
+                if (!Platform.isIOS)
+                  GestureDetector(
+                    onTap: controller.showVoucherInfo,
+                    child: Text(
+                      "Bagaimana cara mendapatkan Voucher?",
+                      style: AppTextStyle.ts12Reg.copyWith(color: AppColor.black),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
                 VGap.l,
                 VGap.l,
               ],

@@ -186,7 +186,7 @@ class ReadCollectionController extends GetxController {
       readTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
         readDuration = DateTime.now().difference(startTime!);
       });
-      if (readDuration.inSeconds >= 1) {
+      if (readDuration.inSeconds >= 30) {
         postLaporanLiterasi(
           bukuId: Get.arguments["bukuId"],
           halaman: currentPage.value,

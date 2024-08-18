@@ -44,12 +44,6 @@ class _ReadPageState extends State<ReadPage> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    print(state);
-    super.didChangeAppLifecycleState(state);
-  }
-
   final controller = Get.find<ReadController>();
   final pdfKey = GlobalKey<SfPdfViewerState>();
 

@@ -1,5 +1,3 @@
-import "dart:io";
-
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
@@ -103,24 +101,23 @@ class IndexBalance extends StatelessWidget {
               ),
             ],
           ),
-          if (!Platform.isIOS)
-            GestureDetector(
-              onTap: () => Get.toNamed(AppRoutes.token),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.add_circle_rounded,
-                    color: theme.primaryColor,
-                  ),
-                  HGap.xs,
-                  Text(
-                    "Isi Token",
-                    style: AppTextStyle.ts12Bold,
-                  ),
-                ],
-              ),
+          GestureDetector(
+            onTap: () => Get.toNamed(AppRoutes.token),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.add_circle_rounded,
+                  color: theme.primaryColor,
+                ),
+                HGap.xs,
+                Text(
+                  "Isi Token",
+                  style: AppTextStyle.ts12Bold,
+                ),
+              ],
             ),
+          ),
         ],
       ),
     );

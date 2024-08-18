@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/instance_manager.dart';
@@ -59,9 +60,19 @@ class ReadController extends GetxController {
   Rx<ModelBuku?> buku = Rx<ModelBuku?>(null);
   Rx<File?> pdf = Rx<File?>(null);
   Rx<List<int>?> staredPages = Rx<List<int>?>(null);
+  final MethodChannel channel = const MethodChannel("com.orbit360.digilib");
 
   @override
   Future<void> onInit() async {
+    channel.setMethodCallHandler((call) async {
+      if (call.method == "ScreenshotTaken") {
+        debugPrint("Screenshot diambil!");
+      } else if (call.method == "ScreenRecordingStarted") {
+        debugPrint("Perekaman layar dimulai!");
+      } else if (call.method == "ScreenRecordingStopped") {
+        debugPrint("Perekaman layar dihentikan!");
+      }
+    });
     await getBuku();
     pdf.value = await downloadPdf();
     staredPages.value = await getStaredPages();
@@ -191,6 +202,7 @@ class ReadController extends GetxController {
           bukuId: buku.value?.id,
           halaman: currentPage.value,
           durasi: readDuration.inSeconds,
+          waktuMembaca: DateTime.now(),
         );
       }
       startTime = DateTime.now();

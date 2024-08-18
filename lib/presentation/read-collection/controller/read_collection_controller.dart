@@ -191,6 +191,7 @@ class ReadCollectionController extends GetxController {
           bukuId: Get.arguments["bukuId"],
           halaman: currentPage.value,
           durasi: readDuration.inSeconds,
+          waktuMembaca: DateTime.now(),
         );
       }
       startTime = DateTime.now();

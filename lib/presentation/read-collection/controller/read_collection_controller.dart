@@ -181,7 +181,7 @@ class ReadCollectionController extends GetxController {
   }
 
   void onPageChanged(int page) {
-    if (currentPage.value != page) {
+    if (currentPage.value != page && Get.arguments["bukuId"] != null) {
       if (readTimer?.isActive ?? false) readTimer?.cancel();
       readTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
         readDuration = DateTime.now().difference(startTime!);

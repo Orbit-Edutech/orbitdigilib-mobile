@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:get/route_manager.dart';
+import 'package:ua_client_hints/ua_client_hints.dart';
 
 import '../routes/app_routes.dart';
 import '../utils/get_tokens.dart';
@@ -17,6 +18,7 @@ class APIInterceptor extends InterceptorsWrapper {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final tokens = await getTokens();
     options.headers['Authorization'] = 'Bearer ${tokens.access}';
+    options.headers.addAll(await userAgentClientHintsHeader());
     return super.onRequest(options, handler);
   }
 

@@ -129,6 +129,8 @@ class _ReadPageState extends State<ReadPage> with WidgetsBindingObserver {
                 final book = controller.buku.value;
                 final pdf = controller.pdf.value;
                 final isAssetBukuNull = controller.isAssetBukuNull.value;
+                final isOnScreenshot = controller.isOnScreenshot.value;
+                final isOnRecording = controller.isOnRecording.value;
                 if (book == null || pdf == null) {
                   return SingleChildScrollView(
                     child: Column(
@@ -178,50 +180,55 @@ class _ReadPageState extends State<ReadPage> with WidgetsBindingObserver {
                       ),
                     ),
                     Positioned.fill(
-                      child: noResultFound
+                      child: isOnScreenshot || isOnRecording
                           ? Container(
                               color: AppColor.bgScaffold,
                               padding: const EdgeInsets.all(Sizes.m),
-                              child: const EmptyList(description: "Kata tidak ditemukan"),
                             )
-                          : Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (controller.isFullScreen.value) {
-                                        controller.pdfController.previousPage();
-                                      } else {
-                                        controller.isFullScreen.value = true;
-                                      }
-                                    },
-                                  ),
+                          : noResultFound
+                              ? Container(
+                                  color: AppColor.bgScaffold,
+                                  padding: const EdgeInsets.all(Sizes.m),
+                                  child: const EmptyList(description: "Kata tidak ditemukan"),
+                                )
+                              : Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (controller.isFullScreen.value) {
+                                            controller.pdfController.previousPage();
+                                          } else {
+                                            controller.isFullScreen.value = true;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (!controller.isOnSearch.value) {
+                                            controller.isFullScreen.value = !controller.isFullScreen.value;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (controller.isFullScreen.value) {
+                                            controller.pdfController.nextPage();
+                                          } else {
+                                            controller.isFullScreen.value = true;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Expanded(
-                                  flex: 2,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (!controller.isOnSearch.value) {
-                                        controller.isFullScreen.value = !controller.isFullScreen.value;
-                                      }
-                                    },
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (controller.isFullScreen.value) {
-                                        controller.pdfController.nextPage();
-                                      } else {
-                                        controller.isFullScreen.value = true;
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
                     ),
                   ],
                 );

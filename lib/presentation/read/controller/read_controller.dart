@@ -46,6 +46,8 @@ class ReadController extends GetxController {
   Timer? readTimer;
   Duration readDuration = Duration.zero;
   Timer? _timer;
+  Rx<bool> isOnScreenshot = false.obs;
+  Rx<bool> isOnRecording = false.obs;
   Rx<int> currentPage = 1.obs;
   int? lastPageSeen;
   Rx<bool> isFullScreen = false.obs;
@@ -60,19 +62,26 @@ class ReadController extends GetxController {
   Rx<ModelBuku?> buku = Rx<ModelBuku?>(null);
   Rx<File?> pdf = Rx<File?>(null);
   Rx<List<int>?> staredPages = Rx<List<int>?>(null);
-  final MethodChannel channel = const MethodChannel("com.orbit360.digilib");
+  final MethodChannel channel = const MethodChannel("com.orbit.digilib");
 
   @override
   Future<void> onInit() async {
-    channel.setMethodCallHandler((call) async {
-      if (call.method == "ScreenshotTaken") {
-        debugPrint("Screenshot diambil!");
-      } else if (call.method == "ScreenRecordingStarted") {
-        debugPrint("Perekaman layar dimulai!");
-      } else if (call.method == "ScreenRecordingStopped") {
-        debugPrint("Perekaman layar dihentikan!");
-      }
-    });
+    if (Platform.isIOS) {
+      channel.setMethodCallHandler((MethodCall call) async {
+        switch (call.method) {
+          case 'onScreenRecordingChanged':
+            final isRecording = call.arguments as bool;
+            isOnRecording.value = isRecording;
+            break;
+          case 'onScreenshotTaken':
+            isOnScreenshot.value = true;
+            Future.delayed(const Duration(seconds: 1)).then((value) => isOnScreenshot.value = false);
+            break;
+          default:
+            throw MissingPluginException('notImplemented');
+        }
+      });
+    }
     await getBuku();
     pdf.value = await downloadPdf();
     staredPages.value = await getStaredPages();
@@ -81,6 +90,12 @@ class ReadController extends GetxController {
       readDuration = DateTime.now().difference(startTime!);
     });
     super.onInit();
+  }
+
+  @override
+  Future<void> onClose() async {
+    if (Platform.isIOS) {}
+    super.onClose();
   }
 
   Future getBuku() async {
@@ -197,7 +212,7 @@ class ReadController extends GetxController {
       readTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
         readDuration = DateTime.now().difference(startTime!);
       });
-      if (readDuration.inSeconds >= 30) {
+      if (readDuration.inSeconds >= 5) {
         postLaporanLiterasi(
           bukuId: buku.value?.id,
           halaman: currentPage.value,

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/instance_manager.dart';
@@ -45,6 +46,8 @@ class ReadCollectionController extends GetxController {
   Timer? readTimer;
   Duration readDuration = Duration.zero;
   Timer? _timer;
+  Rx<bool> isOnScreenshot = false.obs;
+  Rx<bool> isOnRecording = false.obs;
   Rx<int> currentPage = 1.obs;
   int? lastPageSeen;
   Rx<bool> isFullScreen = false.obs;
@@ -59,9 +62,26 @@ class ReadCollectionController extends GetxController {
   Rx<BukuAnggota?> buku = Rx<BukuAnggota?>(null);
   Rx<File?> pdf = Rx<File?>(null);
   Rx<List<int>?> staredPages = Rx<List<int>?>(null);
+  final MethodChannel channel = const MethodChannel("com.orbit.digilib");
 
   @override
   Future<void> onInit() async {
+    if (Platform.isIOS) {
+      channel.setMethodCallHandler((MethodCall call) async {
+        switch (call.method) {
+          case 'onScreenRecordingChanged':
+            final isRecording = call.arguments as bool;
+            isOnRecording.value = isRecording;
+            break;
+          case 'onScreenshotTaken':
+            isOnScreenshot.value = true;
+            Future.delayed(const Duration(seconds: 1)).then((value) => isOnScreenshot.value = false);
+            break;
+          default:
+            throw MissingPluginException('notImplemented');
+        }
+      });
+    }
     await getBuku();
     pdf.value = await downloadPdf();
     staredPages.value = await getStaredPages();
@@ -70,6 +90,12 @@ class ReadCollectionController extends GetxController {
       readDuration = DateTime.now().difference(startTime!);
     });
     super.onInit();
+  }
+
+  @override
+  Future<void> onClose() async {
+    if (Platform.isIOS) {}
+    super.onClose();
   }
 
   Future getBuku() async {
@@ -186,7 +212,7 @@ class ReadCollectionController extends GetxController {
       readTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
         readDuration = DateTime.now().difference(startTime!);
       });
-      if (readDuration.inSeconds >= 30) {
+      if (readDuration.inSeconds >= 5) {
         postLaporanLiterasi(
           bukuId: Get.arguments["bukuId"],
           halaman: currentPage.value,

@@ -12,6 +12,8 @@ void main() async {
   ImageUtils.prechacheImages();
 }
 
+// TODO: Screenshot masih delay pada iOS halaman membaca
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

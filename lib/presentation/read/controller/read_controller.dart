@@ -67,6 +67,7 @@ class ReadController extends GetxController {
   @override
   Future<void> onInit() async {
     if (Platform.isIOS) {
+      channel.invokeMethod("makeSecure");
       channel.setMethodCallHandler((MethodCall call) async {
         switch (call.method) {
           case 'onScreenRecordingChanged':
@@ -94,7 +95,9 @@ class ReadController extends GetxController {
 
   @override
   Future<void> onClose() async {
-    if (Platform.isIOS) {}
+    if (Platform.isIOS) {
+      channel.invokeMethod("removeSecure");
+    }
     super.onClose();
   }
 

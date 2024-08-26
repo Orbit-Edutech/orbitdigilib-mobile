@@ -12,8 +12,6 @@ void main() async {
   ImageUtils.prechacheImages();
 }
 
-// TODO: Screenshot masih delay pada iOS halaman membaca; Android manage external permission kena denied playstore
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

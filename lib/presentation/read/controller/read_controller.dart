@@ -29,6 +29,7 @@ import '../../collection/controller/collection_controller.dart';
 import '../../profile/controller/profile_controller.dart';
 import '../widgets/read_go_to_page.dart';
 import '../widgets/read_menu.dart';
+import '../widgets/read_review_dialog.dart';
 
 class ReadController extends GetxController {
   final profileController = Get.find<ProfileController>();
@@ -39,8 +40,10 @@ class ReadController extends GetxController {
 
   final searchController = TextEditingController();
   final searchPageController = TextEditingController();
+  final reviewController = TextEditingController();
   final searchFocusNode = FocusNode();
   final searchPageFocusNode = FocusNode();
+  final reviewFocusNode = FocusNode();
 
   DateTime? startTime;
   Timer? readTimer;
@@ -289,6 +292,17 @@ class ReadController extends GetxController {
         isSample: isSample,
         sampleLimit: sampleLimit,
         onPageChanged: onPageChanged,
+      ),
+      transitionDuration: const Duration(milliseconds: 100),
+    );
+  }
+
+  void review() {
+    Get.dialog(
+      ReadReviewDialog(
+        reviewController: reviewController,
+        reviewFocusNode: reviewFocusNode,
+        bukuId: buku.value?.id ?? "",
       ),
       transitionDuration: const Duration(milliseconds: 100),
     );

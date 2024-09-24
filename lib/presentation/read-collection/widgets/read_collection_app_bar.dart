@@ -13,7 +13,7 @@ class ReadCollectionAppBar extends StatelessWidget implements PreferredSizeWidge
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ReadCollectionController>();
-    final isSample = Get.arguments["type"] == "sample";
+    final isSample = Get.arguments?["type"] == "sample";
     final ThemeData theme = Theme.of(context);
     return Obx(() {
       final isFullScreen = controller.isFullScreen.value;
@@ -56,6 +56,16 @@ class ReadCollectionAppBar extends StatelessWidget implements PreferredSizeWidge
                           ],
                         ),
                       ),
+                      const PopupMenuItem(
+                        value: 3,
+                        child: Row(
+                          children: [
+                            Icon(Icons.comment_outlined, color: AppColor.black),
+                            HGap.s,
+                            Text("Beri Resensi"),
+                          ],
+                        ),
+                      ),
                     ];
                   },
                   onSelected: (value) {
@@ -65,6 +75,8 @@ class ReadCollectionAppBar extends StatelessWidget implements PreferredSizeWidge
                         break;
                       case 2:
                         controller.goToLastPageSeen();
+                      case 3:
+                        controller.review();
                         break;
                     }
                   },

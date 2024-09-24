@@ -27,6 +27,7 @@ class AppTextField extends StatelessWidget {
     this.keyboardType,
     this.onEditingComplete,
     this.onSubmitted,
+    this.maxLines,
   });
 
   final TextFieldType type;
@@ -45,6 +46,7 @@ class AppTextField extends StatelessWidget {
   final bool autoFocus;
   final EdgeInsetsGeometry? contentPadding;
   final TextInputType? keyboardType;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +59,7 @@ class AppTextField extends StatelessWidget {
       onChanged: onChanged,
       obscureText: isObscure,
       autofocus: autoFocus,
+      maxLines: maxLines ?? 1,
       decoration: InputDecoration(
         contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.r),
         border: OutlineInputBorder(

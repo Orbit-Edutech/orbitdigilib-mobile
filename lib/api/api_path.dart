@@ -1,6 +1,6 @@
 class APIPath {
-  // static const base = "https://api.orbitdigilib.com";
-  static const base = "https://api-dev.orbitdigilib.com"; // base API for dev
+  static const base = "https://api.orbitdigilib.com";
+  // static const base = "https://api-dev.orbitdigilib.com"; // base API for dev
 
   /// /asset/{id}
   static String asset(String id) => "$base/asset/$id";

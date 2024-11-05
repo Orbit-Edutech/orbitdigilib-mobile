@@ -8,5 +8,6 @@
   "discord.customButtonHoist": "above",
   "discord.removeLowerDetails": false,
   "discord.detailsIdling": "Turu",
-  "java.compile.nullAnalysis.mode": "automatic"
+  "java.compile.nullAnalysis.mode": "automatic",
+  "cmake.ignoreCMakeListsMissing": true
 }

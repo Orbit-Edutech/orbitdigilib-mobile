@@ -4,9 +4,9 @@ import '../../api_client.dart';
 import '../../api_path.dart';
 import '../model/model_wishlist_all.dart';
 
-Future<APIResponse<Wishlist>> createOneWishlist(String perpustakaanId, String id, [CancelToken? cancelToken]) async {
+Future<APIResponse<Wishlist>> createOneWishlist(String id, [CancelToken? cancelToken]) async {
   final param = APIParam<Wishlist>(
-    path: APIPath.wishlist(perpustakaanId),
+    path: APIPath.wishlist(),
     fromJson: Wishlist.fromJson,
     data: {"bukuPerpustakaanId": id},
   );

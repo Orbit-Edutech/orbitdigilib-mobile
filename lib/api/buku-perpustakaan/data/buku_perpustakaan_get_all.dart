@@ -4,12 +4,13 @@ import '../../api_client.dart';
 import '../../api_path.dart';
 import '../model/model_all_buku_perpustakaan.dart';
 
-Future<APIResponse<ModelAllBukuPerpustakaan>> getAllBukuPerpustakaan([
+Future<APIResponse<ModelAllBukuPerpustakaan>> getAllBukuPerpustakaan(
+  String perpustakaanId, [
   Map<String, dynamic>? queryParameters,
   CancelToken? cancelToken,
 ]) async {
   final param = APIParam(
-    path: APIPath.allBukuPerpus,
+    path: APIPath.allBukuPerpus(perpustakaanId),
     fromJson: ModelAllBukuPerpustakaan.fromJson,
     queryParameters: queryParameters,
   );

@@ -14,7 +14,7 @@ class AboutLibraryController extends GetxController {
   @override
   Future<void> onInit() async {
     final String? kodePerpustakaan = await SharedPreferencesManager.readPref("kodePerpustakaan");
-    final response = await getOnePerpustakaan(kodePerpustakaan ?? "");
+    final response = await getOnePerpustakaan(kode: kodePerpustakaan ?? "");
     if (response.data != null) {
       perpustakaan.value = response.data;
     } else {

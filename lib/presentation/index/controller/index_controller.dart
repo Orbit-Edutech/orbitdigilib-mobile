@@ -9,8 +9,14 @@ import '../../../api/api_client.dart';
 import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
 import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
 import '../../../api/hak-akses/data/get_all_access.dart';
+import '../../../api/hak-akses/data/check_access.dart' as a;
 import '../../../api/hak-akses/data/change_access.dart' as c;
-import '../../../api/hak-akses/model/model_all_access.dart';
+import '../../../api/hak-akses/data/get_last_access.dart';
+import '../../../api/hak-akses/data/set_default_access_right.dart';
+import '../../../api/hak-akses/model/model_all_access.dart' as all;
+import '../../../api/hak-akses/model/model_check_access.dart';
+import '../../../api/hak-akses/model/model_last_access.dart';
+import '../../../api/hak-akses/model/model_set_default_access_right.dart';
 import '../../../api/katalog-perpus/data/get_all_katalog_perpus.dart';
 import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart';
 import '../../../api/perpustakaan/data/perpustakaan_get_banner_default.dart';
@@ -23,12 +29,15 @@ import '../../../shared/widget/app_button.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_theme.dart';
+import '../../../utils/shared_preferences_manager.dart';
 import '../../splash/controller/splash_controller.dart';
 import '../widgets/index_categories_modal.dart';
 import '../widgets/index_large_banner.dart';
 
 class IndexController extends GetxController {
-  final checkAccess = Get.find<SplashController>().checkAccess.value;
+  Rx<ModelLastAccess?> lastAccess = Rx<ModelLastAccess?>(null);
+  Rx<ModelCheckAccess?> checkAccess = Rx<ModelCheckAccess?>(null);
+  Rx<ModelSetDefaultAccessRight?> defaultAccess = Rx<ModelSetDefaultAccessRight?>(null);
 
   final Rx<p.Perpustakaan?> perpustakaan = Rx<p.Perpustakaan?>(null);
   Rx<List<KatalogBukuPerpustakaan>?> categories = Rx<List<KatalogBukuPerpustakaan>?>(null);
@@ -36,7 +45,7 @@ class IndexController extends GetxController {
   Rx<List<Payload>?> allBooks = Rx<List<Payload>?>(null);
   Rx<List<Payload>?> promoBooks = Rx<List<Payload>?>(null);
   Rx<List<String>> banners = Rx<List<String>>([]);
-  Rx<ModelAllAccess?> allAccess = Rx<ModelAllAccess?>(null);
+  Rx<all.ModelAllAccess?> allAccess = Rx<all.ModelAllAccess?>(null);
 
   Rx<bool> isBalanceVisible = false.obs;
   Rx<bool> isLoadedMore = false.obs;
@@ -52,8 +61,32 @@ class IndexController extends GetxController {
     pinnedBooks.value = null;
     allBooks.value = null;
     promoBooks.value = null;
-    final kode = checkAccess?.perpustakaan?.kode ?? "";
-    final id = checkAccess?.perpustakaan?.id ?? "";
+    await getLastAccess().then((lastAccess) async {
+      if (lastAccess.data != null) {
+        this.lastAccess.value = lastAccess.data;
+        await a.checkAccess(lastAccess.data!.perpustakaanId ?? "").then((res) async {
+          if (res.data != null) {
+            checkAccess.value = res.data;
+          } else {
+            await setDefaultAccessRight().then((def) {
+              defaultAccess.value = def.data;
+            });
+          }
+        });
+      } else {
+        if (lastAccess.error == ResponseStatus.connectionError) {
+          showSnackbar(backgroundColor: AppColor.red, message: "Terjadi kesalahan koneksi");
+        } else {
+          showSnackbar(
+            backgroundColor: AppColor.red,
+            title: "Error ${lastAccess.statusCode}",
+            message: lastAccess.error["message"],
+          );
+        }
+      }
+    });
+    final kode = await SharedPreferencesManager.readPref("kodePerpustakaan");
+    final id = await SharedPreferencesManager.readPref("idPerpustakaan");
     debugPrint(id.toString());
     await getBannerDefault(kode).then((res) {
       if (res.data != null) {
@@ -88,7 +121,7 @@ class IndexController extends GetxController {
           }
         }
       }),
-      getOnePerpustakaan(kode).then((res) {
+      getOnePerpustakaan(kode: kode).then((res) {
         if (res.data != null) {
           perpustakaan.value = res.data;
           final banners = this.banners.value;
@@ -195,10 +228,16 @@ class IndexController extends GetxController {
     }
   }
 
-  void changeAccess(String perpustakaanId) async {
+  void changeAccess(all.Perpustakaan perpustakaan) async {
     changeAccessState.value = ButtonState.loading;
-    final response = await c.changeAccess(perpustakaanId);
+    final response = await c.changeAccess(perpustakaan.id ?? "");
     if (response.data != null) {
+      final prefs = {
+        "kodePerpustakaan": perpustakaan.kode,
+        "idPerpustakaan": perpustakaan.id,
+        "color": perpustakaan.warnaDasar,
+      };
+      await SharedPreferencesManager.writePrefs(prefs);
       Get.offAllNamed(AppRoutes.splash);
       Get.find<SplashController>().onInit();
     } else {

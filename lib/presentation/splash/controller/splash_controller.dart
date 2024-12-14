@@ -7,12 +7,6 @@ import 'package:get/route_manager.dart';
 import '../../../api/api_client.dart';
 import '../../../api/auth/data/auth_validate.dart';
 import '../../../api/auth/model/model_auth_validate.dart';
-import '../../../api/hak-akses/data/check_access.dart' as c;
-import '../../../api/hak-akses/data/get_last_access.dart';
-import '../../../api/hak-akses/data/set_default_access_right.dart';
-import '../../../api/hak-akses/model/model_check_access.dart';
-import '../../../api/hak-akses/model/model_last_access.dart';
-import '../../../api/hak-akses/model/model_set_default_access_right.dart';
 import '../../../constants/app_info.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
@@ -24,35 +18,18 @@ class SplashController extends GetxController {
   Rx<bool> isNoInternet = false.obs;
   Rx<ButtonState> buttonState = ButtonState.enable.obs;
   AuthValidate? validate;
-  Rx<ModelLastAccess?> lastAccess = Rx<ModelLastAccess?>(null);
-  Rx<ModelCheckAccess?> checkAccess = Rx<ModelCheckAccess?>(null);
-  Rx<ModelSetDefaultAccessRight?> defaultAccess = Rx<ModelSetDefaultAccessRight?>(null);
   @override
   void onInit() async {
     buttonState.value = ButtonState.loading;
     final response = await authValidate();
     if (response.data != null) {
       validate = response.data;
-      final isUpdateAvailable = checkUpdateStatus();
+      final isUpdateAvailable = checkUpdateStatus(validate!);
       if (isUpdateAvailable) {
         Get.offAllNamed(AppRoutes.update);
       } else {
         final color = await SharedPreferencesManager.readPref<String>("color");
         await AppTheme.changePerpusTheme(color);
-        await getLastAccess().then((lastAccess) async {
-          if (lastAccess.data != null) {
-            this.lastAccess.value = lastAccess.data;
-            await c.checkAccess(lastAccess.data!.perpustakaanId ?? "").then((res) async {
-              if (res.data != null) {
-                checkAccess.value = res.data;
-              } else {
-                await setDefaultAccessRight().then((def) {
-                  defaultAccess.value = def.data;
-                });
-              }
-            });
-          }
-        });
         Get.offAllNamed(AppRoutes.navigator);
       }
     } else {
@@ -73,10 +50,10 @@ class SplashController extends GetxController {
   }
 
   /// Akan mengembalikan nilai [True] jika terdapat versi yang terbaru
-  bool checkUpdateStatus() {
+  bool checkUpdateStatus(AuthValidate validate) {
     if (Platform.isAndroid) {
       final int localVersion = AppInfo.android.versionCode!;
-      final int productionVersion = validate?.version?.android?.versionCode ?? 1;
+      final int productionVersion = validate.version?.android?.versionCode ?? 1;
       if (localVersion < productionVersion) {
         return true;
       } else {
@@ -84,7 +61,7 @@ class SplashController extends GetxController {
       }
     } else if (Platform.isIOS) {
       final int localVersion = AppInfo.iOs.versionCode!;
-      final int productionVersion = validate?.version?.iOs?.versionCode ?? 1;
+      final int productionVersion = validate.version?.iOs?.versionCode ?? 1;
       if (localVersion < productionVersion) {
         return true;
       } else {

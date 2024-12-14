@@ -72,7 +72,7 @@ class _IndexAppBarState extends State<IndexAppBar> {
                       AppButton(
                         state: state,
                         type: ButtonType.elevated,
-                        onPressed: () => controller.changeAccess(value?.perpustakaan?.id ?? ""),
+                        onPressed: () => controller.changeAccess(value!.perpustakaan!),
                         child: const Text("Pindah"),
                       ),
                     ],

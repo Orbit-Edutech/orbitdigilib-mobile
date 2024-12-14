@@ -35,7 +35,7 @@ class AuthLibraryController extends GetxController {
   Future<void> onSubmit() async {
     buttonState.value = ButtonState.loading;
     final kode = kodeController.text;
-    final response = await getOnePerpustakaan(kode);
+    final response = await getOnePerpustakaan(kode: kode);
     if (response.data != null) {
       perpustakaan = response.data;
       buttonState.value = ButtonState.enable;

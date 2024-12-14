@@ -38,10 +38,13 @@ class APIPath {
   /// /perpustakaan/{kode}
   static String perpustakaanGetOne(String kode) => "$perpustakaan/$kode";
 
-  /// /buku-perpustakaan
-  static const allBukuPerpus = "/buku-perpustakaan";
+  /// /perpustakaan/by-id/{id}
+  static String perpustakaanGetOneById(String id) => "$perpustakaan/$id";
 
-  /// /buku-perpustakaan/{id}
+  /// /buku-perpustakaan
+  static String allBukuPerpus(String perpustakaanId) => "/buku-perpustakaan/$perpustakaanId";
+
+  /// /buku-perpustakaan/{perpustakaanId}/{id}
   static oneBukuPerpus(String id) => "/buku-perpustakaan/$id";
 
   /// /buku/{id}
@@ -63,19 +66,19 @@ class APIPath {
   static const beli = "/beli";
 
   /// /katalog-buku-perpustakaan
-  static const katalogBukuPerpustakaan = "/katalog-buku-perpustakaan";
+  static String katalogBukuPerpustakaan(String perpustakaanId) => "/katalog-buku-perpustakaan/$perpustakaanId";
 
   /// /katalog-buku-perpustakaan/{id}
   static String katalogBukuPerpustakaanGetOne(String id) => "/katalog-buku-perpustakaan/$id";
 
-  /// /wishlist
-  static const wishlist = "/wishlist";
+  /// /wishlist/{perpustakaanId}
+  static String wishlist([String? perpustakaanId]) => "/wishlist${perpustakaanId != null ? '/$perpustakaanId' : ''}";
 
   /// /wishlist/{id}
   static String oneWishlist(String id) => "/wishlist/$id";
 
-  /// /koleksi
-  static const koleksi = "/koleksi";
+  /// /koleksi/{perpustakaanId}
+  static String koleksi(String perpustakaanId) => "/koleksi/$perpustakaanId";
 
   /// /koleksi/check/{id}
   static koleksiCheck(String id) => "/koleksi/check/$id";
@@ -97,4 +100,22 @@ class APIPath {
 
   /// /poin-membaca/resensi/{bukuId}
   static String resensiPoinMembaca(String id) => "/poin-membaca/resensi/$id";
+
+  /// /hak-akses
+  static const hakAkses = "/hak-akses";
+
+  /// /all-access
+  static const allAccess = "$hakAkses/all-access";
+
+  /// /last-access
+  static const lastAccess = "$hakAkses/last-access";
+
+  /// /check-access
+  static String checkAccess(String perpustakaanId) => "$hakAkses/check-access-right/$perpustakaanId";
+
+  /// /change-access
+  static String changeAccess(String perpustakaanId) => "$hakAkses/change-access/$perpustakaanId";
+
+  /// /set-default-access-right
+  static const setDefaultAccessRight = "$hakAkses/set-default-access-right";
 }

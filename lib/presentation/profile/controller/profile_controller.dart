@@ -51,7 +51,7 @@ class ProfileController extends GetxController {
 
   Future<void> logout() async {
     logoutButtonState.value = ButtonState.loading;
-    auth.logout();
+    await auth.logout();
     final prefs = {
       "isLogin": false,
       "access": "",

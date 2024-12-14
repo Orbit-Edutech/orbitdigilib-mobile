@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../api/api_client.dart';
@@ -14,9 +15,12 @@ import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
+import '../../index/controller/index_controller.dart';
 import '../widgets/books_category_filter.dart';
 
 class BooksController extends GetxController {
+  final perpustakaan = Get.find<IndexController>().perpustakaan.value;
+
   Rx<List<KatalogBukuPerpustakaan>?> categories = Rx<List<KatalogBukuPerpustakaan>?>(null);
   Rx<KatalogBukuPerpustakaan?> category = Rx<KatalogBukuPerpustakaan?>(null);
   Rx<List<Payload>?> books = Rx<List<Payload>?>(null);
@@ -37,7 +41,7 @@ class BooksController extends GetxController {
     await search("");
     categories.value = null;
     category.value = null;
-    getAllKatalogPerpus().then((res) {
+    getAllKatalogPerpus(perpustakaan?.id ?? "").then((res) {
       if (res.data != null) {
         categories.value = res.data?.listKatalogBukuPerpustakaan?.where((katalog) => katalog.deletedAt == null).toList();
       } else {
@@ -82,7 +86,7 @@ class BooksController extends GetxController {
       }
       cancelToken.cancel();
       cancelToken = CancelToken();
-      final response = await getAllBukuPerpustakaan(qp, cancelToken);
+      final response = await getAllBukuPerpustakaan(perpustakaan?.id ?? "-", qp, cancelToken);
       if (response.data != null) {
         books.value = response.data!.payload?.where((book) => book.isVisible!).toList() ?? [];
       }
@@ -99,7 +103,7 @@ class BooksController extends GetxController {
         qp["buku[judul][lke]"] = keyword;
       }
       qp["page"] = page.value;
-      final response = await getAllBukuPerpustakaan(qp);
+      final response = await getAllBukuPerpustakaan(perpustakaan?.id ?? "-", qp);
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
           books.value?.addAll(response.data?.payload?.where((book) => book.isVisible!).toList() ?? []);

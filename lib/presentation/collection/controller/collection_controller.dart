@@ -19,10 +19,12 @@ import '../../../sql/books/data/insert_buku_sqlite.dart';
 import '../../../sql/books/data/update_buku_sqlite.dart';
 import '../../../sql/books/model/model_buku_sql.dart';
 import '../../../theme/app_color.dart';
+import '../../index/controller/index_controller.dart';
 import '../../profile/controller/profile_controller.dart';
 
 class CollectionController extends GetxController {
   final user = Get.find<ProfileController>().profile.value;
+  final perpustakaan = Get.find<IndexController>().perpustakaan.value;
 
   Rx<List<Payload>?> collections = Rx<List<Payload>?>(null);
   Rx<List<ModelBukuSql>?> localBooks = Rx<List<ModelBukuSql>?>(null);
@@ -59,7 +61,7 @@ class CollectionController extends GetxController {
       }
       cancelToken.cancel();
       cancelToken = CancelToken();
-      final response = await getCollections(qp, cancelToken);
+      final response = await getCollections(perpustakaan?.id ?? "-", qp, cancelToken);
       if (response.data != null) {
         collections.value = response.data?.payload;
         await synchronizeData(collections.value!);
@@ -76,7 +78,7 @@ class CollectionController extends GetxController {
   Future<void> loadCollections([String? filter]) async {
     collections.value = null;
     final qp = filter != null ? {"tipe": filter} : null;
-    final response = await getCollections(qp);
+    final response = await getCollections(perpustakaan?.id ?? "-", qp);
     if (response.data != null) {
       collections.value = response.data?.payload;
       await synchronizeData(collections.value!);
@@ -99,7 +101,7 @@ class CollectionController extends GetxController {
       isLoadedMore.value = true;
       final Map<String, dynamic> qp = {"page": page.value};
       filter.value != "Semua Koleksi" ? qp['tipe'] = filter.value : null;
-      final response = await getCollections(qp);
+      final response = await getCollections(perpustakaan?.id ?? "-", qp);
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
           collections.value?.addAll(response.data?.payload ?? []);

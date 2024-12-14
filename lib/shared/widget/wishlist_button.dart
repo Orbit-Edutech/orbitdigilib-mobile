@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../api/wishlist/data/wishlist_create_one.dart';
 import '../../api/wishlist/data/wishlist_delete_one.dart';
 import '../../api/wishlist/model/model_wishlist_all.dart';
+import '../../presentation/index/controller/index_controller.dart';
 import '../../presentation/wishlist/controller/wishlist_controller.dart';
 
 class WishlistButton extends StatefulWidget {
@@ -25,6 +26,7 @@ class _WishlistButtonState extends State<WishlistButton> with SingleTickerProvid
   CancelToken delCancelToken = CancelToken();
   bool? isWishlist;
   final wishlistController = Get.find<WishlistController>();
+  final perpustakaan = Get.find<IndexController>().perpustakaan.value;
 
   late AnimationController wishlistAnimationController = AnimationController(
     vsync: this,

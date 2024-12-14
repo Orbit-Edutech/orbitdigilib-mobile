@@ -5,7 +5,7 @@ import '../../api_path.dart';
 
 Future<APIResponse<dynamic>> deleteOneWishlist(String id, CancelToken cancelToken) async {
   final param = APIParam<dynamic>(
-    path: APIPath.wishlist,
+    path: APIPath.wishlist(),
     fromJson: (_) {},
     data: {"bukuPerpustakaanId": id},
   );

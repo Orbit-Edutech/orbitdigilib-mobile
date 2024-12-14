@@ -73,7 +73,7 @@ class AuthUserController extends GetxController {
           "username": usernameController.text,
           "idUser": user?.id,
           "kodePerpustakaan": perpustakaan!.kode,
-          "idPerpustakaan": perpustakaan!.id,
+          "idPerpustakaan": response.data!.user!.perpustakaan!.id,
           "color": perpustakaan!.warnaDasar,
         };
         await SharedPreferencesManager.writePrefs(prefs);

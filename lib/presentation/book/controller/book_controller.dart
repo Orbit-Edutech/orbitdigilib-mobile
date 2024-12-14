@@ -15,12 +15,14 @@ import '../../../shared/widget/app_button.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
 import '../../collection/controller/collection_controller.dart';
+import '../../index/controller/index_controller.dart';
 import '../../profile/controller/profile_controller.dart';
 import '../widgets/book_read_options.dart';
 
 class BookController extends GetxController {
   final collectionController = Get.find<CollectionController>();
   final profileController = Get.find<ProfileController>();
+  final perpustakaan = Get.find<IndexController>().perpustakaan.value;
 
   a.Payload? args;
   Rx<BukuPerpustakaan?> book = Rx<BukuPerpustakaan?>(null);

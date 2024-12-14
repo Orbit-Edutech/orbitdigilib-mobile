@@ -4,11 +4,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/instance_manager.dart';
 
 import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_all.dart';
 import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart';
+import '../../index/controller/index_controller.dart';
 
 class SearchPageController extends GetxController {
+  final perpustakaan = Get.find<IndexController>().perpustakaan.value;
+
   Rx<List<Payload>?> books = Rx<List<Payload>?>(null);
   CancelToken cancelToken = CancelToken();
 
@@ -49,7 +53,7 @@ class SearchPageController extends GetxController {
       }
       cancelToken.cancel();
       cancelToken = CancelToken();
-      final response = await getAllBukuPerpustakaan(qp, cancelToken);
+      final response = await getAllBukuPerpustakaan(perpustakaan?.id ?? "", qp, cancelToken);
       if (response.data != null) {
         books.value = response.data!.payload?.where((book) => book.isVisible!).toList() ?? [];
       }
@@ -66,7 +70,7 @@ class SearchPageController extends GetxController {
         qp["buku[judul][lke]"] = keyword;
       }
       qp["page"] = page.value;
-      final response = await getAllBukuPerpustakaan(qp);
+      final response = await getAllBukuPerpustakaan(perpustakaan?.id ?? "", qp);
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
           books.value?.addAll(response.data?.payload?.where((book) => book.isVisible!).toList() ?? []);

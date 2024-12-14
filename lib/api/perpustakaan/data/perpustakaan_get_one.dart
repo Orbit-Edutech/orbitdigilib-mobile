@@ -2,9 +2,9 @@ import '../../api_client.dart';
 import '../../api_path.dart';
 import '../model/model_perpustakaan.dart';
 
-Future<APIResponse<Perpustakaan>> getOnePerpustakaan(String kode) async {
+Future<APIResponse<Perpustakaan>> getOnePerpustakaan({String? kode, String? id}) async {
   final param = APIParam(
-    path: APIPath.perpustakaanGetOne(kode),
+    path: id != null ? APIPath.perpustakaanGetOneById(id) : APIPath.perpustakaanGetOne(kode!),
     fromJson: Perpustakaan.fromJson,
   );
   final response = await apiClient.get(param);

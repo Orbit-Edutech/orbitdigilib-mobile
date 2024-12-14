@@ -30,6 +30,7 @@ dependencies:
   url_launcher: ^6.2.4
   cached_network_image: ^3.3.1
   screenshot_callback: ^3.0.1
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:

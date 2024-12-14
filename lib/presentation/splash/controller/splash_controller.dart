@@ -21,11 +21,10 @@ class SplashController extends GetxController {
   @override
   void onInit() async {
     buttonState.value = ButtonState.loading;
-    await Future.delayed(const Duration(seconds: 1));
     final response = await authValidate();
     if (response.data != null) {
       validate = response.data;
-      final isUpdateAvailable = checkUpdateStatus();
+      final isUpdateAvailable = checkUpdateStatus(validate!);
       if (isUpdateAvailable) {
         Get.offAllNamed(AppRoutes.update);
       } else {
@@ -51,10 +50,10 @@ class SplashController extends GetxController {
   }
 
   /// Akan mengembalikan nilai [True] jika terdapat versi yang terbaru
-  bool checkUpdateStatus() {
+  bool checkUpdateStatus(AuthValidate validate) {
     if (Platform.isAndroid) {
       final int localVersion = AppInfo.android.versionCode!;
-      final int productionVersion = validate?.version?.android?.versionCode ?? 1;
+      final int productionVersion = validate.version?.android?.versionCode ?? 1;
       if (localVersion < productionVersion) {
         return true;
       } else {
@@ -62,7 +61,7 @@ class SplashController extends GetxController {
       }
     } else if (Platform.isIOS) {
       final int localVersion = AppInfo.iOs.versionCode!;
-      final int productionVersion = validate?.version?.iOs?.versionCode ?? 1;
+      final int productionVersion = validate.version?.iOs?.versionCode ?? 1;
       if (localVersion < productionVersion) {
         return true;
       } else {

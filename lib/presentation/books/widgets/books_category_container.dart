@@ -14,6 +14,7 @@ import '../../../shared/widget/book_card.dart';
 import '../../../shared/widget/book_card_skeleton.dart';
 import '../../../shared/widget/empty_list.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../index/controller/index_controller.dart';
 import '../controller/books_controller.dart';
 
 class BooksCategoryContainer extends StatefulWidget {
@@ -30,6 +31,7 @@ class BooksCategoryContainer extends StatefulWidget {
 
 class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
   final controller = Get.find<BooksController>();
+  final perpustakaan = Get.find<IndexController>().perpustakaan.value;
   List<Payload>? books;
   @override
   void initState() {
@@ -39,7 +41,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
     } else {
       qp = {"katalogBukuPerpustakaanId": widget.category.id};
     }
-    getAllBukuPerpustakaan(qp).then((res) {
+    getAllBukuPerpustakaan(perpustakaan?.id ?? "", qp).then((res) {
       if (res.data != null) {
         if (mounted) {
           setState(() {

@@ -160,7 +160,7 @@ class CollectionPage extends StatelessWidget {
                   itemCount: books.length,
                   itemBuilder: (ctx, idx) {
                     final payload = books[idx];
-                    final lb = localBooks.firstWhereOrNull((lb) => lb.idBuku == payload.buku?.id);
+                    final lb = localBooks.firstWhereOrNull((lb) => lb.idBuku == payload.bukuAnggota?.id);
                     return CollectionBookCard(
                       status: lb?.status ?? "-",
                       lastPageSeen: lb?.lastPageSeen ?? 0,
@@ -172,6 +172,23 @@ class CollectionPage extends StatelessWidget {
               }),
             ),
           ),
+          Obx(() {
+            final isLoadedMore = controller.isLoadedMore.value;
+            if (isLoadedMore) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: Sizes.s),
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                ),
+              );
+            } else {
+              return const SizedBox();
+            }
+          })
         ],
       ),
     );

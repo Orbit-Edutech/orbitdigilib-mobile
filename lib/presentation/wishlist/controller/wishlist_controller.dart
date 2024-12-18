@@ -4,11 +4,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/instance_manager.dart';
 
 import '../../../api/wishlist/data/wishlist_get_all.dart';
 import '../../../api/wishlist/model/model_wishlist_all.dart';
+import '../../index/controller/index_controller.dart';
 
 class WishlistController extends GetxController {
+  final perpustakaan = Get.find<IndexController>().perpustakaan.value;
+
   CancelToken cancelToken = CancelToken();
   Timer? _timer;
   Rx<bool> asc = false.obs;
@@ -27,7 +31,7 @@ class WishlistController extends GetxController {
     textController.clear();
     cancelToken.cancel();
     cancelToken = CancelToken();
-    final response = await getAllWishlist(cancelToken);
+    final response = await getAllWishlist(perpustakaan?.id ?? "", cancelToken);
     if (response.data != null) {
       wishlist.value =
           response.data?.listWishlist?.where((element) => element.bukuPerpustakaan?.isVisible ?? false).toList();

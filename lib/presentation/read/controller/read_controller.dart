@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/instance_manager.dart';
@@ -13,10 +14,13 @@ import '../../../api/api_client.dart';
 import '../../../api/api_path.dart';
 import '../../../api/buku/data/buku_get_one.dart';
 import '../../../api/buku/model/model_buku.dart';
+import '../../../api/laporan-literasi/data/post_laporan_literasi.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../sql/books/data/get_one_buku_sqlite.dart';
+import '../../../sql/books/data/insert_buku_sqlite.dart';
 import '../../../sql/books/data/update_buku_sqlite.dart';
+import '../../../sql/books/model/model_buku_sql.dart';
 import '../../../sql/stared-pages/data/delete_stared_page.dart';
 import '../../../sql/stared-pages/data/get_stared_pages.dart';
 import '../../../sql/stared-pages/data/insert_stared_page.dart';
@@ -25,6 +29,7 @@ import '../../collection/controller/collection_controller.dart';
 import '../../profile/controller/profile_controller.dart';
 import '../widgets/read_go_to_page.dart';
 import '../widgets/read_menu.dart';
+import '../widgets/read_review_dialog.dart';
 
 class ReadController extends GetxController {
   final profileController = Get.find<ProfileController>();
@@ -35,43 +40,111 @@ class ReadController extends GetxController {
 
   final searchController = TextEditingController();
   final searchPageController = TextEditingController();
+  final reviewController = TextEditingController();
   final searchFocusNode = FocusNode();
   final searchPageFocusNode = FocusNode();
+  final reviewFocusNode = FocusNode();
 
+  DateTime? startTime;
+  Timer? readTimer;
+  Duration readDuration = Duration.zero;
   Timer? _timer;
+  Rx<bool> isOnScreenshot = false.obs;
+  Rx<bool> isOnRecording = false.obs;
   Rx<int> currentPage = 1.obs;
   int? lastPageSeen;
   Rx<bool> isFullScreen = false.obs;
   Rx<bool> isOnSearch = false.obs;
+  Rx<bool> isOnDownload = false.obs;
   Rx<bool> noResultFound = false.obs;
   bool isSample = false;
   int sampleLimit = 10;
+  Rx<double> downloadProgress = 0.0.obs;
   Rx<bool> isAssetBukuNull = false.obs;
 
   Rx<ModelBuku?> buku = Rx<ModelBuku?>(null);
   Rx<File?> pdf = Rx<File?>(null);
   Rx<List<int>?> staredPages = Rx<List<int>?>(null);
+  final MethodChannel channel = const MethodChannel("com.orbit.digilib");
 
   @override
   Future<void> onInit() async {
+    if (Platform.isIOS) {
+      channel.invokeMethod("makeSecure");
+      channel.setMethodCallHandler((MethodCall call) async {
+        switch (call.method) {
+          case 'onScreenRecordingChanged':
+            final isRecording = call.arguments as bool;
+            isOnRecording.value = isRecording;
+            break;
+          case 'onScreenshotTaken':
+            isOnScreenshot.value = true;
+            Future.delayed(const Duration(seconds: 1)).then((value) => isOnScreenshot.value = false);
+            break;
+          default:
+            throw MissingPluginException('notImplemented');
+        }
+      });
+    }
     await getBuku();
     pdf.value = await downloadPdf();
     staredPages.value = await getStaredPages();
+    startTime = DateTime.now();
+    readTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      readDuration = DateTime.now().difference(startTime!);
+    });
     super.onInit();
   }
 
+  @override
+  Future<void> onClose() async {
+    if (Platform.isIOS) {
+      channel.invokeMethod("removeSecure");
+    }
+    super.onClose();
+  }
+
   Future getBuku() async {
+    final idUser = profileController.profile.value?.id ?? "";
     final Map<String, String?> args = Get.arguments;
     isSample = args["type"] == "sample";
     final response = await getOneBuku(args["asset"] ?? "");
     if (response.data != null) {
       buku.value = response.data;
-      final Map<String, Object> values = {"total_pages": response.data?.jumlahHalaman ?? 0};
-      await updateBukuSQLite(
-        bukuId: response.data?.id ?? "",
-        userId: profileController.profile.value?.id ?? "",
-        values: values,
-      );
+      final dir = await getApplicationCacheDirectory();
+      final assetBukuPath = "${dir.path}/${buku.value?.id}.pdf";
+      final localBook = await getOneBukuSQLite(buku.value?.id ?? "", idUser);
+      if (!isSample) {
+        if (localBook == null) {
+          final savePath = "${dir.path}/${response.data?.id}";
+          final assetSampulPath = File(savePath).path;
+          await insertBukuSQLite(
+            ModelBukuSql(
+              idBuku: buku.value?.id ?? "",
+              idUser: idUser,
+              lastPageSeen: 1,
+              totalPages: buku.value?.jumlahHalaman ?? 1,
+              status: "Belum Dibaca",
+              expired: DateTime.now().add(const Duration(days: 7)),
+              assetSampulPath: assetSampulPath,
+              assetBukuPath: assetBukuPath,
+              judul: buku.value?.judul ?? "-",
+              penulis: buku.value?.penulis ?? "-",
+              tipe: "",
+            ),
+          );
+        } else {
+          await updateBukuSQLite(
+            bukuId: buku.value?.id ?? "",
+            userId: profileController.profile.value?.id ?? "",
+            values: {
+              "last_page_seen": lastPageSeen ?? 1,
+              "status": currentPage.value == buku.value?.jumlahHalaman ? "Selesai Dibaca" : "Belum Selesai",
+              "asset_buku_path": assetBukuPath,
+            },
+          );
+        }
+      }
       lastPageSeen = await getLastPageSeen(response.data?.id ?? "");
       await collectionController.onInit();
     } else {
@@ -80,20 +153,43 @@ class ReadController extends GetxController {
   }
 
   Future<File?> downloadPdf() async {
+    isOnDownload.value = true;
     final String? pdfId = buku.value?.assetBukuId;
     if (pdfId != null) {
       final dir = await getApplicationCacheDirectory();
-      final path = "${dir.path}/${buku.value?.id}.pdf";
-      if (!(await File(path).exists())) {
+      final pdfPath = "${dir.path}/${buku.value?.id}.pdf";
+      if (!(await File(pdfPath).exists())) {
         await apiClient.download(
-          param: APIParam(path: APIPath.asset(pdfId), fromJson: (data) => data),
-          savePath: path,
+          param: APIParam(
+            path: APIPath.asset(pdfId),
+            fromJson: (data) => data,
+            onReceiveProgress: (p0, p1) {
+              downloadProgress.value = p0 / p1;
+            },
+          ),
+          savePath: pdfPath,
         );
       }
-      final result = File(path);
+      final imgPath = "${dir.path}/${buku.value?.id}";
+      if (!(await File(imgPath).exists())) {
+        await apiClient.download(
+          param: APIParam(
+            path: APIPath.asset(pdfId),
+            fromJson: (data) => data,
+            onReceiveProgress: (p0, p1) {
+              downloadProgress.value = p0 / p1;
+            },
+          ),
+          savePath: imgPath,
+        );
+      }
+
+      final result = File(pdfPath);
+      isOnDownload.value = false;
       return result;
     }
     isAssetBukuNull.value = true;
+    isOnDownload.value = false;
     return null;
   }
 
@@ -117,6 +213,22 @@ class ReadController extends GetxController {
   }
 
   void onPageChanged(int page) {
+    if (currentPage.value != page) {
+      if (readTimer?.isActive ?? false) readTimer?.cancel();
+      readTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+        readDuration = DateTime.now().difference(startTime!);
+      });
+      if (readDuration.inSeconds >= 5) {
+        postLaporanLiterasi(
+          bukuId: buku.value?.id,
+          halaman: currentPage.value,
+          durasi: readDuration.inSeconds,
+          waktuMembaca: DateTime.now(),
+        );
+      }
+      startTime = DateTime.now();
+      readDuration = Duration.zero;
+    }
     currentPage.value = page;
     if (isSample && page > sampleLimit) {
       pdfController.jumpToPage(sampleLimit);
@@ -126,12 +238,15 @@ class ReadController extends GetxController {
       lastPageSeen = page;
       if (_timer?.isActive ?? false) _timer?.cancel();
       _timer = Timer(const Duration(seconds: 2), () async {
+        final dir = await getApplicationCacheDirectory();
+        final assetBukuPath = "${dir.path}/${buku.value?.id}.pdf";
         await updateBukuSQLite(
           bukuId: buku.value?.id ?? "",
           userId: profileController.profile.value?.id ?? "",
           values: {
             "last_page_seen": lastPageSeen ?? 1,
             "status": currentPage.value == buku.value?.jumlahHalaman ? "Selesai Dibaca" : "Belum Selesai",
+            "asset_buku_path": assetBukuPath
           },
         );
         await collectionController.onInit();
@@ -176,6 +291,18 @@ class ReadController extends GetxController {
         pdfController: pdfController,
         isSample: isSample,
         sampleLimit: sampleLimit,
+        onPageChanged: onPageChanged,
+      ),
+      transitionDuration: const Duration(milliseconds: 100),
+    );
+  }
+
+  void review() {
+    Get.dialog(
+      ReadReviewDialog(
+        reviewController: reviewController,
+        reviewFocusNode: reviewFocusNode,
+        bukuId: buku.value?.id ?? "",
       ),
       transitionDuration: const Duration(milliseconds: 100),
     );

@@ -146,6 +146,25 @@ class CategoryPage extends StatelessWidget {
                 ),
               ),
             ),
+            SafeArea(
+              child: Obx(() {
+                final isLoadedMore = controller.isLoadedMore.value;
+                if (isLoadedMore) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: Sizes.s),
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              }),
+            )
           ],
         ),
       ),

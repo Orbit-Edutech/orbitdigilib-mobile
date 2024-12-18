@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -6,20 +7,24 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../api/api_client.dart';
+import '../../../api/api_path.dart';
 import '../../../api/koleksi/data/get_koleksi.dart';
 import '../../../api/koleksi/model/model_koleksi.dart';
 import '../../../shared/widget/show_snackbar.dart';
-// import '../../../sql/books/data/delete_buku_sqlite.dart';
 import '../../../sql/books/data/get_buku_sqlite.dart';
 import '../../../sql/books/data/insert_buku_sqlite.dart';
+import '../../../sql/books/data/update_buku_sqlite.dart';
 import '../../../sql/books/model/model_buku_sql.dart';
 import '../../../theme/app_color.dart';
+import '../../index/controller/index_controller.dart';
 import '../../profile/controller/profile_controller.dart';
 
 class CollectionController extends GetxController {
   final user = Get.find<ProfileController>().profile.value;
+  final perpustakaan = Get.find<IndexController>().perpustakaan.value;
 
   Rx<List<Payload>?> collections = Rx<List<Payload>?>(null);
   Rx<List<ModelBukuSql>?> localBooks = Rx<List<ModelBukuSql>?>(null);
@@ -56,7 +61,7 @@ class CollectionController extends GetxController {
       }
       cancelToken.cancel();
       cancelToken = CancelToken();
-      final response = await getCollections(qp, cancelToken);
+      final response = await getCollections(perpustakaan?.id ?? "-", qp, cancelToken);
       if (response.data != null) {
         collections.value = response.data?.payload;
         await synchronizeData(collections.value!);
@@ -73,7 +78,7 @@ class CollectionController extends GetxController {
   Future<void> loadCollections([String? filter]) async {
     collections.value = null;
     final qp = filter != null ? {"tipe": filter} : null;
-    final response = await getCollections(qp);
+    final response = await getCollections(perpustakaan?.id ?? "-", qp);
     if (response.data != null) {
       collections.value = response.data?.payload;
       await synchronizeData(collections.value!);
@@ -96,7 +101,7 @@ class CollectionController extends GetxController {
       isLoadedMore.value = true;
       final Map<String, dynamic> qp = {"page": page.value};
       filter.value != "Semua Koleksi" ? qp['tipe'] = filter.value : null;
-      final response = await getCollections(qp);
+      final response = await getCollections(perpustakaan?.id ?? "-", qp);
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
           collections.value?.addAll(response.data?.payload ?? []);
@@ -118,26 +123,48 @@ class CollectionController extends GetxController {
   Future<void> synchronizeData(List<Payload> response) async {
     localBooks.value = await getBukuSQLite(user?.id ?? "");
     final idUser = profileController.profile.value?.id ?? "";
-    for (Payload book in response) {
-      final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (book.buku?.id ?? '-')) != null;
+    for (Payload payload in response) {
+      final isExist = localBooks.value?.firstWhereOrNull((lb) => lb.idBuku == (payload.bukuAnggota?.id ?? '-')) != null;
+      final buku = payload.bukuAnggota;
       if (!isExist) {
+        final dir = await getApplicationCacheDirectory();
+        final savePath = "${dir.path}/${payload.bukuAnggota?.id}.png";
+        await apiClient.download(
+          param: APIParam(
+            path: APIPath.publicAsset(payload.bukuAnggota?.assetSampulId ?? ''),
+            fromJson: (e) => e,
+          ),
+          savePath: savePath,
+        );
+        final assetSampulPath = File(savePath).path;
         await insertBukuSQLite(
           ModelBukuSql(
-            idBuku: book.buku?.id ?? "",
+            idBuku: buku?.id ?? "",
             idUser: idUser,
-            lastPageSeen: 0,
-            totalPages: book.buku?.jumlahHalaman ?? 0,
+            lastPageSeen: 1,
+            totalPages: buku?.jumlahHalaman ?? 1,
             status: "Belum Dibaca",
-            expired: book.waktuHabis ?? DateTime.now().add(const Duration(days: 7)),
+            expired: payload.waktuHabis ?? DateTime.now().add(const Duration(days: 7)),
+            assetSampulPath: assetSampulPath,
+            assetBukuPath: null,
+            judul: buku?.judul ?? "-",
+            penulis: buku?.penulis ?? "-",
+            tipe: payload.tipe ?? "",
           ),
+        );
+      } else {
+        await updateBukuSQLite(
+          bukuId: buku?.id ?? "",
+          userId: idUser,
+          values: {
+            "expired":
+                payload.waktuHabis?.toIso8601String() ?? DateTime.now().add(const Duration(days: 7)).toIso8601String(),
+            "tipe": payload.tipe ?? "",
+          },
         );
       }
     }
-    // for (ModelBukuSql lb in localBooks.value ?? []) {
-    //   if (lb.expired.isBefore(DateTime.now())) {
-    //     deleteBukuSQLite(idBuku: lb.idBuku, idUser: idUser);
-    //   }
-    // }
+
     localBooks.value = await getBukuSQLite(user?.id ?? "");
   }
 }

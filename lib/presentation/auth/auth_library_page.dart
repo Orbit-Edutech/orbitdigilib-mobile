@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -96,15 +98,17 @@ class AuthLibraryPage extends StatelessWidget {
                       child: const Text("Lanjut"),
                     );
                   }),
-                  VGap.s,
-                  AppButton(
-                    type: ButtonType.outlined,
-                    state: ButtonState.enable,
-                    foregroundColor: AppColor.def,
-                    borderColor: AppColor.def,
-                    onPressed: controller.showRegisterInfo,
-                    child: const Text("Daftar Akun"),
-                  ),
+                  if (!Platform.isIOS) ...[
+                    VGap.s,
+                    AppButton(
+                      type: ButtonType.outlined,
+                      state: ButtonState.enable,
+                      foregroundColor: AppColor.def,
+                      borderColor: AppColor.def,
+                      onPressed: controller.showRegisterInfo,
+                      child: const Text("Daftar Akun"),
+                    ),
+                  ],
                   VGap.h,
                 ],
               ),

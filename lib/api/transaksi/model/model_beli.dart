@@ -6,7 +6,7 @@ class ModelBeli {
   final DateTime? updatedAt;
   final int? hargaBeli;
   final User? user;
-  final Buku? buku;
+  final BukuAnggota? bukuAnggota;
 
   ModelBeli({
     this.id,
@@ -14,7 +14,7 @@ class ModelBeli {
     this.updatedAt,
     this.hargaBeli,
     this.user,
-    this.buku,
+    this.bukuAnggota,
   });
 
   ModelBeli copyWith({
@@ -23,7 +23,7 @@ class ModelBeli {
     DateTime? updatedAt,
     int? hargaBeli,
     User? user,
-    Buku? buku,
+    BukuAnggota? bukuAnggota,
   }) =>
       ModelBeli(
         id: id ?? this.id,
@@ -31,7 +31,7 @@ class ModelBeli {
         updatedAt: updatedAt ?? this.updatedAt,
         hargaBeli: hargaBeli ?? this.hargaBeli,
         user: user ?? this.user,
-        buku: buku ?? this.buku,
+        bukuAnggota: bukuAnggota ?? this.bukuAnggota,
       );
 
   factory ModelBeli.fromRawJson(String str) => ModelBeli.fromJson(json.decode(str));
@@ -44,7 +44,7 @@ class ModelBeli {
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         hargaBeli: json["hargaBeli"],
         user: json["user"] == null ? null : User.fromJson(json["user"]),
-        buku: json["buku"] == null ? null : Buku.fromJson(json["buku"]),
+        bukuAnggota: json["bukuAnggota"] == null ? null : BukuAnggota.fromJson(json["bukuAnggota"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -53,205 +53,124 @@ class ModelBeli {
         "updatedAt": updatedAt?.toIso8601String(),
         "hargaBeli": hargaBeli,
         "user": user?.toJson(),
-        "buku": buku?.toJson(),
+        "bukuAnggota": bukuAnggota?.toJson(),
       };
 }
 
-class Buku {
+class BukuAnggota {
   final String? id;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? namaKategori;
+  final String? namaPenerbit;
   final String? judul;
   final String? sinopsis;
   final int? jumlahHalaman;
   final String? tahunTerbit;
   final String? isbn;
   final String? eIsbn;
-  final String? eIssn;
-  final String? ilustrator;
+  final String? bahasa;
   final String? penulis;
-  final int? hargaBeli;
-  final int? hargaSewa;
+  final String? ilustrator;
   final String? assetSampulId;
-  final String? namaPenerbitReal;
-  final bool? peringatan;
-  final String? keterangan;
-  final Promo? promo;
+  final String? assetBukuId;
 
-  Buku({
+  BukuAnggota({
     this.id,
     this.createdAt,
     this.updatedAt,
+    this.namaKategori,
+    this.namaPenerbit,
     this.judul,
     this.sinopsis,
     this.jumlahHalaman,
     this.tahunTerbit,
     this.isbn,
     this.eIsbn,
-    this.eIssn,
-    this.ilustrator,
+    this.bahasa,
     this.penulis,
-    this.hargaBeli,
-    this.hargaSewa,
+    this.ilustrator,
     this.assetSampulId,
-    this.namaPenerbitReal,
-    this.peringatan,
-    this.keterangan,
-    this.promo,
+    this.assetBukuId,
   });
 
-  Buku copyWith({
+  BukuAnggota copyWith({
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? namaKategori,
+    String? namaPenerbit,
     String? judul,
     String? sinopsis,
     int? jumlahHalaman,
     String? tahunTerbit,
     String? isbn,
     String? eIsbn,
-    String? eIssn,
-    String? ilustrator,
+    String? bahasa,
     String? penulis,
-    int? hargaBeli,
-    int? hargaSewa,
+    String? ilustrator,
     String? assetSampulId,
-    String? namaPenerbitReal,
-    bool? peringatan,
-    String? keterangan,
-    Promo? promo,
+    String? assetBukuId,
   }) =>
-      Buku(
+      BukuAnggota(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        namaKategori: namaKategori ?? this.namaKategori,
+        namaPenerbit: namaPenerbit ?? this.namaPenerbit,
         judul: judul ?? this.judul,
         sinopsis: sinopsis ?? this.sinopsis,
         jumlahHalaman: jumlahHalaman ?? this.jumlahHalaman,
         tahunTerbit: tahunTerbit ?? this.tahunTerbit,
         isbn: isbn ?? this.isbn,
         eIsbn: eIsbn ?? this.eIsbn,
-        eIssn: eIssn ?? this.eIssn,
-        ilustrator: ilustrator ?? this.ilustrator,
+        bahasa: bahasa ?? this.bahasa,
         penulis: penulis ?? this.penulis,
-        hargaBeli: hargaBeli ?? this.hargaBeli,
-        hargaSewa: hargaSewa ?? this.hargaSewa,
+        ilustrator: ilustrator ?? this.ilustrator,
         assetSampulId: assetSampulId ?? this.assetSampulId,
-        namaPenerbitReal: namaPenerbitReal ?? this.namaPenerbitReal,
-        peringatan: peringatan ?? this.peringatan,
-        keterangan: keterangan ?? this.keterangan,
-        promo: promo ?? this.promo,
+        assetBukuId: assetBukuId ?? this.assetBukuId,
       );
 
-  factory Buku.fromRawJson(String str) => Buku.fromJson(json.decode(str));
+  factory BukuAnggota.fromRawJson(String str) => BukuAnggota.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Buku.fromJson(Map<String, dynamic> json) => Buku(
+  factory BukuAnggota.fromJson(Map<String, dynamic> json) => BukuAnggota(
         id: json["id"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        namaKategori: json["namaKategori"],
+        namaPenerbit: json["namaPenerbit"],
         judul: json["judul"],
         sinopsis: json["sinopsis"],
         jumlahHalaman: json["jumlahHalaman"],
         tahunTerbit: json["tahunTerbit"],
         isbn: json["isbn"],
         eIsbn: json["eIsbn"],
-        eIssn: json["eIssn"],
-        ilustrator: json["ilustrator"],
+        bahasa: json["bahasa"],
         penulis: json["penulis"],
-        hargaBeli: json["hargaBeli"],
-        hargaSewa: json["hargaSewa"],
+        ilustrator: json["ilustrator"],
         assetSampulId: json["assetSampulId"],
-        namaPenerbitReal: json["namaPenerbitReal"],
-        peringatan: json["peringatan"],
-        keterangan: json["keterangan"],
-        promo: json["promo"] == null ? null : Promo.fromJson(json["promo"]),
+        assetBukuId: json["assetBukuId"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
+        "namaKategori": namaKategori,
+        "namaPenerbit": namaPenerbit,
         "judul": judul,
         "sinopsis": sinopsis,
         "jumlahHalaman": jumlahHalaman,
         "tahunTerbit": tahunTerbit,
         "isbn": isbn,
         "eIsbn": eIsbn,
-        "eIssn": eIssn,
-        "ilustrator": ilustrator,
+        "bahasa": bahasa,
         "penulis": penulis,
-        "hargaBeli": hargaBeli,
-        "hargaSewa": hargaSewa,
+        "ilustrator": ilustrator,
         "assetSampulId": assetSampulId,
-        "namaPenerbitReal": namaPenerbitReal,
-        "peringatan": peringatan,
-        "keterangan": keterangan,
-        "promo": promo?.toJson(),
-      };
-}
-
-class Promo {
-  final String? id;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final DateTime? mulaiPromo;
-  final DateTime? batasPromo;
-  final String? tipe;
-  final int? jumlah;
-
-  Promo({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.mulaiPromo,
-    this.batasPromo,
-    this.tipe,
-    this.jumlah,
-  });
-
-  Promo copyWith({
-    String? id,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    DateTime? mulaiPromo,
-    DateTime? batasPromo,
-    String? tipe,
-    int? jumlah,
-  }) =>
-      Promo(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        mulaiPromo: mulaiPromo ?? this.mulaiPromo,
-        batasPromo: batasPromo ?? this.batasPromo,
-        tipe: tipe ?? this.tipe,
-        jumlah: jumlah ?? this.jumlah,
-      );
-
-  factory Promo.fromRawJson(String str) => Promo.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Promo.fromJson(Map<String, dynamic> json) => Promo(
-        id: json["id"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        mulaiPromo: json["mulaiPromo"] == null ? null : DateTime.parse(json["mulaiPromo"]),
-        batasPromo: json["batasPromo"] == null ? null : DateTime.parse(json["batasPromo"]),
-        tipe: json["tipe"],
-        jumlah: json["jumlah"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "mulaiPromo": mulaiPromo?.toIso8601String(),
-        "batasPromo": batasPromo?.toIso8601String(),
-        "tipe": tipe,
-        "jumlah": jumlah,
+        "assetBukuId": assetBukuId,
       };
 }
 
@@ -265,7 +184,7 @@ class User {
   final String? nama;
   final String? jenisKelamin;
   final String? noTelepon;
-  final String? urlFotoProfil;
+  final dynamic urlFotoProfil;
   final String? tokenForgotPassword;
   final DateTime? tokenForgotPasswordExpiredAt;
   final String? token;
@@ -304,7 +223,7 @@ class User {
     String? nama,
     String? jenisKelamin,
     String? noTelepon,
-    String? urlFotoProfil,
+    dynamic urlFotoProfil,
     String? tokenForgotPassword,
     DateTime? tokenForgotPasswordExpiredAt,
     String? token,

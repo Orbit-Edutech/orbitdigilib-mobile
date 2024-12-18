@@ -2,7 +2,7 @@ name: digilib
 description: "A new Flutter project."
 publish_to: "none"
 
-version: 0.0.1
+version: 1.2.1
 
 environment:
   sdk: ">=3.2.2 <4.0.0"
@@ -29,6 +29,8 @@ dependencies:
   path: ^1.8.3
   url_launcher: ^6.2.4
   cached_network_image: ^3.3.1
+  screenshot_callback: ^3.0.1
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:

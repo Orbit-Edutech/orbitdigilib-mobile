@@ -27,71 +27,97 @@ class HighlightPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Sorotan"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-        child: Obx(() {
-          final banners = controller.banners.value;
-          final promoBooks = controller.promoBooks.value;
-          return ListView(
-            controller: controller.scrollController,
-            children: [
-              VGap.m,
-              for (var banner in banners) ...[
-                InkWell(
-                  onTap: () => controller.showLargeBanner(banners, banners.indexOf(banner)),
-                  borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
-                  child: Container(
-                    height: 150,
-                    width: size.width,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: CachedNetworkImageProvider(APIPath.publicAsset(banner)),
-                        fit: BoxFit.cover,
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: controller.onInit,
+          child: Obx(() {
+            final banners = controller.banners.value;
+            final promoBooks = controller.promoBooks.value;
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
+                    controller: controller.scrollController,
+                    shrinkWrap: true,
+                    children: [
+                      VGap.m,
+                      for (var banner in banners) ...[
+                        InkWell(
+                          onTap: () => controller.showLargeBanner(banners, banners.indexOf(banner)),
+                          borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
+                          child: Container(
+                            height: 150,
+                            width: size.width,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: CachedNetworkImageProvider(APIPath.publicAsset(banner)),
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
+                            ),
+                          ),
+                        ),
+                        VGap.r,
+                      ],
+                      VGap.r,
+                      Text(
+                        "Buku yang sedang promo",
+                        style: AppTextStyle.ts14Bold,
                       ),
-                      borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
-                    ),
+                      VGap.r,
+                      if (promoBooks?.isNotEmpty ?? false) ...[
+                        AlignedGridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: isWide ? 4 : 2,
+                          itemCount: promoBooks?.length,
+                          mainAxisSpacing: Sizes.r,
+                          crossAxisSpacing: Sizes.r,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            final payload = promoBooks![index];
+                            final book = payload.buku;
+                            return BookCard(
+                              bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
+                              id: book?.id ?? "-",
+                              judul: book?.judul ?? "-",
+                              penulis: book?.penulis ?? "-",
+                              idSampul: book?.assetSampulId,
+                              copy: "${payload.jumlahSiapPinjam ?? '-'}",
+                              harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
+                              isPromo: payload.buku?.promo != null,
+                              onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
+                            );
+                          },
+                        ),
+                      ] else ...[
+                        const EmptyList(description: "Tidak ada buku yang sedang promo")
+                      ],
+                      VGap.m,
+                    ],
                   ),
                 ),
-                VGap.r,
+                SafeArea(
+                  child: Obx(() {
+                    final isLoadedMore = controller.isLoadedMore.value;
+                    if (isLoadedMore) {
+                      return const Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  }),
+                )
               ],
-              VGap.r,
-              Text(
-                "Buku yang sedang promo",
-                style: AppTextStyle.ts14Bold,
-              ),
-              VGap.r,
-              if (promoBooks?.isNotEmpty ?? false) ...[
-                AlignedGridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: isWide ? 4 : 2,
-                  itemCount: promoBooks?.length,
-                  mainAxisSpacing: Sizes.r,
-                  crossAxisSpacing: Sizes.r,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final payload = promoBooks![index];
-                    final book = payload.buku;
-                    return BookCard(
-                      bukuPerpustakaan: BukuPerpustakaan.fromJson(payload.toJson()),
-                      id: book?.id ?? "-",
-                      judul: book?.judul ?? "-",
-                      penulis: book?.penulis ?? "-",
-                      idSampul: book?.assetSampulId,
-                      copy: "${payload.jumlahSiapPinjam ?? '-'}",
-                      harga: ((payload.buku?.hargaSewa ?? 0) ~/ 100).toString(),
-                      isPromo: payload.buku?.promo != null,
-                      onTap: () => Get.toNamed(AppRoutes.book, arguments: payload),
-                    );
-                  },
-                ),
-              ] else ...[
-                const EmptyList(description: "Tidak ada buku yang sedang promo")
-              ],
-              VGap.m,
-            ],
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }

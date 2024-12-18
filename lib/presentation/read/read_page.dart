@@ -23,11 +23,12 @@ class ReadPage extends StatefulWidget {
   State<ReadPage> createState() => _ReadPageState();
 }
 
-class _ReadPageState extends State<ReadPage> {
+class _ReadPageState extends State<ReadPage> with WidgetsBindingObserver {
   final MethodChannel _methodChannel = const MethodChannel("com.orbit360.digilib");
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     if (Platform.isAndroid) {
       _methodChannel.invokeMethod("secure", {"isSecure": true});
     } else {}
@@ -36,6 +37,7 @@ class _ReadPageState extends State<ReadPage> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     if (Platform.isAndroid) {
       _methodChannel.invokeMethod("secure", {"isSecure": false});
     } else {}
@@ -122,18 +124,34 @@ class _ReadPageState extends State<ReadPage> {
             Expanded(
               child: Obx(() {
                 final noResultFound = controller.noResultFound.value;
+                final isOnDownload = controller.isOnDownload.value;
+                final downloadProgress = controller.downloadProgress.value;
                 final book = controller.buku.value;
                 final pdf = controller.pdf.value;
                 final isAssetBukuNull = controller.isAssetBukuNull.value;
+                final isOnScreenshot = controller.isOnScreenshot.value;
+                final isOnRecording = controller.isOnRecording.value;
                 if (book == null || pdf == null) {
                   return SingleChildScrollView(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: Sizes.m),
-                      child: EmptyList(
-                        description: isAssetBukuNull
-                            ? "Buku tidak ditemukan, mohon hubungi pihak perpustakaan"
-                            : "Buku sedang dimuat",
-                      ),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: Sizes.m),
+                          child: EmptyList(
+                            description: isAssetBukuNull
+                                ? "Buku tidak ditemukan, mohon hubungi pihak perpustakaan"
+                                : "Buku sedang dimuat",
+                          ),
+                        ),
+                        if (isOnDownload) ...[
+                          Padding(
+                            padding: const EdgeInsets.all(Sizes.m),
+                            child: LinearProgressIndicator(
+                              value: downloadProgress,
+                            ),
+                          ),
+                        ]
+                      ],
                     ),
                   );
                 }
@@ -162,50 +180,55 @@ class _ReadPageState extends State<ReadPage> {
                       ),
                     ),
                     Positioned.fill(
-                      child: noResultFound
+                      child: isOnScreenshot || isOnRecording
                           ? Container(
                               color: AppColor.bgScaffold,
                               padding: const EdgeInsets.all(Sizes.m),
-                              child: const EmptyList(description: "Kata tidak ditemukan"),
                             )
-                          : Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (controller.isFullScreen.value) {
-                                        controller.pdfController.previousPage();
-                                      } else {
-                                        controller.isFullScreen.value = true;
-                                      }
-                                    },
-                                  ),
+                          : noResultFound
+                              ? Container(
+                                  color: AppColor.bgScaffold,
+                                  padding: const EdgeInsets.all(Sizes.m),
+                                  child: const EmptyList(description: "Kata tidak ditemukan"),
+                                )
+                              : Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (controller.isFullScreen.value) {
+                                            controller.pdfController.previousPage();
+                                          } else {
+                                            controller.isFullScreen.value = true;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (!controller.isOnSearch.value) {
+                                            controller.isFullScreen.value = !controller.isFullScreen.value;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (controller.isFullScreen.value) {
+                                            controller.pdfController.nextPage();
+                                          } else {
+                                            controller.isFullScreen.value = true;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Expanded(
-                                  flex: 2,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (!controller.isOnSearch.value) {
-                                        controller.isFullScreen.value = !controller.isFullScreen.value;
-                                      }
-                                    },
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (controller.isFullScreen.value) {
-                                        controller.pdfController.nextPage();
-                                      } else {
-                                        controller.isFullScreen.value = true;
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
                     ),
                   ],
                 );

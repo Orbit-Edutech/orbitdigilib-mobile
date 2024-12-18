@@ -22,9 +22,15 @@ import '../presentation/navigator/binding/navigator_binding.dart';
 import '../presentation/navigator/navigator_page.dart';
 import '../presentation/notification/binding/notifications_binding.dart';
 import '../presentation/notification/notifications_page.dart';
+import '../presentation/offline-read/binding/offline_read_binding.dart';
+import '../presentation/offline-read/offline_read.dart';
+import '../presentation/offline/binding/offline_binding.dart';
+import '../presentation/offline/offline_page.dart';
 import '../presentation/profile/profile_page.dart';
 import '../presentation/change-password/binding/change_password_binding.dart';
 import '../presentation/change-password/change_password_page.dart';
+import '../presentation/read-collection/binding/read_collection_binding.dart';
+import '../presentation/read-collection/read_collection_page.dart';
 import '../presentation/read/binding/read_binding.dart';
 import '../presentation/read/read_page.dart';
 import '../presentation/recommendation/binding/recommendation_binding.dart';
@@ -42,6 +48,12 @@ import '../presentation/wishlist/wishlist_page.dart';
 class AppRoutes {
   /// /splash
   static const String splash = "/splash";
+
+  /// /offline
+  static const String offline = "/offline";
+
+  /// /offline-read
+  static const String offlineRead = "/offline-read";
 
   /// /update
   static const String update = "/update";
@@ -79,6 +91,9 @@ class AppRoutes {
   /// /read
   static const String read = "/read";
 
+  /// /read-collection
+  static const String readCollection = "/read-collection";
+
   /// /category
   static const String category = "/category";
 
@@ -108,6 +123,20 @@ class AppRoutes {
       name: splash,
       page: () => const SplashPage(),
       binding: SplashBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: offline,
+      page: () => const OfflinePage(),
+      binding: OfflineBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: offlineRead,
+      page: () => const OfflineReadPage(),
+      binding: OfflineReadBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),
@@ -190,6 +219,13 @@ class AppRoutes {
       name: read,
       page: () => const ReadPage(),
       binding: ReadBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: readCollection,
+      page: () => const ReadCollectionPage(),
+      binding: ReadCollectionBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

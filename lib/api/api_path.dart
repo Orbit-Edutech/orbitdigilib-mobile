@@ -42,7 +42,7 @@ class APIPath {
   static String perpustakaanGetOneById(String id) => "$perpustakaan/$id";
 
   /// /buku-perpustakaan
-  static String allBukuPerpus(String perpustakaanId) => "/buku-perpustakaan/$perpustakaanId";
+  static String allBukuPerpus(String perpustakaanId) => "/buku-perpustakaan/by-id/$perpustakaanId";
 
   /// /buku-perpustakaan/{perpustakaanId}/{id}
   static oneBukuPerpus(String id) => "/buku-perpustakaan/$id";

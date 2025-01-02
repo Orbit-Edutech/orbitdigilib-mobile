@@ -115,4 +115,21 @@ class AppColor {
       900: Color(0xFF8d4116),
     },
   );
+
+  static const istiqlal = 0xFF793D18;
+  static const MaterialColor istiqlalColors = MaterialColor(
+    istiqlal,
+    <int, Color>{
+      50: Color(0xFFbc9e8c),
+      100: Color(0xFFaf8b74),
+      200: Color(0xFFa1775d),
+      300: Color(0xFF946446),
+      400: Color(0xFF86502f),
+      500: Color(istiqlal),
+      600: Color(0xFF6d3716),
+      700: Color(0xFF6d3716),
+      800: Color(0xFF552b11),
+      900: Color(0xFF49250e),
+    },
+  );
 }

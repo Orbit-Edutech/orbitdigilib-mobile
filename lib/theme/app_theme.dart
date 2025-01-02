@@ -49,6 +49,8 @@ class AppTheme {
 
   static PerpusColor getPerpusColor(String color) {
     switch (color) {
+      case "ISTIQLAL":
+        return PerpusColor(seed: AppColor.istiqlalColors, primary: AppColor.istiqlalColors.shade500);
       case "PII":
         return PerpusColor(seed: AppColor.piiColors, primary: AppColor.piiColors.shade500);
       case "ISMI":

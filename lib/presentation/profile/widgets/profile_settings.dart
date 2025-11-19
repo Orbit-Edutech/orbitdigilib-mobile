@@ -9,6 +9,7 @@ import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../../utils/responsive_helper.dart';
 import 'profile_settings_card.dart';
 
 class ProfileSettings extends StatelessWidget {
@@ -22,7 +23,10 @@ class ProfileSettings extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.s),
+          padding: EdgeInsets.symmetric(
+            horizontal: ResponsiveHelper.getHorizontalPadding(context),
+            vertical: Sizes.s,
+          ),
           child: Text(
             "PENGATURAN AKUN",
             style: AppTextStyle.ts12Bold.copyWith(color: AppColor.grey),

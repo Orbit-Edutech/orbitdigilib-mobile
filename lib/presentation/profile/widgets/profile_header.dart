@@ -9,6 +9,7 @@ import '../../../constants/sizes.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
 import '../../../utils/compute_luminance.dart';
+import '../../../utils/responsive_helper.dart';
 import '../controller/profile_controller.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -30,7 +31,10 @@ class ProfileHeader extends StatelessWidget {
       width: size.width,
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.s),
+          padding: EdgeInsets.symmetric(
+            horizontal: ResponsiveHelper.getHorizontalPadding(context),
+            vertical: Sizes.s,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

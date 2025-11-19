@@ -8,6 +8,7 @@ import '../../constants/sizes.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 import '../../utils/launch_url.dart';
+import '../../utils/responsive_helper.dart';
 import 'controller/faq_controller.dart';
 import 'widgets/faq_card.dart';
 
@@ -23,13 +24,21 @@ class FAQPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Pusat Bantuan"),
       ),
-      body: RefreshIndicator(
-        onRefresh: controller.onInit,
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.symmetric(vertical: Sizes.m),
-          child: Column(
-            children: [
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: ResponsiveHelper.getMaxContentWidth(context),
+          ),
+          child: RefreshIndicator(
+            onRefresh: controller.onInit,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(
+                vertical: Sizes.m,
+                horizontal: ResponsiveHelper.getHorizontalPadding(context),
+              ),
+              child: Column(
+                children: [
               Image.asset(
                 "assets/logo/orbit-digilib-logo.png",
                 width: size.width / 2,
@@ -47,9 +56,7 @@ class FAQPage extends StatelessWidget {
                 ],
               ),
               VGap.m,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-                child: Column(
+              Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
@@ -109,11 +116,9 @@ class FAQPage extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
               VGap.m,
               Container(
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
                 child: Text(
                   "Daftar Pertanyaan Umum",
                   style: AppTextStyle.ts14Bold,
@@ -127,7 +132,7 @@ class FAQPage extends StatelessWidget {
                       return Container(
                         height: 20,
                         width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.xs),
+                        margin: const EdgeInsets.symmetric(vertical: Sizes.xs),
                         decoration: const BoxDecoration(
                           color: AppColor.lightGrey,
                           borderRadius: BorderRadius.all(
@@ -149,6 +154,8 @@ class FAQPage extends StatelessWidget {
                 );
               })
             ],
+              ),
+            ),
           ),
         ),
       ),

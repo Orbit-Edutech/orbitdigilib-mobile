@@ -13,6 +13,7 @@ import '../../routes/app_routes.dart';
 import '../../shared/widget/book_card.dart';
 import '../../shared/widget/empty_list.dart';
 import '../../theme/app_text_stlye.dart';
+import '../../utils/responsive_helper.dart';
 import '../index/controller/index_controller.dart';
 
 class HighlightPage extends StatelessWidget {
@@ -22,32 +23,50 @@ class HighlightPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<IndexController>();
     final size = MediaQuery.of(context).size;
-    final isWide = size.width >= 600;
+    final crossAxisCount = ResponsiveHelper.getCrossAxisCount(
+      context,
+      mobile: 2,
+      tablet: 3,
+      desktop: 4,
+    );
+    final bannerHeight = ResponsiveHelper.responsive<double>(
+      context,
+      mobile: 150,
+      tablet: 200,
+      desktop: 250,
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sorotan"),
       ),
       body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: controller.onInit,
-          child: Obx(() {
-            final banners = controller.banners.value;
-            final promoBooks = controller.promoBooks.value;
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-                    controller: controller.scrollController,
-                    shrinkWrap: true,
-                    children: [
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: ResponsiveHelper.getMaxContentWidth(context),
+            ),
+            child: RefreshIndicator(
+              onRefresh: controller.onInit,
+              child: Obx(() {
+                final banners = controller.banners.value;
+                final promoBooks = controller.promoBooks.value;
+                return Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: ResponsiveHelper.getHorizontalPadding(context),
+                        ),
+                        controller: controller.scrollController,
+                        shrinkWrap: true,
+                        children: [
                       VGap.m,
                       for (var banner in banners) ...[
                         InkWell(
                           onTap: () => controller.showLargeBanner(banners, banners.indexOf(banner)),
                           borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
                           child: Container(
-                            height: 150,
+                            height: bannerHeight,
                             width: size.width,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -70,7 +89,7 @@ class HighlightPage extends StatelessWidget {
                       if (promoBooks?.isNotEmpty ?? false) ...[
                         AlignedGridView.count(
                           shrinkWrap: true,
-                          crossAxisCount: isWide ? 4 : 2,
+                          crossAxisCount: crossAxisCount,
                           itemCount: promoBooks?.length,
                           mainAxisSpacing: Sizes.r,
                           crossAxisSpacing: Sizes.r,
@@ -115,8 +134,10 @@ class HighlightPage extends StatelessWidget {
                   }),
                 )
               ],
-            );
-          }),
+                );
+              }),
+            ),
+          ),
         ),
       ),
     );

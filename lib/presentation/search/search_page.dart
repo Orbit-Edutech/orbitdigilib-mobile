@@ -13,6 +13,7 @@ import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 import '../../utils/compute_luminance.dart';
+import '../../utils/responsive_helper.dart';
 import 'controller/search_page_controller.dart';
 import 'widgets/search_loading_widget.dart';
 
@@ -38,12 +39,19 @@ class SearchPage extends StatelessWidget {
           HGap.s,
         ],
       ),
-      body: Column(
-        children: [
-          VGap.m,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-            child: AppTextField(
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: ResponsiveHelper.getMaxContentWidth(context),
+          ),
+          child: Column(
+            children: [
+              VGap.m,
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: ResponsiveHelper.getHorizontalPadding(context),
+                ),
+                child: AppTextField(
               type: TextFieldType.rounded,
               controller: controller.textController,
               focusNode: controller.searchFocusNode,
@@ -78,7 +86,9 @@ class SearchPage extends StatelessWidget {
               }
               return ListView.builder(
                 controller: controller.scrollController,
-                padding: const EdgeInsets.all(Sizes.m),
+                padding: EdgeInsets.all(
+                  ResponsiveHelper.getHorizontalPadding(context),
+                ),
                 shrinkWrap: true,
                 itemCount: books.length,
                 itemBuilder: (ctx, idx) {
@@ -122,6 +132,8 @@ class SearchPage extends StatelessWidget {
             }),
           )
         ],
+          ),
+        ),
       ),
     );
   }

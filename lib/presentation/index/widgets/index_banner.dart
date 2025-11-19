@@ -1,6 +1,6 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:carousel_slider/carousel_slider.dart";
-import "package:flutter/material.dart";
+import "package:flutter/material.dart" hide CarouselController;
 import "package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart";
 import "package:get/instance_manager.dart";
 import "package:get/route_manager.dart";
@@ -10,6 +10,7 @@ import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../../utils/responsive_helper.dart';
 import "../controller/index_controller.dart";
 
 class IndexBanner extends StatefulWidget {
@@ -29,6 +30,19 @@ class _IndexBannerState extends State<IndexBanner> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    final bannerHeight = ResponsiveHelper.responsive<double>(
+      context,
+      mobile: 150,
+      tablet: 200,
+      desktop: 250,
+    );
+    final viewportFraction = ResponsiveHelper.responsive<double>(
+      context,
+      mobile: 0.8,
+      tablet: 0.7,
+      desktop: 0.6,
+    );
+
     return Column(
       children: [
         Obx(() {
@@ -41,7 +55,7 @@ class _IndexBannerState extends State<IndexBanner> {
                 onTap: () => controller.showLargeBanner(banners, banners.indexOf(banner)),
                 borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
                 child: Container(
-                  height: 150,
+                  height: bannerHeight,
                   width: size.width,
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   decoration: const BoxDecoration(
@@ -55,8 +69,8 @@ class _IndexBannerState extends State<IndexBanner> {
               );
             }).toList(),
             options: CarouselOptions(
-              height: 150,
-              viewportFraction: 0.8,
+              height: bannerHeight,
+              viewportFraction: viewportFraction,
               initialPage: 0,
               enableInfiniteScroll: false,
               reverse: false,
@@ -76,7 +90,6 @@ class _IndexBannerState extends State<IndexBanner> {
         Padding(
           padding: const EdgeInsets.symmetric(
             vertical: Sizes.r,
-            horizontal: Sizes.m,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

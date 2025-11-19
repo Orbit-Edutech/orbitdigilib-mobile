@@ -12,6 +12,7 @@ import '../../../constants/sizes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../../utils/responsive_helper.dart';
 import '../controller/books_controller.dart';
 
 class BooksCategoryFilter extends StatelessWidget {
@@ -22,6 +23,12 @@ class BooksCategoryFilter extends StatelessWidget {
     final controller = Get.find<BooksController>();
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    final crossAxisCount = ResponsiveHelper.getCrossAxisCount(
+      context,
+      mobile: 4,
+      tablet: 6,
+      desktop: 8,
+    );
     return SizedBox(
       height: size.height * 0.6,
       width: size.width,
@@ -53,7 +60,7 @@ class BooksCategoryFilter extends StatelessWidget {
                 child: AlignedGridView.count(
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
-                  crossAxisCount: 4,
+                  crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 0,
                   mainAxisSpacing: Sizes.xs,
                   itemCount: categories.length,

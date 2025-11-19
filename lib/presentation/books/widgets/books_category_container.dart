@@ -56,17 +56,14 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            left: Sizes.m,
-            right: Sizes.m,
-            top: Sizes.r,
-            bottom: Sizes.s,
-          ),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: Sizes.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: Sizes.s),
+            child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
@@ -108,7 +105,6 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.only(left: Sizes.m, right: Sizes.s),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,6 +140,7 @@ class _BooksCategoryContainerState extends State<BooksCategoryContainer> {
           ),
         )
       ],
+      ),
     );
   }
 }

@@ -63,7 +63,7 @@ class APIPath {
   static const sewa = "/sewa";
 
   /// /beli
-  static const beli = "/beli";
+  // static const beli = "/beli";
 
   /// /katalog-buku-perpustakaan
   static String katalogBukuPerpustakaan(String perpustakaanId) => "/katalog-buku-perpustakaan/$perpustakaanId";

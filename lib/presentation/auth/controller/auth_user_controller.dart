@@ -7,6 +7,7 @@ import 'package:get/route_manager.dart';
 import '../../../api/api_client.dart';
 import '../../../api/auth/data/auth_forgot_password.dart';
 import '../../../api/auth/data/auth_login.dart';
+import '../../../api/auth/data/auth_register.dart';
 import '../../../api/perpustakaan/model/model_perpustakaan.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
@@ -20,11 +21,15 @@ class AuthUserController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController namaController = TextEditingController();
+  final TextEditingController noTeleponController = TextEditingController();
   final FocusNode usernameFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
   final FocusNode emailFocusNode = FocusNode();
   Rx<bool> isObscure = true.obs;
   Rx<bool> isPasswordFocus = false.obs;
+  Rx<String> selectedJenisKelamin = "Laki-Laki".obs;
+
   void toggleObscure([bool? isObscure]) {
     if (isObscure != null) {
       this.isObscure.value = isObscure;
@@ -47,10 +52,13 @@ class AuthUserController extends GetxController {
   Perpustakaan? perpustakaan;
 
   Rx<ButtonState> loginButtonState = ButtonState.disable.obs;
+  Rx<ButtonState> registerButtonState = ButtonState.disable.obs;
   Rx<ButtonState> forgotButtonState = ButtonState.disable.obs;
   Rx<bool> isLoginError = false.obs;
+  Rx<bool> isRegisterError = false.obs;
   Rx<bool> isForgotError = false.obs;
   Rx<String> loginErrorMsg = "".obs;
+  Rx<String> registerErrorMsg = "".obs;
   Rx<String> forgotErrorMsg = "".obs;
 
   Future<void> onSubmitLogin() async {
@@ -129,5 +137,64 @@ class AuthUserController extends GetxController {
     final email = emailController.text;
     final isValid = email.isEmail;
     forgotButtonState.value = isValid ? ButtonState.enable : ButtonState.disable;
+  }
+
+  Future<void> onSubmitRegister() async {
+    registerButtonState.value = ButtonState.loading;
+    final response = await register(
+      username: usernameController.text,
+      email: emailController.text,
+      password: passwordController.text,
+      nama: namaController.text,
+      jenisKelamin: selectedJenisKelamin.value,
+      noTelepon: noTeleponController.text,
+    );
+    if (response.data != null) {
+      isRegisterError.value = false;
+      registerErrorMsg.value = "";
+      _clearRegisterForm();
+      registerButtonState.value = ButtonState.enable;
+      Get.back();
+      Get.snackbar(
+        "Sukses",
+        "Registrasi berhasil! Silakan login dengan akun Anda.",
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 2),
+      );
+    } else {
+      if (response.error == ResponseStatus.connectionError) {
+        registerErrorMsg.value = "Kesalahan koneksi";
+      } else {
+        registerErrorMsg.value = response.error["message"].toString();
+      }
+      isRegisterError.value = true;
+      registerButtonState.value = ButtonState.enable;
+    }
+  }
+
+  void onRegisterFormChange(String text) {
+    // Clear error message saat user mulai edit
+    if (isRegisterError.value) {
+      isRegisterError.value = false;
+      registerErrorMsg.value = "";
+    }
+
+    final username = usernameController.text;
+    final email = emailController.text;
+    final password = passwordController.text;
+    final nama = namaController.text;
+
+    final isValid = username.length >= 3 && email.isEmail && password.isNotEmpty && nama.isNotEmpty;
+
+    registerButtonState.value = isValid ? ButtonState.enable : ButtonState.disable;
+  }
+
+  void _clearRegisterForm() {
+    usernameController.clear();
+    emailController.clear();
+    passwordController.clear();
+    namaController.clear();
+    noTeleponController.clear();
+    selectedJenisKelamin.value = "Laki-Laki";
   }
 }

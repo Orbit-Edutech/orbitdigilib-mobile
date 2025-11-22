@@ -126,6 +126,13 @@ class AuthLoginForm extends StatelessWidget {
               AppButton(
                 type: ButtonType.outlined,
                 state: state == ButtonState.disable ? ButtonState.enable : state,
+                onPressed: () => Get.toNamed(AppRoutes.authRegister),
+                child: const Text("Daftar Akun"),
+              ),
+              VGap.s,
+              AppButton(
+                type: ButtonType.outlined,
+                state: state == ButtonState.disable ? ButtonState.enable : state,
                 onPressed: () {
                   AppTheme.changePerpusTheme();
                   Get.offAllNamed(AppRoutes.authLibrary);

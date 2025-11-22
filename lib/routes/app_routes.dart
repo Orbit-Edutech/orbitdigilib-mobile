@@ -6,6 +6,7 @@ import '../presentation/about-library/about_library_page.dart';
 import '../presentation/about-library/binding/about_library_binding.dart';
 import '../presentation/auth/auth_library_page.dart';
 import '../presentation/auth/auth_user_page.dart';
+import '../presentation/auth/auth_register_page.dart';
 import '../presentation/auth/binding/auth_binding.dart';
 import '../presentation/book/binding/book_binding.dart';
 import '../presentation/book/book_page.dart';
@@ -63,6 +64,9 @@ class AppRoutes {
 
   /// /auth-user
   static const String authUser = "/auth-user";
+
+  /// /auth-register
+  static const String authRegister = "/auth-register";
 
   /// /
   static const String navigator = "/";
@@ -156,6 +160,13 @@ class AppRoutes {
     GetPage(
       name: authUser,
       page: () => const AuthUserPage(),
+      binding: AuthBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: authRegister,
+      page: () => const AuthRegisterPage(),
       binding: AuthBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),

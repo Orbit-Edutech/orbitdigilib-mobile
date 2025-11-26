@@ -75,6 +75,13 @@ if !ERRORLEVEL! NEQ 0 (
     echo ❌ Error: Failed to clean previous builds
     exit /b 1
 )
+
+REM Also remove build directory to force full rebuild of resource files
+if exist build (
+    if "%VERBOSE%"=="true" echo   Removing build directory...
+    rmdir /s /q build >nul 2>&1
+)
+
 echo ✅ Clean complete
 echo.
 

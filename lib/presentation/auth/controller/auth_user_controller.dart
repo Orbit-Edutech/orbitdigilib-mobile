@@ -46,6 +46,10 @@ class AuthUserController extends GetxController {
   void onInit() async {
     final username = await SharedPreferencesManager.readPref<String>("username");
     if (username != null) usernameController.text = username;
+    
+    if (Get.arguments is Perpustakaan) {
+      perpustakaan = Get.arguments as Perpustakaan;
+    }
     super.onInit();
   }
 
@@ -141,13 +145,23 @@ class AuthUserController extends GetxController {
 
   Future<void> onSubmitRegister() async {
     registerButtonState.value = ButtonState.loading;
+    
+    if (perpustakaan == null || perpustakaan!.kode == null || perpustakaan!.kode!.isEmpty) {
+      registerErrorMsg.value = "Kode perpustakaan tidak ditemukan. Silakan kembali dan pilih perpustakaan.";
+      isRegisterError.value = true;
+      registerButtonState.value = ButtonState.enable;
+      return;
+    }
+    
+    final password = hashString(passwordController.text);
     final response = await register(
       username: usernameController.text,
       email: emailController.text,
-      password: passwordController.text,
+      password: password,
       nama: namaController.text,
       jenisKelamin: selectedJenisKelamin.value,
       noTelepon: noTeleponController.text,
+      kodePerpustakaan: perpustakaan!.kode!,
     );
     if (response.data != null) {
       isRegisterError.value = false;

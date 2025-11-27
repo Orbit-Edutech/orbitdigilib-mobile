@@ -8,8 +8,8 @@ Future<APIResponse<AuthRegister>> register({
   required String password,
   required String nama,
   required String jenisKelamin,
+  required String kodePerpustakaan,
   String? noTelepon,
-  String? kodePerpustakaan,
 }) async {
   final payload = {
     "username": username,
@@ -17,8 +17,8 @@ Future<APIResponse<AuthRegister>> register({
     "password": password,
     "nama": nama,
     "jenisKelamin": jenisKelamin,
+    "kodePerpustakaan": kodePerpustakaan,
     if (noTelepon != null && noTelepon.isNotEmpty) "noTelepon": noTelepon,
-    if (kodePerpustakaan != null && kodePerpustakaan.isNotEmpty) "kodePerpustakaan": kodePerpustakaan,
   };
   final param = APIParam(
     path: APIPath.register,

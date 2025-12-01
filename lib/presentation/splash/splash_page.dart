@@ -20,7 +20,7 @@ class SplashPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(child: Image.asset("assets/logo/orbit-digilib-logo.png", width: size.width / 3)),
+            Expanded(child: Image.asset("assets/logo/istiqlal-logo.png", width: size.width / 3)),
             Text(
               "Version ${Platform.isAndroid ? AppInfo.android.versionName : AppInfo.iOs.versionName}",
               style: AppTextStyle.ts10Reg,

@@ -135,7 +135,7 @@ class AuthLibraryPage extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Image.asset("assets/logo/orbit-digilib-logo.png", width: 100),
+                          Image.asset("assets/logo/istiqlal-logo.png", width: 100),
                           VGap.s,
                           Column(
                             children: [
@@ -144,7 +144,7 @@ class AuthLibraryPage extends StatelessWidget {
                                 style: AppTextStyle.ts12Reg,
                               ),
                               Text(
-                                "© 2024 ORBIT DIGILIB. Powered by ORBIT EDUTECH.",
+                                "© 2025 ISTIQLAL DIGILIB. Powered by ORBIT EDUTECH.",
                                 style: AppTextStyle.ts10Reg,
                               ),
                             ],

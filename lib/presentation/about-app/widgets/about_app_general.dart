@@ -22,11 +22,11 @@ class AboutAppGeneral extends StatelessWidget {
     return Column(
       children: [
         Image.asset(
-          "assets/logo/orbit-digilib-logo.png",
+          "assets/logo/istiqlal-logo.png",
           width: size.width / 2,
         ),
         VGap.s,
-        Text("ORBIT DIGILIB", style: AppTextStyle.ts18Bold),
+        Text("ISTIQLAL DIGILIB", style: AppTextStyle.ts18Bold),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -42,7 +42,7 @@ class AboutAppGeneral extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Text.rich(
             TextSpan(
-              text: "ORBIT DIGILIB",
+              text: "ISTIQLAL DIGILIB",
               style: AppTextStyle.ts10Bold,
               children: [
                 TextSpan(
@@ -58,7 +58,7 @@ class AboutAppGeneral extends StatelessWidget {
         VGap.s,
         Text.rich(
           TextSpan(
-            text: "ORBIT DIGILIB",
+            text: "ISTIQLAL DIGILIB",
             style: AppTextStyle.ts10Bold,
             children: [
               TextSpan(
@@ -99,13 +99,13 @@ class AboutAppGeneral extends StatelessWidget {
         ],
         VGap.s,
         Text(
-          "Sekolah-sekolah yang bergabung sebagai Mitra ORBIT DIGILIB berkesempatan tergabung dalam The Habibie Literacy Networks, sebuah jejaring kolaborasi peningkatan literasi di sekolah.",
+          "Sekolah-sekolah yang bergabung sebagai Mitra ISTIQLAL DIGILIB berkesempatan tergabung dalam The Habibie Literacy Networks, sebuah jejaring kolaborasi peningkatan literasi di sekolah.",
           style: AppTextStyle.ts10Light,
           textAlign: TextAlign.justify,
         ),
         VGap.s,
         Text(
-          "ORBIT DIGILIB adalah langkah maju dalam dunia Literasi Digital, menjadi mitra setia dan progresif bagi pustakawan, siswa, dan sekolah.",
+          "ISTIQLAL DIGILIB adalah langkah maju dalam dunia Literasi Digital, menjadi mitra setia dan progresif bagi pustakawan, siswa, dan sekolah.",
           style: AppTextStyle.ts10Light,
           textAlign: TextAlign.justify,
         ),

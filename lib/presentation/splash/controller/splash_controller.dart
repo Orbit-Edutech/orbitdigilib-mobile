@@ -7,6 +7,7 @@ import 'package:get/route_manager.dart';
 import '../../../api/api_client.dart';
 import '../../../api/auth/data/auth_validate.dart';
 import '../../../api/auth/model/model_auth_validate.dart';
+import '../../../api/perpustakaan/data/perpustakaan_get_one.dart';
 import '../../../constants/app_info.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
@@ -38,7 +39,15 @@ class SplashController extends GetxController {
         await AppTheme.changePerpusTheme(color);
         Get.dialog(const SplashErrorDialog(), barrierDismissible: false);
       } else {
-        Get.offAllNamed(AppRoutes.authLibrary);
+        final response = await getOnePerpustakaan(kode: 'masjidistiqlal');
+        if (response.data != null) {
+          final perpustakaan = response.data;
+          buttonState.value = ButtonState.enable;
+          AppTheme.changePerpusTheme(perpustakaan!.warnaDasar);
+          Get.offAllNamed(AppRoutes.authUser, arguments: perpustakaan);
+        } else {
+          Get.dialog(const SplashErrorDialog(), barrierDismissible: false);
+        }
       }
     }
 

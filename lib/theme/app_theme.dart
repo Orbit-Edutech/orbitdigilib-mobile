@@ -25,7 +25,7 @@ class AppTheme {
   );
 
   static Future<ThemeData> changePerpusTheme([String? color]) async {
-    final perpusColor = getPerpusColor(color ?? "Light Blue");
+    final perpusColor = getPerpusColor(color ?? "Brown");
     const textTheme = TextTheme();
     final theme = ThemeData(
       scaffoldBackgroundColor: AppColor.bgScaffold,

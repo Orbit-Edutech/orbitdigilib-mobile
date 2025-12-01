@@ -37,6 +37,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.1
   change_app_package_name: ^1.5.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
@@ -60,10 +61,10 @@ flutter:
   #         weight: 700
 
 flutter_launcher_icons:
-  android: false # ganti ke true jika ingin modifikasi android app icon
+  android: true # ganti ke true jika ingin modifikasi android app icon
   ios: true
   min_sdk_android: 19
   remove_alpha_ios: true
-  image_path: "assets/logo/orbit-digilib-logo-o-white.png"
-  adaptive_icon_foreground: "assets/logo/orbit-digilib-logo-o-foreground.png"
-  adaptive_icon_background: "assets/logo/orbit-digilib-logo-o-background.png"
+  image_path: "assets/logo/istiqlal-logo.png"
+  adaptive_icon_foreground: "assets/logo/istiqlal-logo.png"
+  adaptive_icon_background: "assets/logo/istiqlal-logo.png"

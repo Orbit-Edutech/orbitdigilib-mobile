@@ -9,7 +9,7 @@ import '../../../shared/widget/app_button.dart';
 import '../../../shared/widget/app_textfield.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
-import '../../../theme/app_theme.dart';
+// import '../../../theme/app_theme.dart';
 import '../controller/auth_user_controller.dart';
 
 class AuthLoginForm extends StatelessWidget {
@@ -23,7 +23,7 @@ class AuthLoginForm extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "Selamat Datang di Aplikasi Perpustakaan",
+          "Selamat Datang di Istiqlal Digilib",
           style: AppTextStyle.ts14Bold,
           textAlign: TextAlign.center,
         ),
@@ -129,16 +129,16 @@ class AuthLoginForm extends StatelessWidget {
                 onPressed: () => Get.toNamed(AppRoutes.authRegister),
                 child: const Text("Daftar Akun"),
               ),
-              VGap.s,
-              AppButton(
-                type: ButtonType.outlined,
-                state: state == ButtonState.disable ? ButtonState.enable : state,
-                onPressed: () {
-                  AppTheme.changePerpusTheme();
-                  Get.offAllNamed(AppRoutes.authLibrary);
-                },
-                child: const Text("Kembali"),
-              ),
+              // VGap.s,
+              // AppButton(
+              //   type: ButtonType.outlined,
+              //   state: state == ButtonState.disable ? ButtonState.enable : state,
+              //   onPressed: () {
+              //     AppTheme.changePerpusTheme();
+              //     Get.offAllNamed(AppRoutes.authLibrary);
+              //   },
+              //   child: const Text("Kembali"),
+              // ),
             ],
           );
         }),

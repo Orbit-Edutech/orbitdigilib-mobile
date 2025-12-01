@@ -22,8 +22,7 @@ class AuthUserPage extends StatelessWidget {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
     final controller = Get.find<AuthUserController>();
-    final perpustakaan = Get.arguments as Perpustakaan;
-    controller.perpustakaan = perpustakaan;
+    final perpustakaan = controller.perpustakaan ?? Perpustakaan();
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -39,59 +38,59 @@ class AuthUserPage extends StatelessWidget {
                 ),
                 child: IntrinsicHeight(
                   child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: theme.primaryColor,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(Sizes.m),
-                        bottomRight: Radius.circular(Sizes.m),
-                      ),
-                    ),
-                    width: size.width,
-                    padding: EdgeInsets.all(
-                      ResponsiveHelper.getHorizontalPadding(context),
-                    ),
-                    child: SafeArea(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: const BorderRadius.all(Radius.circular(100)),
-                              image: perpustakaan.assetLogo != null
-                                  ? DecorationImage(
-                                      image:
-                                          CachedNetworkImageProvider(APIPath.publicAsset(perpustakaan.assetLogo?.id ?? "")),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : null,
-                            ),
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: theme.primaryColor,
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(Sizes.m),
+                            bottomRight: Radius.circular(Sizes.m),
                           ),
-                          VGap.m,
-                          Text(
-                            controller.perpustakaan?.nama ?? "-",
-                            style: AppTextStyle.ts16Bold.copyWith(color: Colors.white),
+                        ),
+                        width: size.width,
+                        padding: EdgeInsets.all(
+                          ResponsiveHelper.getHorizontalPadding(context),
+                        ),
+                        child: SafeArea(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                  image: perpustakaan.assetLogo != null
+                                      ? DecorationImage(
+                                          image: CachedNetworkImageProvider(
+                                              APIPath.publicAsset(perpustakaan.assetLogo?.id ?? "")),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : null,
+                                ),
+                              ),
+                              VGap.m,
+                              Text(
+                                controller.perpustakaan?.nama ?? "-",
+                                style: AppTextStyle.ts16Bold.copyWith(color: Colors.white),
+                              ),
+                              VGap.m,
+                            ],
                           ),
-                          VGap.m,
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                  VGap.l,
-                  Obx(() {
-                    final isforgot = controller.isForgot.value;
-                    return Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: ResponsiveHelper.getHorizontalPadding(context),
-                      ),
-                      child: isforgot ? AuthForgotForm(controller: controller) : AuthLoginForm(controller: controller),
-                    );
-                  })
-                ],
+                      VGap.l,
+                      Obx(() {
+                        final isforgot = controller.isForgot.value;
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: ResponsiveHelper.getHorizontalPadding(context),
+                          ),
+                          child: isforgot ? AuthForgotForm(controller: controller) : AuthLoginForm(controller: controller),
+                        );
+                      })
+                    ],
                   ),
                 ),
               ),

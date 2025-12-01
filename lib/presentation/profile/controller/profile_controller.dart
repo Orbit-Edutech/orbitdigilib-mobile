@@ -60,6 +60,6 @@ class ProfileController extends GetxController {
     await AppTheme.changePerpusTheme();
     await SharedPreferencesManager.writePrefs(prefs);
     logoutButtonState.value = ButtonState.enable;
-    Get.offAllNamed(AppRoutes.authLibrary);
+    Get.offAllNamed(AppRoutes.authUser);
   }
 }

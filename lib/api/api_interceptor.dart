@@ -47,8 +47,8 @@ class APIInterceptor extends InterceptorsWrapper {
     final isRefreshTokenEmpty = tokens.access.toString().isEmpty || tokens.access == null;
     final isTokensEmpty = isAccessTokenEmpty || isRefreshTokenEmpty;
     if (isRefreshExpired || isPasswordChanged || isTokensEmpty || isLibraryNonActive) {
-      if (![AppRoutes.authLibrary, AppRoutes.authUser, AppRoutes.authRegister].contains(Get.currentRoute)) {
-        Get.offAllNamed(AppRoutes.authLibrary);
+      if (![AppRoutes.authUser, AppRoutes.authRegister].contains(Get.currentRoute)) {
+        Get.offAllNamed(AppRoutes.authUser);
       }
       return super.onError(err, handler);
     } else if (isAccesExpired) {

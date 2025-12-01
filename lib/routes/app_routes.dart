@@ -4,7 +4,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import '../presentation/about-app/about_app_page.dart';
 import '../presentation/about-library/about_library_page.dart';
 import '../presentation/about-library/binding/about_library_binding.dart';
-import '../presentation/auth/auth_library_page.dart';
+// import '../presentation/auth/auth_library_page.dart';
 import '../presentation/auth/auth_user_page.dart';
 import '../presentation/auth/auth_register_page.dart';
 import '../presentation/auth/binding/auth_binding.dart';
@@ -60,7 +60,7 @@ class AppRoutes {
   static const String update = "/update";
 
   /// /auth-library
-  static const String authLibrary = "/auth-library";
+  // static const String authLibrary = "/auth-library";
 
   /// /auth-user
   static const String authUser = "/auth-user";
@@ -150,13 +150,13 @@ class AppRoutes {
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),
-    GetPage(
-      name: authLibrary,
-      page: () => const AuthLibraryPage(),
-      binding: AuthBinding(),
-      transition: Transition.noTransition,
-      transitionDuration: const Duration(milliseconds: 0),
-    ),
+    // GetPage(
+    //   name: authLibrary,
+    //   page: () => const AuthLibraryPage(),
+    //   binding: AuthBinding(),
+    //   transition: Transition.noTransition,
+    //   transitionDuration: const Duration(milliseconds: 0),
+    // ),
     GetPage(
       name: authUser,
       page: () => const AuthUserPage(),

@@ -22,7 +22,7 @@ class UpdatePage extends StatelessWidget {
             children: [
               SvgPicture.asset("assets/illustrations/empty.svg"),
               VGap.s,
-              const Text("Versi terbaru dari Orbit DIGILIB telah tersedia!"),
+              const Text("Versi terbaru dari ISTIQLAL DIGILIB telah tersedia!"),
               VGap.m,
               AppButton(
                 type: ButtonType.elevated,
@@ -42,7 +42,7 @@ class UpdatePage extends StatelessWidget {
                 type: ButtonType.outlined,
                 onPressed: () async {
                   final isLogin = await SharedPreferencesManager.readPref("isLogin");
-                  Get.offAllNamed(isLogin ? AppRoutes.navigator : AppRoutes.authLibrary);
+                  Get.offAllNamed(isLogin ? AppRoutes.navigator : AppRoutes.authUser);
                 },
                 child: const Text("Perbarui Nanti"),
               ),

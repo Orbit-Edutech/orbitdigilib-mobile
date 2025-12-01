@@ -24,7 +24,7 @@ class ReadCollectionPage extends StatefulWidget {
 }
 
 class _ReadCollectionPageState extends State<ReadCollectionPage> {
-  final MethodChannel _methodChannel = const MethodChannel("com.orbit360.digilib");
+  final MethodChannel _methodChannel = const MethodChannel("com.istiqlal.digilib");
 
   @override
   void initState() {

@@ -24,7 +24,7 @@ class ReadPage extends StatefulWidget {
 }
 
 class _ReadPageState extends State<ReadPage> with WidgetsBindingObserver {
-  final MethodChannel _methodChannel = const MethodChannel("com.orbit360.digilib");
+  final MethodChannel _methodChannel = const MethodChannel("com.istiqlal.digilib");
 
   @override
   void initState() {

@@ -1,4 +1,4 @@
-package com.orbit360.digilib
+package com.istiqlal.digilib
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -7,7 +7,7 @@ import android.view.WindowManager.LayoutParams
 
 class MainActivity: FlutterActivity() {
     private lateinit var methodChannel: MethodChannel
-    private val channel = "com.orbit360.digilib"
+    private val channel = "com.istiqlal.digilib"
     override fun configureFlutterEngine(flutterEngine: FlutterEngine){
         super.configureFlutterEngine(flutterEngine)
 

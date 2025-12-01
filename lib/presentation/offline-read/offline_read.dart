@@ -24,7 +24,7 @@ class OfflineReadPage extends StatefulWidget {
 }
 
 class _OfflineReadPageState extends State<OfflineReadPage> {
-  final MethodChannel _methodChannel = const MethodChannel("com.orbit360.digilib");
+  final MethodChannel _methodChannel = const MethodChannel("com.istiqlal.digilib");
 
   @override
   void initState() {

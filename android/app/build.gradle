@@ -29,7 +29,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.orbit360.digilib"
+    namespace "com.istiqlal.digilib"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion "28.2.13676358"
 
@@ -48,7 +48,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.orbit360.digilib"
+        applicationId "com.istiqlal.digilib"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 21

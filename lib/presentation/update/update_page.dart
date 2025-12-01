@@ -29,7 +29,7 @@ class UpdatePage extends StatelessWidget {
                 onPressed: () {
                   String url = "";
                   if (Platform.isAndroid) {
-                    url = "market://details?id=com.orbit360.digilib";
+                    url = "market://details?id=com.istiqlal.digilib";
                   } else if (Platform.isIOS) {
                     url = "https://apps.apple.com/app/orbit-digilib/id6575359861";
                   }

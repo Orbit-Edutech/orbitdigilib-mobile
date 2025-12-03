@@ -1,8 +1,8 @@
 import 'package:sqflite/sqflite.dart' as sql;
-import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'sql_constants.dart';
 
@@ -71,27 +71,28 @@ class SQLHelper {
       return _database!;
     }
 
+    late String path;
+    late sql.DatabaseFactory factory;
+
     if (Platform.isAndroid || Platform.isIOS) {
-      final path = join(await sql.getDatabasesPath(), constants.databaseName);
-      _database = await sql.openDatabase(
-        path,
-        version: 1,
-        onCreate: (sql.Database database, int version) async {
-          await createTables(database);
-        },
-      );
+      path = join(await sql.getDatabasesPath(), constants.databaseName);
+      factory = sql.databaseFactory;
     } else if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-      final path = await _getDatabasePath();
-      _database = await sql.openDatabase(
-        path,
-        version: 1,
-        onCreate: (sql.Database database, int version) async {
-          await createTables(database);
-        },
-      );
+      path = await _getDatabasePath();
+      factory = databaseFactoryFfi;
     } else {
       throw UnsupportedError('Unsupported platform');
     }
+
+    _database = await factory.openDatabase(
+      path,
+      options: sql.OpenDatabaseOptions(
+        version: 1,
+        onCreate: (sql.Database database, int version) async {
+          await createTables(database);
+        },
+      ),
+    );
 
     return _database!;
   }

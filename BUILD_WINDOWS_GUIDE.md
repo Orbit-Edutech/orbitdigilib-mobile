@@ -37,6 +37,32 @@ choco install innosetup
 reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6"
 ```
 
+## Storage & Database
+
+Aplikasi menggunakan SQLite untuk storage lokal yang sekarang **fully cross-platform** (Android, iOS, Windows, macOS, Linux).
+
+### Database Location
+
+**Windows**:
+```
+C:\Users\{username}\AppData\Local\{app_data}\digilib.db
+```
+
+Untuk Orbit Digilib: `C:\Users\{username}\AppData\Local\<app_user_data>\digilib.db`
+
+### Stored Data
+
+- **Buku (Books)**: Offline reading history, last page, status
+- **Halaman Bintang (Starred Pages)**: Bookmarked pages dalam buku
+- **Notifikasi (Notifications)**: Local notification cache
+
+### Important Notes
+
+- Database automatically created on first app run
+- User data persists after app closes
+- No special installation required for database
+- User can safely delete app without uninstall script affecting database location
+
 ## Usage
 
 ### Basic Commands

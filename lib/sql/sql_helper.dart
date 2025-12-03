@@ -1,6 +1,9 @@
 import 'package:sqflite/sqflite.dart' as sql;
-import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:flutter/foundation.dart';
 
 import 'sql_constants.dart';
 
@@ -22,8 +25,10 @@ class SQLParam<T> {
 
 class SQLHelper {
   final SQLConstants constants = SQLConstants();
+  static sql.Database? _database;
+
   Future<void> createTables(sql.Database database) async {
-    final createBukuQuery = """CREATE TABLE ${constants.table.buku}(
+    final createBukuQuery = """CREATE TABLE IF NOT EXISTS ${constants.table.buku}(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       id_buku TEXT NOT NULL,
       id_user TEXT NOT NULL,
@@ -37,13 +42,13 @@ class SQLHelper {
       penulis TEXT NOT NULL,
       tipe TEXT NOT NULL
     )""";
-    final createBukuHalamanBintangQuery = """CREATE TABLE ${constants.table.bukuHalamanBintang}(
+    final createBukuHalamanBintangQuery = """CREATE TABLE IF NOT EXISTS ${constants.table.bukuHalamanBintang}(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       id_buku TEXT NOT NULL,
       id_user TEXT NOT NULL,
       halaman INTEGER NOT NULL
     )""";
-    final createNotifikasiQuery = """CREATE TABLE ${constants.table.notifikasi}(
+    final createNotifikasiQuery = """CREATE TABLE IF NOT EXISTS ${constants.table.notifikasi}(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       id_user TEXT NOT NULL,
       title TEXT,
@@ -57,15 +62,57 @@ class SQLHelper {
     await database.execute(createNotifikasiQuery);
   }
 
+  Future<String> _getDatabasePath() async {
+    try {
+      final dbDir = await getApplicationDocumentsDirectory();
+      final dbPath = join(dbDir.path, constants.databaseName);
+      debugPrint('Database path: $dbPath');
+      return dbPath;
+    } catch (e) {
+      debugPrint('Error getting database path: $e');
+      rethrow;
+    }
+  }
+
   Future<sql.Database> db() async {
-    final path = join(await sql.getDatabasesPath(), constants.databaseName);
-    return sql.openDatabase(
-      path,
-      version: 1,
-      onCreate: (sql.Database database, int version) async {
-        await createTables(database);
-      },
-    );
+    if (_database != null && _database!.isOpen) {
+      return _database!;
+    }
+
+    late String path;
+    late sql.DatabaseFactory factory;
+
+    try {
+      if (Platform.isAndroid || Platform.isIOS) {
+        path = join(await sql.getDatabasesPath(), constants.databaseName);
+        factory = sql.databaseFactory;
+        debugPrint('Mobile platform - Database path: $path');
+      } else if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+        path = await _getDatabasePath();
+        factory = databaseFactoryFfi;
+        debugPrint('Desktop platform - Database path: $path');
+      } else {
+        throw UnsupportedError('Unsupported platform');
+      }
+
+      _database = await factory.openDatabase(
+        path,
+        options: sql.OpenDatabaseOptions(
+          version: 1,
+          onCreate: (sql.Database database, int version) async {
+            debugPrint('Creating database tables...');
+            await createTables(database);
+            debugPrint('Database tables created successfully');
+          },
+        ),
+      );
+      
+      debugPrint('Database opened successfully');
+      return _database!;
+    } catch (e) {
+      debugPrint('Error opening database: $e');
+      rethrow;
+    }
   }
 
   Future<List<Map<String, Object?>>> read(SQLParam param) async {
@@ -109,6 +156,13 @@ class SQLHelper {
       conflictAlgorithm: ConflictAlgorithm.abort,
     );
     return result;
+  }
+
+  Future<void> close() async {
+    if (_database != null && _database!.isOpen) {
+      await _database!.close();
+      _database = null;
+    }
   }
 }
 

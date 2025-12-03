@@ -137,9 +137,43 @@ Plugin yang digunakan dalam project ini umumnya sudah support desktop:
 - ✅ `path_provider` - File paths
 - ✅ `url_launcher` - Open URLs
 - ✅ `cached_network_image` - Image caching
-- ✅ `sqflite` - SQLite database (via `sqflite_common_ffi`)
+- ✅ `sqflite` - SQLite database (via `sqflite_common_ffi`) - **NOW SUPPORTS WINDOWS & macOS!**
 - ⚠️ `permission_handler` - Limited support on desktop
 - ⚠️ `screenshot_callback` - Mobile only (tidak akan berfungsi di desktop)
+
+## Storage & Database
+
+Aplikasi menggunakan SQLite untuk storage lokal yang sekarang **fully cross-platform**.
+
+### Database Locations
+
+**macOS**:
+```
+~/Library/Application Support/Orbit Digilib/digilib.db
+```
+
+**Windows**:
+```
+C:\Users\{username}\AppData\Local\<app_data>\digilib.db
+```
+
+**Linux**:
+```
+~/.local/share/<app_data>/digilib.db
+```
+
+### Stored Data
+
+- **Buku (Books)**: Offline reading history, last page, status
+- **Halaman Bintang (Starred Pages)**: Bookmarked pages dalam buku
+- **Notifikasi (Notifications)**: Local notification cache
+
+### Important Notes
+
+- Database automatically created on first app run
+- User data persists after app closes
+- All platform-specific paths handled automatically by `path_provider`
+- No special installation required for database
 
 ## Testing
 

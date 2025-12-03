@@ -3,6 +3,7 @@ import 'package:path/path.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:flutter/foundation.dart';
 
 import 'sql_constants.dart';
 
@@ -62,8 +63,15 @@ class SQLHelper {
   }
 
   Future<String> _getDatabasePath() async {
-    final dbDir = await getApplicationDocumentsDirectory();
-    return join(dbDir.path, constants.databaseName);
+    try {
+      final dbDir = await getApplicationDocumentsDirectory();
+      final dbPath = join(dbDir.path, constants.databaseName);
+      debugPrint('Database path: $dbPath');
+      return dbPath;
+    } catch (e) {
+      debugPrint('Error getting database path: $e');
+      rethrow;
+    }
   }
 
   Future<sql.Database> db() async {
@@ -74,27 +82,37 @@ class SQLHelper {
     late String path;
     late sql.DatabaseFactory factory;
 
-    if (Platform.isAndroid || Platform.isIOS) {
-      path = join(await sql.getDatabasesPath(), constants.databaseName);
-      factory = sql.databaseFactory;
-    } else if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-      path = await _getDatabasePath();
-      factory = databaseFactoryFfi;
-    } else {
-      throw UnsupportedError('Unsupported platform');
+    try {
+      if (Platform.isAndroid || Platform.isIOS) {
+        path = join(await sql.getDatabasesPath(), constants.databaseName);
+        factory = sql.databaseFactory;
+        debugPrint('Mobile platform - Database path: $path');
+      } else if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+        path = await _getDatabasePath();
+        factory = databaseFactoryFfi;
+        debugPrint('Desktop platform - Database path: $path');
+      } else {
+        throw UnsupportedError('Unsupported platform');
+      }
+
+      _database = await factory.openDatabase(
+        path,
+        options: sql.OpenDatabaseOptions(
+          version: 1,
+          onCreate: (sql.Database database, int version) async {
+            debugPrint('Creating database tables...');
+            await createTables(database);
+            debugPrint('Database tables created successfully');
+          },
+        ),
+      );
+      
+      debugPrint('Database opened successfully');
+      return _database!;
+    } catch (e) {
+      debugPrint('Error opening database: $e');
+      rethrow;
     }
-
-    _database = await factory.openDatabase(
-      path,
-      options: sql.OpenDatabaseOptions(
-        version: 1,
-        onCreate: (sql.Database database, int version) async {
-          await createTables(database);
-        },
-      ),
-    );
-
-    return _database!;
   }
 
   Future<List<Map<String, Object?>>> read(SQLParam param) async {

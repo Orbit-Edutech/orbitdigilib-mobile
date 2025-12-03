@@ -13,7 +13,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-    sqfliteFfiInit();
+    try {
+      sqfliteFfiInit();
+    } catch (e) {
+      debugPrint('Error initializing sqflite FFI: $e');
+    }
   }
   
   runApp(const MyApp());

@@ -68,4 +68,4 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   image_path: "assets/logo/istiqlal-logo.png"
   adaptive_icon_foreground: "assets/logo/istiqlal-logo.png"
-  adaptive_icon_background: "assets/logo/istiqlal-logo.png"
+  adaptive_icon_background: "assets/logo/orbit-digilib-logo-o-background.png"

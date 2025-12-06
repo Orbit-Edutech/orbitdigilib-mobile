@@ -8,11 +8,14 @@ import '../../../api/api_client.dart';
 import '../../../api/auth/data/auth_forgot_password.dart';
 import '../../../api/auth/data/auth_login.dart';
 import '../../../api/auth/data/auth_register.dart';
+import '../../../api/perpustakaan/data/perpustakaan_get_one.dart';
 import '../../../api/perpustakaan/model/model_perpustakaan.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
+import '../../../theme/app_theme.dart';
 import '../../../utils/hash_string.dart';
 import '../../../utils/shared_preferences_manager.dart';
+import '../../splash/widget/splash_error_dialog.dart';
 
 class AuthUserController extends GetxController {
   final Rx<bool> isForgot = false.obs;
@@ -46,9 +49,19 @@ class AuthUserController extends GetxController {
   void onInit() async {
     final username = await SharedPreferencesManager.readPref<String>("username");
     if (username != null) usernameController.text = username;
-    
-    if (Get.arguments is Perpustakaan) {
-      perpustakaan = Get.arguments as Perpustakaan;
+
+    if (Get.arguments != null) {
+      if (Get.arguments is Perpustakaan) {
+        perpustakaan = Get.arguments as Perpustakaan;
+      }
+    } else {
+      final response = await getOnePerpustakaan(kode: 'masjidistiqlal');
+      if (response.data != null) {
+        perpustakaan = response.data;
+        AppTheme.changePerpusTheme(perpustakaan!.warnaDasar);
+      } else {
+        Get.dialog(const SplashErrorDialog(), barrierDismissible: false);
+      }
     }
     super.onInit();
   }
@@ -145,14 +158,14 @@ class AuthUserController extends GetxController {
 
   Future<void> onSubmitRegister() async {
     registerButtonState.value = ButtonState.loading;
-    
+
     if (perpustakaan == null || perpustakaan!.kode == null || perpustakaan!.kode!.isEmpty) {
       registerErrorMsg.value = "Kode perpustakaan tidak ditemukan. Silakan kembali dan pilih perpustakaan.";
       isRegisterError.value = true;
       registerButtonState.value = ButtonState.enable;
       return;
     }
-    
+
     final password = hashString(passwordController.text);
     final response = await register(
       username: usernameController.text,

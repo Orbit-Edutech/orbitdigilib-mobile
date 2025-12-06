@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
@@ -146,34 +148,35 @@ class _AuthRegisterFormState extends State<AuthRegisterForm> {
               label: Text("Nama Lengkap", style: AppTextStyle.ts14Reg),
             ),
             VGap.r,
-            Obx(() {
-              final selectedGender = widget.controller.selectedJenisKelamin.value;
-              return DropdownButtonFormField<String>(
-                value: selectedGender,
-                decoration: InputDecoration(
-                  labelText: "Jenis Kelamin",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+            if (!Platform.isIOS && !Platform.isMacOS)
+              Obx(() {
+                final selectedGender = widget.controller.selectedJenisKelamin.value;
+                return DropdownButtonFormField<String>(
+                  value: selectedGender,
+                  decoration: InputDecoration(
+                    labelText: "Jenis Kelamin",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabled: !isLoading,
                   ),
-                  enabled: !isLoading,
-                ),
-                items: const [
-                  DropdownMenuItem(
-                    value: "Laki-Laki",
-                    child: Text("Laki-laki"),
-                  ),
-                  DropdownMenuItem(
-                    value: "Perempuan",
-                    child: Text("Perempuan"),
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    widget.controller.selectedJenisKelamin.value = value;
-                  }
-                },
-              );
-            }),
+                  items: const [
+                    DropdownMenuItem(
+                      value: "Laki-Laki",
+                      child: Text("Laki-laki"),
+                    ),
+                    DropdownMenuItem(
+                      value: "Perempuan",
+                      child: Text("Perempuan"),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      widget.controller.selectedJenisKelamin.value = value;
+                    }
+                  },
+                );
+              }),
             VGap.r,
             AppTextField(
               type: TextFieldType.normal,

@@ -126,7 +126,7 @@ class SQLHelper {
     return result;
   }
 
-  Future<int> delelte(SQLParam param) async {
+  Future<int> delete(SQLParam param) async {
     final database = await db();
     final result = database.delete(
       param.table,

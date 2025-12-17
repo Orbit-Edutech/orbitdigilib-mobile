@@ -7,9 +7,9 @@ Future<int> deleteStaredPageSQLite({
 }) async {
   final param = SQLParam(
     table: sqlHelper.constants.table.bukuHalamanBintang,
-    where: "id_buku = ?  and id_user = ? and halaman = ?",
+    where: "id_buku = ? and id_user = ? and halaman = ?",
     whereArgs: [idBuku, idUser, halaman],
   );
-  final result = await sqlHelper.delelte(param);
+  final result = await sqlHelper.delete(param);
   return result;
 }

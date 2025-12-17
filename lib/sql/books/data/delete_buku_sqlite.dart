@@ -6,6 +6,6 @@ Future<int> deleteBukuSQLite({required String idBuku, required String idUser}) a
     where: "id_buku = ? and id_user = ?",
     whereArgs: [idBuku, idUser],
   );
-  final result = await sqlHelper.delelte(param);
+  final result = await sqlHelper.delete(param);
   return result;
 }

@@ -108,8 +108,18 @@ install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
   COMPONENT Runtime)
 
 # Copy sqlite3.dll for sqflite_common_ffi in Release mode
-install(FILES "${PROJECT_BUILD_DIR}/native_assets/windows/sqlite3.dll"
-  DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
-  CONFIGURATIONS Release
-  COMPONENT Runtime
-  OPTIONAL)
+# Look for sqlite3.dll in the dart tools directory (generated during build)
+file(GLOB_RECURSE SQLITE3_DLLS 
+  "${CMAKE_CURRENT_SOURCE_DIR}/../.dart_tool/**/sqlite3.dll"
+  "${CMAKE_BINARY_DIR}/**/sqlite3.dll"
+)
+
+if(SQLITE3_DLLS)
+  list(GET SQLITE3_DLLS 0 SQLITE3_DLL)
+  install(FILES ${SQLITE3_DLL}
+    DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+    CONFIGURATIONS Release
+    COMPONENT Runtime)
+else()
+  message(STATUS "sqlite3.dll will be looked up at runtime")
+endif()

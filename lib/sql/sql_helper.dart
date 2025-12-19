@@ -64,8 +64,27 @@ class SQLHelper {
 
   Future<String> _getDatabasePath() async {
     try {
-      final dbDir = await getApplicationDocumentsDirectory();
-      final dbPath = join(dbDir.path, constants.databaseName);
+      String dbDir;
+      if (Platform.isWindows) {
+        // Use AppData\Local for Windows
+        final appDataPath = Platform.environment['LOCALAPPDATA'];
+        if (appDataPath == null || appDataPath.isEmpty) {
+          throw Exception('LOCALAPPDATA environment variable not found');
+        }
+        dbDir = join(appDataPath, 'Orbit Digilib');
+      } else {
+        // Use Documents for macOS and Linux
+        final docDir = await getApplicationDocumentsDirectory();
+        dbDir = docDir.path;
+      }
+      
+      // Ensure directory exists
+      final directory = Directory(dbDir);
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      
+      final dbPath = join(dbDir, constants.databaseName);
       debugPrint('Database path: $dbPath');
       return dbPath;
     } catch (e) {

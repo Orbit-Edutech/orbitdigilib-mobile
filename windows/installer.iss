@@ -58,10 +58,13 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 
 [Code]
 procedure CurStepChanged(CurStep: TSetupStep);
+var
+  AppDataPath: string;
 begin
   if CurStep = ssPostInstall then
   begin
     // Create application data directory for database
-    ForceDirectories(ExpandConstant('{userdocs}\..\AppData\Local\Orbit Digilib'));
+    AppDataPath := ExpandConstant('{localappdata}\Orbit Digilib');
+    ForceDirectories(AppDataPath);
   end;
 end;

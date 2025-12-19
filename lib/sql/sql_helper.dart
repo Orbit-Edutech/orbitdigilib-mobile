@@ -1,31 +1,25 @@
-import 'package:sqflite/sqflite.dart' as sql;
-import 'package:path/path.dart';
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
 import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart' as sql;
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'sql_constants.dart';
 
-class SQLParam<T> {
-  final String table;
-  final Map<String, Object?>? values;
-  final List<String>? columns;
-  final String? where;
-  final List<Object?>? whereArgs;
-
-  SQLParam({
-    required this.table,
-    this.values,
-    this.columns,
-    this.where,
-    this.whereArgs,
-  });
-}
+final SQLHelper sqlHelper = SQLHelper();
 
 class SQLHelper {
-  final SQLConstants constants = SQLConstants();
   static sql.Database? _database;
+  final SQLConstants constants = SQLConstants();
+
+  Future<void> close() async {
+    if (_database != null && _database!.isOpen) {
+      await _database!.close();
+      _database = null;
+    }
+  }
 
   Future<void> createTables(sql.Database database) async {
     final createBukuQuery = """CREATE TABLE IF NOT EXISTS ${constants.table.buku}(
@@ -62,57 +56,16 @@ class SQLHelper {
     await database.execute(createNotifikasiQuery);
   }
 
-  Future<String> _getDatabasePath() async {
-    try {
-      String dbDir;
-      if (Platform.isWindows) {
-        // Use AppData\Local for Windows
-        final appDataPath = Platform.environment['LOCALAPPDATA'];
-        if (appDataPath == null || appDataPath.isEmpty) {
-          throw Exception('LOCALAPPDATA environment variable not found');
-        }
-        dbDir = join(appDataPath, 'Orbit Digilib');
-      } else {
-        // Use Documents for macOS and Linux
-        final docDir = await getApplicationDocumentsDirectory();
-        dbDir = docDir.path;
-      }
-      
-      // Ensure directory exists
-      final directory = Directory(dbDir);
-      if (!await directory.exists()) {
-        await directory.create(recursive: true);
-      }
-      
-      final dbPath = join(dbDir, constants.databaseName);
-      debugPrint('Database path: $dbPath');
-      return dbPath;
-    } catch (e) {
-      debugPrint('Error getting database path: $e');
-      rethrow;
-    }
-  }
-
   Future<sql.Database> db() async {
     if (_database != null && _database!.isOpen) {
       return _database!;
     }
 
-    late String path;
-    late sql.DatabaseFactory factory;
-
     try {
-      if (Platform.isAndroid || Platform.isIOS) {
-        path = join(await sql.getDatabasesPath(), constants.databaseName);
-        factory = sql.databaseFactory;
-        debugPrint('Mobile platform - Database path: $path');
-      } else if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-        path = await _getDatabasePath();
-        factory = databaseFactoryFfi;
-        debugPrint('Desktop platform - Database path: $path');
-      } else {
-        throw UnsupportedError('Unsupported platform');
-      }
+      final path = await _getDatabasePath();
+      final factory = getDatabaseFactory();
+
+      debugPrint('Opening database with factory: ${factory.runtimeType}');
 
       _database = await factory.openDatabase(
         path,
@@ -125,8 +78,8 @@ class SQLHelper {
           },
         ),
       );
-      
-      debugPrint('Database opened successfully');
+
+      debugPrint('Database opened successfully at: $path');
       return _database!;
     } catch (e) {
       debugPrint('Error opening database: $e');
@@ -134,21 +87,31 @@ class SQLHelper {
     }
   }
 
-  Future<List<Map<String, Object?>>> read(SQLParam param) async {
+  Future<int> delete(SQLParam param) async {
     final database = await db();
-    final result = database.query(
+    final result = database.delete(
       param.table,
-      columns: param.columns,
       where: param.where,
       whereArgs: param.whereArgs,
     );
     return result;
   }
 
-  Future<int> delete(SQLParam param) async {
+  Future<int> insert(SQLParam param) async {
     final database = await db();
-    final result = database.delete(
+    final result = database.insert(
       param.table,
+      param.values!,
+      conflictAlgorithm: ConflictAlgorithm.abort,
+    );
+    return result;
+  }
+
+  Future<List<Map<String, Object?>>> read(SQLParam param) async {
+    final database = await db();
+    final result = database.query(
+      param.table,
+      columns: param.columns,
       where: param.where,
       whereArgs: param.whereArgs,
     );
@@ -167,22 +130,63 @@ class SQLHelper {
     return result;
   }
 
-  Future<int> insert(SQLParam param) async {
-    final database = await db();
-    final result = database.insert(
-      param.table,
-      param.values!,
-      conflictAlgorithm: ConflictAlgorithm.abort,
-    );
-    return result;
+  Future<String> _getDatabasePath() async {
+    try {
+      String dbPath;
+
+      if (Platform.isAndroid || Platform.isIOS) {
+        // Mobile platforms: use getDatabasesPath()
+        dbPath = join(await sql.getDatabasesPath(), constants.databaseName);
+      } else if (Platform.isWindows) {
+        // Windows: use AppData\Local
+        final appDataPath = Platform.environment['LOCALAPPDATA'];
+        if (appDataPath == null || appDataPath.isEmpty) {
+          throw Exception('LOCALAPPDATA environment variable not found');
+        }
+        final dbDir = join(appDataPath, 'Orbit Digilib');
+        final directory = Directory(dbDir);
+        if (!await directory.exists()) {
+          await directory.create(recursive: true);
+        }
+        dbPath = join(dbDir, constants.databaseName);
+      } else if (Platform.isMacOS || Platform.isLinux) {
+        // macOS & Linux: use Documents directory
+        final docDir = await getApplicationDocumentsDirectory();
+        dbPath = join(docDir.path, constants.databaseName);
+      } else {
+        throw UnsupportedError('Unsupported platform');
+      }
+
+      debugPrint('Database path: $dbPath');
+      return dbPath;
+    } catch (e) {
+      debugPrint('Error getting database path: $e');
+      rethrow;
+    }
   }
 
-  Future<void> close() async {
-    if (_database != null && _database!.isOpen) {
-      await _database!.close();
-      _database = null;
+  // Get appropriate database factory based on platform
+  static DatabaseFactory getDatabaseFactory() {
+    if (Platform.isAndroid || Platform.isIOS) {
+      return sql.databaseFactory;
+    } else {
+      return databaseFactoryFfi;
     }
   }
 }
 
-final SQLHelper sqlHelper = SQLHelper();
+class SQLParam<T> {
+  final String table;
+  final Map<String, Object?>? values;
+  final List<String>? columns;
+  final String? where;
+  final List<Object?>? whereArgs;
+
+  SQLParam({
+    required this.table,
+    this.values,
+    this.columns,
+    this.where,
+    this.whereArgs,
+  });
+}

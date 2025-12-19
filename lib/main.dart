@@ -12,12 +12,9 @@ import 'utils/image_utils.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
+  // Initialize sqflite FFI for desktop platforms (Windows, macOS, Linux)
   if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-    try {
-      sqfliteFfiInit();
-    } catch (e) {
-      debugPrint('Error initializing sqflite FFI: $e');
-    }
+    sqfliteFfiInit();
   }
   
   runApp(const MyApp());

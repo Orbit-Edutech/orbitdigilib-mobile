@@ -34,6 +34,11 @@ class ProfileSettings extends StatelessWidget {
         ),
         VGap.s,
         SettingCard(
+          icon: const Icon(Icons.history_rounded),
+          title: "History Buku",
+          onTap: () => Get.toNamed(AppRoutes.historyBuku),
+        ),
+        SettingCard(
           icon: const Icon(Icons.settings_outlined),
           title: "Keamanan Akun",
           onTap: () => Get.toNamed(AppRoutes.resetPassword),
@@ -55,6 +60,11 @@ class ProfileSettings extends StatelessWidget {
           icon: const Icon(Icons.library_books_outlined),
           title: "Tentang Perpustakaan",
           onTap: () => Get.toNamed(AppRoutes.aboutLibrary),
+        ),
+        SettingCard(
+          icon: const Icon(Icons.rule_outlined),
+          title: "Tata Tertib Perpustakaan",
+          onTap: () => Get.toNamed(AppRoutes.tataTertib),
         ),
         SettingCard(
           icon: const Icon(Icons.info_outline_rounded),

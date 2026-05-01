@@ -98,11 +98,17 @@ class APIPath {
   /// /laporan-literasi/durasi-membaca
   static String laporanLiterasi = "/laporan-literasi/durasi-membaca";
 
+  /// /laporan-literasi/ringkasan-anggota
+  static String ringkasanAnggota = "/laporan-literasi/ringkasan-anggota";
+
   /// /poin-membaca/cek-status/{bukuId}
   static String statusPoinMembaca(String id) => "/poin-membaca/cek-status/$id";
 
   /// /poin-membaca/resensi/{bukuId}
   static String resensiPoinMembaca(String id) => "/poin-membaca/resensi/$id";
+
+  /// /laporan-kunjungan/catat
+  static const catatKunjungan = "/laporan-kunjungan/catat";
 
   /// /hak-akses
   static const hakAkses = "/hak-akses";

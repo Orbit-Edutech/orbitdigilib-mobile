@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import '../../constants/gaps.dart';
 import '../../theme/app_color.dart';
@@ -42,11 +42,17 @@ class _NavigatorPageState extends State<NavigatorPage> {
       child: PersistentTabView(
         context,
         controller: indexController.persistentController,
-        hideNavigationBarWhenKeyboardShows: true,
+        hideNavigationBarWhenKeyboardAppears: true,
         resizeToAvoidBottomInset: true,
-        screenTransitionAnimation: const ScreenTransitionAnimation(
-          animateTabTransition: true,
-          duration: Duration(milliseconds: 200),
+        animationSettings: const NavBarAnimationSettings(
+          screenTransitionAnimation: ScreenTransitionAnimationSettings(
+            animateTabTransition: true,
+            duration: Duration(milliseconds: 200),
+          ),
+          navBarItemAnimation: ItemAnimationSettings(
+            duration: Duration(milliseconds: 100),
+            curve: Curves.easeIn,
+          ),
         ),
         navBarStyle: NavBarStyle.style6,
         onItemSelected: onItemSelected,
@@ -56,10 +62,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
           CollectionPage(),
           ProfilePage(),
         ],
-        itemAnimationProperties: const ItemAnimationProperties(
-          duration: Duration(milliseconds: 100),
-          curve: Curves.easeIn,
-        ),
         items: [
           PersistentBottomNavBarItem(
             icon: Obx(() {

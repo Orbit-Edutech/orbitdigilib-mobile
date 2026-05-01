@@ -4,6 +4,10 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import '../presentation/about-app/about_app_page.dart';
 import '../presentation/about-library/about_library_page.dart';
 import '../presentation/about-library/binding/about_library_binding.dart';
+import '../presentation/tata-tertib/binding/tata_tertib_binding.dart';
+import '../presentation/tata-tertib/tata_tertib_page.dart';
+import '../presentation/history-buku/binding/history_buku_binding.dart';
+import '../presentation/history-buku/history_buku_page.dart';
 import '../presentation/auth/auth_library_page.dart';
 import '../presentation/auth/auth_user_page.dart';
 import '../presentation/auth/auth_register_page.dart';
@@ -121,6 +125,12 @@ class AppRoutes {
 
   /// /about-library
   static const String aboutLibrary = "/about-library";
+
+  /// /tata-tertib
+  static const String tataTertib = "/tata-tertib";
+
+  /// /history-buku
+  static const String historyBuku = "/history-buku";
 
   static final pages = <GetPage>[
     GetPage(
@@ -291,6 +301,20 @@ class AppRoutes {
       name: aboutLibrary,
       page: () => const AboutLibraryPage(),
       binding: AboutLibraryBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: tataTertib,
+      page: () => const TataTertibPage(),
+      binding: TataTertibBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: historyBuku,
+      page: () => const HistoryBukuPage(),
+      binding: HistoryBukuBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

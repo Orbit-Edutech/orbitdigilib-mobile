@@ -12,6 +12,7 @@ import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/shared_preferences_manager.dart';
+import '../../../api/laporan-kunjungan/data/catat_kunjungan.dart';
 import '../widget/splash_error_dialog.dart';
 
 class SplashController extends GetxController {
@@ -30,6 +31,8 @@ class SplashController extends GetxController {
       } else {
         final color = await SharedPreferencesManager.readPref<String>("color");
         await AppTheme.changePerpusTheme(color);
+        // Catat kunjungan aplikasi saat app dibuka (user sudah login)
+        catatKunjungan(platform: 'mobile');
         Get.offAllNamed(AppRoutes.navigator);
       }
     } else {

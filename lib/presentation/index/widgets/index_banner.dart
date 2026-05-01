@@ -1,5 +1,5 @@
 import "package:cached_network_image/cached_network_image.dart";
-import "package:carousel_slider/carousel_slider.dart";
+import "package:carousel_slider_plus/carousel_slider_plus.dart";
 import "package:flutter/material.dart";
 import "package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart";
 import "package:get/instance_manager.dart";
@@ -22,7 +22,7 @@ class IndexBanner extends StatefulWidget {
 
 class _IndexBannerState extends State<IndexBanner> {
   final controller = Get.find<IndexController>();
-  final carouselController = CarouselController();
+  final carouselController = CarouselSliderController();
   int currentBanner = 0;
   List<String> emptyBanners = ["", "", "", ""];
 
@@ -49,7 +49,7 @@ class _IndexBannerState extends State<IndexBanner> {
           final banners = controller.banners.value;
           final isEmpty = banners.isEmpty;
           return CarouselSlider(
-            carouselController: carouselController,
+            controller: carouselController,
             items: (isEmpty ? emptyBanners : banners).map((banner) {
               return InkWell(
                 onTap: () => controller.showLargeBanner(banners, banners.indexOf(banner)),

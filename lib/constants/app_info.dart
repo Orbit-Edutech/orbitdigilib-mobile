@@ -2,6 +2,6 @@ import '../api/auth/model/model_auth_validate.dart';
 
 class AppInfo {
   static const String name = "ORBIT DIGILIB";
-  static final Version android = Version(versionCode: 23, versionName: "0.5.7");
-  static final Version iOs = Version(versionCode: 16, versionName: "1.2.7");
+  static final Version android = Version(versionCode: 24, versionName: "0.7.0");
+  static final Version iOs = Version(versionCode: 17, versionName: "1.4.0");
 }

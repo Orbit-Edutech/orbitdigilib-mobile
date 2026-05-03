@@ -2,7 +2,7 @@ name: digilib
 description: "A new Flutter project."
 publish_to: "none"
 
-version: 1.2.4
+version: 0.7.0+24
 
 environment:
   sdk: ">=3.2.2 <4.0.0"

@@ -8,6 +8,7 @@ import 'controller/about_library_controller.dart';
 import 'widgets/about_library_contact.dart';
 import 'widgets/about_library_footer.dart';
 import 'widgets/about_library_general.dart';
+import 'widgets/about_library_tata_tertib.dart';
 
 class AboutLibraryPage extends StatelessWidget {
   const AboutLibraryPage({super.key});
@@ -36,6 +37,7 @@ class AboutLibraryPage extends StatelessWidget {
                   children: [
                     AboutLibraryGeneral(),
                     VGap.m,
+                    AboutLibraryTataTertib(),
                     AboutLibraryContact(),
                     VGap.h,
                     AboutLibraryFooter(),

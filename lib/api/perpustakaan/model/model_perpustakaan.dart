@@ -18,6 +18,7 @@ class Perpustakaan {
   final List<Banner>? banner;
   final bool? isAktif;
   final Alamat? alamat;
+  final String? tataTertib;
 
   Perpustakaan({
     this.id,
@@ -37,6 +38,7 @@ class Perpustakaan {
     this.banner,
     this.isAktif,
     this.alamat,
+    this.tataTertib,
   });
 
   Perpustakaan copyWith({
@@ -57,6 +59,7 @@ class Perpustakaan {
     List<Banner>? banner,
     bool? isAktif,
     Alamat? alamat,
+    String? tataTertib,
   }) =>
       Perpustakaan(
         id: id ?? this.id,
@@ -76,6 +79,7 @@ class Perpustakaan {
         banner: banner ?? this.banner,
         isAktif: isAktif ?? this.isAktif,
         alamat: alamat ?? this.alamat,
+        tataTertib: tataTertib ?? this.tataTertib,
       );
 
   factory Perpustakaan.fromRawJson(String str) => Perpustakaan.fromJson(json.decode(str));
@@ -100,6 +104,7 @@ class Perpustakaan {
         banner: json["banner"] == null ? [] : List<Banner>.from(json["banner"]!.map((x) => Banner.fromJson(x))),
         isAktif: json["isAktif"],
         alamat: json["alamat"] == null ? null : Alamat.fromJson(json["alamat"]),
+        tataTertib: json["tataTertib"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -120,6 +125,7 @@ class Perpustakaan {
         "banner": banner == null ? [] : List<dynamic>.from(banner!.map((x) => x.toJson())),
         "isAktif": isAktif,
         "alamat": alamat?.toJson(),
+        "tataTertib": tataTertib,
       };
 }
 

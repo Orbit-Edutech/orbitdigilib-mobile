@@ -18,6 +18,7 @@ import '../../../api/hak-akses/model/model_check_access.dart';
 import '../../../api/hak-akses/model/model_last_access.dart';
 import '../../../api/hak-akses/model/model_set_default_access_right.dart';
 import '../../../api/katalog-perpus/data/get_all_katalog_perpus.dart';
+import '../../../api/laporan-kunjungan/data/catat_kunjungan.dart';
 import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart';
 import '../../../api/perpustakaan/data/perpustakaan_get_banner_default.dart';
 import '../../../api/perpustakaan/data/perpustakaan_get_one.dart';
@@ -56,6 +57,7 @@ class IndexController extends GetxController {
 
   @override
   Future onInit() async {
+    catatKunjungan(); // fire-and-forget: log visit for admin rekap kunjungan
     perpustakaan.value = null;
     banners.value = [];
     pinnedBooks.value = null;

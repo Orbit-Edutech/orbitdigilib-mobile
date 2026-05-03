@@ -22,6 +22,7 @@ dependencies:
   flutter_svg: ^2.0.9
   flutter_staggered_grid_view: ^0.7.0
   persistent_bottom_nav_bar: ^5.0.2
+  # device_info_plus: ^10.1.0
   sqflite: ^2.3.0
   sqflite_common_ffi: ^2.3.0
   readmore: ^2.2.0
@@ -68,3 +69,6 @@ flutter_launcher_icons:
   image_path: "assets/logo/orbit-digilib-logo-o-white.png"
   adaptive_icon_foreground: "assets/logo/orbit-digilib-logo-o-foreground.png"
   adaptive_icon_background: "assets/logo/orbit-digilib-logo-o-background.png"
+
+# dependency_overrides:
+#   win32: 3.1.4

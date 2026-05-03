@@ -44,7 +44,8 @@ class ProfileHeader extends StatelessWidget {
                 children: [
                   Text(
                     "Akun",
-                    style: AppTextStyle.ts20Bold.copyWith(color: calculateLuminance(theme.primaryColor)),
+                    style: AppTextStyle.ts20Bold.copyWith(
+                        color: calculateLuminance(theme.primaryColor)),
                   ),
                   // TODO: Fitur notifikasi akan dikembangkan pada fase 2
                   // GestureDetector(
@@ -75,7 +76,9 @@ class ProfileHeader extends StatelessWidget {
                     height: 50,
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: Icon(
-                      controller.profile.value?.jenisKelamin == "Perempuan" ? Icons.person_2 : Icons.person,
+                      controller.profile.value?.jenisKelamin == "Perempuan"
+                          ? Icons.person_2
+                          : Icons.person,
                       size: 40,
                       color: AppColor.black,
                     ),
@@ -95,6 +98,63 @@ class ProfileHeader extends StatelessWidget {
                         style: AppTextStyle.ts18Bold.copyWith(
                           color: calculateLuminance(theme.primaryColor),
                         ),
+                      ),
+                      if (controller.profile.value?.nomorKeanggotaan != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: Text(
+                            controller.profile.value!.nomorKeanggotaan!,
+                            style: AppTextStyle.ts12CLight.copyWith(
+                              color: calculateLuminance(theme.primaryColor)
+                                  .withOpacity(0.8),
+                            ),
+                          ),
+                        ),
+                      Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 4),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 2, horizontal: 8),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                            ),
+                            child: Text(
+                              controller.profile.value?.isPending == true
+                                  ? "Pending"
+                                  : "Aktif",
+                              style: AppTextStyle.ts10Bold.copyWith(
+                                color:
+                                    controller.profile.value?.isPending == true
+                                        ? Colors.orange
+                                        : Colors.green,
+                              ),
+                            ),
+                          ),
+                          if ((controller
+                                      .profile.value?.totalBukuFisikDipinjam ??
+                                  0) >
+                              0)
+                            Container(
+                              margin: const EdgeInsets.only(top: 4, left: 4),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 8),
+                              decoration: BoxDecoration(
+                                color: calculateLuminance(theme.primaryColor)
+                                    .withOpacity(0.2),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(12)),
+                              ),
+                              child: Text(
+                                "${controller.profile.value!.totalBukuFisikDipinjam} Buku Fisik Dipinjam",
+                                style: AppTextStyle.ts10Bold.copyWith(
+                                  color: calculateLuminance(theme.primaryColor),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     ],
                   )

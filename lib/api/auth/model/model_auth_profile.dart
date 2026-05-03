@@ -16,6 +16,9 @@ class AuthProfile {
   final Role? role;
   final Perpustakaan? perpustakaan;
   final dynamic penerbit;
+  final int? totalBukuFisikDipinjam;
+  final String? nomorKeanggotaan;
+  final bool? isPending;
 
   AuthProfile({
     this.id,
@@ -33,6 +36,9 @@ class AuthProfile {
     this.role,
     this.perpustakaan,
     this.penerbit,
+    this.totalBukuFisikDipinjam,
+    this.nomorKeanggotaan,
+    this.isPending,
   });
 
   AuthProfile copyWith({
@@ -51,6 +57,9 @@ class AuthProfile {
     Role? role,
     Perpustakaan? perpustakaan,
     dynamic penerbit,
+    int? totalBukuFisikDipinjam,
+    String? nomorKeanggotaan,
+    bool? isPending,
   }) =>
       AuthProfile(
         id: id ?? this.id,
@@ -68,6 +77,9 @@ class AuthProfile {
         role: role ?? this.role,
         perpustakaan: perpustakaan ?? this.perpustakaan,
         penerbit: penerbit ?? this.penerbit,
+        totalBukuFisikDipinjam: totalBukuFisikDipinjam ?? this.totalBukuFisikDipinjam,
+        nomorKeanggotaan: nomorKeanggotaan ?? this.nomorKeanggotaan,
+        isPending: isPending ?? this.isPending,
       );
 
   factory AuthProfile.fromRawJson(String str) => AuthProfile.fromJson(json.decode(str));
@@ -91,6 +103,9 @@ class AuthProfile {
         role: json["role"] == null ? null : Role.fromJson(json["role"]),
         perpustakaan: json["perpustakaan"] == null ? null : Perpustakaan.fromJson(json["perpustakaan"]),
         penerbit: json["penerbit"],
+        totalBukuFisikDipinjam: json["totalBukuFisikDipinjam"],
+        nomorKeanggotaan: json["nomorKeanggotaan"],
+        isPending: json["isPending"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -109,6 +124,9 @@ class AuthProfile {
         "role": role?.toJson(),
         "perpustakaan": perpustakaan?.toJson(),
         "penerbit": penerbit,
+        "totalBukuFisikDipinjam": totalBukuFisikDipinjam,
+        "nomorKeanggotaan": nomorKeanggotaan,
+        "isPending": isPending,
       };
 }
 

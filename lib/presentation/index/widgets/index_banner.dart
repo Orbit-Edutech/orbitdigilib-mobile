@@ -52,7 +52,8 @@ class _IndexBannerState extends State<IndexBanner> {
             carouselController: carouselController,
             items: (isEmpty ? emptyBanners : banners).map((banner) {
               return InkWell(
-                onTap: () => controller.showLargeBanner(banners, banners.indexOf(banner)),
+                onTap: () => controller.showLargeBanner(
+                    banners, banners.indexOf(banner)),
                 borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
                 child: Container(
                   height: bannerHeight,
@@ -64,7 +65,9 @@ class _IndexBannerState extends State<IndexBanner> {
                   ),
                   child: isEmpty
                       ? const SizedBox()
-                      : CachedNetworkImage(imageUrl: APIPath.publicAsset(banner), fit: BoxFit.cover),
+                      : CachedNetworkImage(
+                          imageUrl: APIPath.publicAsset(banner),
+                          fit: BoxFit.cover),
                 ),
               );
             }).toList(),
@@ -101,14 +104,17 @@ class _IndexBannerState extends State<IndexBanner> {
                 return Row(
                   children: (isEmpty ? emptyBanners : banners).map((i) {
                     final index = (isEmpty ? emptyBanners : banners).indexOf(i);
-                    final current = (isEmpty ? emptyBanners : banners).elementAt(currentBanner) == i;
+                    final current = (isEmpty ? emptyBanners : banners)
+                            .elementAt(currentBanner) ==
+                        i;
                     return GestureDetector(
                       onTap: () => carouselController.animateToPage(index),
                       child: Container(
                         width: Sizes.s,
                         height: Sizes.s,
                         decoration: BoxDecoration(
-                          color: current ? theme.primaryColor : AppColor.lightGrey,
+                          color:
+                              current ? theme.primaryColor : AppColor.lightGrey,
                           shape: BoxShape.circle,
                         ),
                         margin: const EdgeInsets.only(right: Sizes.xs),
@@ -121,7 +127,8 @@ class _IndexBannerState extends State<IndexBanner> {
                 onTap: () => Get.toNamed(AppRoutes.highlight),
                 child: Text(
                   "Lihat Semua",
-                  style: AppTextStyle.ts12Reg.copyWith(color: theme.primaryColor),
+                  style:
+                      AppTextStyle.ts12Reg.copyWith(color: theme.primaryColor),
                 ),
               )
             ],

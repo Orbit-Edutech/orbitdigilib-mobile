@@ -17,6 +17,7 @@ import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 import '../../utils/compute_luminance.dart';
+import '../../utils/responsive_helper.dart';
 import 'controller/books_controller.dart';
 
 class BooksPage extends StatelessWidget {
@@ -25,8 +26,12 @@ class BooksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<BooksController>();
-    final size = MediaQuery.of(context).size;
-    final isWide = size.width >= 600;
+    final crossAxisCount = ResponsiveHelper.getCrossAxisCount(
+      context,
+      mobile: 2,
+      tablet: 3,
+      desktop: 4,
+    );
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -61,16 +66,23 @@ class BooksPage extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Obx(() {
-              return Column(
-                children: [
-                  if (controller.isOnSearch.value) ...[
-                    VGap.r,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-                      child: AppTextField(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: ResponsiveHelper.getMaxContentWidth(context),
+            ),
+            child: Column(
+              children: [
+                Obx(() {
+                  return Column(
+                    children: [
+                      if (controller.isOnSearch.value) ...[
+                        VGap.r,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: ResponsiveHelper.getHorizontalPadding(context),
+                          ),
+                          child: AppTextField(
                         type: TextFieldType.rounded,
                         controller: controller.textController,
                         focusNode: controller.searchFocusNode,
@@ -106,30 +118,30 @@ class BooksPage extends StatelessWidget {
                   if (books == null) {
                     return AlignedGridView.count(
                       shrinkWrap: true,
-                      crossAxisCount: isWide ? 4 : 2,
+                      crossAxisCount: crossAxisCount,
                       itemCount: 10,
                       mainAxisSpacing: Sizes.r,
                       crossAxisSpacing: Sizes.r,
-                      padding: const EdgeInsets.all(Sizes.m),
+                      padding: EdgeInsets.all(ResponsiveHelper.getHorizontalPadding(context)),
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         return const BookCardSkeleton();
                       },
                     );
                   } else if (books.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.all(Sizes.m),
-                      child: EmptyList(description: "Buku yang Anda cari tidak ada"),
+                    return Padding(
+                      padding: EdgeInsets.all(ResponsiveHelper.getHorizontalPadding(context)),
+                      child: const EmptyList(description: "Buku yang Anda cari tidak ada"),
                     );
                   }
                   return AlignedGridView.count(
                     controller: controller.scrollController,
                     shrinkWrap: true,
-                    crossAxisCount: isWide ? 4 : 2,
+                    crossAxisCount: crossAxisCount,
                     itemCount: books.length,
                     mainAxisSpacing: Sizes.r,
                     crossAxisSpacing: Sizes.r,
-                    padding: const EdgeInsets.all(Sizes.m),
+                    padding: EdgeInsets.all(ResponsiveHelper.getHorizontalPadding(context)),
                     itemBuilder: (context, index) {
                       final payload = books[index];
                       final book = payload.buku;
@@ -167,6 +179,8 @@ class BooksPage extends StatelessWidget {
               }
             })
           ],
+        ),
+          ),
         ),
       ),
     );

@@ -1,6 +1,6 @@
 class APIPath {
   static const base = "https://api.orbitdigilib.com";
-  // static const base = "https://api-dev.orbitdigilib.com"; // base API for dev
+  // static const base = "http://localhost:4001"; // base API for dev
 
   /// /asset/{id}
   static String asset(String id) => "$base/asset/$id";
@@ -16,6 +16,9 @@ class APIPath {
 
   /// /auth/login
   static const login = "$auth/login";
+
+  /// /auth/register
+  static const register = "$auth/register";
 
   /// /auth/logout
   static const logout = "$auth/logout";
@@ -42,7 +45,8 @@ class APIPath {
   static String perpustakaanGetOneById(String id) => "$perpustakaan/$id";
 
   /// /buku-perpustakaan
-  static String allBukuPerpus(String perpustakaanId) => "/buku-perpustakaan/$perpustakaanId";
+  static String allBukuPerpus(String perpustakaanId) =>
+      "/buku-perpustakaan/by-id/$perpustakaanId";
 
   /// /buku-perpustakaan/{perpustakaanId}/{id}
   static oneBukuPerpus(String id) => "/buku-perpustakaan/$id";
@@ -63,16 +67,19 @@ class APIPath {
   static const sewa = "/sewa";
 
   /// /beli
-  static const beli = "/beli";
+  // static const beli = "/beli";
 
   /// /katalog-buku-perpustakaan
-  static String katalogBukuPerpustakaan(String perpustakaanId) => "/katalog-buku-perpustakaan/$perpustakaanId";
+  static String katalogBukuPerpustakaan(String perpustakaanId) =>
+      "/katalog-buku-perpustakaan/$perpustakaanId";
 
   /// /katalog-buku-perpustakaan/{id}
-  static String katalogBukuPerpustakaanGetOne(String id) => "/katalog-buku-perpustakaan/$id";
+  static String katalogBukuPerpustakaanGetOne(String id) =>
+      "/katalog-buku-perpustakaan/$id";
 
   /// /wishlist/{perpustakaanId}
-  static String wishlist([String? perpustakaanId]) => "/wishlist${perpustakaanId != null ? '/$perpustakaanId' : ''}";
+  static String wishlist([String? perpustakaanId]) =>
+      "/wishlist${perpustakaanId != null ? '/$perpustakaanId' : ''}";
 
   /// /wishlist/{id}
   static String oneWishlist(String id) => "/wishlist/$id";
@@ -111,11 +118,19 @@ class APIPath {
   static const lastAccess = "$hakAkses/last-access";
 
   /// /check-access
-  static String checkAccess(String perpustakaanId) => "$hakAkses/check-access-right/$perpustakaanId";
+  static String checkAccess(String perpustakaanId) =>
+      "$hakAkses/check-access-right/$perpustakaanId";
 
   /// /change-access
-  static String changeAccess(String perpustakaanId) => "$hakAkses/change-access/$perpustakaanId";
+  static String changeAccess(String perpustakaanId) =>
+      "$hakAkses/change-access/$perpustakaanId";
 
   /// /set-default-access-right
   static const setDefaultAccessRight = "$hakAkses/set-default-access-right";
+
+  /// /transaksi-fisik/my-history
+  static const transaksiFisikMyHistory = "/transaksi-fisik/my-history";
+
+  /// /laporan-kunjungan/catat
+  static const catatKunjungan = "/laporan-kunjungan/catat";
 }

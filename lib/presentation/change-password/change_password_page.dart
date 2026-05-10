@@ -9,6 +9,7 @@ import '../../shared/widget/app_divider.dart';
 import '../../shared/widget/app_textfield.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
+import '../../utils/responsive_helper.dart';
 import 'controller/change_password_controller.dart';
 
 class ChangePasswordPage extends StatelessWidget {
@@ -20,11 +21,18 @@ class ChangePasswordPage extends StatelessWidget {
     final controller = Get.find<ChangePasswordController>();
     return Scaffold(
       appBar: AppBar(title: const Text("Keamanan Akun")),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.m),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: ResponsiveHelper.getMaxContentWidth(context),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(
+              ResponsiveHelper.getHorizontalPadding(context),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
             Obx(() {
               final isFocus = controller.focus.value == "oldPass";
               final isLoading = controller.buttonState.value == ButtonState.loading;
@@ -157,6 +165,8 @@ class ChangePasswordPage extends StatelessWidget {
               );
             })
           ],
+            ),
+          ),
         ),
       ),
     );

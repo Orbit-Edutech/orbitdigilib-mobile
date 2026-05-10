@@ -9,6 +9,7 @@ import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../../utils/responsive_helper.dart';
 import 'profile_settings_card.dart';
 
 class ProfileSettings extends StatelessWidget {
@@ -22,13 +23,21 @@ class ProfileSettings extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.s),
+          padding: EdgeInsets.symmetric(
+            horizontal: ResponsiveHelper.getHorizontalPadding(context),
+            vertical: Sizes.s,
+          ),
           child: Text(
             "PENGATURAN AKUN",
             style: AppTextStyle.ts12Bold.copyWith(color: AppColor.grey),
           ),
         ),
         VGap.s,
+        SettingCard(
+          icon: const Icon(Icons.history_rounded),
+          title: "Riwayat Pinjam Fisik",
+          onTap: () => Get.toNamed(AppRoutes.transaksiFisik),
+        ),
         SettingCard(
           icon: const Icon(Icons.settings_outlined),
           title: "Keamanan Akun",

@@ -4,6 +4,7 @@ import '../../../api/buku-perpustakaan/model/model_one_buku_perpustakaan.dart';
 import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../../../theme/app_color.dart';
+import '../../../utils/responsive_helper.dart';
 import 'book_about.dart';
 import 'book_buttons.dart';
 import 'book_detail.dart';
@@ -25,7 +26,9 @@ class BookMetadata extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(Sizes.l)),
         color: AppColor.white,
       ),
-      padding: const EdgeInsets.all(Sizes.m),
+      padding: EdgeInsets.all(
+        ResponsiveHelper.getHorizontalPadding(context),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

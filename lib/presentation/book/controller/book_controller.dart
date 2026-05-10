@@ -7,7 +7,7 @@ import '../../../api/buku-perpustakaan/data/buku_perpustakaan_get_one.dart';
 import '../../../api/buku-perpustakaan/model/model_all_buku_perpustakaan.dart' as a;
 import '../../../api/buku-perpustakaan/model/model_one_buku_perpustakaan.dart';
 import '../../../api/koleksi/data/check_collection.dart';
-import '../../../api/transaksi/data/beli_create_one.dart';
+// import '../../../api/transaksi/data/beli_create_one.dart';
 import '../../../api/transaksi/data/pinjam_create_one.dart';
 import '../../../api/transaksi/data/sewa_create_one.dart';
 import '../../../routes/app_routes.dart';
@@ -55,9 +55,9 @@ class BookController extends GetxController {
       case "Sewa":
         await sewaBuku();
         break;
-      case "Beli":
-        await beliBuku();
-        break;
+      // case "Beli":
+      //   await beliBuku();
+      //   break;
       default:
     }
     buttonState.value = ButtonState.enable;
@@ -91,19 +91,19 @@ class BookController extends GetxController {
     }
   }
 
-  Future<void> beliBuku() async {
-    final response = await beliCreateOne(args?.buku?.id ?? "");
-    if (response.data != null) {
-      collectionController.onInit();
-      showSnackbar(message: "Buku berhasil ditambahkan ke Koleksi!", backgroundColor: AppColor.green);
-      Get.offNamed(AppRoutes.read, arguments: {"asset": book.value?.buku?.id, "type": "read"});
-      final check = await checkCollection(args!.buku!.id!);
-      if (check.data != null) isInCollections.value = true;
-      profileController.onInit();
-    } else {
-      showSnackbar(message: response.error["message"], backgroundColor: AppColor.red);
-    }
-  }
+  // Future<void> beliBuku() async {
+  //   final response = await beliCreateOne(args?.buku?.id ?? "");
+  //   if (response.data != null) {
+  //     collectionController.onInit();
+  //     showSnackbar(message: "Buku berhasil ditambahkan ke Koleksi!", backgroundColor: AppColor.green);
+  //     Get.offNamed(AppRoutes.read, arguments: {"asset": book.value?.buku?.id, "type": "read"});
+  //     final check = await checkCollection(args!.buku!.id!);
+  //     if (check.data != null) isInCollections.value = true;
+  //     profileController.onInit();
+  //   } else {
+  //     showSnackbar(message: response.error["message"], backgroundColor: AppColor.red);
+  //   }
+  // }
 
   void showOptions() async {
     Get.bottomSheet(

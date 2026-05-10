@@ -12,6 +12,7 @@ import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 import '../../utils/compute_luminance.dart';
+import '../../utils/responsive_helper.dart';
 import 'controller/collection_controller.dart';
 import 'widgets/collection_book_card.dart';
 import 'widgets/collection_filter.dart';
@@ -37,18 +38,25 @@ class CollectionPage extends StatelessWidget {
           HGap.sr,
         ],
       ),
-      body: Column(
-        children: [
-          VGap.r,
-          const CollectionFilter(),
-          Obx(() {
-            return Column(
-              children: [
-                if (controller.isOnSearch.value) ...[
-                  VGap.r,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-                    child: AppTextField(
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: ResponsiveHelper.getMaxContentWidth(context),
+          ),
+          child: Column(
+            children: [
+              VGap.r,
+              const CollectionFilter(),
+              Obx(() {
+                return Column(
+                  children: [
+                    if (controller.isOnSearch.value) ...[
+                      VGap.r,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: ResponsiveHelper.getHorizontalPadding(context),
+                        ),
+                        child: AppTextField(
                       type: TextFieldType.rounded,
                       controller: controller.textController,
                       focusNode: controller.searchFocusNode,
@@ -86,7 +94,9 @@ class CollectionPage extends StatelessWidget {
                 final localBooks = controller.localBooks.value;
                 if (books == null || localBooks == null) {
                   return ListView.builder(
-                    padding: const EdgeInsets.all(Sizes.m),
+                    padding: EdgeInsets.all(
+                      ResponsiveHelper.getHorizontalPadding(context),
+                    ),
                     shrinkWrap: true,
                     itemCount: 10,
                     itemBuilder: (ctx, idx) {
@@ -155,7 +165,10 @@ class CollectionPage extends StatelessWidget {
                 return ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
                   controller: controller.scrollController,
-                  padding: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.r),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ResponsiveHelper.getHorizontalPadding(context),
+                    vertical: Sizes.r,
+                  ),
                   shrinkWrap: true,
                   itemCount: books.length,
                   itemBuilder: (ctx, idx) {
@@ -190,6 +203,8 @@ class CollectionPage extends StatelessWidget {
             }
           })
         ],
+          ),
+        ),
       ),
     );
   }

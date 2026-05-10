@@ -5,9 +5,12 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
+.claude/
 migrate_working_dir/
 
 # IntelliJ related
@@ -41,3 +44,15 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Desktop build artifacts
+/macos/Pods/
+/windows/flutter/ephemeral/
+/linux/flutter/ephemeral/
+installer_output/
+*.dmg
+*.pkg
+*.exe
+*.msix
+*.zip
+*.tar.gz

@@ -29,31 +29,28 @@ class IndexRecommendation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           VGap.m,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text(
-                "Rekomendasi Buku",
-                style: AppTextStyle.ts14Bold,
-              ),
-              if (payloads?.isNotEmpty ?? false) ...[
-                GestureDetector(
-                  onTap: () => Get.toNamed(AppRoutes.recommendation, arguments: payloads),
-                  child: Text(
-                    "Lihat Semua",
-                    style: AppTextStyle.ts12Reg.copyWith(color: theme.primaryColor),
-                  ),
-                )
-              ],
-            ]),
-          ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              "Rekomendasi Buku",
+              style: AppTextStyle.ts14Bold,
+            ),
+            if (payloads?.isNotEmpty ?? false) ...[
+              GestureDetector(
+                onTap: () => Get.toNamed(AppRoutes.recommendation, arguments: payloads),
+                child: Text(
+                  "Lihat Semua",
+                  style: AppTextStyle.ts12Reg.copyWith(color: theme.primaryColor),
+                ),
+              )
+            ],
+          ]),
           if (payloads?.isEmpty ?? true) ...[
             VGap.r,
             const EmptyList(description: "Rekomendasi buku masih kosong"),
           ],
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.all(Sizes.m),
+            padding: const EdgeInsets.symmetric(vertical: Sizes.m),
             child: Row(
               children: [
                 for (Payload payload in payloads ?? []) ...[
@@ -73,7 +70,7 @@ class IndexRecommendation extends StatelessWidget {
               ],
             ),
           ),
-          const Row(), // Kalau bukunya kosong dia tetep nge strech, biar title nya tetep di kiri
+          const Row(),
         ],
       );
     });

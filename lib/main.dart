@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:io';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'constants/app_info.dart';
 import 'routes/app_bindings.dart';
@@ -8,6 +10,13 @@ import 'theme/app_theme.dart';
 import 'utils/image_utils.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize sqflite FFI for desktop platforms (Windows, macOS, Linux)
+  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+    sqfliteFfiInit();
+  }
+  
   runApp(const MyApp());
   ImageUtils.prechacheImages();
 }

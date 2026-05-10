@@ -2,7 +2,7 @@ name: digilib
 description: "A new Flutter project."
 publish_to: "none"
 
-version: 1.2.1
+version: 0.7.1+25
 
 environment:
   sdk: ">=3.2.2 <4.0.0"
@@ -22,7 +22,9 @@ dependencies:
   flutter_svg: ^2.0.9
   flutter_staggered_grid_view: ^0.7.0
   persistent_bottom_nav_bar: ^5.0.2
+  device_info_plus: ^9.1.2
   sqflite: ^2.3.0
+  sqflite_common_ffi: ^2.3.0
   readmore: ^2.2.0
   syncfusion_flutter_pdfviewer: ^24.1.45
   syncfusion_flutter_core: ^24.1.45
@@ -31,6 +33,7 @@ dependencies:
   cached_network_image: ^3.3.1
   screenshot_callback: ^3.0.1
   dropdown_button2: ^2.3.9
+  sqlite3_flutter_libs: ^0.5.41
 
 dev_dependencies:
   flutter_test:
@@ -66,3 +69,6 @@ flutter_launcher_icons:
   image_path: "assets/logo/orbit-digilib-logo-o-white.png"
   adaptive_icon_foreground: "assets/logo/orbit-digilib-logo-o-foreground.png"
   adaptive_icon_background: "assets/logo/orbit-digilib-logo-o-background.png"
+
+# dependency_overrides:
+#   win32: 3.1.4

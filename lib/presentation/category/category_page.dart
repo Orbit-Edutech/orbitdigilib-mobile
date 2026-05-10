@@ -15,6 +15,7 @@ import '../../shared/widget/empty_list.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 import '../../utils/compute_luminance.dart';
+import '../../utils/responsive_helper.dart';
 import 'controller/category_controller.dart';
 
 class CategoryPage extends StatelessWidget {
@@ -24,8 +25,12 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<CategoryController>();
     final theme = Theme.of(context);
-    final size = MediaQuery.of(context).size;
-    final isWide = size.width >= 600;
+    final crossAxisCount = ResponsiveHelper.getCrossAxisCount(
+      context,
+      mobile: 2,
+      tablet: 3,
+      desktop: 4,
+    );
     return Scaffold(
       appBar: AppBar(
         title: Obx(() {
@@ -47,12 +52,19 @@ class CategoryPage extends StatelessWidget {
           HGap.s,
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.m),
-        child: Column(
-          children: [
-            VGap.m,
-            AppTextField(
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: ResponsiveHelper.getMaxContentWidth(context),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveHelper.getHorizontalPadding(context),
+            ),
+            child: Column(
+              children: [
+                VGap.m,
+                AppTextField(
               type: TextFieldType.rounded,
               controller: controller.textController,
               focusNode: controller.focusNode,
@@ -89,7 +101,7 @@ class CategoryPage extends StatelessWidget {
                     if (filteredBooks == null) {
                       return AlignedGridView.count(
                         shrinkWrap: true,
-                        crossAxisCount: isWide ? 4 : 2,
+                        crossAxisCount: crossAxisCount,
                         itemCount: 10,
                         mainAxisSpacing: Sizes.r,
                         crossAxisSpacing: Sizes.r,
@@ -121,7 +133,7 @@ class CategoryPage extends StatelessWidget {
                     }
                     return AlignedGridView.count(
                       shrinkWrap: true,
-                      crossAxisCount: isWide ? 4 : 2,
+                      crossAxisCount: crossAxisCount,
                       itemCount: filteredBooks.length,
                       mainAxisSpacing: Sizes.r,
                       crossAxisSpacing: Sizes.r,
@@ -166,6 +178,8 @@ class CategoryPage extends StatelessWidget {
               }),
             )
           ],
+            ),
+          ),
         ),
       ),
     );

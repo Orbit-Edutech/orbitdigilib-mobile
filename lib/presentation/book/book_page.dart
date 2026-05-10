@@ -7,6 +7,7 @@ import '../../api/wishlist/model/model_wishlist_all.dart';
 import '../../constants/gaps.dart';
 import '../../shared/widget/wishlist_button.dart';
 import '../../utils/compute_luminance.dart';
+import '../../utils/responsive_helper.dart';
 import 'controller/book_controller.dart';
 import 'widgets/book_background_blur.dart';
 import 'widgets/book_cover.dart';
@@ -36,25 +37,32 @@ class BookPage extends StatelessWidget {
         final payload = controller.book.value;
         return Opacity(
           opacity: payload == null ? 0 : 1,
-          child: Stack(
-            children: [
-              BookBackgroundBlur(book: payload?.buku),
-              SizedBox(
-                height: size.height,
-                child: SingleChildScrollView(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  padding: const EdgeInsets.only(top: 150),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    alignment: Alignment.center,
-                    children: [
-                      BookMetadata(book: payload?.buku),
-                      BookCover(book: payload?.buku),
-                    ],
-                  ),
-                ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: ResponsiveHelper.getMaxContentWidth(context),
               ),
-            ],
+              child: Stack(
+                children: [
+                  BookBackgroundBlur(book: payload?.buku),
+                  SizedBox(
+                    height: size.height,
+                    child: SingleChildScrollView(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      padding: const EdgeInsets.only(top: 150),
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: Alignment.center,
+                        children: [
+                          BookMetadata(book: payload?.buku),
+                          BookCover(book: payload?.buku),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       }),

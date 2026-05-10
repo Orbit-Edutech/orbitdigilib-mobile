@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/gaps.dart';
+import '../../utils/responsive_helper.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/profile_logout_button.dart';
 import 'widgets/profile_settings.dart';
@@ -10,23 +11,30 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ProfileHeader(isRead: false),
-                  VGap.r,
-                  ProfileSettings(),
-                ],
-              ),
-            ),
+    return Scaffold(
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: ResponsiveHelper.getMaxContentWidth(context),
           ),
-          ProfileLogoutButton(),
-        ],
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ProfileHeader(isRead: false),
+                      VGap.r,
+                      ProfileSettings(),
+                    ],
+                  ),
+                ),
+              ),
+              ProfileLogoutButton(),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:get/instance_manager.dart';
 
 import '../../constants/sizes.dart';
 import '../../constants/gaps.dart';
+import '../../utils/responsive_helper.dart';
 import '../profile/controller/profile_controller.dart';
 import 'controller/index_controller.dart';
 import 'widgets/index_all_books.dart';
@@ -32,20 +33,30 @@ class IndexPage extends StatelessWidget {
               await controller.onInit();
               await profileController.onInit();
             },
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: Sizes.m),
-              child: Column(
-                children: perpustakaan != null
-                    ? [
-                        const IndexBanner(),
-                        VGap.s,
-                        const IndexBalance(),
-                        const IndexCategories(),
-                        const IndexRecommendation(),
-                        const IndexAllBooks(),
-                        VGap.r,
-                      ]
-                    : [],
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: ResponsiveHelper.getMaxContentWidth(context),
+                ),
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    vertical: Sizes.m,
+                    horizontal: ResponsiveHelper.getHorizontalPadding(context),
+                  ),
+                  child: Column(
+                    children: perpustakaan != null
+                        ? [
+                            const IndexBanner(),
+                            VGap.s,
+                            const IndexBalance(),
+                            const IndexCategories(),
+                            const IndexRecommendation(),
+                            const IndexAllBooks(),
+                            VGap.r,
+                          ]
+                        : [],
+                  ),
+                ),
               ),
             ),
           ),

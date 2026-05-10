@@ -25,7 +25,7 @@ class IndexBalance extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       width: size.width,
-      margin: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.s),
+      margin: const EdgeInsets.symmetric(vertical: Sizes.s),
       padding: const EdgeInsets.symmetric(horizontal: Sizes.r, vertical: Sizes.s),
       decoration: BoxDecoration(
         border: Border.all(

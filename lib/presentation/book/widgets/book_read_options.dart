@@ -121,11 +121,11 @@ class BookReadOptions extends StatelessWidget {
                   title: "Sewa",
                   subtitle: "(${(payload?.buku?.hargaSewa ?? 0) ~/ 100} Token)",
                 ),
-                VGap.s,
-                OptionsCard(
-                  title: "Beli",
-                  subtitle: "(${(payload?.buku?.hargaBeli ?? 0) ~/ 100} Token)",
-                ),
+                // VGap.s,
+                // OptionsCard(
+                //   title: "Beli",
+                //   subtitle: "(${(payload?.buku?.hargaBeli ?? 0) ~/ 100} Token)",
+                // ),
               ],
             ),
             VGap.m,

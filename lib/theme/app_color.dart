@@ -14,6 +14,7 @@ class AppColor {
   static const Color orange = Color(0xFFfBA31C);
   static const Color whatsapp = Color(0xFF00E676);
 
+  static const int greenGrab = 0xFF00B14F;
   static const MaterialColor grabColors = MaterialColor(
     greenGrab,
     <int, Color>{
@@ -29,8 +30,8 @@ class AppColor {
       900: Color(0xFF004F23),
     },
   );
-  static const int greenGrab = 0xFF00B14F;
 
+  static const int garuda = 0xFF158694;
   static const MaterialColor garudaColors = MaterialColor(
     garuda,
     <int, Color>{
@@ -46,8 +47,8 @@ class AppColor {
       900: Color(0xFF0A4145),
     },
   );
-  static const int garuda = 0xFF158694;
 
+  static const int blueBird = 0xFF0B62AC;
   static const MaterialColor blueBirdColors = MaterialColor(
     blueBird,
     <int, Color>{
@@ -63,9 +64,10 @@ class AppColor {
       900: Color(0xFF05315A),
     },
   );
+
   static const int gojek = 0xFF00ab14;
   static const MaterialColor gojekColors = MaterialColor(
-    blueBird,
+    gojek,
     <int, Color>{
       50: Color(0xFF80D58A),
       100: Color(0xFF66CD72),
@@ -79,5 +81,55 @@ class AppColor {
       900: Color(0xFF00670C),
     },
   );
-  static const int blueBird = 0xFF0B62AC;
+
+  static const int ismi = 0xFF015931;
+  static const MaterialColor ismiColors = MaterialColor(
+    ismi,
+    <int, Color>{
+      50: Color(0xFF80ac98),
+      100: Color(0xFF679b83),
+      200: Color(0xFF4d8b6f),
+      300: Color(0xFF347a5a),
+      400: Color(0xFF1a6a46),
+      500: Color(ismi),
+      600: Color(0xFF01502c),
+      700: Color(0xFF014727),
+      800: Color(0xFF014727),
+      900: Color(0xFF013e22),
+    },
+  );
+
+  static const int pii = 0xFFeb6c24;
+  static const MaterialColor piiColors = MaterialColor(
+    pii,
+    <int, Color>{
+      50: Color(0xFFf5b692),
+      100: Color(0xFFf3a77c),
+      200: Color(0xFFf19866),
+      300: Color(0xFFef8950),
+      400: Color(0xFFed7b3a),
+      500: Color(pii),
+      600: Color(0xFFd46120),
+      700: Color(0xFFbc561d),
+      800: Color(0xFFa54c19),
+      900: Color(0xFF8d4116),
+    },
+  );
+
+  static const istiqlal = 0xFF793D18;
+  static const MaterialColor istiqlalColors = MaterialColor(
+    istiqlal,
+    <int, Color>{
+      50: Color(0xFFbc9e8c),
+      100: Color(0xFFaf8b74),
+      200: Color(0xFFa1775d),
+      300: Color(0xFF946446),
+      400: Color(0xFF86502f),
+      500: Color(istiqlal),
+      600: Color(0xFF6d3716),
+      700: Color(0xFF6d3716),
+      800: Color(0xFF552b11),
+      900: Color(0xFF49250e),
+    },
+  );
 }

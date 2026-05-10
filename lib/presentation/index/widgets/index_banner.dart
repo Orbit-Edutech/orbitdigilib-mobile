@@ -10,6 +10,7 @@ import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../../utils/responsive_helper.dart';
 import "../controller/index_controller.dart";
 
 class IndexBanner extends StatefulWidget {
@@ -29,6 +30,19 @@ class _IndexBannerState extends State<IndexBanner> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    final bannerHeight = ResponsiveHelper.responsive<double>(
+      context,
+      mobile: 150,
+      tablet: 200,
+      desktop: 250,
+    );
+    final viewportFraction = ResponsiveHelper.responsive<double>(
+      context,
+      mobile: 0.8,
+      tablet: 0.7,
+      desktop: 0.6,
+    );
+
     return Column(
       children: [
         Obx(() {
@@ -38,10 +52,11 @@ class _IndexBannerState extends State<IndexBanner> {
             carouselController: carouselController,
             items: (isEmpty ? emptyBanners : banners).map((banner) {
               return InkWell(
-                onTap: () => controller.showLargeBanner(banners, banners.indexOf(banner)),
+                onTap: () => controller.showLargeBanner(
+                    banners, banners.indexOf(banner)),
                 borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
                 child: Container(
-                  height: 150,
+                  height: bannerHeight,
                   width: size.width,
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   decoration: const BoxDecoration(
@@ -50,13 +65,15 @@ class _IndexBannerState extends State<IndexBanner> {
                   ),
                   child: isEmpty
                       ? const SizedBox()
-                      : CachedNetworkImage(imageUrl: APIPath.publicAsset(banner), fit: BoxFit.cover),
+                      : CachedNetworkImage(
+                          imageUrl: APIPath.publicAsset(banner),
+                          fit: BoxFit.cover),
                 ),
               );
             }).toList(),
             options: CarouselOptions(
-              height: 150,
-              viewportFraction: 0.8,
+              height: bannerHeight,
+              viewportFraction: viewportFraction,
               initialPage: 0,
               enableInfiniteScroll: false,
               reverse: false,
@@ -76,7 +93,6 @@ class _IndexBannerState extends State<IndexBanner> {
         Padding(
           padding: const EdgeInsets.symmetric(
             vertical: Sizes.r,
-            horizontal: Sizes.m,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,14 +104,17 @@ class _IndexBannerState extends State<IndexBanner> {
                 return Row(
                   children: (isEmpty ? emptyBanners : banners).map((i) {
                     final index = (isEmpty ? emptyBanners : banners).indexOf(i);
-                    final current = (isEmpty ? emptyBanners : banners).elementAt(currentBanner) == i;
+                    final current = (isEmpty ? emptyBanners : banners)
+                            .elementAt(currentBanner) ==
+                        i;
                     return GestureDetector(
                       onTap: () => carouselController.animateToPage(index),
                       child: Container(
                         width: Sizes.s,
                         height: Sizes.s,
                         decoration: BoxDecoration(
-                          color: current ? theme.primaryColor : AppColor.lightGrey,
+                          color:
+                              current ? theme.primaryColor : AppColor.lightGrey,
                           shape: BoxShape.circle,
                         ),
                         margin: const EdgeInsets.only(right: Sizes.xs),
@@ -108,7 +127,8 @@ class _IndexBannerState extends State<IndexBanner> {
                 onTap: () => Get.toNamed(AppRoutes.highlight),
                 child: Text(
                   "Lihat Semua",
-                  style: AppTextStyle.ts12Reg.copyWith(color: theme.primaryColor),
+                  style:
+                      AppTextStyle.ts12Reg.copyWith(color: theme.primaryColor),
                 ),
               )
             ],

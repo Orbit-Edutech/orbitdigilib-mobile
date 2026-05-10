@@ -18,6 +18,7 @@ import '../../../api/hak-akses/model/model_check_access.dart';
 import '../../../api/hak-akses/model/model_last_access.dart';
 import '../../../api/hak-akses/model/model_set_default_access_right.dart';
 import '../../../api/katalog-perpus/data/get_all_katalog_perpus.dart';
+import '../../../api/laporan-kunjungan/data/catat_kunjungan.dart';
 import '../../../api/katalog-perpus/model/model_katalog_perpus_all.dart';
 import '../../../api/perpustakaan/data/perpustakaan_get_banner_default.dart';
 import '../../../api/perpustakaan/data/perpustakaan_get_one.dart';
@@ -56,6 +57,7 @@ class IndexController extends GetxController {
 
   @override
   Future onInit() async {
+    catatKunjungan(); // fire-and-forget: log visit for admin rekap kunjungan
     perpustakaan.value = null;
     banners.value = [];
     pinnedBooks.value = null;
@@ -140,7 +142,7 @@ class IndexController extends GetxController {
           }
         }
       }),
-      getAllBukuPerpustakaan(perpustakaan.value?.id ?? "", {"isPin": true}).then((res) {
+      getAllBukuPerpustakaan(perpustakaan.value?.id ?? id, {"isPin": true}).then((res) {
         if (res.data != null) {
           pinnedBooks.value = res.data?.payload?.where((book) => book.isVisible!).toList();
         } else {
@@ -152,7 +154,7 @@ class IndexController extends GetxController {
           }
         }
       }),
-      getAllBukuPerpustakaan(perpustakaan.value?.id ?? "", {"buku[promo][noteql]": "null"}).then((res) {
+      getAllBukuPerpustakaan(perpustakaan.value?.id ?? id, {"buku[promo][noteql]": "null"}).then((res) {
         if (res.data != null) {
           promoBooks.value = res.data?.payload?.where((book) => book.isVisible!).toList();
         } else {
@@ -164,7 +166,7 @@ class IndexController extends GetxController {
         }
       }),
       getAllBukuPerpustakaan(
-        perpustakaan.value?.id ?? "",
+        perpustakaan.value?.id ?? id,
       ).then((res) {
         if (res.data != null) {
           allBooks.value = res.data?.payload?.where((book) => book.isVisible!).toList();
@@ -176,7 +178,7 @@ class IndexController extends GetxController {
           }
         }
       }),
-      getAllKatalogPerpus(perpustakaan.value?.id ?? "").then((res) {
+      getAllKatalogPerpus(perpustakaan.value?.id ?? id).then((res) {
         if (res.data != null) {
           categories.value = res.data?.listKatalogBukuPerpustakaan?.where((katalog) => katalog.deletedAt == null).toList();
         } else {
@@ -188,7 +190,7 @@ class IndexController extends GetxController {
         }
       }),
     ]);
-    scrollController.addListener(loadMorePromo);
+    scrollController.addListener(() => loadMorePromo(id));
     super.onInit();
   }
 
@@ -211,11 +213,11 @@ class IndexController extends GetxController {
     );
   }
 
-  void loadMorePromo() async {
+  void loadMorePromo(String id) async {
     if (scrollController.position.pixels == scrollController.position.maxScrollExtent && !isLoadedMore.value) {
       isLoadedMore.value = true;
       final response = await getAllBukuPerpustakaan(
-          perpustakaan.value?.id ?? "", {"buku[promo][noteql]": "null", "page": promoPage.value});
+          perpustakaan.value?.id ?? id, {"buku[promo][noteql]": "null", "page": promoPage.value});
       if (response.data != null) {
         if (response.data!.payload?.isNotEmpty ?? false) {
           promoBooks.value?.addAll(response.data?.payload?.where((book) => book.isVisible!).toList() ?? []);

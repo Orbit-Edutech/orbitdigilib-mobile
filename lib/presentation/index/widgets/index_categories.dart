@@ -9,6 +9,7 @@ import '../../../constants/sizes.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/widget/empty_list.dart';
 import '../../../theme/app_text_stlye.dart';
+import '../../../utils/responsive_helper.dart';
 import "../controller/index_controller.dart";
 import "index_category_card.dart";
 
@@ -18,14 +19,20 @@ class IndexCategories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final isWide = size.width >= 600;
+    final crossAxisCount = ResponsiveHelper.getCrossAxisCount(
+      context,
+      mobile: 4,
+      tablet: 6,
+      desktop: 8,
+    );
     final controller = Get.find<IndexController>();
     return Obx(() {
       if (controller.categories.value == null) return const SizedBox();
       final categories = controller.categories.value;
-      final isMoreThan7 = categories!.length > 7;
+      final maxDisplayCount = crossAxisCount - 1;
+      final isMoreThanMax = categories!.length > maxDisplayCount;
       return Container(
-        margin: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.s),
+        margin: const EdgeInsets.symmetric(vertical: Sizes.s),
         width: size.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,20 +50,20 @@ class IndexCategories extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
-                crossAxisCount: isWide ? 8 : 4,
+                crossAxisCount: crossAxisCount,
                 crossAxisSpacing: 0,
                 mainAxisSpacing: Sizes.xs,
-                itemCount: isMoreThan7 ? 8 : categories.length,
+                itemCount: isMoreThanMax ? crossAxisCount : categories.length,
                 itemBuilder: (BuildContext context, int index) {
                   categories.sort((a, b) => a.urutanDitampilkan?.compareTo(b.urutanDitampilkan ?? 0) ?? 0);
-                  final category = categories[index];
-                  if (index == 7) {
+                  if (index == maxDisplayCount && isMoreThanMax) {
                     return IndexCategoryCard(
                       path: "assets/icons/all-category.svg",
                       name: "Semua",
                       onTap: controller.showCategories,
                     );
                   }
+                  final category = categories[index];
                   return IndexCategoryCard(
                     path: category.icon?.id ?? "-",
                     name: category.nama ?? "-",

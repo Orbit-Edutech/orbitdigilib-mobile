@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/gaps.dart';
-import '../../constants/sizes.dart';
+import '../../utils/responsive_helper.dart';
 import 'widgets/about_app_detail.dart';
 import 'widgets/about_app_footer.dart';
 import 'widgets/about_app_general.dart';
@@ -14,18 +14,27 @@ class AboutAppPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Tentang Aplikasi")),
-      body: const SingleChildScrollView(
-        padding: EdgeInsets.all(Sizes.m),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AboutAppGeneral(),
-            VGap.m,
-            AboutAppDetail(),
-            AboutAppReleaseNote(),
-            VGap.h,
-            AboutAppFooter(),
-          ],
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: ResponsiveHelper.getMaxContentWidth(context),
+          ),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(
+              ResponsiveHelper.getHorizontalPadding(context),
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AboutAppGeneral(),
+                VGap.m,
+                AboutAppDetail(),
+                AboutAppReleaseNote(),
+                VGap.h,
+                AboutAppFooter(),
+              ],
+            ),
+          ),
         ),
       ),
     );

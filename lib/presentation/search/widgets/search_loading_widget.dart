@@ -4,6 +4,7 @@ import '../../../constants/gaps.dart';
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/book_card_skeleton.dart';
 import '../../../theme/app_color.dart';
+import '../../../utils/responsive_helper.dart';
 
 class SearchLoadingWidget extends StatelessWidget {
   const SearchLoadingWidget({
@@ -13,7 +14,9 @@ class SearchLoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.all(Sizes.m),
+      padding: EdgeInsets.all(
+        ResponsiveHelper.getHorizontalPadding(context),
+      ),
       shrinkWrap: true,
       itemCount: 10,
       itemBuilder: (ctx, idx) {

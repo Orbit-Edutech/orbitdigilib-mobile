@@ -3,6 +3,7 @@ import 'package:get/instance_manager.dart';
 
 import '../../../constants/sizes.dart';
 import '../../../shared/widget/app_button.dart';
+import '../../../utils/responsive_helper.dart';
 import '../controller/profile_controller.dart';
 
 class ProfileLogoutButton extends StatelessWidget {
@@ -14,7 +15,10 @@ class ProfileLogoutButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<ProfileController>();
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.m, vertical: Sizes.r),
+      padding: EdgeInsets.symmetric(
+        horizontal: ResponsiveHelper.getHorizontalPadding(context),
+        vertical: Sizes.r,
+      ),
       child: AppButton(
         type: ButtonType.elevated,
         onPressed: controller.showLogoutDialog,

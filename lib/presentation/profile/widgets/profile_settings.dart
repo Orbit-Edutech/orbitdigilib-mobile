@@ -34,6 +34,11 @@ class ProfileSettings extends StatelessWidget {
         ),
         VGap.s,
         SettingCard(
+          icon: const Icon(Icons.devices_rounded),
+          title: "Riwayat Pinjam & Sewa Digital",
+          onTap: () => Get.toNamed(AppRoutes.transaksiDigital),
+        ),
+        SettingCard(
           icon: const Icon(Icons.history_rounded),
           title: "Riwayat Pinjam Fisik",
           onTap: () => Get.toNamed(AppRoutes.transaksiFisik),

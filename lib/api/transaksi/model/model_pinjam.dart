@@ -1,5 +1,43 @@
 import 'dart:convert';
 
+class ModelAllPinjam {
+  final int? totalAllData;
+  final int? totalData;
+  final int? limit;
+  final int? totalPage;
+  final int? currentPage;
+  final int? lastPage;
+  final dynamic nextPage;
+  final dynamic previousPage;
+  final List<ModelPinjam>? payload;
+
+  ModelAllPinjam({
+    this.totalAllData,
+    this.totalData,
+    this.limit,
+    this.totalPage,
+    this.currentPage,
+    this.lastPage,
+    this.nextPage,
+    this.previousPage,
+    this.payload,
+  });
+
+  factory ModelAllPinjam.fromJson(Map<String, dynamic> json) => ModelAllPinjam(
+        totalAllData: json["totalAllData"],
+        totalData: json["totalData"],
+        limit: json["limit"],
+        totalPage: json["totalPage"],
+        currentPage: json["currentPage"],
+        lastPage: json["lastPage"],
+        nextPage: json["nextPage"],
+        previousPage: json["previousPage"],
+        payload: json["payload"] == null
+            ? []
+            : List<ModelPinjam>.from(json["payload"]!.map((x) => ModelPinjam.fromJson(x))),
+      );
+}
+
 class ModelPinjam {
   final String? id;
   final DateTime? createdAt;

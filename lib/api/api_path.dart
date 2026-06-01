@@ -63,8 +63,14 @@ class APIPath {
   /// /pinjam
   static const pinjam = "/pinjam";
 
+  /// /pinjam/my-history
+  static const pinjamMyHistory = "/pinjam/my-history";
+
   /// /sewa
   static const sewa = "/sewa";
+
+  /// /sewa/my-history
+  static const sewaMyHistory = "/sewa/my-history";
 
   /// /beli
   // static const beli = "/beli";

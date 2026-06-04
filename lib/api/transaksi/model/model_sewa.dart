@@ -1,5 +1,43 @@
 import 'dart:convert';
 
+class ModelAllSewa {
+  final int? totalAllData;
+  final int? totalData;
+  final int? limit;
+  final int? totalPage;
+  final int? currentPage;
+  final int? lastPage;
+  final dynamic nextPage;
+  final dynamic previousPage;
+  final List<ModelSewa>? payload;
+
+  ModelAllSewa({
+    this.totalAllData,
+    this.totalData,
+    this.limit,
+    this.totalPage,
+    this.currentPage,
+    this.lastPage,
+    this.nextPage,
+    this.previousPage,
+    this.payload,
+  });
+
+  factory ModelAllSewa.fromJson(Map<String, dynamic> json) => ModelAllSewa(
+        totalAllData: json["totalAllData"],
+        totalData: json["totalData"],
+        limit: json["limit"],
+        totalPage: json["totalPage"],
+        currentPage: json["currentPage"],
+        lastPage: json["lastPage"],
+        nextPage: json["nextPage"],
+        previousPage: json["previousPage"],
+        payload: json["payload"] == null
+            ? []
+            : List<ModelSewa>.from(json["payload"]!.map((x) => ModelSewa.fromJson(x))),
+      );
+}
+
 class ModelSewa {
   final String? id;
   final DateTime? createdAt;

@@ -13,7 +13,7 @@ import '../../../shared/widget/app_button.dart';
 import '../../../shared/widget/show_snackbar.dart';
 import '../../../theme/app_color.dart';
 import '../../../theme/app_theme.dart';
-import '../../../utils/shared_preferences_manager.dart';
+import '../../../utils/clear_auth_storage.dart';
 import '../widgets/profile_logout_dialog.dart';
 
 class ProfileController extends GetxController {
@@ -52,13 +52,8 @@ class ProfileController extends GetxController {
   Future<void> logout() async {
     logoutButtonState.value = ButtonState.loading;
     await auth.logout();
-    final prefs = {
-      "isLogin": false,
-      "access": "",
-      "refresh": "",
-    };
     await AppTheme.changePerpusTheme();
-    await SharedPreferencesManager.writePrefs(prefs);
+    await clearAuthStorage();
     logoutButtonState.value = ButtonState.enable;
     Get.offAllNamed(AppRoutes.authLibrary);
   }

@@ -4,6 +4,8 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import '../presentation/about-app/about_app_page.dart';
 import '../presentation/about-library/about_library_page.dart';
 import '../presentation/about-library/binding/about_library_binding.dart';
+import '../presentation/transaksi-digital/binding/transaksi_digital_binding.dart';
+import '../presentation/transaksi-digital/transaksi_digital_page.dart';
 import '../presentation/transaksi-fisik/binding/transaksi_fisik_binding.dart';
 import '../presentation/transaksi-fisik/transaksi_fisik_page.dart';
 import '../presentation/auth/auth_library_page.dart';
@@ -123,6 +125,9 @@ class AppRoutes {
 
   /// /about-library
   static const String aboutLibrary = "/about-library";
+
+  /// /transaksi-digital
+  static const String transaksiDigital = "/transaksi-digital";
 
   /// /transaksi-fisik
   static const String transaksiFisik = "/transaksi-fisik";
@@ -296,6 +301,13 @@ class AppRoutes {
       name: aboutLibrary,
       page: () => const AboutLibraryPage(),
       binding: AboutLibraryBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: transaksiDigital,
+      page: () => const TransaksiDigitalPage(),
+      binding: TransaksiDigitalBinding(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

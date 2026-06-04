@@ -35,22 +35,29 @@ class APIInterceptor extends InterceptorsWrapper {
   }
 
   Future<void> _handleUnauthorized(DioException err, ErrorInterceptorHandler handler) async {
-    final data = err.response?.data;
-    final message = data is Map ? "${data["message"]}" : '';
-    final isAccessExpired = message == "Akses token expired";
+    final reqOpts = err.requestOptions;
+    final alreadyRetried = reqOpts.extra['_retry'] == true;
+    final isRefreshCall = reqOpts.path == APIPath.refresh;
+    final tokens = await getTokens();
+    final hasRefresh = (tokens.refresh?.toString() ?? '').isNotEmpty;
 
-    if (isAccessExpired) {
-      try {
-        await _refreshAccessTokenLocked();
-        final retried = await _retryRequest(err.requestOptions);
-        return handler.resolve(retried);
-      } on DioException catch (e) {
-        await _forceLogout();
-        return super.onError(e, handler);
-      }
-    } else {
+    // Tidak bisa recover: refresh-nya sendiri yang 401 (cegah loop), sudah pernah retry,
+    // atau tidak ada refresh token sama sekali.
+    if (isRefreshCall || alreadyRetried || !hasRefresh) {
       await _forceLogout();
       return super.onError(err, handler);
+    }
+
+    // Token akses bermasalah (expired / tidak valid / tidak terkirim) tapi refresh token masih ada.
+    // Coba refresh dulu untuk SEMUA 401, bukan hanya pesan "Akses token expired".
+    // Logout HANYA kalau refresh-nya sendiri yang gagal.
+    try {
+      await _refreshAccessTokenLocked();
+      final retried = await _retryRequest(reqOpts);
+      return handler.resolve(retried);
+    } on DioException catch (e) {
+      await _forceLogout();
+      return super.onError(e, handler);
     }
   }
 
@@ -100,6 +107,7 @@ class APIInterceptor extends InterceptorsWrapper {
       headers: headers,
       contentType: reqOpts.contentType,
       responseType: reqOpts.responseType,
+      extra: {...reqOpts.extra, '_retry': true},
     );
     return _dio.request(
       reqOpts.path,

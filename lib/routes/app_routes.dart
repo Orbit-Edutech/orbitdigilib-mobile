@@ -46,6 +46,9 @@ import '../presentation/splash/binding/splash_binding.dart';
 import '../presentation/splash/splash_page.dart';
 import '../presentation/token/binding/token_binding.dart';
 import '../presentation/token/token_page.dart';
+import '../presentation/buy-token/binding/buy_token_binding.dart';
+import '../presentation/buy-token/buy_token_page.dart';
+import '../presentation/buy-token/topup_detail_page.dart';
 import '../presentation/update/update_page.dart';
 import '../presentation/wishlist/binding/wishlist_binding.dart';
 import '../presentation/wishlist/wishlist_page.dart';
@@ -86,6 +89,12 @@ class AppRoutes {
 
   /// /token
   static const String token = "/token";
+
+  /// /buy-token
+  static const String buyToken = "/buy-token";
+
+  /// /topup-detail
+  static const String topupDetail = "/topup-detail";
 
   /// /highlight
   static const String highlight = "/highlight";
@@ -199,6 +208,19 @@ class AppRoutes {
       name: token,
       page: () => const TokenPage(),
       binding: TokenBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: buyToken,
+      page: () => const BuyTokenPage(),
+      binding: BuyTokenBinding(),
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(milliseconds: 0),
+    ),
+    GetPage(
+      name: topupDetail,
+      page: () => const TopupDetailPage(),
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
     ),

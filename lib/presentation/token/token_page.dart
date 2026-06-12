@@ -12,6 +12,7 @@ import '../../shared/widget/app_textfield.dart';
 import '../../theme/app_color.dart';
 import '../../theme/app_text_stlye.dart';
 import '../../utils/responsive_helper.dart';
+import '../../routes/app_routes.dart';
 import 'controller/token_controller.dart';
 
 class TokenPage extends StatelessWidget {
@@ -97,6 +98,13 @@ class TokenPage extends StatelessWidget {
                         child: const Text("Isi Voucher"),
                       );
                     }),
+                    VGap.s,
+                    AppButton(
+                      state: ButtonState.enable,
+                      type: ButtonType.outlined,
+                      onPressed: () => Get.toNamed(AppRoutes.buyToken),
+                      child: const Text("Beli Token dengan Uang"),
+                    ),
                     VGap.s,
                     if (!Platform.isIOS)
                       GestureDetector(

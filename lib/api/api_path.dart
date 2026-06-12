@@ -139,4 +139,13 @@ class APIPath {
 
   /// /laporan-kunjungan/catat
   static const catatKunjungan = "/laporan-kunjungan/catat";
+
+  /// /paket-token
+  static const paketToken = "/paket-token";
+
+  /// /topup
+  static const topup = "/topup";
+
+  /// /topup/{id}
+  static String topupStatus(String id) => "/topup/$id";
 }

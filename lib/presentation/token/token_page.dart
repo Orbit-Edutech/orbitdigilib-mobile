@@ -98,13 +98,17 @@ class TokenPage extends StatelessWidget {
                         child: const Text("Isi Voucher"),
                       );
                     }),
-                    VGap.s,
-                    AppButton(
-                      state: ButtonState.enable,
-                      type: ButtonType.outlined,
-                      onPressed: () => Get.toNamed(AppRoutes.buyToken),
-                      child: const Text("Beli Token dengan Uang"),
-                    ),
+                    // Sembunyikan pembelian token via gateway eksternal di iOS
+                    // (Apple Guideline 3.1.1 mewajibkan IAP untuk konten digital).
+                    if (!Platform.isIOS) ...[
+                      VGap.s,
+                      AppButton(
+                        state: ButtonState.enable,
+                        type: ButtonType.outlined,
+                        onPressed: () => Get.toNamed(AppRoutes.buyToken),
+                        child: const Text("Beli Token dengan Uang"),
+                      ),
+                    ],
                     VGap.s,
                     if (!Platform.isIOS)
                       GestureDetector(

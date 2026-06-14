@@ -55,9 +55,9 @@ class BuyTokenController extends GetxController {
 
   Future<void> startPolling(String id) async {
     _polling = true;
-    while (_polling) {
+    while (_polling && !isClosed) {
       await Future.delayed(const Duration(seconds: 5));
-      if (!_polling) break;
+      if (!_polling || isClosed) break;
       await checkStatus(id, silent: true);
     }
   }

@@ -23,10 +23,14 @@ class BuyTokenController extends GetxController {
   RxString pollStatus = "PENDING".obs;
   bool _polling = false;
 
-  /// Topup nominal bebas: 1 rupiah = tokenPerRupiah token.
-  static const int tokenPerRupiah = 10;
+  /// Konversi: Rp 100 = 1 token. Topup nominal bebas: token = nominal ÷ rupiahPerToken.
+  static const int rupiahPerToken = 100;
   final RxInt customAmount = 0.obs;
-  int get customTokens => customAmount.value * tokenPerRupiah;
+  num get customTokens => customAmount.value / rupiahPerToken;
+  String get customTokensLabel {
+    final t = customAmount.value / rupiahPerToken;
+    return t % 1 == 0 ? t.toStringAsFixed(0) : t.toStringAsFixed(2);
+  }
 
   @override
   void onInit() {

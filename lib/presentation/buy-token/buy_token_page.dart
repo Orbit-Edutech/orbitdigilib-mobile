@@ -123,7 +123,7 @@ class BuyTokenPage extends StatelessWidget {
         children: [
           Text("Nominal Bebas", style: AppTextStyle.ts16Bold),
           VGap.xs,
-          Text("Setiap Rp 1 = 10 token",
+          Text("Setiap Rp 100 = 1 token",
               style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey)),
           VGap.r,
           TextField(
@@ -160,7 +160,7 @@ class BuyTokenPage extends StatelessWidget {
                   style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey),
                   children: [
                     TextSpan(
-                      text: "${c.customTokens} token",
+                      text: "${c.customTokensLabel} token",
                       style: AppTextStyle.ts14Bold.copyWith(color: primary),
                     ),
                   ],

@@ -3,7 +3,8 @@ import '../../api_path.dart';
 import '../model/model_topup.dart';
 
 Future<APIResponse<Topup>> postTopup({
-  required String paketTokenId,
+  String? paketTokenId,
+  int? customAmount,
   required String metode,
   String? bankCode,
 }) async {
@@ -11,7 +12,8 @@ Future<APIResponse<Topup>> postTopup({
     path: APIPath.topup,
     fromJson: Topup.fromJson,
     data: {
-      "paketTokenId": paketTokenId,
+      if (paketTokenId != null) "paketTokenId": paketTokenId,
+      if (customAmount != null) "customAmount": customAmount,
       "metode": metode,
       if (bankCode != null) "bankCode": bankCode,
     },

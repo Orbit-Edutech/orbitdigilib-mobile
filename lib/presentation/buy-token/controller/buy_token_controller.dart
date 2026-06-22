@@ -22,6 +22,11 @@ class BuyTokenController extends GetxController {
   RxString pollStatus = "PENDING".obs;
   bool _polling = false;
 
+  /// Topup nominal bebas: 1 rupiah = tokenPerRupiah token.
+  static const int tokenPerRupiah = 10;
+  final RxInt customAmount = 0.obs;
+  int get customTokens => customAmount.value * tokenPerRupiah;
+
   @override
   void onInit() {
     loadPaket();
@@ -40,8 +45,27 @@ class BuyTokenController extends GetxController {
   }
 
   Future<void> submitTopup(PaketToken paket, String metode, String? bankCode) async {
+    await _submit(paketTokenId: paket.id ?? "", metode: metode, bankCode: bankCode);
+  }
+
+  /// Topup dengan nominal bebas (token dihitung backend = nominal × 10).
+  Future<void> submitCustomTopup(int amount, String metode, String? bankCode) async {
+    await _submit(customAmount: amount, metode: metode, bankCode: bankCode);
+  }
+
+  Future<void> _submit({
+    String? paketTokenId,
+    int? customAmount,
+    required String metode,
+    String? bankCode,
+  }) async {
     submitState.value = ButtonState.loading;
-    final res = await postTopup(paketTokenId: paket.id ?? "", metode: metode, bankCode: bankCode);
+    final res = await postTopup(
+      paketTokenId: paketTokenId,
+      customAmount: customAmount,
+      metode: metode,
+      bankCode: bankCode,
+    );
     submitState.value = ButtonState.enable;
     if (res.data != null && res.data!.id != null) {
       createdTopup.value = res.data;

@@ -15,7 +15,7 @@ class BuyTokenPage extends StatelessWidget {
   String _rupiah(int? n) =>
       "Rp ${(n ?? 0).toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (m) => '${m[1]}.')}";
 
-  void _showMethodSheet(BuyTokenController c, PaketToken paket) {
+  void _showMethodSheet({required void Function(String metode, String? bank) onSelect}) {
     const banks = ["BCA", "BNI", "BRI", "MANDIRI", "PERMATA"];
     Get.bottomSheet(
       Container(
@@ -30,7 +30,8 @@ class BuyTokenPage extends StatelessWidget {
           children: [
             Text("Pilih Metode Pembayaran", style: AppTextStyle.ts16Bold),
             VGap.s,
-            Text("Virtual Account", style: AppTextStyle.ts12Reg.copyWith(color: AppColor.black)),
+            Text("Virtual Account (min. Rp 10.000)",
+                style: AppTextStyle.ts12Reg.copyWith(color: AppColor.black)),
             VGap.xs,
             Wrap(
               spacing: 8,
@@ -39,7 +40,7 @@ class BuyTokenPage extends StatelessWidget {
                         label: Text(b),
                         onPressed: () {
                           Get.back();
-                          c.submitTopup(paket, "VA", b);
+                          onSelect("VA", b);
                         },
                       ))
                   .toList(),
@@ -52,7 +53,7 @@ class BuyTokenPage extends StatelessWidget {
               subtitle: const Text("Scan dengan bank / e-wallet apa pun"),
               onTap: () {
                 Get.back();
-                c.submitTopup(paket, "QRIS", null);
+                onSelect("QRIS", null);
               },
             ),
             VGap.r,
@@ -67,7 +68,7 @@ class BuyTokenPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: Sizes.s),
       child: InkWell(
-        onTap: () => _showMethodSheet(c, paket),
+        onTap: () => _showMethodSheet(onSelect: (m, b) => c.submitTopup(paket, m, b)),
         borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
         child: Container(
           padding: const EdgeInsets.all(Sizes.r),
@@ -99,6 +100,55 @@ class BuyTokenPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _customCard(BuyTokenController c) {
+    return Container(
+      padding: const EdgeInsets.all(Sizes.r),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
+        border: Border.all(color: AppColor.lightGrey),
+        color: Colors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Nominal Bebas", style: AppTextStyle.ts16Bold),
+          VGap.xs,
+          Text("Rp 1 = 10 token (berlaku kelipatan)", style: AppTextStyle.ts12Reg),
+          VGap.s,
+          TextField(
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              prefixText: "Rp ",
+              hintText: "Masukkan nominal",
+              border: OutlineInputBorder(),
+              isDense: true,
+            ),
+            onChanged: (v) =>
+                c.customAmount.value = int.tryParse(v.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0,
+          ),
+          VGap.xs,
+          Obx(() => Text(
+                "= ${c.customTokens} token",
+                style: AppTextStyle.ts16Bold.copyWith(color: AppColor.primary),
+              )),
+          VGap.s,
+          Obx(() => SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: c.customAmount.value < 1
+                      ? null
+                      : () => _showMethodSheet(
+                            onSelect: (m, b) =>
+                                c.submitCustomTopup(c.customAmount.value, m, b),
+                          ),
+                  child: const Text("Pilih Metode Pembayaran"),
+                ),
+              )),
+        ],
       ),
     );
   }
@@ -150,6 +200,10 @@ class BuyTokenPage extends StatelessWidget {
                   }
                   return Column(children: list.map((paket) => _paketCard(c, paket)).toList());
                 }),
+                VGap.l,
+                Text("Atau Nominal Bebas", style: AppTextStyle.ts16Bold),
+                VGap.s,
+                _customCard(c),
                 VGap.l,
               ],
             ),

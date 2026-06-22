@@ -148,4 +148,7 @@ class APIPath {
 
   /// /topup/{id}
   static String topupStatus(String id) => "/topup/$id";
+
+  /// /topup/{id}/simulate (SANDBOX ONLY)
+  static String topupSimulate(String id) => "/topup/$id/simulate";
 }

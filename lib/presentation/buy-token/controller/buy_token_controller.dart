@@ -5,6 +5,7 @@ import '../../../api/paket-token/data/get_paket_token.dart';
 import '../../../api/paket-token/model/model_paket_token.dart';
 import '../../../api/topup/data/get_topup_status.dart';
 import '../../../api/topup/data/post_topup.dart';
+import '../../../api/topup/data/simulate_topup.dart';
 import '../../../api/topup/model/model_topup.dart';
 import '../../../routes/app_routes.dart';
 import '../../../shared/widget/app_button.dart';
@@ -72,6 +73,19 @@ class BuyTokenController extends GetxController {
       pollStatus.value = res.data!.status ?? "PENDING";
       Get.toNamed(AppRoutes.topupDetail);
       startPolling(res.data!.id!);
+    } else {
+      _showError(res);
+    }
+  }
+
+  /// SANDBOX ONLY (tombol hanya tampil di debug build): selesaikan pembayaran tanpa bayar nyata.
+  RxBool simulating = false.obs;
+  Future<void> simulatePayment(String id) async {
+    simulating.value = true;
+    final res = await simulateTopup(id);
+    simulating.value = false;
+    if (res.data != null) {
+      await checkStatus(id); // akan deteksi PAID → snackbar + refresh profil + balik ke token
     } else {
       _showError(res);
     }

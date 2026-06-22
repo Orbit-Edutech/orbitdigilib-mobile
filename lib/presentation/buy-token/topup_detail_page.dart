@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -122,6 +123,17 @@ class TopupDetailPage extends StatelessWidget {
                     onPressed: () => c.checkStatus(t.id ?? ""),
                     child: const Text("Cek Status Pembayaran"),
                   ),
+                  // Tombol uji hanya di debug build + saat masih menunggu bayar.
+                  // Backend juga menolaknya bila bukan sandbox (double-safe).
+                  if (kDebugMode && status == "PENDING") ...[
+                    VGap.s,
+                    AppButton(
+                      type: ButtonType.outlined,
+                      state: c.simulating.value ? ButtonState.loading : ButtonState.enable,
+                      onPressed: () => c.simulatePayment(t.id ?? ""),
+                      child: const Text("Simulasi Bayar (Sandbox)"),
+                    ),
+                  ],
                   VGap.s,
                   Text(
                     "Pembayaran akan terkonfirmasi otomatis setelah berhasil. Anda boleh menutup halaman ini.",

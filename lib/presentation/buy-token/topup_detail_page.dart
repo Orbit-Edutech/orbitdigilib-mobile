@@ -19,11 +19,11 @@ class TopupDetailPage extends StatelessWidget {
   String _rupiah(int? n) =>
       "Rp ${(n ?? 0).toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (m) => '${m[1]}.')}";
 
-  ({Color color, IconData icon, String label}) _statusMeta(String status) {
+  ({Color color, IconData icon, String label}) _statusMeta(String status, Color primary) {
     switch (status) {
       case "PAID":
         return (
-          color: AppColor.primary,
+          color: primary,
           icon: Icons.check_circle_rounded,
           label: "Pembayaran Berhasil",
         );
@@ -42,8 +42,8 @@ class TopupDetailPage extends StatelessWidget {
     }
   }
 
-  Widget _statusBanner(String status) {
-    final m = _statusMeta(status);
+  Widget _statusBanner(String status, Color primary) {
+    final m = _statusMeta(status, primary);
     return Container(
       padding: const EdgeInsets.all(Sizes.sr),
       decoration: BoxDecoration(
@@ -62,33 +62,32 @@ class TopupDetailPage extends StatelessWidget {
   }
 
   // Kartu "struk" — total bayar + token yang didapat.
-  Widget _receiptCard(int? harga, num? jumlahToken) {
+  Widget _receiptCard(int? harga, num? jumlahToken, Color primary) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(Sizes.r),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.all(Radius.circular(Sizes.r)),
-        border: Border.all(color: AppColor.lightGrey.withOpacity(0.5)),
+        borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+        border: Border.fromBorderSide(BorderSide(color: AppColor.lightGrey)),
       ),
       child: Column(
         children: [
           Text("Total Pembayaran",
               style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey)),
           VGap.xs,
-          Text(_rupiah(harga), style: AppTextStyle.ts30Bold),
+          Text(_rupiah(harga), style: AppTextStyle.ts28Bold),
           VGap.sr,
           const Divider(height: 1, color: AppColor.lightGrey),
           VGap.sr,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.monetization_on_rounded,
-                  color: AppColor.primary, size: 20),
+              Icon(Icons.monetization_on_outlined, color: primary, size: 20),
               HGap.s,
               Text("Anda akan menerima ", style: AppTextStyle.ts14Reg),
               Text("${jumlahToken ?? 0} token",
-                  style: AppTextStyle.ts16Bold.copyWith(color: AppColor.primary)),
+                  style: AppTextStyle.ts16Bold.copyWith(color: primary)),
             ],
           ),
         ],
@@ -121,10 +120,10 @@ class TopupDetailPage extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(Sizes.r),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.all(Radius.circular(Sizes.r)),
-        border: Border.all(color: AppColor.lightGrey.withOpacity(0.5)),
+        borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+        border: Border.fromBorderSide(BorderSide(color: AppColor.lightGrey)),
       ),
       child: Column(
         children: [
@@ -135,9 +134,9 @@ class TopupDetailPage extends StatelessWidget {
                   style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey))
               : Container(
                   padding: const EdgeInsets.all(Sizes.sr),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
-                    border: Border.all(color: AppColor.lightGrey.withOpacity(0.5)),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+                    border: Border.fromBorderSide(BorderSide(color: AppColor.lightGrey)),
                   ),
                   child: QrImageView(data: qr, size: 200),
                 ),
@@ -146,14 +145,14 @@ class TopupDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _vaView(String? bank, String? va) {
+  Widget _vaView(String? bank, String? va, Color primary) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(Sizes.r),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.all(Radius.circular(Sizes.r)),
-        border: Border.all(color: AppColor.lightGrey.withOpacity(0.5)),
+        borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+        border: Border.fromBorderSide(BorderSide(color: AppColor.lightGrey)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,15 +163,15 @@ class TopupDetailPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(
                 horizontal: Sizes.sr, vertical: Sizes.s),
-            decoration: const BoxDecoration(
-              color: AppColor.primary10,
-              borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+            decoration: BoxDecoration(
+              color: primary.withOpacity(0.1),
+              borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
             ),
             child: Row(
               children: [
                 Expanded(
                   child: Text(va ?? "-",
-                      style: AppTextStyle.ts20Bold.copyWith(color: AppColor.primary)),
+                      style: AppTextStyle.ts20Bold.copyWith(color: primary)),
                 ),
                 InkWell(
                   borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
@@ -180,13 +179,13 @@ class TopupDetailPage extends StatelessWidget {
                     if (va != null) {
                       Clipboard.setData(ClipboardData(text: va));
                       showSnackbar(
-                          backgroundColor: AppColor.primary,
+                          backgroundColor: primary,
                           message: "Nomor VA disalin");
                     }
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.all(Sizes.xs),
-                    child: Icon(Icons.copy_rounded, size: 20, color: AppColor.primary),
+                  child: Padding(
+                    padding: const EdgeInsets.all(Sizes.xs),
+                    child: Icon(Icons.copy_rounded, size: 20, color: primary),
                   ),
                 ),
               ],
@@ -203,6 +202,7 @@ class TopupDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<BuyTokenController>();
+    final primary = Theme.of(context).primaryColor;
     return Scaffold(
       backgroundColor: AppColor.bgScaffold,
       appBar: AppBar(title: const Text("Pembayaran")),
@@ -228,15 +228,15 @@ class TopupDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   VGap.r,
-                  _statusBanner(status),
+                  _statusBanner(status, primary),
                   VGap.r,
-                  _receiptCard(t.harga, t.jumlahToken),
+                  _receiptCard(t.harga, t.jumlahToken, primary),
                   if (!paid) ...[
                     VGap.r,
                     if (t.metode == "QRIS")
                       _qrisView(t.qrString)
                     else
-                      _vaView(t.bankCode, t.vaNumber),
+                      _vaView(t.bankCode, t.vaNumber, primary),
                     VGap.r,
                     _instructionCard(
                         "Pembayaran terkonfirmasi otomatis setelah berhasil. Anda boleh menutup halaman ini."),

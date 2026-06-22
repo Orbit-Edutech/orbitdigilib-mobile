@@ -12,39 +12,38 @@ import 'controller/buy_token_controller.dart';
 class BuyTokenPage extends StatelessWidget {
   const BuyTokenPage({super.key});
 
-  // Teal gelap untuk ujung gradien kartu saldo (pasangan AppColor.primary).
-  static const Color _primaryDark = Color(0xFF008C84);
-
   String _rupiah(int? n) =>
       "Rp ${(n ?? 0).toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (m) => '${m[1]}.')}";
 
-  // ── Kartu saldo (hero) ─────────────────────────────────────────────
-  Widget _balanceCard(BuyTokenController c) {
+  BoxDecoration get _cardDecoration => const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+        border: Border.fromBorderSide(BorderSide(color: AppColor.lightGrey, width: 1)),
+      );
+
+  // ── Saldo token (kartu flat, selaras gaya app) ─────────────────────
+  Widget _balanceCard(BuyTokenController c, Color primary) {
     return Container(
       padding: const EdgeInsets.all(Sizes.r),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(Sizes.r)),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColor.primary, _primaryDark],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.primary.withOpacity(0.25),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
+      decoration: _cardDecoration,
       child: Row(
         children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: primary.withOpacity(0.1),
+              borderRadius: const BorderRadius.all(Radius.circular(Sizes.xs)),
+            ),
+            child: Icon(Icons.account_balance_wallet_outlined, color: primary),
+          ),
+          HGap.r,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Saldo Token Anda",
-                    style: AppTextStyle.ts12Reg.copyWith(color: Colors.white70)),
+                    style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey)),
                 VGap.xs,
                 Obx(() {
                   final token =
@@ -52,12 +51,9 @@ class BuyTokenPage extends StatelessWidget {
                   return Text.rich(
                     TextSpan(
                       text: token,
-                      style: AppTextStyle.ts30Bold.copyWith(color: Colors.white),
+                      style: AppTextStyle.ts24Bold.copyWith(color: primary),
                       children: [
-                        TextSpan(
-                          text: "  token",
-                          style: AppTextStyle.ts14Reg.copyWith(color: Colors.white70),
-                        ),
+                        TextSpan(text: " token", style: AppTextStyle.ts12Reg),
                       ],
                     ),
                   );
@@ -65,82 +61,52 @@ class BuyTokenPage extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.18),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.account_balance_wallet_rounded,
-                color: Colors.white, size: 28),
-          ),
         ],
       ),
     );
   }
 
-  // ── Badge koin (token) ─────────────────────────────────────────────
-  Widget _coinBadge() {
-    return Container(
-      width: 46,
-      height: 46,
-      decoration: const BoxDecoration(color: AppColor.primary10, shape: BoxShape.circle),
-      child: const Icon(Icons.monetization_on_rounded, color: AppColor.primary, size: 26),
-    );
-  }
-
-  Widget _pricePill(int? harga) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.sr, vertical: Sizes.xs),
-      decoration: const BoxDecoration(
-        color: AppColor.primary10,
-        borderRadius: BorderRadius.all(Radius.circular(Sizes.l)),
-      ),
-      child: Text(_rupiah(harga),
-          style: AppTextStyle.ts14Bold.copyWith(color: AppColor.primary)),
-    );
-  }
-
   // ── Kartu paket ────────────────────────────────────────────────────
-  Widget _paketCard(BuyTokenController c, PaketToken paket) {
+  Widget _paketCard(BuyTokenController c, PaketToken paket, Color primary) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: Sizes.sr),
-      child: Material(
-        color: Colors.white,
-        borderRadius: const BorderRadius.all(Radius.circular(Sizes.r)),
-        child: InkWell(
-          onTap: () => _showMethodSheet(onSelect: (m, b) => c.submitTopup(paket, m, b)),
-          borderRadius: const BorderRadius.all(Radius.circular(Sizes.r)),
-          child: Ink(
-            padding: const EdgeInsets.all(Sizes.sr),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(Sizes.r)),
-              border: Border.all(color: AppColor.lightGrey.withOpacity(0.5)),
-              color: Colors.white,
-            ),
-            child: Row(
-              children: [
-                _coinBadge(),
-                HGap.sr,
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("${paket.jumlahToken ?? 0} token", style: AppTextStyle.ts18Bold),
-                      VGap.xs,
-                      Text(
-                        "Berlaku ${paket.tambahanMasaAktif ?? 0} hari",
-                        style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey),
-                      ),
-                    ],
-                  ),
+      padding: const EdgeInsets.only(bottom: Sizes.s),
+      child: InkWell(
+        onTap: () =>
+            _showMethodSheet(primary: primary, onSelect: (m, b) => c.submitTopup(paket, m, b)),
+        borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
+        child: Container(
+          padding: const EdgeInsets.all(Sizes.sr),
+          decoration: _cardDecoration,
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: primary.withOpacity(0.1),
+                  borderRadius: const BorderRadius.all(Radius.circular(Sizes.xs)),
                 ),
-                _pricePill(paket.harga),
-                HGap.xs,
-                const Icon(Icons.chevron_right_rounded, color: AppColor.lightGrey),
-              ],
-            ),
+                child: Icon(Icons.monetization_on_outlined, color: primary),
+              ),
+              HGap.r,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("${paket.jumlahToken ?? 0} token", style: AppTextStyle.ts16Bold),
+                    VGap.xs,
+                    Text(
+                      "Berlaku ${paket.tambahanMasaAktif ?? 0} hari",
+                      style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey),
+                    ),
+                  ],
+                ),
+              ),
+              Text(_rupiah(paket.harga),
+                  style: AppTextStyle.ts16Bold.copyWith(color: primary)),
+              HGap.xs,
+              Icon(Icons.arrow_forward_ios_rounded, color: primary, size: 14),
+            ],
           ),
         ),
       ),
@@ -148,74 +114,66 @@ class BuyTokenPage extends StatelessWidget {
   }
 
   // ── Kartu nominal bebas ────────────────────────────────────────────
-  Widget _customCard(BuyTokenController c) {
+  Widget _customCard(BuyTokenController c, Color primary) {
     return Container(
       padding: const EdgeInsets.all(Sizes.r),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(Sizes.r)),
-        border: Border.all(color: AppColor.lightGrey.withOpacity(0.5)),
-        color: Colors.white,
-      ),
+      decoration: _cardDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              const Icon(Icons.tune_rounded, color: AppColor.primary, size: 20),
-              HGap.s,
-              Text("Nominal Bebas", style: AppTextStyle.ts16Bold),
-            ],
-          ),
+          Text("Nominal Bebas", style: AppTextStyle.ts16Bold),
           VGap.xs,
           Text("Setiap Rp 1 = 10 token",
               style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey)),
           VGap.r,
           TextField(
             keyboardType: TextInputType.number,
-            style: AppTextStyle.ts18Bold,
+            style: AppTextStyle.ts16Bold,
+            cursorColor: primary,
             decoration: InputDecoration(
               prefixText: "Rp  ",
-              prefixStyle: AppTextStyle.ts18Bold.copyWith(color: AppColor.grey),
+              prefixStyle: AppTextStyle.ts16Bold.copyWith(color: AppColor.grey),
               hintText: "0",
-              filled: true,
-              fillColor: AppColor.bgScaffold,
+              isDense: true,
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: Sizes.r, vertical: Sizes.sr),
-              border: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
-                borderSide: BorderSide(color: AppColor.lightGrey.withOpacity(0.5)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
-                borderSide: BorderSide(color: AppColor.lightGrey.withOpacity(0.5)),
-              ),
-              focusedBorder: const OutlineInputBorder(
+                  const EdgeInsets.symmetric(horizontal: Sizes.sr, vertical: Sizes.sr),
+              border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
-                borderSide: BorderSide(color: AppColor.primary, width: 1.5),
+                borderSide: BorderSide(color: AppColor.lightGrey),
+              ),
+              enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+                borderSide: BorderSide(color: AppColor.lightGrey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
+                borderSide: BorderSide(color: primary, width: 1.5),
               ),
             ),
             onChanged: (v) =>
                 c.customAmount.value = int.tryParse(v.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0,
           ),
           VGap.sr,
-          Obx(() => Row(
-                children: [
-                  const Icon(Icons.monetization_on_rounded,
-                      color: AppColor.primary, size: 18),
-                  HGap.xs,
-                  Text("Anda akan menerima ", style: AppTextStyle.ts12Reg),
-                  Text("${c.customTokens} token",
-                      style: AppTextStyle.ts14Bold.copyWith(color: AppColor.primary)),
-                ],
+          Obx(() => Text.rich(
+                TextSpan(
+                  text: "Anda akan menerima ",
+                  style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey),
+                  children: [
+                    TextSpan(
+                      text: "${c.customTokens} token",
+                      style: AppTextStyle.ts14Bold.copyWith(color: primary),
+                    ),
+                  ],
+                ),
               )),
           VGap.r,
           Obx(() => SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.primary,
+                    backgroundColor: primary,
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor: AppColor.lightGrey.withOpacity(0.4),
+                    disabledBackgroundColor: AppColor.lightGrey,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: Sizes.sr),
                     shape: const RoundedRectangleBorder(
@@ -225,6 +183,7 @@ class BuyTokenPage extends StatelessWidget {
                   onPressed: c.customAmount.value < 1
                       ? null
                       : () => _showMethodSheet(
+                            primary: primary,
                             onSelect: (m, b) =>
                                 c.submitCustomTopup(c.customAmount.value, m, b),
                           ),
@@ -237,14 +196,17 @@ class BuyTokenPage extends StatelessWidget {
   }
 
   // ── Bottom sheet metode ────────────────────────────────────────────
-  void _showMethodSheet({required void Function(String metode, String? bank) onSelect}) {
+  void _showMethodSheet({
+    required Color primary,
+    required void Function(String metode, String? bank) onSelect,
+  }) {
     const banks = ["BCA", "BNI", "BRI", "MANDIRI", "PERMATA"];
     Get.bottomSheet(
       Container(
         padding: const EdgeInsets.fromLTRB(Sizes.r, Sizes.sr, Sizes.r, Sizes.m),
         decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(Sizes.sm)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(Sizes.r)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -261,17 +223,10 @@ class BuyTokenPage extends StatelessWidget {
               ),
             ),
             VGap.r,
-            Text("Metode Pembayaran", style: AppTextStyle.ts18Bold),
+            Text("Metode Pembayaran", style: AppTextStyle.ts16Bold),
             VGap.r,
-            Row(
-              children: [
-                const Icon(Icons.qr_code_2_rounded, size: 18, color: AppColor.primary),
-                HGap.xs,
-                Text("QRIS", style: AppTextStyle.ts14Bold),
-              ],
-            ),
-            VGap.s,
             _methodTile(
+              primary: primary,
               icon: Icons.qr_code_scanner_rounded,
               title: "QRIS",
               subtitle: "Scan dengan bank / e-wallet apa pun",
@@ -281,13 +236,7 @@ class BuyTokenPage extends StatelessWidget {
               },
             ),
             VGap.r,
-            Row(
-              children: [
-                const Icon(Icons.account_balance_rounded, size: 18, color: AppColor.primary),
-                HGap.xs,
-                Text("Virtual Account", style: AppTextStyle.ts14Bold),
-              ],
-            ),
+            Text("Virtual Account", style: AppTextStyle.ts14Bold),
             VGap.xs,
             Text("Minimal Rp 10.000",
                 style: AppTextStyle.ts10Reg.copyWith(color: AppColor.grey)),
@@ -305,9 +254,10 @@ class BuyTokenPage extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: Sizes.r, vertical: Sizes.s),
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
-                            border: Border.all(color: AppColor.lightGrey.withOpacity(0.7)),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+                            border: Border.fromBorderSide(
+                                BorderSide(color: AppColor.lightGrey)),
                           ),
                           child: Text(b, style: AppTextStyle.ts12Bold),
                         ),
@@ -322,6 +272,7 @@ class BuyTokenPage extends StatelessWidget {
   }
 
   Widget _methodTile({
+    required Color primary,
     required IconData icon,
     required String title,
     required String subtitle,
@@ -332,13 +283,13 @@ class BuyTokenPage extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(Sizes.sr),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(Sizes.s)),
-          border: Border.all(color: AppColor.lightGrey.withOpacity(0.7)),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(Sizes.s)),
+          border: Border.fromBorderSide(BorderSide(color: AppColor.lightGrey)),
         ),
         child: Row(
           children: [
-            Icon(icon, color: AppColor.primary),
+            Icon(icon, color: primary),
             HGap.sr,
             Expanded(
               child: Column(
@@ -350,7 +301,7 @@ class BuyTokenPage extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, color: AppColor.lightGrey),
+            Icon(Icons.arrow_forward_ios_rounded, color: primary, size: 14),
           ],
         ),
       ),
@@ -360,6 +311,7 @@ class BuyTokenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<BuyTokenController>();
+    final primary = Theme.of(context).primaryColor;
     return Scaffold(
       backgroundColor: AppColor.bgScaffold,
       appBar: AppBar(title: const Text("Beli Token")),
@@ -373,13 +325,10 @@ class BuyTokenPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 VGap.r,
-                _balanceCard(c),
-                VGap.l,
-                Text("Pilih Paket", style: AppTextStyle.ts18Bold),
-                VGap.xs,
-                Text("Token dipakai untuk membaca koleksi digital",
-                    style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey)),
+                _balanceCard(c, primary),
                 VGap.r,
+                Text("Pilih Paket", style: AppTextStyle.ts16Bold),
+                VGap.s,
                 Obx(() {
                   if (c.loadingPaket.value) {
                     return const Padding(
@@ -396,22 +345,23 @@ class BuyTokenPage extends StatelessWidget {
                           style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey)),
                     );
                   }
-                  return Column(children: list.map((paket) => _paketCard(c, paket)).toList());
+                  return Column(
+                      children: list.map((paket) => _paketCard(c, paket, primary)).toList());
                 }),
                 VGap.s,
                 Row(
                   children: [
-                    Expanded(child: Divider(color: AppColor.lightGrey.withOpacity(0.6))),
+                    const Expanded(child: Divider(color: AppColor.lightGrey)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: Sizes.sr),
                       child: Text("atau",
                           style: AppTextStyle.ts12Reg.copyWith(color: AppColor.grey)),
                     ),
-                    Expanded(child: Divider(color: AppColor.lightGrey.withOpacity(0.6))),
+                    const Expanded(child: Divider(color: AppColor.lightGrey)),
                   ],
                 ),
                 VGap.r,
-                _customCard(c),
+                _customCard(c, primary),
                 VGap.l,
               ],
             ),
